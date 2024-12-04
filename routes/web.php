@@ -1,11 +1,19 @@
 <?php
 
 use App\Http\Controllers\CarController;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Index');
-});
+// Route::prefix('{locale}')->middleware(SetLocale::class)->group(function () {
+//     Route::get('/', function () {
+//         return view('test');
+//     })->name('welcome');
+// });
 
-Route::resource('cars', CarController::class);
+Route::get('/', function () {
+    app()->setLocale('km');
+        return view('test');
+    })->name('welcome');
+
+Route::get('/cars', [CarController::class, 'index'])->name('cars.index');

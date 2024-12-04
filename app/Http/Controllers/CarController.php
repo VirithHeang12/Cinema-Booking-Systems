@@ -9,6 +9,7 @@ class CarController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Cars/Index');
+        app()->setLocale('es');
+        return view('test');
     }
 }
