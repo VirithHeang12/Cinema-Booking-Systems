@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f7471472ff82f3cf831919961d74563",
+    "content-hash": "aeaedc7b834a4da1c2db43d1374d946d",
     "packages": [
         {
             "name": "brick/math",
@@ -580,6 +580,66 @@
                 }
             ],
             "time": "2023-10-12T05:21:21+00:00"
+        },
+        {
+            "name": "genl/matice",
+            "version": "1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GENL/matice.git",
+                "reference": "41e9793487ad36cbfbae9887133cd92dd17cb352"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GENL/matice/zipball/41e9793487ad36cbfbae9887133cd92dd17cb352",
+                "reference": "41e9793487ad36cbfbae9887133cd92dd17cb352",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=6.0@dev"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.10||^5.0||^6.0||^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Genl\\Matice\\MaticeServiceProvider"
+                    ],
+                    "aliases": {
+                        "Matice": "Genl\\Matice\\Facades\\Matice"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Genl\\Matice\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ekcel Ekoumelong",
+                    "email": "bigcodole@gmail.com",
+                    "homepage": "https://ekcel-portofolio.firebaseapp.com"
+                }
+            ],
+            "description": "Use your Laravel translations in JavaScript. Generates a Blade directive exporting all of your Laravel translations and provides a nice trans() helper function in JavaScript.",
+            "homepage": "https://github.com/genl/matice",
+            "keywords": [
+                "laravel",
+                "matice",
+                "translations"
+            ],
+            "support": {
+                "issues": "https://github.com/GENL/matice/issues",
+                "source": "https://github.com/GENL/matice/tree/1.2"
+            },
+            "time": "2024-11-10T15:16:21+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -1905,6 +1965,82 @@
                 }
             ],
             "time": "2024-09-21T08:32:55+00:00"
+        },
+        {
+            "name": "mcamara/laravel-localization",
+            "version": "v2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mcamara/laravel-localization.git",
+                "reference": "a19ddcc634dff6b06ae35ecb7f06b2a0444e9807"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mcamara/laravel-localization/zipball/a19ddcc634dff6b06ae35ecb7f06b2a0444e9807",
+                "reference": "a19ddcc634dff6b06ae35ecb7f06b2a0444e9807",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^10.0|^11.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "orchestra/testbench-browser-kit": "^8.5|^9.0",
+                "phpunit/phpunit": "^10.1"
+            },
+            "suggest": {
+                "ext-intl": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "LaravelLocalization": "Mcamara\\LaravelLocalization\\Facades\\LaravelLocalization"
+                    },
+                    "providers": [
+                        "Mcamara\\LaravelLocalization\\LaravelLocalizationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Mcamara\\LaravelLocalization": "src/"
+                },
+                "classmap": []
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marc Cámara",
+                    "email": "mcamara88@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Easy localization for Laravel",
+            "homepage": "https://github.com/mcamara/laravel-localization",
+            "keywords": [
+                "laravel",
+                "localization",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/mcamara/laravel-localization/issues",
+                "source": "https://github.com/mcamara/laravel-localization/tree/v2.2.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/iwasherefirst2",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/mcamara",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-11-27T21:06:34+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -5426,6 +5562,76 @@
                 }
             ],
             "time": "2024-11-08T15:48:14+00:00"
+        },
+        {
+            "name": "tightenco/ziggy",
+            "version": "v2.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tighten/ziggy.git",
+                "reference": "8e002298678fd4d61155bb1d6e3837048235bff7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tighten/ziggy/zipball/8e002298678fd4d61155bb1d6e3837048235bff7",
+                "reference": "8e002298678fd4d61155bb1d6e3837048235bff7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "laravel/framework": ">=9.0",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "laravel/folio": "^1.1",
+                "orchestra/testbench": "^7.0 || ^8.0 || ^9.0",
+                "pestphp/pest": "^2.26",
+                "pestphp/pest-plugin-laravel": "^2.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Tighten\\Ziggy\\ZiggyServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Tighten\\Ziggy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Coulbourne",
+                    "email": "daniel@tighten.co"
+                },
+                {
+                    "name": "Jake Bathman",
+                    "email": "jake@tighten.co"
+                },
+                {
+                    "name": "Jacob Baker-Kretzmar",
+                    "email": "jacob@tighten.co"
+                }
+            ],
+            "description": "Use your Laravel named routes in JavaScript.",
+            "homepage": "https://github.com/tighten/ziggy",
+            "keywords": [
+                "Ziggy",
+                "javascript",
+                "laravel",
+                "routes"
+            ],
+            "support": {
+                "issues": "https://github.com/tighten/ziggy/issues",
+                "source": "https://github.com/tighten/ziggy/tree/v2.4.1"
+            },
+            "time": "2024-11-21T15:51:20+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

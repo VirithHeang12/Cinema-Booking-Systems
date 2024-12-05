@@ -18,7 +18,9 @@
         "@inertiajs/vue3": "^2.0.0-beta.2",
         "@vitejs/plugin-vue": "^5.2.1",
         "bootstrap": "^5.3.3",
+        "matice": "^1.1.5",
         "vite-plugin-vuetify": "^2.0.4",
-        "vuetify": "^3.7.5"
+        "vuetify": "^3.7.5",
+        "ziggy-js": "^2.4.1"
     }
 }

@@ -1,19 +1,20 @@
 <?php
 
-use App\Http\Controllers\CarController;
-use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-// Route::prefix('{locale}')->middleware(SetLocale::class)->group(function () {
-//     Route::get('/', function () {
-//         return view('test');
-//     })->name('welcome');
-// });
+Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ])->group(function() {
+    Route::get('/', function () {
+        return Inertia::render('Index');
+    })->name('index');
 
-Route::get('/', function () {
-    app()->setLocale('km');
-        return view('test');
-    })->name('welcome');
+    Route::get('/about', function () {
+        return Inertia::render('About');
+    })->name('about');
 
-Route::get('/cars', [CarController::class, 'index'])->name('cars.index');
+    Route::get('/contact', function () {
+        return Inertia::render('Contact');
+    })->name('contact');
+});
+
