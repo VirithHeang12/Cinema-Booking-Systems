@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -16,5 +17,14 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
     Route::get('/contact', function () {
         return Inertia::render('Contact');
     })->name('contact');
+
+    Route::get('/users', function () {
+        return Inertia::render('Create');
+    })->name('users.create');
+
+    Route::post('/users', function (Request $request) {
+        dd($request->all());
+        return redirect()->route('index');
+    })->name('users.store');
 });
 
