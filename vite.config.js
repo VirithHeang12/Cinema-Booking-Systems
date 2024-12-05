@@ -10,6 +10,8 @@ export default defineConfig({
             refresh: true,
         }),
         vuePlugin(),
-        vuetify(),
+        vuetify({
+            autoImport: true,
+        }),
     ],
 });

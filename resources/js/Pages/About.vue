@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>{{ __('hello') }}</h1>
+        <h1>{{ __('about') }}</h1>
     </div>
 </template>
 
