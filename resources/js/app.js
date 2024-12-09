@@ -13,6 +13,9 @@ import * as directives from 'vuetify/directives'
 // Matice
 import { __, trans, setLocale, getLocale, transChoice, MaticeLocalizationConfig, locales } from "matice"
 
+// Ziggy
+import { ZiggyVue } from 'ziggy-js';
+
 const vuetify = createVuetify({
     components,
     directives,
@@ -26,6 +29,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const app = createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(ZiggyVue)
             .use(vuetify);
 
         app.mixin({

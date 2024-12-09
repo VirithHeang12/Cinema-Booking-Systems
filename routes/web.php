@@ -23,7 +23,6 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
     })->name('users.create');
 
     Route::post('/users', function (Request $request) {
-        dd($request->all());
         return redirect()->route('index');
     })->name('users.store');
 });

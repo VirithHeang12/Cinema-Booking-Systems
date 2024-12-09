@@ -23,7 +23,6 @@
     const { props } = usePage();
 
     const clickCallback = (r) => {
-        console.log(route(r));
         router.get(route(r));
     }
 </script>
