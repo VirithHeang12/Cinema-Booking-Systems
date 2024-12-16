@@ -3,7 +3,7 @@
         <v-menu>
             <template v-slot:activator="{ props }">
                 <v-btn color="primary" dark v-bind="props">
-                    {{ activeLanguage[1].native }}
+                    <lang-flag :iso="getLocale().toLowerCase()" />
                 </v-btn>
             </template>
 
@@ -22,18 +22,13 @@
 
 <script setup>
     import { router, usePage } from '@inertiajs/vue3'
-    import { __ } from 'matice';
+    import { __, getLocale, setLocale } from 'matice';
     import { computed } from 'vue';
-    import { setLocale } from 'matice';
 
     const { props } = usePage();
 
     const languages = computed(() => {
         return Object.entries(props.languages);
-    });
-
-    const activeLanguage = computed(() => {
-        return languages.value.find(([, value]) => value.active);
     });
 
     const switchLocale = (key, locale) => {

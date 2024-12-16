@@ -20,6 +20,7 @@
         "bootstrap": "^5.3.3",
         "matice": "^1.1.5",
         "vite-plugin-vuetify": "^2.0.4",
+        "vue-lang-code-flags": "^1.0.13",
         "vuetify": "^3.7.5",
         "ziggy-js": "^2.4.1"
     }

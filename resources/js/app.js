@@ -17,6 +17,9 @@ import { __, trans, setLocale, getLocale, transChoice, MaticeLocalizationConfig,
 // Ziggy
 import { ZiggyVue } from 'ziggy-js';
 
+// lang flags
+import LangFlag from 'vue-lang-code-flags';
+
 const vuetify = createVuetify({
     components,
     directives,
@@ -55,6 +58,8 @@ createInertiaApp({
                 },
             },
         });
+
+        app.component('lang-flag', LangFlag);
 
         app.mount(el)
     },
