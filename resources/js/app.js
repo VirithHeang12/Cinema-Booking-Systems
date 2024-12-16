@@ -1,4 +1,5 @@
 import './bootstrap';
+import DefaultLayout from './Layouts/DefaultLayout.vue';
 
 // Inertia
 import { createApp, h } from 'vue'
@@ -24,7 +25,12 @@ const vuetify = createVuetify({
 createInertiaApp({
     resolve: name => {
         const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
-        return pages[`./Pages/${name}.vue`]
+        let page = pages[`./Pages/${name}.vue`]
+        if (!page) {
+            page = pages[`./Pages/Error.vue`]
+        }
+        page.default.layout = page.default.layout || DefaultLayout
+        return page;
     },
     setup({ el, App, props, plugin }) {
         const app = createApp({ render: () => h(App, props) })
