@@ -8,9 +8,9 @@
             </template>
 
             <v-list>
-                <v-list-item v-for="([, value], index) in languages" :key="index">
+                <v-list-item v-for="([key, value], index) in languages" :key="index">
                     <v-list-item-title>
-                        <v-btn @click="switchLocale(value.path)">
+                        <v-btn @click="switchLocale(key, value)">
                             {{ value.native }}
                         </v-btn>
                     </v-list-item-title>
@@ -24,6 +24,7 @@
     import { router, usePage } from '@inertiajs/vue3'
     import { __ } from 'matice';
     import { computed } from 'vue';
+    import { setLocale } from 'matice';
 
     const { props } = usePage();
 
@@ -35,13 +36,13 @@
         return languages.value.find(([, value]) => value.active);
     });
 
-    const switchLocale = (localeUrl) => {
-        router.visit(localeUrl, {
+    const switchLocale = (key, locale) => {
+        // Set the locale without reloading the page
+        setLocale(key);
+
+        router.visit(locale.path, {
             method: "get",
             replace: true,
-            onSuccess: () => {
-                window.location.reload();
-            },
         });
     }
 </script>
