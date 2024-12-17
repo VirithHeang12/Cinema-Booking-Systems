@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar color="surface-variant" title="Application bar">
+    <v-app-bar title="Application bar">
         <v-menu>
             <template v-slot:activator="{ props }">
                 <v-btn color="primary" dark v-bind="props">
@@ -17,6 +17,13 @@
                 </v-list-item>
             </v-list>
         </v-menu>
+        <template v-slot:append>
+            <v-btn icon="mdi-heart"></v-btn>
+
+            <v-btn icon="mdi-magnify"></v-btn>
+
+            <v-btn icon="mdi-dots-vertical"></v-btn>
+        </template>
     </v-app-bar>
 
 </template>
