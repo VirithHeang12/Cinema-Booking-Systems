@@ -1,10 +1,29 @@
 <template>
-    <v-app-bar :elevation="0" color="grey-lighten-5" flat compact>
+    <v-app-bar :elevation="0" color="#161616ab" flat compact class="app-bar">
         <v-container class="flex justify-between">
-            <div>
-                <v-text-field :width="200" :elevation="0"></v-text-field>
-            </div>
+            <v-card max-width="400" flat class="pa-0 h-fit">
+                <v-card-text class="pa-0">
+                    <v-text-field :width="300" :loading="loading" append-inner-icon="mdi-magnify" density="compact"
+                        label="Search templates" variant="solo" hide-details single-line @click:append-inner="onClick"
+                        flat></v-text-field>
+                </v-card-text>
+            </v-card>
+            <v-card flat>
+                <img width="50" height="20" src="/resources/assets/ChillGuy.jpg" alt="">
+            </v-card>
             <div class="flex align-center justify-center">
+                <div class="flex gap-2 align-center">
+                    <v-btn color="white">
+                        <template v-slot:prepend>
+                            <v-icon>mdi-ticket</v-icon>
+                        </template>
+                        Tickets
+                    </v-btn>
+
+                    <v-btn icon="mdi-account" color="white"></v-btn>
+
+                    <v-btn icon="mdi-bell" color="white"></v-btn>
+                </div>
                 <v-menu>
                     <template v-slot:activator="{ props }">
                         <v-btn color="primary" dark v-bind="props">
@@ -22,18 +41,6 @@
                         </v-list-item>
                     </v-list>
                 </v-menu>
-                <div class="flex gap-2 align-center">
-                    <v-btn>
-                        <template v-slot:prepend>
-                            <v-icon>mdi-ticket</v-icon>
-                        </template>
-                        Tickets
-                    </v-btn>
-
-                    <v-btn icon="mdi-account"></v-btn>
-
-                    <v-btn icon="mdi-bell"></v-btn>
-                </div>
             </div>
         </v-container>
     </v-app-bar>
@@ -62,4 +69,8 @@
     }
 </script>
 
-<style scoped></style>
+<style scoped>
+    .app-bar {
+        backdrop-filter: blur(2px);
+    }
+</style>
