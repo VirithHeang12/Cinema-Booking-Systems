@@ -1,4 +1,6 @@
 import './bootstrap';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 import DefaultLayout from './Layouts/DefaultLayout.vue';
 
 // Inertia
