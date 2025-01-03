@@ -11,4 +11,7 @@ class Genre extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'description'];
+
+    // testing push 
+
 }
