@@ -12,6 +12,6 @@ class Genre extends Model
 
     protected $fillable = ['name', 'description'];
 
-    // testing push 
+    // testing push to main by Rachna
 
 }
