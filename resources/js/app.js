@@ -1,4 +1,7 @@
 import './bootstrap';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
+import DefaultLayout from './Layouts/DefaultLayout.vue';
 
 // Inertia
 import { createApp, h } from 'vue'
@@ -10,11 +13,17 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
+// Vuetify icons
+import '@mdi/font/css/materialdesignicons.css'
+
 // Matice
 import { __, trans, setLocale, getLocale, transChoice, MaticeLocalizationConfig, locales } from "matice"
 
 // Ziggy
 import { ZiggyVue } from 'ziggy-js';
+
+// lang flags
+import LangFlag from 'vue-lang-code-flags';
 
 const vuetify = createVuetify({
     components,
@@ -24,7 +33,12 @@ const vuetify = createVuetify({
 createInertiaApp({
     resolve: name => {
         const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
-        return pages[`./Pages/${name}.vue`]
+        let page = pages[`./Pages/${name}.vue`]
+        if (!page) {
+            page = pages[`./Pages/Error.vue`]
+        }
+        page.default.layout = page.default.layout || DefaultLayout
+        return page;
     },
     setup({ el, App, props, plugin }) {
         const app = createApp({ render: () => h(App, props) })
@@ -49,6 +63,8 @@ createInertiaApp({
                 },
             },
         });
+
+        app.component('lang-flag', LangFlag);
 
         app.mount(el)
     },
