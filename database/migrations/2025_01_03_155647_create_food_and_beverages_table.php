@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('food_and_beverages', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50);
-            $table->string('image', 500)->nullable();
+            $table->string('name', 50)->unique();
+            $table->string('image_url', 500)->nullable();
             $table->decimal('price', 10, 2);
             $table->softDeletes();
             $table->timestamps();

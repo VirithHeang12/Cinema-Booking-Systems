@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('quantity');
             $table->decimal('amount', 10, 2);
+            $table->decimal('sale_unit_price', 10, 2);
 
             $table->foreignId('booking_id')
                 ->nullable()

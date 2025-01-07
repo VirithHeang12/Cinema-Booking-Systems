@@ -33,8 +33,9 @@ return new class extends Migration
                 ->onUpdate('cascade');
 
             $table->foreignId('payment_method_id')
+                ->nullable()
                 ->constrained('payment_methods')
-                ->onDelete('cascade')
+                ->onDelete('set null')
                 ->onUpdate('cascade');
 
             $table->softDeletes();
