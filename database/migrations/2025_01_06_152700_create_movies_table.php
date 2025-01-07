@@ -33,22 +33,16 @@ return new class extends Migration
             $table->string('trailer_url', length: 255)
                 ->unique();
 
-            $table->string('thumbnail', length: 255)
+            $table->string('thumbnail_url', length: 255)
                 ->nullable(false)
                 ->unique();
 
 
-            $table->foreignId('genre_id')
-                ->nullable()
+            $table->foreignId('production_company_id')
                 ->constrained()
                 ->onDelete('set null')
-                ->onUpdate('cascade');
-
-                $table->foreignId('production_company_id')
-                ->constrained()
-                ->onDelete('cascade')
                 ->onUpdate('cascade')
-                ->nullable(false); 
+                ->nullable(); 
             
 
             $table->foreignId('country_id')
@@ -60,6 +54,12 @@ return new class extends Migration
             $table->foreignId('classification_id')
                 ->nullable()
                 ->constrained()
+                ->onDelete('set null')
+                ->onUpdate('cascade');
+                
+            $table->foreignId('language_id')
+                ->nullable()
+                ->constrained('languages')
                 ->onDelete('set null')
                 ->onUpdate('cascade');
 

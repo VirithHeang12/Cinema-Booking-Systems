@@ -12,5 +12,5 @@ class Movie extends Model
     /** @use HasFactory<\Database\Factories\MovieFactory> */
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['title', 'description','release_date','duration','rating','trailer_url','thumbnail','genre_id','production_company_id','country_id','classification_id'];
+    protected $fillable = ['title', 'description','release_date','duration','rating','trailer_url','thumbnail_url','production_company_id','country_id','classification_id','language_id'];
 }
