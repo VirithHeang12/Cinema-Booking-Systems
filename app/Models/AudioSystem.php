@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SeatType extends Model
+class AudioSystem extends Model
 {
-    /** @use HasFactory<\Database\Factories\SeatTypeFactory> */
+    /** @use HasFactory<\Database\Factories\AudioSystemFactory> */
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
         'name',
         'description',
-        'price',
     ];
 }

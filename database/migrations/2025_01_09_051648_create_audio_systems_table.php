@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('halls', function (Blueprint $table) {
+        Schema::create('audio_systems', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('hall_type_id')
-                ->constrained()
-                ->onDelete('set null')
-                ->onUpdate('cascade');
             $table->string('name', length: 30)->unique();
             $table->string('description', length: 255)->nullable();
             $table->softDeletes();
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('halls');
+        Schema::dropIfExists('audio_systems');
     }
 };
