@@ -7,6 +7,7 @@
     @inertiaHead
     @translations
     @vite(['resources/js/app.js', 'resources/css/app.css'])
+    <title>{{ $title }}</title>
   </head>
   <body>
     @inertia

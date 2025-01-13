@@ -11,7 +11,11 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
     })->name('index');
 
     Route::get('/about', function () {
-        return Inertia::render('About');
+        return Inertia::render('About', [
+            'name'          => 'John Doe',
+            'age'           => 30,
+            'location'      => 'New York',
+        ])->withViewData(['title' => 'About Us']);
     })->name('about');
 
     Route::get('/contact', function () {
