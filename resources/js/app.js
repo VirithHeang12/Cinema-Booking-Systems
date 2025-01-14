@@ -31,6 +31,7 @@ const vuetify = createVuetify({
 })
 
 createInertiaApp({
+    title: (title) => `${title} - Neak Cinema`,
     resolve: name => {
         const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
         let page = pages[`./Pages/${name}.vue`]
