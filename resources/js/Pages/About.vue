@@ -1,5 +1,5 @@
 <template>
-    <v-container class="my-[30px]">
+    <v-container class="my-[30px] font-cus">
         <div class="row">
             <div class="col-12">
                 <img src="/public/image/banner_about.jpg" alt="" class="img-fluid w-100 h-[200px] rounded-[25px]" />
@@ -9,7 +9,7 @@
             <div class="col-12">
                 <v-breadcrumbs :items="items" class="px-0 mt-[15px] mb-0 text-[17px] text-gray-600">
                     <template v-slot:divider>
-                        <svg  class="mt-[5px]" width="30px" height="30px" viewBox="0 0 24 24" fill="none"
+                        <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -22,29 +22,13 @@
                     </template>
                 </v-breadcrumbs>
 
-                <p class="text-gray-600 fw-semibold text-[32px]">About Eternal Cineplex</p>
+                <p class="text-gray-600 fw-semibold text-[32px]">{{__('aboutPage.title')}}</p>
                 <p class="text-gray-600 text-justify mt-[20px] text-[17px]">
-                    Welcome to Eternal Cinema, where stories transcend time and the magic of the silver screen comes
-                    alive. At Eternal
-                    Cinema, we believe movies are more than just entertainment—they’re a portal to new worlds, a
-                    celebration of diverse
-                    cultures, and a bridge to shared human emotions.
-
-                    Located in the heart of [Your City], Eternal Cinema is designed to provide an unforgettable
-                    cinematic experience. <br /> <br />
-                    Our state-of-the-art screens, immersive sound systems, and luxurious seating ensure you enjoy every
-                    moment in
-                    unparalleled comfort. From blockbuster hits to timeless classics and thought-provoking indie films,
-                    we curate a
-                    diverse lineup of films to cater to all tastes and generations.
-
-                    At Eternal Cinema, we’re not just about movies; we’re about community. Whether you’re here for a
-                    family outing, a
-                    date night, or to catch a solo flick, we strive to create a welcoming space where everyone feels at
-                    home. Our
-                    special events, like themed movie nights and director Q&A sessions, make every visit an experience
-                    to remember.
-                </p>
+                    {{ __('aboutPage.firstParagraph') }}
+                 </p>
+                 <p class="text-gray-600 text-justify mt-[20px] text-[17px]">
+                    {{ __('aboutPage.secondParagraph') }}
+                 </p>
             </div>
 
         </div>
@@ -52,16 +36,28 @@
 </template>
 
 <script setup>
+import { __ } from 'matice';
+
 const items = [
     {
-        title: 'Home',
+        title: __('home'),
         disabled: false,
         href: route('index'),
     },
     {
-        title: 'About Eternal Cineplex',
+        title: __('aboutPage.title'),
         disabled: true,
         href: route('about'),
     },
 ]
 </script>
+
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.font-cus{
+    font-family: 'Kantumruy Pro';
+}
+
+</style>
