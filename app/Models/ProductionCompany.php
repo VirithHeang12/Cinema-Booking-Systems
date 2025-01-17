@@ -6,14 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Genre extends Model
+class ProductionCompany extends Model
 {
-    /** @use HasFactory<\Database\Factories\GenreFactory> */
+    /** @use HasFactory<\Database\Factories\ProductionCompanyFactory> */
     use HasFactory;
     use SoftDeletes;
-
     protected $fillable = ['name', 'description'];
-
-    // Bonjour!!
-
 }

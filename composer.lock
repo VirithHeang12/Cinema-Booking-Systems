@@ -1120,19 +1120,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "166f25a14167b2caa4205c94af068403befac87e"
+                "reference": "d5e1d51e0eb6c4b6756a8e0e598ade5cc29330bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/166f25a14167b2caa4205c94af068403befac87e",
-                "reference": "166f25a14167b2caa4205c94af068403befac87e",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/d5e1d51e0eb6c4b6756a8e0e598ade5cc29330bc",
+                "reference": "d5e1d51e0eb6c4b6756a8e0e598ade5cc29330bc",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "laravel/framework": "^10.0|^11.0",
                 "php": "^8.1.0",
-                "symfony/console": "^5.3|^6.0|^7.0"
+                "symfony/console": "^6.2|^7.0"
             },
             "require-dev": {
                 "laravel/pint": "^1.16",
@@ -1150,9 +1150,6 @@
                     "providers": [
                         "Inertia\\ServiceProvider"
                     ]
-                },
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
                 }
             },
             "autoload": {
@@ -1189,7 +1186,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-20T18:44:57+00:00"
+            "time": "2024-12-05T14:41:09+00:00"
         },
         {
             "name": "laravel/framework",

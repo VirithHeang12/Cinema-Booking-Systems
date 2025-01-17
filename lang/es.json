@@ -2,5 +2,13 @@
     "welcome": "Bienvenido",
     "hello": "Hola",
     "world": "Mundo",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "about": "Acerca de",
+    "home": "Inicio",
+    "aboutPage": {
+        "title": "Acerca de Eternal Cineplex",
+        "firstParagraph": "Bienvenido a Eternal Cinema, donde las historias trascienden el tiempo y la magia de la pantalla grande cobra vida. En Eternal Cinema, creemos que las películas son más que entretenimiento: son un portal a nuevos mundos, una celebración de culturas diversas y un puente hacia emociones humanas compartidas. Ubicado en el corazón de [Tu Ciudad], Eternal Cinema está diseñado para brindar una experiencia cinematográfica inolvidable.",
+        "secondParagraph": "Nuestras pantallas de última generación, sistemas de sonido envolvente e instalaciones de lujo aseguran que disfrutes cada momento con una comodidad inigualable. Desde éxitos de taquilla hasta clásicos atemporales y películas independientes que invitan a la reflexión, curamos una variedad diversa de películas para satisfacer todos los gustos y generaciones. En Eternal Cinema, no solo se trata de películas; se trata de comunidad. Ya sea que vengas para una salida familiar, una cita nocturna o para ver una película solo, nos esforzamos por crear un espacio acogedor donde todos se sientan como en casa. Nuestros eventos especiales, como noches temáticas de cine y sesiones de preguntas y respuestas con directores, hacen que cada visita sea una experiencia para recordar."
+    }
+
 }
