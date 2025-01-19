@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('banners', function (Blueprint $table) {
+        Schema::create('audio_systems', function (Blueprint $table) {
             $table->id();
-            $table->string('urlImgage');
-            $table->datetime('display_start_date');
-            $table->datetime('display_end_date');
+            $table->string('name', length: 30)->unique();
+            $table->string('description', length: 255)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('banners');
+        Schema::dropIfExists('audio_systems');
     }
 };

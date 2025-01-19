@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Genre extends Model
+class Hall extends Model
 {
-    /** @use HasFactory<\Database\Factories\GenreFactory> */
+    /** @use HasFactory<\Database\Factories\HallFactory> */
     use HasFactory;
     use SoftDeletes;
-
-    protected $fillable = ['name', 'description'];
-
-    // Bonjour!!
-
+    protected $fillable = [
+        'hall_type_id',
+        'name',
+        'description',
+    ];
 }
