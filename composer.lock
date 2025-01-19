@@ -1965,16 +1965,16 @@
         },
         {
             "name": "lorisleiva/laravel-actions",
-            "version": "v2.8.4",
+            "version": "v2.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lorisleiva/laravel-actions.git",
-                "reference": "5a168bfdd3b75dd6ff259019d4aeef784bbd5403"
+                "reference": "ae6f5e8dc1f450a0879f73059242e5834b2dbdec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lorisleiva/laravel-actions/zipball/5a168bfdd3b75dd6ff259019d4aeef784bbd5403",
-                "reference": "5a168bfdd3b75dd6ff259019d4aeef784bbd5403",
+                "url": "https://api.github.com/repos/lorisleiva/laravel-actions/zipball/ae6f5e8dc1f450a0879f73059242e5834b2dbdec",
+                "reference": "ae6f5e8dc1f450a0879f73059242e5834b2dbdec",
                 "shasum": ""
             },
             "require": {
@@ -2029,7 +2029,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lorisleiva/laravel-actions/issues",
-                "source": "https://github.com/lorisleiva/laravel-actions/tree/v2.8.4"
+                "source": "https://github.com/lorisleiva/laravel-actions/tree/v2.8.5"
             },
             "funding": [
                 {
@@ -2037,7 +2037,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-10T09:57:29+00:00"
+            "time": "2024-12-19T15:58:09+00:00"
         },
         {
             "name": "lorisleiva/lody",
@@ -9473,6 +9473,6 @@
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
