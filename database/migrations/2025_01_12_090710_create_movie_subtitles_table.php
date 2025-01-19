@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('movie_subtitles', function (Blueprint $table) {
             $table->id();
-            
+
             $table->foreignId('movie_id')
-                ->nullable(false)
+                ->nullable()
                 ->constrained()
                 ->onDelete('set null')
                 ->onUpdate('cascade');
 
             $table->foreignId('language_id')
-                ->nullable(false)
+                ->nullable()
                 ->constrained()
                 ->onDelete('set null')
                 ->onUpdate('cascade');

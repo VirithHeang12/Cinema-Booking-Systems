@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('halls', function (Blueprint $table) {
             $table->id();
             $table->foreignId('hall_type_id')
+                ->nullable()
                 ->constrained()
                 ->onDelete('set null')
                 ->onUpdate('cascade');
