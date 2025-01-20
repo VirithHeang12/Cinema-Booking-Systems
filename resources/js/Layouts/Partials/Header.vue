@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar :elevation="0" color="#242424f1" flat compact class="bg-blur relative z-1 app-bar">
+    <v-app-bar :elevation="0" color="#242424f1" flat compact class="relative z-1 app-bar">
         <v-container class="flex justify-between">
             <v-card max-width="400" flat class="pa-0 h-fit z-10">
                 <v-card-text class="pa-0">

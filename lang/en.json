@@ -8,5 +8,11 @@
         "title": "About Eternal Cineplex",
         "firstParagraph": "Welcome to Eternal Cinema, where stories transcend time and the magic of the silver screen comes alive. At Eternal Cinema, we believe movies are more than just entertainment—they’re a portal to new worlds, a celebration of diverse cultures, and a bridge to shared human emotions. Located in the heart of [Your City], Eternal Cinema is designed to provide an unforgettable cinematic experience",
         "secondParagraph": "Our state-of-the-art screens, immersive sound systems, and luxurious seating ensure you enjoy every moment in unparalleled comfort. From blockbuster hits to timeless classics and thought-provoking indie films, we curate a diverse lineup of films to cater to all tastes and generations. At Eternal Cinema, we’re not just about movies; we’re about community. Whether you’re here for a family outing, a date night, or to catch a solo flick, we strive to create a welcoming space where everyone feels at home. Our special events, like themed movie nights and director Q&A sessions, make every visit an experience to remember."
+    },
+    "locations": {
+        "title": "Cinema Locations",
+        "subtitle": "Locate nearby cinemas and immerse yourself in the ultimate movie experience.",
+        "searchPlaceholder": "Search locations.....",
+        "view_showtimes": "View Showtimes"
     }
 }
