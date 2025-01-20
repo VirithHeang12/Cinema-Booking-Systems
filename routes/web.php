@@ -11,11 +11,11 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
     })->name('index');
 
     Route::get('/about', function () {
-        return Inertia::render('About');
+        return Inertia::render('About', ['title' => 'About']);
     })->name('about');
 
     Route::get('/contact', function () {
-        return Inertia::render('Contact');
+        return Inertia::render('Contact', ['title' => 'Contact']);
     })->name('contact');
 
     Route::get('/users', function () {
@@ -25,5 +25,9 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
     Route::post('/users', function (Request $request) {
         return redirect()->route('index');
     })->name('users.store');
+
+    Route::get('/locations', function () {
+        return Inertia::render('Locations', ['title' => 'Locations']);
+    })->name('locations');
 });
 
