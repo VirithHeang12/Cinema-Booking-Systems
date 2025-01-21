@@ -21,19 +21,19 @@ return new class extends Migration
             ])->default('Scheduled');
 
             $table->foreignId('movie_subtitle_id')
-                ->nullable(false)
+                ->nullable()
                 ->constrained()
                 ->onDelete('set null')
                 ->onUpdate('cascade');
 
             $table->foreignId('hall_id')
-                ->nullable(false)
+                ->nullable()
                 ->constrained()
                 ->onDelete('set null')
                 ->onUpdate('cascade');
-            
+
             $table->foreignId('screen_type_id')
-            ->nullable(false)
+            ->nullable()
             ->constrained()
             ->onDelete('set null')
             ->onUpdate('cascade');

@@ -6,6 +6,7 @@ import DefaultLayout from './Layouts/DefaultLayout.vue';
 // Inertia
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
+import { Link } from "@inertiajs/vue3";
 
 // Vuetify
 import 'vuetify/styles'
@@ -66,6 +67,7 @@ createInertiaApp({
         });
 
         app.component('lang-flag', LangFlag);
+        app.component('Link', Link);
 
         app.mount(el)
     },

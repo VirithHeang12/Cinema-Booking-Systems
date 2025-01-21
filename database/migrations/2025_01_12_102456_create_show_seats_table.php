@@ -19,8 +19,8 @@ return new class extends Migration
             ])->default('Available');
 
             $table->foreignId('show_id')
-                ->constrained('shows')
                 ->nullable()
+                ->constrained('shows')
                 ->onDelete('set null')
                 ->onUpdate('cascade');
 
