@@ -8,5 +8,6 @@
 @layer base {
     body {
         font-family: "Kantumruy Pro", sans-serif !important;
+        padding-right: 0px !important;
     }
 }

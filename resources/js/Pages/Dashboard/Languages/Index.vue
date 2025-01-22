@@ -5,7 +5,7 @@
 
 <script setup>
     import { computed, ref } from 'vue'
-    import { router } from '@inertiajs/vue3';
+    import { visitModal } from '@inertiaui/modal-vue';
     import { route } from 'ziggy-js';
 
     const props = defineProps({
@@ -78,6 +78,11 @@
     };
 
     const createCallback = () => {
-        router.get(route('dashboard.languages.create'));
+        visitModal(route('dashboard.languages.create'), {
+            config: {
+                slideover: true,
+                position: 'right',
+            }
+        });
     };
 </script>
