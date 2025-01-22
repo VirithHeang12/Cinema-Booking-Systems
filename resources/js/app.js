@@ -8,6 +8,9 @@ import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { Link } from "@inertiajs/vue3";
 
+// Custom components
+import DataTable from './Components/DataTable.vue';
+
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -68,6 +71,7 @@ createInertiaApp({
 
         app.component('lang-flag', LangFlag);
         app.component('Link', Link);
+        app.component('DataTable', DataTable);
 
         app.mount(el)
     },
