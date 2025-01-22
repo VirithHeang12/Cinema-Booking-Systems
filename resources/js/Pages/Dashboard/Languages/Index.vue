@@ -66,15 +66,47 @@
     ]);
 
     const viewCallback = (item) => {
-        console.log('Viewing item', item);
+        visitModal(route('dashboard.languages.show', {
+            language: item.id,
+        }), {
+            method: 'get',
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+        });
+
     };
 
     const editCallback = (item) => {
-        console.log('Editing item', item);
+        visitModal(route('dashboard.languages.edit', {
+            language: item.id,
+        }), {
+            method: 'get',
+            config: {
+                slideover: true,
+                position: 'right',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+        });
     };
 
     const deleteCallback = (item) => {
-        console.log('Deleting item', item);
+        visitModal(route('dashboard.languages.delete', {
+            language: item.id,
+        }), {
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+
+        });
+
     };
 
     const createCallback = () => {
@@ -82,7 +114,10 @@
             config: {
                 slideover: true,
                 position: 'right',
-            }
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+
         });
     };
 </script>
