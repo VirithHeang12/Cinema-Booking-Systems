@@ -15,6 +15,10 @@
         "subtitle": "Ubique los cines cercanos y sumérgete en la experiencia cinematográfica definitiva.",
         "searchPlaceholder": "Buscar ubicaciones.....",
         "view_showtimes": "Ver horarios"
+    },
+    "contactPage":{
+        "contact_info": "Información de Contacto",
+        "advertising_partnership_card": "Tarjeta de Publicidad y Asociación"
     }
 
 }
