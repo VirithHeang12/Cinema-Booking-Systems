@@ -69,57 +69,5 @@ class CountryController extends Controller
         return Inertia::render('Dashboard/Countries/Edit', ['country' => $country]);
     }
 
-    /**
-     * Update a country
-     *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, Country $country): \Illuminate\Http\RedirectResponse{
-        DB::beginTransaction();
-
-        try {
-
-            $country->update([
-                'name' => $request->name,
-            ]);
-
-            DB::commit();
-
-            return redirect()->route('dashboard.countries.index')->with('success', 'Country updated.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return redirect()->route('dashboard.countries.edit', $country->id)->with('error', 'Country not updated.');
-        }
-    }
-
-    /**
-     * Remove the specified country from storage.
-     *
-     * @param  \App\Models\Country  $country
-     * @return \Illuminate\Http\RedirectResponse
-     *
-     *
-     */
-    public function destroy(Country $country): \Illuminate\Http\RedirectResponse{
-        DB::beginTransaction();
-
-        try {
-
-            $country->delete();
-
-            DB::commit();
-
-            return redirect()->route('dashboard.countries.index')->with('success', 'Country deleted.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return redirect()->route('dashboard.countries.index')->with('error', 'Country not deleted.');
-        }
-    }
-
     
-
 }
