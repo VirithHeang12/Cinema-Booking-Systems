@@ -3,40 +3,37 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Language;
+use App\Models\Classification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
-class LanguageController extends Controller
+
+class ClassificationController extends Controller
 {
     /**
-     * Display a listing of languages.
+     * Display a listing of the classifications.
      *
      * @return \Inertia\Response
      */
     public function index(): \Inertia\Response
     {
-        $languages = Language::all();
-
-        return Inertia::render('Dashboard/Languages/Index', [
-            'languages'     => $languages,
-        ]);
+        return Inertia::render('Dashboard/Classifications/Index');
     }
 
     /**
-     * Show the form for creating a new language.
+     * Show the form for creating a new classification.
      *
      * @return \Inertia\Response
      *
      */
     public function create(): \Inertia\Response
     {
-        return Inertia::render('Dashboard/Languages/Create');
+        return Inertia::render('Dashboard/Classifications/Create');
     }
 
     /**
-     * Store a newly created language in storage.
+     * Store a newly created classification in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      *
@@ -48,18 +45,18 @@ class LanguageController extends Controller
 
         try {
 
-            Language::create([
+            Classification::create([
                 'name' => $request->name,
-                'code' => $request->code,
+                'description' => $request->description,
             ]);
 
             DB::commit();
 
-            return redirect()->route('dashboard.languages.index')->with('success', 'Language created.');
+            return redirect()->route('dashboard.classifications.index')->with('success', 'Classification created.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.languages.index')->with('error', 'Language not created.');
+            return redirect()->route('dashboard.classifications.index')->with('error', 'Classification not created.');
         }
     }
 }
