@@ -4,7 +4,7 @@
             <v-toolbar flat>
                 <v-toolbar-title>{{ title }}</v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn class="mb-2" prepend-icon="mdi-plus" color="primary" variant="outlined">
+                <v-btn @click="createItem()" class="mb-2" prepend-icon="mdi-plus" color="primary" variant="outlined">
                     New {{ title }}
                 </v-btn>
             </v-toolbar>
@@ -61,7 +61,7 @@
         ];
     });
 
-    const emits = defineEmits(['view', 'edit', 'delete']);
+    const emits = defineEmits(['view', 'edit', 'delete', 'create']);
 
     const viewItem = (item) => {
         emits('view', item);
@@ -73,5 +73,9 @@
 
     const deleteItem = (item) => {
         emits('delete', item);
+    };
+
+    const createItem = () => {
+        emits('create');
     };
 </script>

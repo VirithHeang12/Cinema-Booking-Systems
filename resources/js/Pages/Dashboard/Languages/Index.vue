@@ -1,25 +1,23 @@
 <template>
     <data-table title="Language" :items="items" :headers="headers" :sort-by="sortBy" @view="viewCallback"
-        @delete="deleteCallback" @edit="editCallback" />
+        @delete="deleteCallback" @edit="editCallback" @create="createCallback" />
 </template>
 
 <script setup>
-    import { ref } from 'vue'
+    import { computed, ref } from 'vue'
+    import { router } from '@inertiajs/vue3';
+    import { route } from 'ziggy-js';
 
-    const items = ref([
-        {
-            name: 'English',
-            code: 'en',
-            created_at: '2021-08-01',
-            updated_at: '2021-08-01',
-        },
-        {
-            name: 'Filipino',
-            code: 'fil',
-            created_at: '2021-08-02',
-            updated_at: '2021-08-01',
-        },
-    ]);
+    const props = defineProps({
+        languages: {
+            type: Array,
+            required: true,
+        }
+    });
+
+    const items = computed(() => {
+        return props.languages;
+    });
 
     const headers = [
         {
@@ -77,5 +75,9 @@
 
     const deleteCallback = (item) => {
         console.log('Deleting item', item);
+    };
+
+    const createCallback = () => {
+        router.get(route('dashboard.languages.create'));
     };
 </script>

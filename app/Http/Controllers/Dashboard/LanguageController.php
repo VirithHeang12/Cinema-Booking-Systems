@@ -17,7 +17,11 @@ class LanguageController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        return Inertia::render('Dashboard/Languages/Index');
+        $languages = Language::all();
+
+        return Inertia::render('Dashboard/Languages/Index', [
+            'languages'     => $languages,
+        ]);
     }
 
     /**
