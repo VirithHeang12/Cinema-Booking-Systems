@@ -39,11 +39,11 @@ return new class extends Migration
 
 
             $table->foreignId('production_company_id')
-                ->constrained()
+                ->nullable()
+                ->constrained('production_companies')
                 ->onDelete('set null')
-                ->onUpdate('cascade')
-                ->nullable(); 
-            
+                ->onUpdate('cascade');
+
 
             $table->foreignId('country_id')
                 ->nullable()
@@ -56,7 +56,7 @@ return new class extends Migration
                 ->constrained()
                 ->onDelete('set null')
                 ->onUpdate('cascade');
-                
+
             $table->foreignId('language_id')
                 ->nullable()
                 ->constrained('languages')

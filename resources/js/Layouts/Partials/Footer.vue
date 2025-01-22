@@ -14,9 +14,9 @@
                 <div class="col-12 flex flex-wrap justify-center align-center gap-x-20 gap-y-4 py-6">
                     <a href="#" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">Terms & Conditions</a>
                     <a href="#" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">Privacy policy</a>
-                    <a href="#" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">About us</a>
+                    <Link href="/about" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">About us</Link>
                     <a href="#" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">Contact us</a>
-                    <a href="#" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">Locations</a>
+                    <Link href="/locations" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">Locations</Link>
                 </div>
             </div>
 

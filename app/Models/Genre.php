@@ -14,6 +14,6 @@ class Genre extends Model
 
     protected $fillable = ['name', 'description'];
 
-    // What's Up??
+    // Bonjour!!
 
 }

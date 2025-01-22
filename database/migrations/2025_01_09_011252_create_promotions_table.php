@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
+            $table->datetime('start_date');
+            $table->datetime('end_date');
             $table->float('discount_percentage');
             $table->softDeletes();
             $table->timestamps();

@@ -1,9 +1,9 @@
 <template>
 
-    <Head title="Welcome" />
+    <Head :title="title" />
     <v-app>
         <Header />
-        <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
+        <v-main class="d-flex align-start justify-center bg-neutral-50" style="min-height: 300px;">
             <slot>
                 Main content
             </slot>
@@ -18,6 +18,12 @@
     import Header from './Partials/Header.vue';
     import Footer from './Partials/Footer.vue';
 
+    defineProps({
+        title: {
+            type: String,
+            default: 'Eternal',
+        },
+    });
 </script>
 
 <style scoped></style>

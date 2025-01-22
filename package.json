@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@inertiajs/vue3": "^2.0.1",
+        "@inertiaui/modal-vue": "file:vendor/inertiaui/modal/vue",
         "@vitejs/plugin-vue": "^5.2.1",
         "bootstrap": "^5.3.3",
         "bootstrap-icons": "^1.11.3",

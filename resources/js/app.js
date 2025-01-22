@@ -4,8 +4,19 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import DefaultLayout from './Layouts/DefaultLayout.vue';
 
 // Inertia
-import { createApp, h } from 'vue'
+import { createApp } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
+import { Link } from "@inertiajs/vue3";
+
+// Inertia modal
+import { renderApp } from '@inertiaui/modal-vue'
+import { ModalLink } from '@inertiaui/modal-vue';
+import { Modal } from '@inertiaui/modal-vue';
+import { putConfig } from '@inertiaui/modal-vue';
+
+
+// Custom components
+import DataTable from './Components/DataTable.vue';
 
 // Vuetify
 import 'vuetify/styles'
@@ -30,6 +41,27 @@ const vuetify = createVuetify({
     directives,
 })
 
+putConfig({
+    type: 'modal',
+    navigate: false,
+    modal: {
+        closeButton: true,
+        closeExplicitly: false,
+        maxWidth: '2xl',
+        paddingClasses: 'p-4 sm:p-6',
+        panelClasses: 'bg-white rounded',
+        position: 'center',
+    },
+    slideover: {
+        closeButton: true,
+        closeExplicitly: false,
+        maxWidth: 'md',
+        paddingClasses: 'p-4 sm:p-6',
+        panelClasses: 'bg-white min-h-screen',
+        position: 'right',
+    },
+})
+
 createInertiaApp({
     title: (title) => `${title} - Neak Cinema`,
     resolve: name => {
@@ -42,7 +74,7 @@ createInertiaApp({
         return page;
     },
     setup({ el, App, props, plugin }) {
-        const app = createApp({ render: () => h(App, props) })
+        const app = createApp({ render: renderApp(App, props) })
             .use(plugin)
             .use(ZiggyVue)
             .use(vuetify);
@@ -66,6 +98,10 @@ createInertiaApp({
         });
 
         app.component('lang-flag', LangFlag);
+        app.component('Link', Link);
+        app.component('ModalLink', ModalLink);
+        app.component('Modal', Modal);
+        app.component('DataTable', DataTable);
 
         app.mount(el)
     },
