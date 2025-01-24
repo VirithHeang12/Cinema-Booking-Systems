@@ -62,4 +62,100 @@ class LanguageController extends Controller
             return redirect()->route('dashboard.languages.index')->with('error', 'Language not created.');
         }
     }
+
+    /**
+     * Display the specified language.
+     *
+     * @param  \App\Models\Language  $language
+     *
+     * @return \Inertia\Response
+     */
+    public function show(Language $language): \Inertia\Response
+    {
+        return Inertia::render('Dashboard/Languages/Show', [
+            'language'      => $language,
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified language.
+     *
+     * @param  \App\Models\Language  $language
+     *
+     * @return \Inertia\Response
+     */
+    public function edit(Language $language): \Inertia\Response
+    {
+        return Inertia::render('Dashboard/Languages/Edit', [
+            'language'      => $language,
+        ]);
+    }
+
+    /**
+     * Update the specified language in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Language  $language
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, Language $language): \Illuminate\Http\RedirectResponse
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $language->update([
+                'name' => $request->name,
+                'code' => $request->code,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('dashboard.languages.index')->with('success', 'Language updated.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('dashboard.languages.index')->with('error', 'Language not updated.');
+        }
+    }
+
+    /**
+     * Show the form for deleting the specified language.
+     *
+     * @param  \App\Models\Language  $language
+     *
+     * @return \Inertia\Response
+     */
+    public function delete(Language $language): \Inertia\Response
+    {
+        return Inertia::render('Dashboard/Languages/Delete', [
+            'language'      => $language,
+        ]);
+    }
+
+    /**
+     * Remove the specified language from storage.
+     *
+     * @param  \App\Models\Language  $language
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Language $language): \Illuminate\Http\RedirectResponse
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $language->delete();
+
+            DB::commit();
+
+            return redirect()->route('dashboard.languages.index')->with('success', 'Language deleted.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('dashboard.languages.index')->with('error', 'Language not deleted.');
+        }
+    }
 }
