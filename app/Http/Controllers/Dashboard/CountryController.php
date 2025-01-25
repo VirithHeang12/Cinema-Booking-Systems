@@ -18,8 +18,10 @@ class CountryController extends Controller
     public function index(): \Inertia\Response
     {
         $countries = Country::all();
-        return Inertia::render('Dashboard/Countries/Index',
-        ['countries' => $countries]);
+        return Inertia::render(
+            'Dashboard/Countries/Index',
+            ['countries' => $countries]
+        );
     }
 
     /**
@@ -69,5 +71,74 @@ class CountryController extends Controller
         return Inertia::render('Dashboard/Countries/Edit', ['country' => $country]);
     }
 
-    
+    /**
+     * Update a country
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Country  $country
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, Country $country): \Illuminate\Http\RedirectResponse
+    {
+        DB::beginTransaction();
+
+        try {
+            $country->update([
+                'name' => $request->name,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('dashboard.countries.index')->with('success', 'Country updated.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('dashboard.countries.index')->with('error', 'Country not updated.');
+        }
+    }
+
+    /**
+     * Delete a country
+     *
+     * @param  \App\Models\Country  $country
+     *
+     * @return \Inertia\Response
+     */
+    public function show(Country $country): \Inertia\Response
+    {
+        return Inertia::render('Dashboard/Countries/Show', [
+            'country'      => $country,
+        ]);
+    }
+    /**
+     * Show the form for deleting the specified country.
+     *
+     * @param  \App\Models\Country  $country
+     * @return \Inertia\Response
+     */
+    public function delete(Country $country): \Inertia\Response{
+        return Inertia::render('Dashboard/Countries/Delete', [
+            'country'      => $country,
+        ]);
+    }
+    /**
+     * Remove the specified country from storage.
+     *
+     * @param  \App\Models\Country  $country
+     * @return \Illuminate\Http\RedirectResponse
+     *
+     */
+    public function destroy(Country $country): \Illuminate\Http\RedirectResponse{
+        DB::beginTransaction();
+
+        try {
+            $country->delete();
+            DB::commit();
+            return redirect()->route('dashboard.countries.index')->with('success', 'Country deleted.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('dashboard.countries.index')->with('error', 'Country not deleted.');
+        }
+    }
 }

@@ -5,7 +5,7 @@
 
 <script setup>
     import { computed, ref } from 'vue'
-    import { router } from '@inertiajs/vue3';
+    import { visitModal } from '@inertiaui/modal-vue';
     import { route } from 'ziggy-js';
 
     const props = defineProps({
@@ -56,18 +56,58 @@
     ]);
 
     const viewCallback = (item) => {
-        console.log('Viewing item', item);
+        visitModal(route('dashboard.countries.show', {
+        country: item.id,
+        }), {
+            method: 'get',
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: 'xl',
+            },
+        });
     };
 
     const editCallback = (item) => {
-        console.log('Editing item', item);
+        visitModal(route('dashboard.countries.edit', {
+            country: item.id,
+        }), {
+            method: 'get',
+            config: {
+                slideover: true,
+                position: 'right',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+        });
     };
 
     const deleteCallback = (item) => {
-        console.log('Deleting item', item);
+        visitModal(route('dashboard.countries.delete', {
+            country: item.id,
+        }), {
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: 'xl',
+
+            },
+
+        });
+
     };
 
     const createCallback = () => {
-        router.get(route('dashboard.countries.create'));
+        visitModal(route('dashboard.countries.create'), {
+            config: {
+                slideover: true,
+                position: 'right',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+
+        });
     };
 </script>

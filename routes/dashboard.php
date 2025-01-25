@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\ClassificationController;
 Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('languages/{language}/delete', [LanguageController::class, 'delete'])->name('languages.delete');
+    Route::get('countries/{country}/delete', [CountryController::class, 'delete'])->name('countries.delete');
 
     Route::resource('languages', LanguageController::class);
     Route::resource('countries', CountryController::class);
