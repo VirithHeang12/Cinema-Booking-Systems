@@ -1,4 +1,5 @@
 <template>
+    <Head title="About" />
     <v-container class="my-[30px] font-cus">
         <div class="row">
             <div class="col-12">
@@ -36,6 +37,7 @@
 </template>
 
 <script setup>
+import {Head} from '@inertiajs/vue3';
 import { __ } from 'matice';
 
 const items = [
