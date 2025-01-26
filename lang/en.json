@@ -14,5 +14,8 @@
         "subtitle": "Locate nearby cinemas and immerse yourself in the ultimate movie experience.",
         "searchPlaceholder": "Search locations.....",
         "view_showtimes": "View Showtimes"
+    },
+    "promotions": {
+        "title": "Promotions"
     }
 }
