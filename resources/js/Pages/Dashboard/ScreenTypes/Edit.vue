@@ -1,14 +1,14 @@
 <template>
     <Modal v-slot="{ close }">
         <div>
-            <h1>Create Screen Type</h1>
+            <h1>Edit Screen Type</h1>
             <form @submit.prevent="submitForm">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" v-model="form.name" class="form-control" id="name" name="name">
                 </div>
                 <div class="form-group">
-                    <label for="description">Description</label>
+                    <label for="code">Description</label>
                     <input type="text" v-model="form.description" class="form-control" id="description"
                         name="description">
                 </div>
@@ -20,14 +20,22 @@
 </template>
 
 <script setup>
-import { useForm } from '@inertiajs/vue3'
+import { defineProps } from 'vue';
+import { useForm } from '@inertiajs/vue3';
+
+const props = defineProps({
+    screen_type: {
+        type: Object,
+        required: true,
+    }
+});
 
 const form = useForm({
-    name: '',
-    description: '',
+    name: props.screen_type.name,
+    description: props.screen_type.description,
 });
 
 const submitForm = () => {
-    form.post(route('dashboard.screen-types.store'));
+    form.put(route('dashboard.screen-types.update', props.screen_type.id));
 }
 </script>

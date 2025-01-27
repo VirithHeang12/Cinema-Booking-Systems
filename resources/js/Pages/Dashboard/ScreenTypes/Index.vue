@@ -66,15 +66,44 @@ const sortBy = ref([
 ]);
 
 const viewCallback = (item) => {
-    console.log('Viewing item', item);
+    visitModal(route('dashboard.screen-types.show', {
+        screen_type: item.id,
+    }), {
+        method: 'get',
+        config: {
+            slideover: false,
+            position: 'center',
+            closeExplicitly: true,
+            maxWidth: '2xl',
+        },
+    });
 };
 
 const editCallback = (item) => {
-    console.log('Editing item', item);
+    visitModal(route('dashboard.screen-types.edit', {
+        screen_type: item.id,
+    }), {
+        method: 'get',
+        config: {
+            slideover: true,
+            position: 'right',
+            closeExplicitly: true,
+            maxWidth: '2xl',
+        },
+    });
 };
 
 const deleteCallback = (item) => {
-    console.log('Deleting item', item);
+    visitModal(route('dashboard.screen-types.delete', {
+        screen_type: item.id
+    }), {
+        config: {
+            slideover: false,
+            position: 'center',
+            closeExplicitly: true,
+            maxWidth: '2xl',
+        },
+    })
 };
 
 const createCallback = () => {
@@ -82,6 +111,7 @@ const createCallback = () => {
         config: {
             slideover: true,
             position: 'right',
+            maxWidth: '2xl',
         }
     });
 };
