@@ -10,14 +10,14 @@
             </v-toolbar>
         </template>
 
-        <template v-slot:item.actions="{ item }">
+        <template v-slot:[`item.actions`]="{ item }">
             <v-icon class="me-3" color="primary" size="small" @click="viewItem(item)">
                 mdi-eye
             </v-icon>
             <v-icon class="me-3" color="secondary" size="small" @click="editItem(item)">
                 mdi-pencil
             </v-icon>
-            <v-icon size="small" @click="deleteItem(item)">
+            <v-icon class="me-3" color="danger" size="small"  @click="deleteItem(item)">
                 mdi-delete
             </v-icon>
         </template>
