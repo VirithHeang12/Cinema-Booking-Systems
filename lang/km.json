@@ -16,6 +16,10 @@
         "searchPlaceholder": "ស្វែងរកទីតាំង.....",
         "view_showtimes": "មើលពេលបញ្ចាំងភាពយន្ដ"
     },
+    "contactPage":{
+        "contact_info": "ពត៌មានទំនាក់ទំនង",
+        "advertising_partnership_card": "ការផ្សាយពាណិជ្ជកម្ម និងភាពជាដៃគូ"
+    },
     "promotions": {
         "title": "ការបញ្ចុះតម្លៃ"
     }
