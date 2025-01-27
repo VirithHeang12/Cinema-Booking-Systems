@@ -19,6 +19,8 @@
     "contactPage":{
         "contact_info": "Información de Contacto",
         "advertising_partnership_card": "Tarjeta de Publicidad y Asociación"
+    },
+    "promotions": {
+        "title": "Promociones"
     }
-
 }
