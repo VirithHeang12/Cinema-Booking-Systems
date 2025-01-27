@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
+
+</script>
+
 <template>
     <footer class="bg-[#242424] px-4 relative overflow-y-hidden bg-blur z-1">
         <v-container class="text-white pb-2">
@@ -15,7 +20,7 @@
                     <a href="#" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">Terms & Conditions</a>
                     <a href="#" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">Privacy policy</a>
                     <Link href="/about" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">About us</Link>
-                    <a href="#" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">Contact us</a>
+                    <Link href="/contact" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">Contact us</Link>
                     <Link href="/locations" class="text-white text-decoration-none font-medium transition opacity-65 hover:opacity-100">Locations</Link>
                 </div>
             </div>
