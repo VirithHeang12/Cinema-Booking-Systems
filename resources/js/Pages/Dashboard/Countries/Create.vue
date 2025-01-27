@@ -1,17 +1,13 @@
 <template>
     <Modal v-slot="{ close }">
         <div>
-            <h1>Create Language</h1>
+            <h4 class="text-gray-600">Create Country</h4>
             <form @submit.prevent="submitForm">
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name" class="text-gray-600">Name</label>
                     <input type="text" v-model="form.name" class="form-control" id="name" name="name">
                 </div>
-                <div class="form-group">
-                    <label for="code">Code</label>
-                    <input type="text" v-model="form.code" class="form-control" id="code" name="code">
-                </div>
-                <button type="submit" @click="close" class="btn btn-primary">Submit</button>
+                <button type="submit" @click="close" class="btn btn-primary mt-5 text-white">Submit</button>
             </form>
         </div>
     </Modal>
@@ -22,11 +18,10 @@
 
     const form = useForm({
         name: '',
-        code: '',
     });
 
     const submitForm = () => {
-        form.post(route('dashboard.languages.store'));
+        form.post(route('dashboard.countries.store'));
     }
 
 </script>

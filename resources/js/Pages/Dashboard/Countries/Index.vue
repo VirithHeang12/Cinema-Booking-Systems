@@ -1,5 +1,5 @@
 <template>
-    <data-table title="Language" :items="items" :headers="headers" :sort-by="sortBy" @view="viewCallback"
+    <data-table title="Country" :items="items" :headers="headers" :sort-by="sortBy" @view="viewCallback"
         @delete="deleteCallback" @edit="editCallback" @create="createCallback" />
 </template>
 
@@ -9,14 +9,14 @@
     import { route } from 'ziggy-js';
 
     const props = defineProps({
-        languages: {
+        countries: {
             type: Array,
             required: true,
         }
     });
 
     const items = computed(() => {
-        return props.languages;
+        return props.countries;
     });
 
     const headers = [
@@ -25,12 +25,6 @@
             align: 'start',
             sortable: true,
             key: 'name',
-        },
-        {
-            title: 'Code',
-            aligh: 'start',
-            sortable: true,
-            key: 'code',
         },
         {
             title: 'Created At',
@@ -52,10 +46,6 @@
             direction: 'asc',
         },
         {
-            key: 'code',
-            direction: 'asc',
-        },
-        {
             key: 'created_at',
             direction: 'asc',
         },
@@ -66,23 +56,22 @@
     ]);
 
     const viewCallback = (item) => {
-        visitModal(route('dashboard.languages.show', {
-            language: item.id,
+        visitModal(route('dashboard.countries.show', {
+        country: item.id,
         }), {
             method: 'get',
             config: {
                 slideover: false,
                 position: 'center',
                 closeExplicitly: true,
-                maxWidth: '2xl',
+                maxWidth: 'xl',
             },
         });
-
     };
 
     const editCallback = (item) => {
-        visitModal(route('dashboard.languages.edit', {
-            language: item.id,
+        visitModal(route('dashboard.countries.edit', {
+            country: item.id,
         }), {
             method: 'get',
             config: {
@@ -95,14 +84,15 @@
     };
 
     const deleteCallback = (item) => {
-        visitModal(route('dashboard.languages.delete', {
-            language: item.id,
+        visitModal(route('dashboard.countries.delete', {
+            country: item.id,
         }), {
             config: {
                 slideover: false,
                 position: 'center',
                 closeExplicitly: true,
-                maxWidth: '2xl',
+                maxWidth: 'xl',
+
             },
 
         });
@@ -110,7 +100,7 @@
     };
 
     const createCallback = () => {
-        visitModal(route('dashboard.languages.create'), {
+        visitModal(route('dashboard.countries.create'), {
             config: {
                 slideover: true,
                 position: 'right',
