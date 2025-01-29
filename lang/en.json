@@ -21,5 +21,9 @@
     },
     "promotions": {
         "title": "Promotions"
+    },
+    "privacy": {
+        "title": "Cinema Privacy & Policy",
+        "subtitle": "Cinema Privacy and Policy: Ensuring Audience Confidentiality and Responsible Content Management"
     }
 }
