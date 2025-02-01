@@ -22,5 +22,12 @@
     },
     "promotions": {
         "title": "Promociones"
-    }
+    },
+    "Setting": "Configuración",
+    "Countries": "Países",
+    "Languages": "Idiomas",
+    "Classifications": "Clasificaciones",
+    "Genres": "Géneros",
+    "Hall Types": "Tipos de Salas",
+    "Screen Types": "Tipos de Pantallas"
 }

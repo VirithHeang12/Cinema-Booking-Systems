@@ -22,5 +22,12 @@
     },
     "promotions": {
         "title": "ការបញ្ចុះតម្លៃ"
-    }
+    },
+    "Setting": "ការកំណត់",
+    "Countries": "ប្រទេស",
+    "Languages": "ភាសា",
+    "Classifications": "កម្រិតភាពយន្ដ",
+    "Genres": "ប្រភេទភាពយន្ដ",
+    "Hall Types": "ប្រភេទរោងភាពយន្ដ",
+    "Screen Types": "ប្រភេទអេក្រង់"
 }

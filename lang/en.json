@@ -21,5 +21,12 @@
     },
     "promotions": {
         "title": "Promotions"
-    }
+    },
+    "Setting": "Setting",
+    "Countries": "Countries",
+    "Languages": "Languages",
+    "Classifications": "Classifications",
+    "Genres": "Genres",
+    "Hall Types": "Hall Types",
+    "Screen Types": "Screen Types"
 }
