@@ -14,6 +14,7 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('hall_types/{halltype}/delete', [HallTypeController::class, 'delete'])->name('hall_types.delete');
     Route::get('genres/{genre}/delete', [GenreController::class, 'delete'])->name('genres.delete');
     Route::get('screen_types/{screen_type}/delete', [ScreenTypeController::class, 'delete'])->name('screen_types.delete');
+    Route::get('classifications/{classification}/delete', [ClassificationController::class, 'delete'])->name('classifications.delete');
 
     Route::resource('languages', LanguageController::class);
     Route::resource('countries', CountryController::class);
