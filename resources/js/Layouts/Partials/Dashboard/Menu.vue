@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer rail app expand-on-hover>
+    <v-navigation-drawer rail app expand-on-hover :temporary="modalExists">
         <v-list density="compact">
             <template v-for="item in items" :key="item.group">
                 <v-list-group :value="item.group">
@@ -16,9 +16,27 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+    import { onMounted, onUnmounted, ref } from 'vue';
     import { router } from '@inertiajs/vue3';
     import { route } from 'ziggy-js';
+
+    const modalExists = ref(false);
+
+    const checkModal = () => {
+        modalExists.value = document.querySelector('div[data-inertiaui-modal-id]') !== null;
+    };
+
+    onMounted(() => {
+        checkModal();
+
+        const observer = new MutationObserver(checkModal);
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        onUnmounted(() => {
+            observer.disconnect();
+        });
+    });
+
 
     const items = ref([
         {
