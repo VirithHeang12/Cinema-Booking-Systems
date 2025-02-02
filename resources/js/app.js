@@ -36,6 +36,7 @@ import { ZiggyVue } from 'ziggy-js';
 // lang flags
 import LangFlag from 'vue-lang-code-flags';
 import DashboardLayout from './Layouts/DashboardLayout.vue';
+import { Field, Form } from 'vee-validate';
 
 const vuetify = createVuetify({
     components,
@@ -107,6 +108,8 @@ createInertiaApp({
         app.component('ModalLink', ModalLink);
         app.component('Modal', Modal);
         app.component('DataTable', DataTable);
+        app.component("vee-form", Form);
+        app.component("vee-field", Field);
 
         app.mount(el)
     },
