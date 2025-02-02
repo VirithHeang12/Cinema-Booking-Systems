@@ -32,5 +32,12 @@
     "Classifications": "Classifications",
     "Genres": "Genres",
     "Hall Types": "Hall Types",
-    "Screen Types": "Screen Types"
+    "Screen Types": "Screen Types",
+    "Create Language": "Create Language",
+    "Update Language": "Update Language",
+    "Delete Language": "Delete Language",
+    "Code": "Code",
+    "Name": "Name",
+    "Language name is required": "Language name is required",
+    "Language code is required": "Language code is required"
 }

@@ -29,5 +29,12 @@
     "Classifications": "Clasificaciones",
     "Genres": "Géneros",
     "Hall Types": "Tipos de Salas",
-    "Screen Types": "Tipos de Pantallas"
+    "Screen Types": "Tipos de Pantallas",
+    "Create Language": "Crear Idioma",
+    "Update Language": "Actualizar Idioma",
+    "Delete Language": "Eliminar Idioma",
+    "Code": "Código",
+    "Name": "Nombre",
+    "Language name is required": "El nombre del idioma es obligatorio",
+    "Language code is required": "El código de idioma es obligatorio"
 }
