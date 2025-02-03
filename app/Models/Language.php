@@ -15,5 +15,6 @@ class Language extends Model
     protected $fillable = [
         'name',
         'code',
+        'attachment_url',
     ];
 }

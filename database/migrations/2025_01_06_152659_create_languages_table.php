@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50)->nullable(false)->unique();
             $table->string('code', 4)->nullable(false)->unique();
+            $table->string('attachment_url')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

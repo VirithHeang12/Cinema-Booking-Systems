@@ -48,9 +48,16 @@ class LanguageController extends Controller
 
         try {
 
+            if ($request->hasFile('attachment')) {
+                $attachment = $request->file('attachment');
+                $attachmentName = time() . '.' . $attachment->getClientOriginalExtension();
+                $attachment->move(storage_path('app/public/attachments'), $attachmentName);
+            }
+
             Language::create([
-                'name' => $request->name,
-                'code' => $request->code,
+                'name'              => $request->name,
+                'code'              => $request->code,
+                'attachment_url'    => $attachmentName,
             ]);
 
             DB::commit();

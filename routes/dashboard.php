@@ -16,6 +16,7 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('screen_types/{screen_type}/delete', [ScreenTypeController::class, 'delete'])->name('screen_types.delete');
     Route::get('classifications/{classification}/delete', [ClassificationController::class, 'delete'])->name('classifications.delete');
 
+
     Route::resource('languages', LanguageController::class);
     Route::resource('countries', CountryController::class);
     Route::resource('classifications', ClassificationController::class);

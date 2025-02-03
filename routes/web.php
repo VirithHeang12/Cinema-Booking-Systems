@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\LanguageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,4 +40,5 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
         return Inertia::render('Privacy', ['title' => 'Privacy & Policy']);
     })->name('privacy');
 });
+
 

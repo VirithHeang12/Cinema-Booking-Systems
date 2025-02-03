@@ -44,6 +44,11 @@
             sortable: true,
             key: 'updated_at',
         },
+        {
+            title: 'attachment_url',
+            align: 'start',
+            key: 'attachment_url',
+        }
     ];
 
     const sortBy = ref([
