@@ -34,5 +34,9 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
     Route::get('/promotions', function () {
         return Inertia::render('Promotion', ['title' => 'Promotion']);
     })->name('promotions');
+
+    Route::get('/privacy', function () {
+        return Inertia::render('Privacy', ['title' => 'Privacy & Policy']);
+    })->name('privacy');
 });
 
