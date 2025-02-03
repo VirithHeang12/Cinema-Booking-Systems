@@ -7,6 +7,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'localize', 'localeCookieRedirect' ])->group(function() {
     require_once __DIR__.'/dashboard.php';
+    
     Route::get('/', function () {
         return Inertia::render('Index');
     })->name('index');
