@@ -13,7 +13,7 @@
                         variant="outlined"></v-text-field>
                 </vee-field>
 
-                <v-file-input v-model="form.attachment"></v-file-input>
+                <v-file-input v-model="form.attachment" accept="image/*"></v-file-input>
 
                 <v-btn @click="close" color="primary" :disabled="!meta.valid || form.processing"
                     :loading="form.processing" @click.prevent="submitForm(setErrors)" block>Submit</v-btn>

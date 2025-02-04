@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class LanguageController extends Controller
@@ -44,13 +45,22 @@ class LanguageController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
+        $request->validate([
+            'name'          => 'required|string',
+            'code'          => 'required|string',
+            'attachment'    => 'nullable|file|mimes:jpg,png,jpeg|max:2048',
+        ]);
+
         DB::beginTransaction();
 
         try {
 
             if ($request->hasFile('attachment')) {
+
                 $attachment = $request->file('attachment');
+
                 $attachmentName = time() . '.' . $attachment->getClientOriginalExtension();
+
                 $attachment->move(storage_path('app/public/attachments'), $attachmentName);
             }
 
@@ -154,6 +164,18 @@ class LanguageController extends Controller
 
         try {
 
+            $files = Storage::files(public_path('storage/attachments'));
+
+
+
+            // // delete attachment
+            // if ($language->attachment_url) {
+            //     if (Storage::exists('public/attachments/1738678875.png')) {
+            //         dd('here');
+            //         Storage::delete('attachments/' . $language->attachment_url);
+            //     }
+            // }
+            dd('here1');
             $language->delete();
 
             DB::commit();
