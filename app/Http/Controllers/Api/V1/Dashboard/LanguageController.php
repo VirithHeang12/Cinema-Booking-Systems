@@ -8,6 +8,7 @@ use App\Http\Requests\Languages\UpdateRequest;
 use App\Http\Resources\Api\LanguageResource;
 use App\Models\Language;
 use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class LanguageController extends Controller
 {
@@ -18,7 +19,17 @@ class LanguageController extends Controller
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $languages = Language::all();
+        $languages = QueryBuilder::for(Language::class)
+            ->allowedFilters([
+                'name',
+                'code'
+            ])
+            ->defaultSort('name')
+            ->allowedSorts([
+                'name',
+                'code'
+            ])
+            ->get();
 
         $languages = LanguageResource::collection($languages);
 
