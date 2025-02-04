@@ -122,14 +122,30 @@ class LanguageController extends Controller
 
         try {
 
+            if ($request->hasFile('attachment')) {
+
+                if ($language->attachment_url) {
+                    if (Storage::exists('attachments/' . $language->attachment_url)) {
+                        Storage::delete('attachments/' . $language->attachment_url);
+                    }
+                }
+
+                $attachment = $request->file('attachment');
+
+                $attachmentName = time() . '.' . $attachment->getClientOriginalExtension();
+
+                $attachment->move(storage_path('app/public/attachments'), $attachmentName);
+            }
+
             $language->update([
-                'name' => $request->name,
-                'code' => $request->code,
-            ]);
+                    'name'              => $request->name,
+                    'code'              => $request->code,
+                    'attachment_url'    => $attachmentName,
+                ]);
 
-            DB::commit();
+                DB::commit();
 
-            return redirect()->route('dashboard.languages.index')->with('success', 'Language updated.');
+                return redirect()->route('dashboard.languages.index')->with('success', 'Language updated.');
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -163,19 +179,11 @@ class LanguageController extends Controller
         DB::beginTransaction();
 
         try {
-
-            $files = Storage::files(public_path('storage/attachments'));
-
-
-
-            // // delete attachment
-            // if ($language->attachment_url) {
-            //     if (Storage::exists('public/attachments/1738678875.png')) {
-            //         dd('here');
-            //         Storage::delete('attachments/' . $language->attachment_url);
-            //     }
-            // }
-            dd('here1');
+            if ($language->attachment_url) {
+                if (Storage::exists('attachments/' . $language->attachment_url)) {
+                    Storage::delete('attachments/' . $language->attachment_url);
+                }
+            }
             $language->delete();
 
             DB::commit();
