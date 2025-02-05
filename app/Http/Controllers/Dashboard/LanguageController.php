@@ -121,6 +121,7 @@ class LanguageController extends Controller
         DB::beginTransaction();
 
         try {
+            $attachmentName = $language->attachment_url;
 
             if ($request->hasFile('attachment')) {
 
@@ -138,15 +139,16 @@ class LanguageController extends Controller
             }
 
             $language->update([
-                    'name'              => $request->name,
-                    'code'              => $request->code,
-                    'attachment_url'    => $attachmentName,
-                ]);
+                'name'              => $request->name,
+                'code'              => $request->code,
+                'attachment_url'    => $attachmentName,
+            ]);
 
-                DB::commit();
+            DB::commit();
 
-                return redirect()->route('dashboard.languages.index')->with('success', 'Language updated.');
+            return redirect()->route('dashboard.languages.index')->with('success', 'Language updated.');
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
 
             return redirect()->route('dashboard.languages.index')->with('error', 'Language not updated.');
