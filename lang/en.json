@@ -15,7 +15,7 @@
         "searchPlaceholder": "Search locations.....",
         "view_showtimes": "View Showtimes"
     },
-    "contactPage":{
+    "contactPage": {
         "contact_info": "Contact Information",
         "advertising_partnership_card": "Advertising & Partnership Card"
     },
@@ -25,5 +25,9 @@
     "privacy": {
         "title": "Cinema Privacy & Policy",
         "subtitle": "Cinema Privacy and Policy: Ensuring Audience Confidentiality and Responsible Content Management"
+    },
+    "terms": {
+        "title": "Terms & Conditions",
+        "subtitle": "Ticket Purchased Rule and Regulation"
     }
 }

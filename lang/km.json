@@ -16,7 +16,7 @@
         "searchPlaceholder": "ស្វែងរកទីតាំង.....",
         "view_showtimes": "មើលពេលបញ្ចាំងភាពយន្ដ"
     },
-    "contactPage":{
+    "contactPage": {
         "contact_info": "ពត៌មានទំនាក់ទំនង",
         "advertising_partnership_card": "ការផ្សាយពាណិជ្ជកម្ម និងភាពជាដៃគូ"
     },
@@ -25,5 +25,9 @@
     },
     "privacy": {
         "title": "គោលការណ៏​ និង ​ឯកជនភាព"
+    },
+    "terms": {
+        "title": "លក្ខខណ្ឌ",
+        "subtitle": "វិធាន និង លក្ខខណ្ឌ នៃការបញ្ជាទិញសំបុត្រ"
     }
 }
