@@ -16,7 +16,25 @@
         "searchPlaceholder": "Buscar ubicaciones.....",
         "view_showtimes": "Ver horarios"
     },
+    "contactPage":{
+        "contact_info": "Información de Contacto",
+        "advertising_partnership_card": "Tarjeta de Publicidad y Asociación"
+    },
     "promotions": {
         "title": "Promociones"
-    }
+    },
+    "Setting": "Configuración",
+    "Countries": "Países",
+    "Languages": "Idiomas",
+    "Classifications": "Clasificaciones",
+    "Genres": "Géneros",
+    "Hall Types": "Tipos de Salas",
+    "Screen Types": "Tipos de Pantallas",
+    "Create Language": "Crear Idioma",
+    "Update Language": "Actualizar Idioma",
+    "Delete Language": "Eliminar Idioma",
+    "Code": "Código",
+    "Name": "Nombre",
+    "Language name is required": "El nombre del idioma es obligatorio",
+    "Language code is required": "El código de idioma es obligatorio"
 }

@@ -15,7 +15,29 @@
         "searchPlaceholder": "Search locations.....",
         "view_showtimes": "View Showtimes"
     },
+    "contactPage":{
+        "contact_info": "Contact Information",
+        "advertising_partnership_card": "Advertising & Partnership Card"
+    },
     "promotions": {
         "title": "Promotions"
-    }
+    },
+    "privacy": {
+        "title": "Cinema Privacy & Policy",
+        "subtitle": "Cinema Privacy and Policy: Ensuring Audience Confidentiality and Responsible Content Management"
+    },
+    "Setting": "Setting",
+    "Countries": "Countries",
+    "Languages": "Languages",
+    "Classifications": "Classifications",
+    "Genres": "Genres",
+    "Hall Types": "Hall Types",
+    "Screen Types": "Screen Types",
+    "Create Language": "Create Language",
+    "Update Language": "Update Language",
+    "Delete Language": "Delete Language",
+    "Code": "Code",
+    "Name": "Name",
+    "Language name is required": "Language name is required",
+    "Language code is required": "Language code is required"
 }
