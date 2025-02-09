@@ -49,21 +49,21 @@
 <script setup>
     import { router, usePage } from '@inertiajs/vue3'
     import { __, getLocale, setLocale } from 'matice';
-    import { computed } from 'vue';
+    import { ref } from 'vue';
 
-    const { props } = usePage();
-
-    const languages = computed(() => {
-        return Object.entries(props.languages);
-    });
+    const languages = ref(Object.entries(usePage().props.languages));
 
     const switchLocale = (key, locale) => {
         // Set the locale without reloading the page
         setLocale(key);
 
-        router.visit(locale.path, {
+        languages.value = Object.entries(usePage().props.languages);
+
+        const [, { path }] = languages.value.find(([key, value]) => key === getLocale());
+
+        // Visit the current page with the new locale
+        router.visit(path, {
             method: "get",
-            replace: true,
         });
     }
 </script>
