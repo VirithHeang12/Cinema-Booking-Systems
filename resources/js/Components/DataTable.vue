@@ -4,9 +4,19 @@
             <v-toolbar flat>
                 <v-toolbar-title>{{ title }}</v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn @click="createItem()" class="mb-2" prepend-icon="mdi-plus" color="primary" variant="outlined">
+
+                <v-btn type="button" color="cyan-darken-4" class="m-2" variant="outlined" @click="importItem()">
+                    Import
+                </v-btn>
+
+                <v-btn type="button" color="brown-darken-4" class="m-2" variant="outlined" @click="exportItem()">
+                    Export
+                </v-btn>
+
+                <v-btn @click="createItem()" class="m-2" prepend-icon="mdi-plus" color="primary" variant="outlined">
                     New {{ title }}
                 </v-btn>
+
             </v-toolbar>
         </template>
 
@@ -17,7 +27,7 @@
             <v-icon class="me-3" color="secondary" size="small" @click="editItem(item)">
                 mdi-pencil
             </v-icon>
-            <v-icon class="me-3" color="danger" size="small"  @click="deleteItem(item)">
+            <v-icon class="me-3" color="danger" size="small" @click="deleteItem(item)">
                 mdi-delete
             </v-icon>
         </template>
@@ -61,7 +71,7 @@
         ];
     });
 
-    const emits = defineEmits(['view', 'edit', 'delete', 'create']);
+    const emits = defineEmits(['view', 'edit', 'delete', 'create', 'import', 'export']);
 
     const viewItem = (item) => {
         emits('view', item);
@@ -77,5 +87,13 @@
 
     const createItem = () => {
         emits('create');
+    };
+
+    const importItem = () => {
+        emits('import');
+    };
+
+    const exportItem = () => {
+        emits('export');
     };
 </script>
