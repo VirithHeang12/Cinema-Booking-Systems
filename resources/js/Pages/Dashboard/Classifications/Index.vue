@@ -8,6 +8,8 @@
     @delete="deleteCallback"
     @edit="editCallback"
     @create="createCallback"
+    @import="importCallback"
+    @export="exportCallback"
   />
 </template>
 
@@ -15,7 +17,6 @@
   import { computed, ref } from "vue";
   import { visitModal } from "@inertiaui/modal-vue";
   import { route } from "ziggy-js";
-
   const props = defineProps({
     classifications: {
       type: Array,
@@ -120,5 +121,20 @@
         maxWidth: "xl",
       },
     });
+  };
+
+  const importCallback = () => {
+    visitModal(route("dashboard.classifications.import.show"), {
+      config: {
+        slideover: false,
+        position: "center",
+        closeExplicitly: true,
+        maxWidth: "xl",
+      },
+    });
+  };
+
+  const exportCallback = () => {
+    window.location.href = route("dashboard.classifications.export");
   };
 </script>
