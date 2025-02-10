@@ -33,8 +33,9 @@ import { __, trans, setLocale, getLocale, transChoice, MaticeLocalizationConfig,
 // Ziggy
 import { ZiggyVue } from 'ziggy-js';
 
-// lang flags
-import LangFlag from 'vue-lang-code-flags';
+// flag icons
+import FlagIcon from 'vue-flag-icon'
+
 import DashboardLayout from './Layouts/DashboardLayout.vue';
 import { Field, Form } from 'vee-validate';
 
@@ -83,6 +84,7 @@ createInertiaApp({
         const app = createApp({ render: renderApp(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .use(FlagIcon)
             .use(vuetify);
 
         app.mixin({
@@ -103,7 +105,6 @@ createInertiaApp({
             },
         });
 
-        app.component('lang-flag', LangFlag);
         app.component('Link', Link);
         app.component('ModalLink', ModalLink);
         app.component('Modal', Modal);
