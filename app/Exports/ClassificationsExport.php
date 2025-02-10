@@ -13,9 +13,9 @@ class ClassificationsExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        return Classification::all();
+        return Classification::select('id', 'name', 'description', 'created_at', 'updated_at')->get();
     }
-    
+
     /**
      * Define the headings for the export file.
      *
