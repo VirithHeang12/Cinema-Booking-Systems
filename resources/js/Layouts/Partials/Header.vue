@@ -26,14 +26,17 @@
                 <v-menu>
                     <template v-slot:activator="{ props }">
                         <v-btn color="primary" dark v-bind="props">
-                            <lang-flag :iso="getLocale().toLowerCase()" />
+                            <flag :iso="getLocale().toLowerCase() === 'en' ? 'gb' : getLocale().toLowerCase()" />
                         </v-btn>
                     </template>
 
                     <v-list>
                         <v-list-item v-for="([key, value], index) in languages" :key="index">
                             <v-list-item-title>
-                                <v-btn @click="switchLocale(key, value)">
+                                <v-btn @click="switchLocale(key, value)" :elevation="0" width="100%">
+                                    <template #prepend>
+                                        <flag :iso="key.toLowerCase() === 'en' ? 'gb' : key.toLowerCase()" />
+                                    </template>
                                     {{ value.native }}
                                 </v-btn>
                             </v-list-item-title>
