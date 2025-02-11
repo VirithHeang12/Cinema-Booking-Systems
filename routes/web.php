@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'localize', 'localeCookieRedirect' ])->group(function() {
+Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ])->group(function() {
     require_once __DIR__.'/dashboard.php';
-    
+
     Route::get('/', function () {
         return Inertia::render('Index');
     })->name('index');
@@ -39,5 +39,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
     Route::get('/privacy', function () {
         return Inertia::render('Privacy', ['title' => 'Privacy & Policy']);
     })->name('privacy');
+    Route::get('/terms', function () {
+        return Inertia::render('Terms', ['title' => 'Terms & Conditions']);
+    })->name('terms');
 });
 
