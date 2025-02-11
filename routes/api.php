@@ -15,7 +15,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
-        Route::apiResource('halltypes', HallTypeController::class);
+        Route::apiResource('hall_types', HallTypeController::class);
     });
 })->middleware('auth:sanctum');
 

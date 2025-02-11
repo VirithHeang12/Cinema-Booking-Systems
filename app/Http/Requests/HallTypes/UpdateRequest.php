@@ -22,8 +22,8 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'              => 'required|string|max:50|unique:hall_types,name,' . $this->halltype->id,
-            'description'       => 'string:hall_types,description,' . $this->halltype->id,
+            'name'              => 'required|string|max:50|unique:hall_types,name,' . $this->hall_type->id,
+            'description'       => 'string:hall_types,description,' . $this->hall_type->id,
         ];
     }
 
