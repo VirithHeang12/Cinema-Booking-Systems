@@ -18,7 +18,7 @@ import { Link } from '@inertiajs/vue3';
                     </span>
                 </div>
                 <div class="flex flex-wrap justify-center py-6 col-12 align-center gap-x-20 gap-y-4">
-                    <a href="#"
+                    <a href="/terms"
                         class="font-medium text-white transition text-decoration-none opacity-65 hover:opacity-100">Terms
                         & Conditions</a>
                     <Link href="/privacy"
