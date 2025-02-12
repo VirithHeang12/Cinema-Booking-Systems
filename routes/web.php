@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -9,7 +10,11 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
     require_once __DIR__.'/dashboard.php';
 
     Route::get('/', function () {
-        return Inertia::render('Index');
+        $languages = Language::paginate(1);
+
+        return Inertia::render('Index', [
+            'languages' => $languages
+        ]);
     })->name('index');
 
     Route::get('/about', function () {

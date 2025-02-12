@@ -38,6 +38,7 @@ import FlagIcon from 'vue-flag-icon'
 
 import DashboardLayout from './Layouts/DashboardLayout.vue';
 import { Field, Form } from 'vee-validate';
+import DataTableServer from './Components/DataTableServer.vue';
 
 const vuetify = createVuetify({
     components,
@@ -109,6 +110,7 @@ createInertiaApp({
         app.component('ModalLink', ModalLink);
         app.component('Modal', Modal);
         app.component('DataTable', DataTable);
+        app.component('DataTableServer', DataTableServer);
         app.component("vee-form", Form);
         app.component("vee-field", Field);
 
