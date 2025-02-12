@@ -18,13 +18,13 @@
     import { router } from '@inertiajs/vue3';
 
     const props = defineProps({
-        halltype: {
+        hall_type: {
             type: Object,
             required: true,
         }
     });
 
     const submitForm = () => {
-        router.delete(route('dashboard.halltypes.destroy', props.halltype.id));
+        router.delete(route('dashboard.hall_types.destroy', props.hall_type.id));
     }
 </script>

@@ -26,7 +26,7 @@
     });
 
     const submitForm = () => {
-        form.post(route('dashboard.halltypes.store'));
+        form.post(route('dashboard.hall_types.store'));
     }
 
 </script>
