@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Classification;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ClassificationsImport;
+use App\Exports\ClassificationsExport;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ClassificationController extends Controller
 {
@@ -150,4 +154,45 @@ class ClassificationController extends Controller
             return redirect()->route('dashboard.classifications.index')->with('error', 'Classification not deleted.');
         }
     }
+
+    /**
+     * Show Import classifications form.
+     * @return \Inertia\Response
+     */
+    public function showImport(){
+        return Inertia::render('Dashboard/Classifications/Import');
+    }
+
+    /**
+     * Import classifications from excel file.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function import(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            Excel::import(new ClassificationsImport, $request->file('file'));
+            DB::commit();
+
+            return redirect()->route('dashboard.classifications.index')->with('success', 'Classifications imported.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('dashboard.classifications.index')->with('error', $e->getMessage());
+        }
+    }
+
+
+    public function export()
+    {
+        return Excel::download(new ClassificationsExport, 'classifications.xlsx');
+    }
+
 }

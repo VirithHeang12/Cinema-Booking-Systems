@@ -1,5 +1,6 @@
 <template>
-    <v-data-table :headers="computedHeaders" :items="items" :sort-by="sortBy">
+    <v-data-table-server @update:options="updateOptionsCallback" :items-per-page="itemsPerPage"
+        :headers="computedHeaders" :items="serverItems" :items-length="itemsLength" :loading="loading">
         <template v-slot:top>
             <v-toolbar flat>
                 <v-toolbar-title>{{ title }}</v-toolbar-title>
@@ -34,13 +35,22 @@
         <template v-slot:no-data>
             <p>There is no data to display</p>
         </template>
-    </v-data-table>
+    </v-data-table-server>
 </template>
 
 <script setup>
-    import { computed } from 'vue';
+    import { computed, ref } from 'vue';
 
     const props = defineProps({
+        itemsPerPage: {
+            type: Number,
+            required: false,
+            default: 10,
+        },
+        serverItems: {
+            type: Array,
+            required: true,
+        },
         title: {
             type: String,
             required: true,
@@ -48,6 +58,20 @@
         items: {
             type: Array,
             required: true,
+        },
+        itemsLength: {
+            type: Number,
+            required: true,
+        },
+        loading: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        itemValue: {
+            type: String,
+            required: false,
+            default: 'id',
         },
         headers: {
             type: Array,
@@ -58,6 +82,8 @@
             default: () => [],
         },
     });
+
+    const itemsPerPage = ref(props.itemsPerPage);
 
     const computedHeaders = computed(() => {
         return [
@@ -71,7 +97,11 @@
         ];
     });
 
-    const emits = defineEmits(['view', 'edit', 'delete', 'create', 'import', 'export']);
+    const emits = defineEmits(['view', 'edit', 'delete', 'create', 'import', 'export', '@update:options']);
+
+    const updateOptionsCallback = (options) => {
+        emits('@update:options', options);
+    };
 
     const viewItem = (item) => {
         emits('view', item);
