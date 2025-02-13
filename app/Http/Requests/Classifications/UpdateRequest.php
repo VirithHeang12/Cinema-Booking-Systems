@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\HallTypes;
+namespace App\Http\Requests\Classifications;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -22,8 +22,8 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'              => 'required|string|max:50|unique:hall_types,name,' . $this->hall_type->id,
-            'description'       => 'string:hall_types,description,' . $this->hall_type->id,
+            'name' => 'required|string|max:50|unique:classifications,name,' . $this->classification->id,
+            'description' => 'required|string',
         ];
     }
 
@@ -35,11 +35,13 @@ class UpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required'             => 'Name is required',
-            'name.string'               => 'Name must be a string',
-            'name.max'                  => 'Name must not be greater than 50 characters',
-            'name.unique'               => 'Name must be unique',
-            'description.string'        => 'Description must be a string',
+            'name.required' => 'The classification name is required.',
+            'name.string' => 'The classification name must be a valid string.',
+            'name.max' => 'The classification name cannot exceed 50 characters.',
+            'name.unique' => 'This classification name is already taken. Please choose a different one.',
+
+            'description.required' => 'The description is required.',
+            'description.string' => 'The description must be a valid string.',
         ];
     }
 }

@@ -26,19 +26,19 @@
     import { useForm } from '@inertiajs/vue3';
 
     const props = defineProps({
-        halltype: {
+        hall_type: {
             type: Object,
             required: true,
         }
     });
 
     const form = useForm({
-        name: props.halltype.name,
-        description: props.halltype.description,
-        id: props.halltype.id,
+        name: props.hall_type.name,
+        description: props.hall_type.description,
+        id: props.hall_type.id,
     });
 
     const submitForm = () => {
-        form.put(route('dashboard.halltypes.update', props.halltype.id));
+        form.put(route('dashboard.hall_types.update', props.hall_type.id));
     }
 </script>
