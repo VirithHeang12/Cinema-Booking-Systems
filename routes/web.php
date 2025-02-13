@@ -10,7 +10,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
     require_once __DIR__.'/dashboard.php';
 
     Route::get('/', function () {
-        $languages = Language::paginate(1);
+        $perPage = request()->query('itemsPerPage', 5);
+        $languages = Language::paginate($perPage)->appends(request()->query());
 
         return Inertia::render('Index', [
             'languages' => $languages

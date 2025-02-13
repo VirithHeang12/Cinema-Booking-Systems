@@ -1,20 +1,20 @@
 <template>
-    <data-table-server title="Language" :items="serverItems" :items-length="totalItems" :headers="headers"
-        :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
+    <data-table-server :showNo="true" title="Language" :serverItems="serverItems" :items-length="totalItems"
+        :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
         @update:options="loadItems" />
 </template>
 
 <script setup>
     import { computed, ref } from 'vue'
+    import { router } from '@inertiajs/vue3';
+    import { route } from 'ziggy-js';
 
     const props = defineProps({
         languages: {
-            type: Array,
+            type: Object,
             required: true,
         }
     });
-
-    console.log(props.languages);
 
     const serverItems = computed(() => {
         return props.languages.data;
@@ -68,12 +68,11 @@
      * @return {void}
      */
     function loadItems({ page, itemsPerPage }) {
-        console.log(page, itemsPerPage);
-        // loading.value = true
-        // FakeAPI.fetch({ page, itemsPerPage, sortBy }).then(({ items, total }) => {
-        //     serverItems.value = items
-        //     totalItems.value = total
-        //     loading.value = false
-        // })
+        router.reload({
+            data: {
+                page,
+                itemsPerPage,
+            },
+        });
     }
 </script>

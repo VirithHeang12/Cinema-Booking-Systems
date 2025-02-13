@@ -31,7 +31,7 @@
                     </template>
 
                     <v-list>
-                        <v-list-item v-for="([key, value], index) in languages" :key="index">
+                        <v-list-item v-for="([key, value], index) in localizations" :key="index">
                             <v-list-item-title>
                                 <v-btn @click="switchLocale(key, value)" :elevation="0" width="100%">
                                     <template #prepend>
@@ -54,15 +54,15 @@
     import { __, getLocale, setLocale } from 'matice';
     import { ref } from 'vue';
 
-    const languages = ref(Object.entries(usePage().props.languages));
+    const localizations = ref(Object.entries(usePage().props.localizations));
 
     const switchLocale = (key, locale) => {
         // Set the locale without reloading the page
         setLocale(key);
 
-        languages.value = Object.entries(usePage().props.languages);
+        localizations.value = Object.entries(usePage().props.localizations);
 
-        const [, { path }] = languages.value.find(([key, value]) => key === getLocale());
+        const [, { path }] = localizations.value.find(([key, value]) => key === getLocale());
 
         // Visit the current page with the new locale
         router.visit(path, {
