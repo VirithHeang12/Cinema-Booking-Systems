@@ -1,7 +1,7 @@
 <template>
     <data-table-server :showNo="true" title="Language" :serverItems="serverItems" :items-length="totalItems"
         :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
-        @update:options="loadItems" />
+        @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true" />
 </template>
 
 <script setup>

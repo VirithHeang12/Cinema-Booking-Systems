@@ -7,15 +7,18 @@
                 <v-toolbar-title>{{ title }}</v-toolbar-title>
                 <v-spacer></v-spacer>
 
-                <v-btn type="button" color="cyan-darken-4" class="m-2" variant="outlined" @click="importItem()">
+                <v-btn v-if="hasImport" type="button" color="cyan-darken-4" class="m-2" variant="outlined"
+                    @click="importItem()">
                     Import
                 </v-btn>
 
-                <v-btn type="button" color="brown-darken-4" class="m-2" variant="outlined" @click="exportItem()">
+                <v-btn v-if="hasExport" type="button" color="brown-darken-4" class="m-2" variant="outlined"
+                    @click="exportItem()">
                     Export
                 </v-btn>
 
-                <v-btn @click="createItem()" class="m-2" prepend-icon="mdi-plus" color="primary" variant="outlined">
+                <v-btn v-if="hasCreate" @click="createItem()" class="m-2" prepend-icon="mdi-plus" color="primary"
+                    variant="outlined">
                     New {{ title }}
                 </v-btn>
 
@@ -47,6 +50,21 @@
     import { computed, ref } from 'vue';
 
     const props = defineProps({
+        hasCreate: {
+            type: Boolean,
+            required: false,
+            default: true,
+        },
+        hasImport: {
+            type: Boolean,
+            required: false,
+            default: true,
+        },
+        hasExport: {
+            type: Boolean,
+            required: false,
+            default: true,
+        },
         showNo: {
             type: Boolean,
             required: false,
