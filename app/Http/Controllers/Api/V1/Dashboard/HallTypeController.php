@@ -19,7 +19,8 @@ class HallTypeController extends Controller
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $halltypes = QueryBuilder::for(HallType::class)
+        $hall_types = QueryBuilder::for(HallType::class)
+
             ->allowedFilters([
                 'name',
                 'description'
@@ -31,9 +32,9 @@ class HallTypeController extends Controller
             ])
             ->get();
 
-        $halltypes = HallTypeResource::collection($halltypes);
+        $hall_types = HallTypeResource::collection($hall_types);
 
-        return response()->json($halltypes);
+        return response()->json($hall_types);
     }
 
     /**
@@ -48,11 +49,11 @@ class HallTypeController extends Controller
         DB::beginTransaction();
 
         try {
-            $halltype = HallType::create($request->validated());
+            $hall_type = HallType::create($request->validated());
 
             DB::commit();
 
-            return response()->json($halltype, 201);
+            return response()->json($hall_type, 201);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -67,11 +68,11 @@ class HallTypeController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(HallType $halltype)
+    public function show(HallType $hall_type)
     {
-        $halltype = new HallTypeResource($halltype);
+        $hall_type = new HallTypeResource($hall_type);
 
-        return response()->json($halltype);
+        return response()->json($hall_type);
     }
 
     /**
@@ -82,16 +83,16 @@ class HallTypeController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, HallType $halltype)
+    public function update(UpdateRequest $request, HallType $hall_type)
     {
         DB::beginTransaction();
 
         try {
-            $halltype->update($request->validated());
+            $hall_type->update($request->validated());
 
             DB::commit();
 
-            return response()->json($halltype);
+            return response()->json($hall_type);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -106,12 +107,12 @@ class HallTypeController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(HallType $halltype)
+    public function destroy(HallType $hall_type)
     {
         DB::beginTransaction();
 
         try {
-            $halltype->delete();
+            $hall_type->delete();
 
             DB::commit();
 

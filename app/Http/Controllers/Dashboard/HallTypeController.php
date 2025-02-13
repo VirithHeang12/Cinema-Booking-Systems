@@ -55,11 +55,11 @@ class HallTypeController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.halltypes.index')->with('success', 'HallType created.');
+            return redirect()->route('dashboard.hall_types.index')->with('success', 'HallType created.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.halltypes.index')->with('error', 'HallType not created.');
+            return redirect()->route('dashboard.hall_types.index')->with('error', 'HallType not created.');
         }
     }
 
@@ -70,10 +70,10 @@ class HallTypeController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function show(HallType $halltype): \Inertia\Response
+    public function show(HallType $hall_type): \Inertia\Response
     {
         return Inertia::render('Dashboard/HallTypes/Show', [
-            'halltype'      => $halltype,
+            'hall_type'      => $hall_type,
         ]);
     }
 
@@ -84,10 +84,10 @@ class HallTypeController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function edit(HallType $halltype): \Inertia\Response
+    public function edit(HallType $hall_type): \Inertia\Response
     {
         return Inertia::render('Dashboard/HallTypes/Edit', [
-            'halltype'      => $halltype,
+            'hall_type'      => $hall_type,
         ]);
     }
 
@@ -99,24 +99,24 @@ class HallTypeController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, HallType $halltype): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, HallType $hall_type): \Illuminate\Http\RedirectResponse
     {
         DB::beginTransaction();
 
         try {
 
-            $halltype->update([
+            $hall_type->update([
                 'name' => $request->name,
                 'description' => $request->description,
             ]);
 
             DB::commit();
 
-            return redirect()->route('dashboard.halltypes.index')->with('success', 'HallType updated.');
+            return redirect()->route('dashboard.hall_types.index')->with('success', 'HallType updated.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.halltypes.index')->with('error', 'HallType not updated.');
+            return redirect()->route('dashboard.hall_types.index')->with('error', 'HallType not updated.');
         }
     }
 
@@ -127,10 +127,10 @@ class HallTypeController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function delete(HallType $halltype): \Inertia\Response
+    public function delete(HallType $hall_type): \Inertia\Response
     {
         return Inertia::render('Dashboard/HallTypes/Delete', [
-            'halltype'      => $halltype,
+            'hall_type'      => $hall_type,
         ]);
     }
 
@@ -141,21 +141,21 @@ class HallTypeController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(HallType $halltype): \Illuminate\Http\RedirectResponse
+    public function destroy(HallType $hall_type): \Illuminate\Http\RedirectResponse
     {
         DB::beginTransaction();
 
         try {
 
-            $halltype->delete();
+            $hall_type->delete();
 
             DB::commit();
 
-            return redirect()->route('dashboard.halltypes.index')->with('success', 'HallType deleted.');
+            return redirect()->route('dashboard.hall_types.index')->with('success', 'HallType deleted.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.halltypes.index')->with('error', 'HallType not deleted.');
+            return redirect()->route('dashboard.hall_types.index')->with('error', 'HallType not deleted.');
         }
     }
 }

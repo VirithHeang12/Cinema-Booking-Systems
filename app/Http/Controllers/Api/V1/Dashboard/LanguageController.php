@@ -30,7 +30,7 @@ class LanguageController extends Controller
                 'code'
             ])
             ->get();
-
+      
         $languages = LanguageResource::collection($languages);
 
         return response()->json($languages);
