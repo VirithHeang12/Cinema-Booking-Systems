@@ -26,14 +26,17 @@
                 <v-menu>
                     <template v-slot:activator="{ props }">
                         <v-btn color="primary" dark v-bind="props">
-                            <lang-flag :iso="getLocale().toLowerCase()" />
+                            <flag :iso="getLocale().toLowerCase() === 'en' ? 'gb' : getLocale().toLowerCase()" />
                         </v-btn>
                     </template>
 
                     <v-list>
-                        <v-list-item v-for="([key, value], index) in languages" :key="index">
+                        <v-list-item v-for="([key, value], index) in localizations" :key="index">
                             <v-list-item-title>
-                                <v-btn @click="switchLocale(key, value)">
+                                <v-btn @click="switchLocale(key, value)" :elevation="0" width="100%">
+                                    <template #prepend>
+                                        <flag :iso="key.toLowerCase() === 'en' ? 'gb' : key.toLowerCase()" />
+                                    </template>
                                     {{ value.native }}
                                 </v-btn>
                             </v-list-item-title>
@@ -49,21 +52,21 @@
 <script setup>
     import { router, usePage } from '@inertiajs/vue3'
     import { __, getLocale, setLocale } from 'matice';
-    import { computed } from 'vue';
+    import { ref } from 'vue';
 
-    const { props } = usePage();
-
-    const languages = computed(() => {
-        return Object.entries(props.languages);
-    });
+    const localizations = ref(Object.entries(usePage().props.localizations));
 
     const switchLocale = (key, locale) => {
         // Set the locale without reloading the page
         setLocale(key);
 
-        router.visit(locale.path, {
+        localizations.value = Object.entries(usePage().props.localizations);
+
+        const [, { path }] = localizations.value.find(([key, value]) => key === getLocale());
+
+        // Visit the current page with the new locale
+        router.visit(path, {
             method: "get",
-            replace: true,
         });
     }
 </script>
