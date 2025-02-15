@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Genre;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('movies', function (Blueprint $table) {
+        Schema::create('hall_types', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('genre_id')
-                ->constrained()
-                ->onDelete('set null')
-                ->onUpdate('cascade')
-                ->nullable(false);
-
+            $table->string('name', length: 30)->unique();
+            $table->string('description', length: 255)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -31,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('movies');
+        Schema::dropIfExists('hall_types');
     }
 };

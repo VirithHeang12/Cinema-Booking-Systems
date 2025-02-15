@@ -11,28 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('show_seats', function (Blueprint $table) {
+        Schema::create('movie_subtitles', function (Blueprint $table) {
             $table->id();
-            $table->enum('status', [
-                'Available',
-                'Booked'
-            ])->default('Available');
 
-            $table->foreignId('show_id')
-                ->constrained('shows')
+            $table->foreignId('movie_id')
                 ->nullable()
+                ->constrained()
                 ->onDelete('set null')
                 ->onUpdate('cascade');
 
-            $table->foreignId('seat_id')
+            $table->foreignId('language_id')
                 ->nullable()
-                ->constrained('seats')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
-
-            $table->foreignId('booking_id')
-                ->nullable()
-                ->constrained('bookings')
+                ->constrained()
                 ->onDelete('set null')
                 ->onUpdate('cascade');
 
@@ -46,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('show_seats');
+        Schema::dropIfExists('movie_subtitles');
     }
 };
