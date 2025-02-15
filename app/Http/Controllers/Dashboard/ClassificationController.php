@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Classification;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ClassificationsImport;
 use App\Exports\ClassificationsExport;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ClassificationController extends Controller
 {
@@ -22,8 +20,10 @@ class ClassificationController extends Controller
      */
     public function index(): \Inertia\Response
     {
+        $perPage = request()->query('itemsPerPage', 5);
+        $classifications = Classification::paginate($perPage)->appends(request()->query());
         return Inertia::render('Dashboard/Classifications/Index', [
-            'classifications' => Classification::all()
+            'classifications' => $classifications
         ]);
     }
 
