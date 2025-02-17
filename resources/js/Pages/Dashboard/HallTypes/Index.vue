@@ -66,8 +66,8 @@
     ]);
 
     const viewCallback = (item) => {
-        visitModal(route('dashboard.halltypes.show', {
-            halltype: item.id,
+        visitModal(route('dashboard.hall_types.show', {
+            hall_type: item.id,
         }), {
             method: 'get',
             config: {
@@ -81,8 +81,8 @@
     };
 
     const editCallback = (item) => {
-        visitModal(route('dashboard.halltypes.edit', {
-            halltype: item.id,
+        visitModal(route('dashboard.hall_types.edit', {
+            hall_type: item.id,
         }), {
             method: 'get',
             config: {
@@ -95,8 +95,8 @@
     };
 
     const deleteCallback = (item) => {
-        visitModal(route('dashboard.halltypes.delete', {
-            halltype: item.id,
+        visitModal(route('dashboard.hall_types.delete', {
+            hall_type: item.id,
         }), {
             config: {
                 slideover: false,
@@ -109,7 +109,7 @@
     };
 
     const createCallback = () => {
-        visitModal(route('dashboard.halltypes.create'), {
+        visitModal(route('dashboard.hall_types.create'), {
             config: {
                 slideover: true,
                 position: 'right',

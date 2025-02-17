@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private function configureInertia(): void
     {
-        Inertia::share('languages', function () {
+        Inertia::share('localizations', function () {
             $languages = [];
 
             foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) :

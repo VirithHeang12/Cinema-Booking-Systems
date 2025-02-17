@@ -3,40 +3,37 @@
 namespace App\Http\Controllers\Api\V1\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Languages\SaveRequest;
-use App\Http\Requests\Languages\UpdateRequest;
-use App\Http\Resources\Api\LanguageResource;
-use App\Models\Language;
+use App\Http\Requests\Countries\SaveRequest;
+use App\Http\Requests\Countries\UpdateRequest;
+use App\Http\Resources\Api\CountryResource;
+use App\Models\Country;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class LanguageController extends Controller
+class CountryController extends Controller
 {
     /**
-     * Display a listing of the languages.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * Display a listing of the resource.
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $languages = QueryBuilder::for(Language::class)
+        $countries = QueryBuilder::for(Country::class)
             ->allowedFilters([
                 'name',
-                'code'
             ])
             ->defaultSort('name')
             ->allowedSorts([
                 'name',
-                'code'
             ])
             ->get();
-        $languages = LanguageResource::collection($languages);
 
-        return response()->json($languages);
+        $countries = CountryResource::collection($countries);
+
+        return response()->json($countries);
     }
 
-    /**
-     * Store a newly created language in storage.
+     /**
+     * Store a newly created country in storage.
      *
      * @param SaveRequest $request
      *
@@ -47,11 +44,11 @@ class LanguageController extends Controller
         DB::beginTransaction();
 
         try {
-            $language = Language::create($request->validated());
+            $country = Country::create($request->validated());
 
             DB::commit();
 
-            return response()->json($language, 201);
+            return response()->json($country, 201);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -60,37 +57,37 @@ class LanguageController extends Controller
     }
 
     /**
-     * Display the specified language.
+     * Display the specified country.
      *
-     * @param Language $language
+     * @param Country $country
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Language $language)
+    public function show(Country $country)
     {
-        $language = new LanguageResource($language);
+        $country = new CountryResource($country);
 
-        return response()->json($language);
+        return response()->json($country);
     }
 
-    /**
-     * Update the specified language in storage.
+     /**
+     * Update the specified country in storage.
      *
      * @param UpdateRequest $request
-     * @param Language      $language
+     * @param Country      $country
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, Language $language)
+    public function update(UpdateRequest $request, Country $country)
     {
         DB::beginTransaction();
 
         try {
-            $language->update($request->validated());
+            $country->update($request->validated());
 
             DB::commit();
 
-            return response()->json($language);
+            return response()->json($country);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -99,26 +96,27 @@ class LanguageController extends Controller
     }
 
     /**
-     * Remove the specified language from storage.
+     * Remove the specified country from storage.
      *
-     * @param Language $language
+     * @param Country $country
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Language $language)
+    public function destroy(Country $country)
     {
         DB::beginTransaction();
 
         try {
-            $language->delete();
+            $country->delete();
 
             DB::commit();
 
-            return response()->json(null, 204);
+            return response()->json(['message' => 'Country deleted successfully'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+
 }

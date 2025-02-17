@@ -1,6 +1,6 @@
 <template>
-    <data-table title="Language" :items="items" :headers="headers" :sort-by="sortBy" @view="viewCallback"
-        @delete="deleteCallback" @edit="editCallback" @create="createCallback" />
+    <data-table :itemsPerPage="itemsPerPage" title="Language" :items="items" :headers="headers" :sort-by="sortBy"
+        @view="viewCallback" @delete="deleteCallback" @edit="editCallback" @create="createCallback" />
 </template>
 
 <script setup>
@@ -15,6 +15,8 @@
         }
     });
 
+    const itemsPerPage = ref(10);
+
     const items = computed(() => {
         return props.languages;
     });
@@ -28,7 +30,7 @@
         },
         {
             title: 'Code',
-            aligh: 'start',
+            align: 'start',
             sortable: true,
             key: 'code',
         },

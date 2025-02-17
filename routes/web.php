@@ -1,15 +1,21 @@
 <?php
 
+use App\Models\Language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'localize', 'localeCookieRedirect' ])->group(function() {
+Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ])->group(function() {
     require_once __DIR__.'/dashboard.php';
-    
+
     Route::get('/', function () {
-        return Inertia::render('Index');
+        $perPage = request()->query('itemsPerPage', 5);
+        $languages = Language::paginate($perPage)->appends(request()->query());
+
+        return Inertia::render('Index', [
+            'languages' => $languages
+        ]);
     })->name('index');
 
     Route::get('/about', function () {
@@ -39,5 +45,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
     Route::get('/privacy', function () {
         return Inertia::render('Privacy', ['title' => 'Privacy & Policy']);
     })->name('privacy');
+    Route::get('/terms', function () {
+        return Inertia::render('Terms', ['title' => 'Terms & Conditions']);
+    })->name('terms');
 });
 
