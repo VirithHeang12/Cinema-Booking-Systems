@@ -12,6 +12,10 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('classifications/import', [ClassificationController::class, 'showImport'])->name('classifications.import.show');
     Route::post('classifications/import', [ClassificationController::class, 'import'])->name('classifications.import');
     Route::get('classifications/export', [ClassificationController::class, 'export'])->name('classifications.export')->withoutMiddleware(['web']);
+    Route::get('countries/import', [CountryController::class, 'showImport'])->name('countries.import.show');
+    Route::post('countries/import', [CountryController::class, 'import'])->name('countries.import');
+    Route::get('countries/export', [CountryController::class, 'export'])->name('countries.export')->withoutMiddleware(['web']);
+
 
     Route::get('languages/{language}/delete', [LanguageController::class, 'delete'])->name('languages.delete');
     Route::get('countries/{country}/delete', [CountryController::class, 'delete'])->name('countries.delete');

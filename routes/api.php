@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\Dashboard\LanguageController;
 use App\Http\Controllers\Api\V1\Dashboard\HallTypeController;
 use App\Http\Controllers\Api\V1\Dashboard\CountryController;
 use App\Http\Controllers\Api\V1\Dashboard\ClassificationController;
+use App\Http\Controllers\Api\V1\Dashboard\ScreenTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('hall_types', HallTypeController::class);
         Route::apiResource('countries', CountryController::class);
         Route::apiResource('classifications', ClassificationController::class);
+        Route::apiResource('screen_types', ScreenTypeController::class);
     });
 })->middleware('auth:sanctum');
 
