@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {;
         $this->call([
             LanguageSeeder::class,
+            CountrySeeder::class,
         ]);
     }
 }
