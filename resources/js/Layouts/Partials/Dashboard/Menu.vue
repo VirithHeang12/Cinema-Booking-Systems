@@ -78,10 +78,15 @@
                     icon: 'mdi-monitor',
                     value: 'hall_types',
                     route: 'dashboard.hall_types.index'
+                },
+                {
+                    title: 'Movies',
+                    icon: 'mdi-movie',
+                    value: 'movies',
+                    route: 'dashboard.movies.index'
                 }
             ]
         },
-
     ]);
 
     const navigateCallback = (r) => {
