@@ -7,6 +7,9 @@ use App\Models\HallType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\HallTypesImport;
+use App\Exports\HallTypesExport;
 
 class HallTypeController extends Controller
 {
@@ -17,10 +20,11 @@ class HallTypeController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $halltypes = HallType::all();
+        $perPage = request()->query('itemsPerPage', 5);
+        $hall_types = HallType::paginate($perPage)->appends(request()->query());
 
         return Inertia::render('Dashboard/HallTypes/Index', [
-            'halltypes'     => $halltypes,
+            'hall_types'     => $hall_types,
         ]);
     }
 
@@ -157,5 +161,44 @@ class HallTypeController extends Controller
 
             return redirect()->route('dashboard.hall_types.index')->with('error', 'HallType not deleted.');
         }
+    }
+
+    /**
+     * Show Import hallType form.
+     * @return \Inertia\Response
+     */
+    public function showImport(){
+        return Inertia::render('Dashboard/HallTypes/Import');
+    }
+
+    /**
+     * Import hallType from excel file.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function import(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            Excel::import(new HallTypesImport, $request->file('file'));
+            DB::commit();
+
+            return redirect()->route('dashboard.hall_types.index')->with('success', 'HallType imported.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('dashboard.hall_types.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function export()
+    {
+        return Excel::download(new HallTypesExport, 'hall_types.xlsx');
     }
 }

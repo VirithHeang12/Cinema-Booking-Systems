@@ -24,6 +24,10 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::post('genres/import', [GenreController::class, 'import'])->name('genres.import');
     Route::get('genres/export', [GenreController::class, 'export'])->name('genres.export')->withoutMiddleware(['web']);
 
+    Route::get('hall_types/import', [HallTypeController::class, 'showImport'])->name('hall_types.import.show');
+    Route::post('hall_types/import', [HallTypeController::class, 'import'])->name('hall_types.import');
+    Route::get('hall_types/export', [HallTypeController::class, 'export'])->name('hall_types.export')->withoutMiddleware(['web']);
+
     Route::get('languages/{language}/delete', [LanguageController::class, 'delete'])->name('languages.delete');
     Route::get('countries/{country}/delete', [CountryController::class, 'delete'])->name('countries.delete');
     Route::get('hall_types/{hall_type}/delete', [HallTypeController::class, 'delete'])->name('hall_types.delete');
@@ -36,7 +40,7 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::resource('countries', CountryController::class);
     Route::resource('classifications', ClassificationController::class);
     Route::resource('genres', GenreController::class);
-    Route::resource('halltypes', HallTypeController::class);
+    Route::resource('hall_types', HallTypeController::class);
     Route::resource('screen_types', ScreenTypeController::class);
     Route::resource('movies', MovieController::class);
 });
