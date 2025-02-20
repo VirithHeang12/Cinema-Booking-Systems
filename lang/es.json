@@ -36,5 +36,6 @@
     "Code": "Código",
     "Name": "Nombre",
     "Language name is required": "El nombre del idioma es obligatorio",
-    "Language code is required": "El código de idioma es obligatorio"
+    "Language code is required": "El código de idioma es obligatorio",
+    "rating must be at least 1": "la calificación debe ser al menos 1"
 }

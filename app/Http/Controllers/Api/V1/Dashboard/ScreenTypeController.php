@@ -3,40 +3,42 @@
 namespace App\Http\Controllers\Api\V1\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Languages\SaveRequest;
-use App\Http\Requests\Languages\UpdateRequest;
-use App\Http\Resources\Api\LanguageResource;
-use App\Models\Language;
+use App\Http\Requests\ScreenType\SaveRequest;
+use App\Http\Requests\ScreenType\UpdateRequest;
+use App\Http\Resources\Api\ScreenTypeResource;
+use App\Models\ScreenType;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class LanguageController extends Controller
+class ScreenTypeController extends Controller
 {
     /**
-     * Display a listing of the languages.
+     * Display a listing of the screenTypes.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $languages = QueryBuilder::for(Language::class)
+        $screen_types = QueryBuilder::for(ScreenType::class)
+
             ->allowedFilters([
                 'name',
-                'code'
+                'description'
             ])
             ->defaultSort('name')
             ->allowedSorts([
                 'name',
-                'code'
+                'description'
             ])
             ->get();
-        $languages = LanguageResource::collection($languages);
 
-        return response()->json($languages);
+        $screen_types = ScreenTypeResource::collection($screen_types);
+
+        return response()->json($screen_types);
     }
 
     /**
-     * Store a newly created language in storage.
+     * Store a newly created screenType in storage.
      *
      * @param SaveRequest $request
      *
@@ -47,11 +49,11 @@ class LanguageController extends Controller
         DB::beginTransaction();
 
         try {
-            $language = Language::create($request->validated());
+            $screen_type = ScreenType::create($request->validated());
 
             DB::commit();
 
-            return response()->json($language, 201);
+            return response()->json($screen_type, 201);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -60,37 +62,37 @@ class LanguageController extends Controller
     }
 
     /**
-     * Display the specified language.
+     * Display the specified screenType.
      *
-     * @param Language $language
+     * @param HallType $hallType
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Language $language)
+    public function show(ScreenType $screen_type)
     {
-        $language = new LanguageResource($language);
+        $screen_type = new ScreenTypeResource($screen_type);
 
-        return response()->json($language);
+        return response()->json($screen_type);
     }
 
     /**
-     * Update the specified language in storage.
+     * Update the specified screenType in storage.
      *
      * @param UpdateRequest $request
-     * @param Language      $language
+     * @param HallType      $screentype
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, Language $language)
+    public function update(UpdateRequest $request, ScreenType $screen_type)
     {
         DB::beginTransaction();
 
         try {
-            $language->update($request->validated());
+            $screen_type->update($request->validated());
 
             DB::commit();
 
-            return response()->json($language);
+            return response()->json($screen_type);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -99,18 +101,18 @@ class LanguageController extends Controller
     }
 
     /**
-     * Remove the specified language from storage.
+     * Remove the specified screenType from storage.
      *
-     * @param Language $language
+     * @param HallType $hallType
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Language $language)
+    public function destroy(ScreenType $screen_type)
     {
         DB::beginTransaction();
 
         try {
-            $language->delete();
+            $screen_type->delete();
 
             DB::commit();
 

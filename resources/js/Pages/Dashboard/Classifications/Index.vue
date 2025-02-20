@@ -1,9 +1,18 @@
 <template>
-  <data-table
+  <data-table-server
+    :showNo="true"
     title="Classification"
-    :items="items"
+    :serverItems="serverItems"
+    :items-length="totalItems"
     :headers="headers"
-    :sort-by="sortBy"
+    :loading="loading"
+    :server-items="serverItems"
+    :items-per-page="itemsPerPage"
+    item-value="id"
+    @update:options="loadItems"
+    :has-create="true"
+    :has-import="true"
+    :has-export="true"
     @view="viewCallback"
     @delete="deleteCallback"
     @edit="editCallback"
@@ -16,17 +25,28 @@
 <script setup>
   import { computed, ref } from "vue";
   import { visitModal } from "@inertiaui/modal-vue";
+  import { router } from "@inertiajs/vue3";
   import { route } from "ziggy-js";
+
   const props = defineProps({
     classifications: {
-      type: Array,
+      type: Object,
       required: true,
     },
   });
 
-  const items = computed(() => {
-    return props.classifications;
+  const serverItems = computed(() => {
+    return props.classifications.data;
   });
+  const totalItems = computed(() => {
+    return props.classifications.total;
+  });
+
+  const itemsPerPage = computed(() => {
+    return props.classifications.per_page;
+  });
+
+  const loading = ref(false);
 
   const headers = [
     {
@@ -49,20 +69,24 @@
     },
   ];
 
-  const sortBy = ref([
-    {
-      key: "name",
-      direction: "asc",
-    },
-    {
-      key: "created_at",
-      direction: "asc",
-    },
-    {
-      key: "updated_at",
-      direction: "asc",
-    },
-  ]);
+  /**
+   * Load items from the server
+   *
+   * @param {Object} options
+   * @param {Number} options.page
+   * @param {Number} options.itemsPerPage
+   * @param {Array} options.sortBy
+   *
+   * @return {void}
+   */
+  function loadItems({ page, itemsPerPage }) {
+    router.reload({
+      data: {
+        page,
+        itemsPerPage,
+      },
+    });
+  }
 
   const viewCallback = (item) => {
     visitModal(

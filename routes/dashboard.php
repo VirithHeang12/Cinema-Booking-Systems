@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\ClassificationController;
 use App\Http\Controllers\Dashboard\GenreController;
 use App\Http\Controllers\Dashboard\HallTypeController;
+use App\Http\Controllers\Dashboard\MovieController;
 use App\Http\Controllers\Dashboard\ScreenTypeController;
 
 Route::prefix('dashboard')->name('dashboard.')->group(function () {
@@ -15,6 +16,8 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('countries/import', [CountryController::class, 'showImport'])->name('countries.import.show');
     Route::post('countries/import', [CountryController::class, 'import'])->name('countries.import');
     Route::get('countries/export', [CountryController::class, 'export'])->name('countries.export')->withoutMiddleware(['web']);
+    Route::get('genres/import', [GenreController::class, 'showImport'])->name('genres.import.show');
+    Route::post('genres/import', [GenreController::class, 'import'])->name('genres.import');
 
 
     Route::get('languages/{language}/delete', [LanguageController::class, 'delete'])->name('languages.delete');
@@ -23,6 +26,7 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('genres/{genre}/delete', [GenreController::class, 'delete'])->name('genres.delete');
     Route::get('screen_types/{screen_type}/delete', [ScreenTypeController::class, 'delete'])->name('screen_types.delete');
     Route::get('classifications/{classification}/delete', [ClassificationController::class, 'delete'])->name('classifications.delete');
+    Route::get('movies/{movie}/delete', [MovieController::class, 'delete'])->name('movies.delete');
 
     Route::resource('languages', LanguageController::class);
     Route::resource('countries', CountryController::class);
@@ -30,6 +34,7 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::resource('genres', GenreController::class);
     Route::resource('halltypes', HallTypeController::class);
     Route::resource('screen_types', ScreenTypeController::class);
+    Route::resource('movies', MovieController::class);
 });
 
 
