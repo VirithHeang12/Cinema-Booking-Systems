@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exports\ScreenTypesExport;
 use App\Http\Controllers\Controller;
+use App\Imports\ScreenTypeImport;
 use App\Models\ScreenType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ScreenTypeController extends Controller
 {
@@ -14,10 +17,12 @@ class ScreenTypeController extends Controller
     public function index()
     {
 
-        $scereenTypes = ScreenType::all();
+         // $screenTypes = ScreenType::all();
+        $perPage = request()->query('itemsPerPage', 5);
+        $screenTypes = ScreenType::paginate($perPage)->appends(request()->query());
 
         return Inertia::render('Dashboard/ScreenTypes/Index', [
-            'screenTypes' => $scereenTypes,
+            'screenTypes'     => $screenTypes,
         ]);
     }
 
@@ -38,11 +43,11 @@ class ScreenTypeController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.screen-types.index')->with('success', 'Screen Type created.');
+            return redirect()->route('dashboard.screen_types.index')->with('success', 'Screen Type created.');
         }catch(\Exception $e){
             DB::rollBack();
 
-            return redirect()->route('dashboard.screen-types.index')->with('error', 'Screen Type not created.');
+            return redirect()->route('dashboard.screen_types.index')->with('error', 'Screen Type not created.');
         }
     }
 
@@ -72,11 +77,11 @@ class ScreenTypeController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.screen-types.index')->with('success', 'Screen Type updated.');
+            return redirect()->route('dashboard.screen_types.index')->with('success', 'Screen Type updated.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.screen-types.index')->with('error', 'Screen Type not updated.');
+            return redirect()->route('dashboard.screen_types.index')->with('error', 'Screen Type not updated.');
         }
     }
 
@@ -97,12 +102,51 @@ class ScreenTypeController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.screen-types.index')->with('success', 'Screen Type deleted.');
+            return redirect()->route('dashboard.screen_types.index')->with('success', 'Screen Type deleted.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.screen-type.index')->with('error', 'Screen Type not deleted.');
+            return redirect()->route('dashboard.screen_type.index')->with('error', 'Screen Type not deleted.');
         }
+    }
+
+      /**
+     * Show Import ScreenTypes form.
+     * @return \Inertia\Response
+     */
+    public function showImport(){
+        return Inertia::render('Dashboard/ScreenTypes/Import');
+    }
+
+     /**
+     * Import ScreenType from excel file.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function import(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            Excel::import(new ScreenTypeImport, $request->file('file'));
+            DB::commit();
+
+            return redirect()->route('dashboard.screen_types.index')->with('success', 'Genres imported.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('dashboard.screen_types.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function export()
+    {
+        return Excel::download(new ScreenTypesExport, 'screen_type.xlsx');
     }
 
 }
