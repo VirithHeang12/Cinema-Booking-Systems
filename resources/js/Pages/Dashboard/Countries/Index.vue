@@ -1,5 +1,5 @@
 <template>
-    <data-table-server :showNo="true" title="Country" :serverItems="serverItems" :items-length="totalItems"
+    <data-table-server :showNo="true" :title="__('Countries')"  :serverItems="serverItems" :items-length="totalItems"
         :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
         @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true" @view="viewCallback"
         @edit="editCallback" @delete="deleteCallback" @create="createCallback" @import="importCallback"
@@ -11,6 +11,7 @@ import { computed, ref } from 'vue'
 import { visitModal } from '@inertiaui/modal-vue';
 import { router } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { __ } from 'matice';
 
 const props = defineProps({
     countries: {
@@ -35,7 +36,7 @@ const loading = ref(false);
 
 const headers = [
     {
-        title: 'Name',
+        title: __('Name'),
         align: 'start',
         sortable: true,
         key: 'name',
