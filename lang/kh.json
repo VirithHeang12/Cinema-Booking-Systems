@@ -44,5 +44,6 @@
     "Name": "ឈ្មោះ",
     "Language name is required": "សូមបញ្ចូលឈ្មោះភាសា",
     "Language code is required": "សូមបញ្ចូលកូដភាសា",
-    "rating must be at least 1": "ការវាយតម្លៃត្រូវតែចាប់ផ្តើមពី 1"
+    "rating must be at least 1": "ការវាយតម្លៃត្រូវតែចាប់ផ្តើមពី 1",
+    "Screen Type description is required": "សូមបញ្ចូលការពិពណ៌នាប្រភេទអេក្រង់"
 }

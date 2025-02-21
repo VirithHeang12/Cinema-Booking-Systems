@@ -89,6 +89,7 @@
      * @returns {Promise<void>}
      */
     const loadCountries = async () => {
+        
         try {
             const response = await axios.get('http://cinema-booking-systems.test/api/v1/dashboard/countries', {
                 headers: {

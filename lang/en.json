@@ -44,5 +44,7 @@
     "Name": "Name",
     "Language name is required": "Language name is required",
     "Language code is required": "Language code is required",
-    "rating must be at least 1": "rating must be at least 1"
+    "rating must be at least 1": "rating must be at least 1",
+    "Screen Type name is required": "Screen Type name is required",
+    "Screen Type description is required": "Screen Type description is required"
 }
