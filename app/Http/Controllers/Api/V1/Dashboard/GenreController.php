@@ -3,40 +3,41 @@
 namespace App\Http\Controllers\Api\V1\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Languages\SaveRequest;
-use App\Http\Requests\Languages\UpdateRequest;
-use App\Http\Resources\Api\LanguageResource;
-use App\Models\Language;
+use App\Http\Requests\Genres\SaveRequest;
+use App\Http\Requests\Genres\UpdateRequest;
+use App\Http\Resources\Api\GenreResource;
+use App\Models\Genre;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class LanguageController extends Controller
+class GenreController extends Controller
 {
     /**
-     * Display a listing of the languages.
+     * Display a listing of the genres.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $languages = QueryBuilder::for(Language::class)
+        $genres = QueryBuilder::for(Genre::class)
             ->allowedFilters([
                 'name',
-                'code'
+                'description'
             ])
             ->defaultSort('name')
             ->allowedSorts([
                 'name',
-                'code'
+                'description'
             ])
             ->get();
-        $languages = LanguageResource::collection($languages);
+      
+        $genres = GenreResource::collection($genres);
 
-        return response()->json($languages);
+        return response()->json($genres);
     }
 
     /**
-     * Store a newly created language in storage.
+     * Store a newly created genre in storage.
      *
      * @param SaveRequest $request
      *
@@ -46,12 +47,13 @@ class LanguageController extends Controller
     {
         DB::beginTransaction();
 
+        // dd($request->validated());
         try {
-            $language = Language::create($request->validated());
+            $genre = Genre::create($request->validated());
 
             DB::commit();
 
-            return response()->json($language, 201);
+            return response()->json($genre, 201);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -60,37 +62,37 @@ class LanguageController extends Controller
     }
 
     /**
-     * Display the specified language.
+     * Display the specified genre.
      *
-     * @param Language $language
+     * @param Genre $genre
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Language $language)
+    public function show(Genre $genre)
     {
-        $language = new LanguageResource($language);
+        $genre = new GenreResource($genre);
 
-        return response()->json($language);
+        return response()->json($genre);
     }
 
     /**
-     * Update the specified language in storage.
+     * Update the specified genre in storage.
      *
      * @param UpdateRequest $request
-     * @param Language      $language
+     * @param Genre      $genre
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, Language $language)
+    public function update(UpdateRequest $request, Genre $genre)
     {
         DB::beginTransaction();
 
         try {
-            $language->update($request->validated());
+            $genre->update($request->validated());
 
             DB::commit();
 
-            return response()->json($language);
+            return response()->json($genre);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -99,18 +101,18 @@ class LanguageController extends Controller
     }
 
     /**
-     * Remove the specified language from storage.
+     * Remove the specified genre from storage.
      *
-     * @param Language $language
+     * @param Genre $genre
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Language $language)
+    public function destroy(Genre $genre)
     {
         DB::beginTransaction();
 
         try {
-            $language->delete();
+            $genre->delete();
 
             DB::commit();
 

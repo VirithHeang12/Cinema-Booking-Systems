@@ -21,13 +21,13 @@
                         </g>
                     </svg>
                 </div>
-                <p class="my-4 text-gray-600 text-[18px]">Are you sure you want to delete this country?</p>
+                <p class="my-4 text-gray-600 text-[18px]">{{__('Are you sure you want to delete this country?')}}</p>
                 <div class="d-flex justify-content-end gap-3">
                     <button type="button" @click="close" class="btn btn-secondary text-white">
-                        Cancel
+                        {{__('Cancel')}}
                     </button>
                     <button type="submit"  @click="close" class="btn btn-danger text-white">
-                        Delete
+                        {{__('Delete')}}
                     </button>
                 </div>
             </div>

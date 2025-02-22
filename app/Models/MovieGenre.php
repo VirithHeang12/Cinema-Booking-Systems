@@ -6,24 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class MovieSubtitle extends Model
+class MovieGenre extends Model
 {
-    /** @use HasFactory<\Database\Factories\MovieSubtitleFactory> */
     use HasFactory;
     use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
-     *
-     * @var array
      */
     protected $fillable = [
         'movie_id',
-        'language',
+        'genre_id'
     ];
 
     /**
-     * Get the movie that owns the movie subtitle.
+     * Get the movie that owns the movie genre.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -33,14 +30,12 @@ class MovieSubtitle extends Model
     }
 
     /**
-     * Get the language that owns the movie subtitle.
+     * Get the genre that owns the movie genre.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function language(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function genre(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Language::class);
+        return $this->belongsTo(Genre::class);
     }
 }
-
-

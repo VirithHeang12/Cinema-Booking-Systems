@@ -7,19 +7,19 @@
                 <v-toolbar-title>{{ title }}</v-toolbar-title>
                 <v-spacer></v-spacer>
 
-                <v-btn v-if="hasImport" type="button" color="cyan-darken-4" class="m-2" variant="outlined"
-                    @click="importItem()">
-                    Import
+                <v-btn v-if="hasImport" type="button" color="cyan-darken-4" class="m-2 fw-normal no-spacing"
+                    variant="outlined" @click="importItem()">
+                    {{ __('Import') }}
                 </v-btn>
 
-                <v-btn v-if="hasExport" type="button" color="brown-darken-4" class="m-2" variant="outlined"
+                <v-btn v-if="hasExport" type="button" color="brown-darken-4" class="m-2 fw-normal no-spacing" variant="outlined"
                     @click="exportItem()">
-                    Export
+                    {{ __('Export') }}
                 </v-btn>
 
-                <v-btn v-if="hasCreate" @click="createItem()" class="m-2" prepend-icon="mdi-plus" color="primary"
+                <v-btn v-if="hasCreate" @click="createItem()" class="m-2 fw-normal no-spacing" prepend-icon="mdi-plus" color="primary"
                     variant="outlined">
-                    New {{ title }}
+                    {{ __('New') }} {{ title }}
                 </v-btn>
 
             </v-toolbar>
@@ -47,138 +47,146 @@
 </template>
 
 <script setup>
-    import { computed, ref } from 'vue';
+import { __ } from 'matice';
+import { computed, ref } from 'vue';
 
-    const props = defineProps({
-        hasCreate: {
-            type: Boolean,
-            required: false,
-            default: true,
-        },
-        hasImport: {
-            type: Boolean,
-            required: false,
-            default: true,
-        },
-        hasExport: {
-            type: Boolean,
-            required: false,
-            default: true,
-        },
-        showNo: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-        title: {
-            type: String,
-            required: true,
-        },
-        serverItems: {
-            type: Array,
-            required: true,
-        },
-        itemsLength: {
-            type: Number,
-            required: true,
-        },
-        itemsPerPage: {
-            type: Number,
-            required: false,
-            default: 10,
-        },
-        loading: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-        itemValue: {
-            type: String,
-            required: false,
-            default: 'id',
-        },
-        headers: {
-            type: Array,
-            required: true,
-        },
-    });
+const props = defineProps({
+    hasCreate: {
+        type: Boolean,
+        required: false,
+        default: true,
+    },
+    hasImport: {
+        type: Boolean,
+        required: false,
+        default: true,
+    },
+    hasExport: {
+        type: Boolean,
+        required: false,
+        default: true,
+    },
+    showNo: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+    title: {
+        type: String,
+        required: true,
+    },
+    serverItems: {
+        type: Array,
+        required: true,
+    },
+    itemsLength: {
+        type: Number,
+        required: true,
+    },
+    itemsPerPage: {
+        type: Number,
+        required: false,
+        default: 10,
+    },
+    loading: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+    itemValue: {
+        type: String,
+        required: false,
+        default: 'id',
+    },
+    headers: {
+        type: Array,
+        required: true,
+    },
+});
 
-    const itemsPerPage = ref(props.itemsPerPage);
-    const page = ref(0);
+const itemsPerPage = ref(props.itemsPerPage);
+const page = ref(0);
 
-    const items = computed(() => {
-        if (props.showNo) {
-            return props.serverItems.map((item, index) => {
-                return {
-                    no: ((page.value - 1) * itemsPerPage.value) + index + 1,
-                    ...item,
-                };
-            });
-        } else {
-            return props.serverItems;
-        }
-    });
+const items = computed(() => {
+    if (props.showNo) {
+        return props.serverItems.map((item, index) => {
+            return {
+                no: ((page.value - 1) * itemsPerPage.value) + index + 1,
+                ...item,
+            };
+        });
+    } else {
+        return props.serverItems;
+    }
+});
 
-    const computedHeaders = computed(() => {
-        if (props.showNo) {
-            return [
-                {
-                    title: 'No',
-                    align: 'start',
-                    sortable: false,
-                    value: 'no',
-                },
-                ...props.headers,
-                {
-                    title: 'Actions',
-                    align: 'start',
-                    sortable: false,
-                    value: 'actions',
-                },
-            ];
-        } else {
-            return [
-                ...props.headers,
-                {
-                    title: 'Actions',
-                    align: 'start',
-                    sortable: false,
-                    value: 'actions',
-                },
-            ];
-        }
-    });
+const computedHeaders = computed(() => {
+    if (props.showNo) {
+        return [
+            {
+                title: __('No'),
+                align: 'start',
+                sortable: false,
+                value: 'no',
+            },
+            ...props.headers,
+            {
+                title: __('Actions'),
+                align: 'start',
+                sortable: false,
+                value: 'actions',
+            },
+        ];
+    } else {
+        return [
+            ...props.headers,
+            {
+                title: __('Actions'),
+                align: 'start',
+                sortable: false,
+                value: 'actions',
+            },
+        ];
+    }
+});
 
-    const itemsPerPageOptions = [5, 10, 20, 30, 40, 50];
+const itemsPerPageOptions = [5, 10, 20, 30, 40, 50];
 
-    const emits = defineEmits(['view', 'edit', 'delete', 'create', 'import', 'export', '@update:options']);
+const emits = defineEmits(['view', 'edit', 'delete', 'create', 'import', 'export', '@update:options']);
 
-    const updateOptionsCallback = (options) => {
-        page.value = options.page;
-        emits('@update:options', options);
-    };
+const updateOptionsCallback = (options) => {
+    page.value = options.page;
+    emits('@update:options', options);
+};
 
-    const viewItem = (item) => {
-        emits('view', item);
-    };
+const viewItem = (item) => {
+    emits('view', item);
+};
 
-    const editItem = (item) => {
-        emits('edit', item);
-    };
+const editItem = (item) => {
+    emits('edit', item);
+};
 
-    const deleteItem = (item) => {
-        emits('delete', item);
-    };
+const deleteItem = (item) => {
+    emits('delete', item);
+};
 
-    const createItem = () => {
-        emits('create');
-    };
+const createItem = () => {
+    emits('create');
+};
 
-    const importItem = () => {
-        emits('import');
-    };
+const importItem = () => {
+    emits('import');
+};
 
-    const exportItem = () => {
-        emits('export');
-    };
+const exportItem = () => {
+    emits('export');
+};
 </script>
+
+
+<style scoped>
+.no-spacing {
+    letter-spacing: 0;
+}
+</style>

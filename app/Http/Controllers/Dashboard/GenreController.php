@@ -5,8 +5,13 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Genre;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\GenresImport;
+use App\Exports\GenresExport;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class GenreController extends Controller
 {
@@ -17,7 +22,9 @@ class GenreController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $genres = Genre::all();
+        // $genres = Genre::all();
+        $perPage = request()->query('itemsPerPage', 5);
+        $genres = Genre::paginate($perPage)->appends(request()->query());
 
         return Inertia::render('Dashboard/Genres/Index', [
             'genres'     => $genres,
@@ -48,13 +55,13 @@ class GenreController extends Controller
 
         try {
 
-            Genre::create([
+            $genre = Genre::create([
                 'name' => $request->name,
                 'description' => $request->description,
             ]);
-
+            
             DB::commit();
-
+          
             return redirect()->route('dashboard.genres.index')->with('success', 'Genre created.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -158,4 +165,46 @@ class GenreController extends Controller
             return redirect()->route('dashboard.genres.index')->with('error', 'Genre not deleted.');
         }
     }
+
+       /**
+     * Show Import Genres form.
+     * @return \Inertia\Response
+     */
+    public function showImport(){
+        return Inertia::render('Dashboard/Genres/Import');
+    }
+
+    /**
+     * Import Genres from excel file.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function import(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            Excel::import(new GenresImport, $request->file('file'));
+            DB::commit();
+
+            return redirect()->route('dashboard.genres.index')->with('success', 'Genres imported.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('dashboard.genres.index')->with('error', $e->getMessage());
+        }
+    }
+
+
+    public function export()
+    {
+        return Excel::download(new GenresExport, 'genres.xlsx');
+    }
+
 }
+
