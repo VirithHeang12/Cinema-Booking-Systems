@@ -39,6 +39,7 @@ import FlagIcon from 'vue-flag-icon'
 import DashboardLayout from './Layouts/DashboardLayout.vue';
 import { Field, Form } from 'vee-validate';
 import DataTableServer from './Components/DataTableServer.vue';
+import LangFlag from "vue-lang-code-flags";
 
 const vuetify = createVuetify({
     components,
@@ -113,6 +114,7 @@ createInertiaApp({
         app.component('DataTableServer', DataTableServer);
         app.component("vee-form", Form);
         app.component("vee-field", Field);
+        app.component("LangFlag", LangFlag);
 
         app.mount(el)
     },

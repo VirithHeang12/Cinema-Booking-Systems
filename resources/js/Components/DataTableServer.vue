@@ -4,20 +4,20 @@
         :loading="loading" :items-per-page-options="itemsPerPageOptions">
         <template v-slot:top>
             <v-toolbar flat>
-                <v-toolbar-title>{{ title }}</v-toolbar-title>
+                <v-toolbar-title class="fw-semibold !text-2xl !text-zinc-800">{{ title }}</v-toolbar-title>
                 <v-spacer></v-spacer>
 
-                <v-btn v-if="hasImport" type="button" color="cyan-darken-4" class="m-2 fw-normal no-spacing"
+                <v-btn v-if="hasImport" type="button" color="cyan-darken-4" class="m-2 fw-medium !tracking-normal"
                     variant="outlined" @click="importItem()">
                     {{ __('Import') }}
                 </v-btn>
 
-                <v-btn v-if="hasExport" type="button" color="brown-darken-4" class="m-2 fw-normal no-spacing" variant="outlined"
+                <v-btn v-if="hasExport" type="button" color="brown-darken-4" class="m-2 fw-medium !tracking-normal" variant="outlined"
                     @click="exportItem()">
                     {{ __('Export') }}
                 </v-btn>
 
-                <v-btn v-if="hasCreate" @click="createItem()" class="m-2 fw-normal no-spacing" prepend-icon="mdi-plus" color="primary"
+                <v-btn v-if="hasCreate" @click="createItem()" class="m-2 fw-medium !tracking-normal" prepend-icon="mdi-plus" color="primary"
                     variant="outlined">
                     {{ __('New') }} {{ title }}
                 </v-btn>
@@ -184,9 +184,3 @@ const exportItem = () => {
 };
 </script>
 
-
-<style scoped>
-.no-spacing {
-    letter-spacing: 0;
-}
-</style>

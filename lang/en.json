@@ -62,5 +62,12 @@
     "Are you sure you want to delete this country?": "Are you sure you want to delete this country?",
     "Language name is required": "Language name is required",
     "Language code is required": "Language code is required",
-    "rating must be at least 1": "rating must be at least 1"
+    "rating must be at least 1": "rating must be at least 1",
+    "Show Classification": "Show Classification",
+    "Create Classification": "Create Classification",
+    "Update Classification": "Update Classification",
+    "Delete Classification": "Delete Classification",
+    "Created At": "Created At",
+    "Updated At": "Updated At"
+
 }

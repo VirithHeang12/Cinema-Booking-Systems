@@ -24,6 +24,7 @@
         "vite": "^6.0.7",
         "vite-plugin-vuetify": "^2.0.4",
         "vue-flag-icon": "^2.1.0",
+        "vue-lang-code-flags": "^1.0.13",
         "vuetify": "^3.7.5",
         "yup": "^1.6.1",
         "ziggy-js": "^2.5.0"
