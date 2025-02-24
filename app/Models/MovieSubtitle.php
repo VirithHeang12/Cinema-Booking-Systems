@@ -19,7 +19,7 @@ class MovieSubtitle extends Model
      */
     protected $fillable = [
         'movie_id',
-        'language',
+        'language_id',
     ];
 
     /**

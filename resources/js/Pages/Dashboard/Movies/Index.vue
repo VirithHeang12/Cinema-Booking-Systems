@@ -19,6 +19,8 @@
         }
     });
 
+    console.log(props.movies);
+
     const serverItems = computed(() => {
         return props.movies.data;
     });
@@ -97,15 +99,16 @@
     };
 
     const createCallback = () => {
-        visitModal(route('dashboard.movies.create'), {
-            config: {
-                slideover: true,
-                position: 'right',
-                closeExplicitly: true,
-                maxWidth: '2xl',
-            },
+        // visitModal(route('dashboard.movies.create'), {
+        //     config: {
+        //         slideover: true,
+        //         position: 'right',
+        //         closeExplicitly: true,
+        //         maxWidth: '2xl',
+        //     },
 
-        });
+        // });
+        router.get(route('dashboard.movies.create'));
     };
 
     const importCallback = () => {

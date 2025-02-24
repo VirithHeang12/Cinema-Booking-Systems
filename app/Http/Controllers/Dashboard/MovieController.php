@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
+use App\Models\MovieGenre;
+use App\Models\MovieSubtitle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -21,7 +23,7 @@ class MovieController extends Controller
         $perPage = request()->query('itemsPerPage', 5);
 
         $movies = QueryBuilder::for(Movie::class)
-            ->with(['movieGenres', 'Movie', 'classification', 'screenType', 'language', 'country'])
+            ->with(['movieGenres'])
             ->paginate($perPage)
             ->appends(request()->query());
 
@@ -54,18 +56,42 @@ class MovieController extends Controller
 
         try {
 
-            Movie::create([
-                'name' => $request->name,
-                'description' => $request->description,
+            $movie = Movie::create([
+                'title'                     => $request->title,
+                'description'               => $request->description,
+                'release_date'              => $request->release_date,
+                'duration'                  => $request->duration,
+                'rating'                    => $request->rating,
+                'trailer_url'               => $request->trailer_url,
+                'thumbnail_url'             => $request->thumbnail_url,
+                'production_company_id'     => $request->production_company_id,
+                'country_id'                => $request->country_id,
+                'classification_id'         => $request->classification_id,
+                'language_id'               => $request->language_id,
             ]);
+
+            foreach ($request->movieGenres as $genre) {
+                MovieGenre::create([
+                    'movie_id' => $movie->id,
+                    'genre_id' => $genre,
+                ]);
+            }
+
+            foreach ($request->movieSubtitles as $subtitle) {
+                MovieSubtitle::create([
+                    'movie_id' => $movie->id,
+                    'language_id' => $subtitle,
+                ]);
+            }
 
             DB::commit();
 
-            return redirect()->route('dashboard.hall_types.index')->with('success', 'Movie created.');
+            return redirect()->route('dashboard.movies.index')->with('success', 'Movie created.');
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
 
-            return redirect()->route('dashboard.hall_types.index')->with('error', 'Movie not created.');
+            return redirect()->route('dashboard.movies.index')->with('error', 'Movie not created.');
         }
     }
 
