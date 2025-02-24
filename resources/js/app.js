@@ -28,7 +28,7 @@ import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 
 // Matice
-import { __, trans, setLocale, getLocale, transChoice, MaticeLocalizationConfig, locales } from "matice"
+import { __, trans, setLocale, getLocale, transChoice, locales } from "matice"
 
 // Ziggy
 import { ZiggyVue } from 'ziggy-js';
@@ -39,7 +39,6 @@ import FlagIcon from 'vue-flag-icon'
 import DashboardLayout from './Layouts/DashboardLayout.vue';
 import { Field, Form } from 'vee-validate';
 import DataTableServer from './Components/DataTableServer.vue';
-import LangFlag from "vue-lang-code-flags";
 
 const vuetify = createVuetify({
     components,
@@ -114,7 +113,6 @@ createInertiaApp({
         app.component('DataTableServer', DataTableServer);
         app.component("vee-form", Form);
         app.component("vee-field", Field);
-        app.component("LangFlag", LangFlag);
 
         app.mount(el)
     },
