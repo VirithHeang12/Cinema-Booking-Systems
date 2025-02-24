@@ -21,6 +21,7 @@
 
 <script setup>
 import { useForm } from '@inertiajs/vue3'
+import { route } from 'ziggy-js'
 
 const form = useForm({
     name: '',
@@ -28,6 +29,6 @@ const form = useForm({
 });
 
 const submitForm = () => {
-    form.post(route('dashboard.screen-types.store'));
+    form.post(route('dashboard.screen_types.store'));
 }
 </script>
