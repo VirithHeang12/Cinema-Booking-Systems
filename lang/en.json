@@ -48,6 +48,8 @@
     "New": "New",
     "No": "No",
     "Actions": "Actions",
+    "Created At": "Created At",
+    "Updated At": "Updated At",
     "Cancel": "Cancel",
     "Delete": "Delete",
     "Update": "Update",
@@ -67,7 +69,8 @@
     "Create Classification": "Create Classification",
     "Update Classification": "Update Classification",
     "Delete Classification": "Delete Classification",
-    "Created At": "Created At",
-    "Updated At": "Updated At"
+    "Classification name is required.": "Classification name is required.",
+    "Classification name must not exceed 50 characters.": "Classification name must not exceed 50 characters.",
+    "Classification description is required.": "Classification description is required."
 
 }

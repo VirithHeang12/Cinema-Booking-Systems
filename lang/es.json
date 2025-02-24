@@ -61,6 +61,9 @@
     "Show Classification": "Mostrar Clasificación",
     "Create Classification": "Crear Clasificación",
     "Update Classification": "Actualizar Clasificación",
-    "Delete Classification": "Eliminar Clasificación"
+    "Delete Classification": "Eliminar Clasificación",
+    "Classification name is required.": "El nombre de la clasificación es obligatorio.",
+    "Classification name must not exceed 50 characters.": "El nombre de la clasificación no debe exceder los 50 caracteres.",
+    "Classification description is required.": "Se requiere descripción de clasificación."
 
 }
