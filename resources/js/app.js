@@ -28,7 +28,7 @@ import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 
 // Matice
-import { __, trans, setLocale, getLocale, transChoice, MaticeLocalizationConfig, locales } from "matice"
+import { __, trans, setLocale, getLocale, transChoice, locales } from "matice"
 
 // Ziggy
 import { ZiggyVue } from 'ziggy-js';

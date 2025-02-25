@@ -12,8 +12,8 @@
                             class="w-full py-2 font-medium text-gray-700 transition bg-gray-300 rounded-lg hover:bg-gray-400">
                             Cancel
                         </button>
-                        <button type="submit" @click="close"
-                            class="w-full py-2 font-medium text-white transition bg-red-600 rounded-lg hover:bg-red-700">
+                        <button type="button" @click="close"
+                            class="w-full py-2 font-medium text-red-700 transition bg-red-700 rounded-lg hover:bg-red-700">
                             Delete
                         </button>
                     </div>
@@ -27,6 +27,7 @@
 <script setup>
 import { defineProps } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
 
 const props = defineProps({
     screen_type: {
@@ -36,6 +37,6 @@ const props = defineProps({
 });
 
 const submitForm = () => {
-    router.delete(route('dashboard.screen-types.destroy', props.screen_type.id));
+    router.delete(route('dashboard.screen_types.destroy', props.screen_type.id));
 }
 </script>

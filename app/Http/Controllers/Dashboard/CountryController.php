@@ -7,6 +7,9 @@ use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CountriesImport;
+use App\Exports\CountriesExport;
 
 class CountryController extends Controller
 {
@@ -17,11 +20,12 @@ class CountryController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $countries = Country::all();
-        return Inertia::render(
-            'Dashboard/Countries/Index',
-            ['countries' => $countries]
-        );
+        $perPage = request()->query('itemsPerPage', 5);
+        $countries = Country::paginate($perPage)->appends(request()->query());
+
+        return Inertia::render('Dashboard/Countries/Index', [
+            'countries' => $countries,
+        ]);
     }
 
     /**
@@ -117,7 +121,8 @@ class CountryController extends Controller
      * @param  \App\Models\Country  $country
      * @return \Inertia\Response
      */
-    public function delete(Country $country): \Inertia\Response{
+    public function delete(Country $country): \Inertia\Response
+    {
         return Inertia::render('Dashboard/Countries/Delete', [
             'country'      => $country,
         ]);
@@ -129,7 +134,8 @@ class CountryController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      *
      */
-    public function destroy(Country $country): \Illuminate\Http\RedirectResponse{
+    public function destroy(Country $country): \Illuminate\Http\RedirectResponse
+    {
         DB::beginTransaction();
 
         try {
@@ -140,5 +146,44 @@ class CountryController extends Controller
             DB::rollBack();
             return redirect()->route('dashboard.countries.index')->with('error', 'Country not deleted.');
         }
+    }
+
+    /**
+     * Show Import countries form.
+     * @return \Inertia\Response
+     */
+    public function showImport(){
+        return Inertia::render('Dashboard/Countries/Import');
+    }
+
+     /**
+     * Import countries from excel file.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function import(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            Excel::import(new CountriesImport, $request->file('file'));
+            DB::commit();
+
+            return redirect()->route('dashboard.countries.index')->with('success', 'Countries imported.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('dashboard.countries.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function export()
+    {
+        return Excel::download(new CountriesExport, 'countries.xlsx');
     }
 }

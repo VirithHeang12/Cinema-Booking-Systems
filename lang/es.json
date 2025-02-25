@@ -16,7 +16,7 @@
         "searchPlaceholder": "Buscar ubicaciones.....",
         "view_showtimes": "Ver horarios"
     },
-    "contactPage":{
+    "contactPage": {
         "contact_info": "Información de Contacto",
         "advertising_partnership_card": "Tarjeta de Publicidad y Asociación"
     },
@@ -35,6 +35,35 @@
     "Delete Language": "Eliminar Idioma",
     "Code": "Código",
     "Name": "Nombre",
+    "Submit": "Submitar",
+    "Import": "Importar",
+    "Export": "Exportar",
+    "New": " Nuevo",
+    "No": "Número",
+    "Created At": "Creado en",
+    "Updated At": "Actualizado en",
+    "Actions": "Comportamiento",
+    "Cancel": "Cancelar",
+    "Delete": "Borrar",
+    "Update": "Actualizar",
+    "Show Country": "Mostrar país",
+    "Create Country": "La calificación debe",
+    "Update Country": "Crear Países",
+    "Delete Country": "Actualizar Países",
+    "Import Country": "País de importación",
+    "Upload": "Subir",
+    "Please select spreadsheet file": "Por favor seleccione el archivo de hoja de cálculo",
+    "Country name is required": "El nombre del país es obligatorio",
+    "Are you sure you want to delete this country?": "Estás seguro de que deseas eliminar este país?",
     "Language name is required": "El nombre del idioma es obligatorio",
-    "Language code is required": "El código de idioma es obligatorio"
+    "Language code is required": "El código de idioma es obligatorio",
+    "rating must be at least 1": "la calificación debe ser al menos 1",
+    "Show Classification": "Mostrar Clasificación",
+    "Create Classification": "Crear Clasificación",
+    "Update Classification": "Actualizar Clasificación",
+    "Delete Classification": "Eliminar Clasificación",
+    "Classification name is required.": "El nombre de la clasificación es obligatorio.",
+    "Classification name must not exceed 50 characters.": "El nombre de la clasificación no debe exceder los 50 caracteres.",
+    "Classification description is required.": "Se requiere descripción de clasificación."
+
 }
