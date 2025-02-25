@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\CountryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\ClassificationController;
 use App\Http\Controllers\Dashboard\GenreController;
+use App\Http\Controllers\Dashboard\HallController;
 use App\Http\Controllers\Dashboard\HallTypeController;
 use App\Http\Controllers\Dashboard\MovieController;
 use App\Http\Controllers\Dashboard\ScreenTypeController;
@@ -40,6 +41,8 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('screen_types/{screen_type}/delete', [ScreenTypeController::class, 'delete'])->name('screen_types.delete');
     Route::get('classifications/{classification}/delete', [ClassificationController::class, 'delete'])->name('classifications.delete');
     Route::get('movies/{movie}/delete', [MovieController::class, 'delete'])->name('movies.delete');
+    Route::get('halls/{hall}/delete', [HallController::class, 'delete'])->name('halls.delete');
+
 
     Route::resource('languages', LanguageController::class);
     Route::resource('countries', CountryController::class);
@@ -48,6 +51,7 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::resource('hall_types', HallTypeController::class);
     Route::resource('screen_types', ScreenTypeController::class);
     Route::resource('movies', MovieController::class);
+    Route::resource('halls', HallController::class);
 });
 
 
