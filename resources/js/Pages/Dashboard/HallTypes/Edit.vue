@@ -1,21 +1,37 @@
 <template>
     <Modal v-slot="{ close }">
-        <div>
-            <h1 class="mb-4">Edit HallType</h1>
-            <form @submit.prevent="submitForm">
-                <div class="form-group mb-3">
-                    <label for="id">ID</label>
-                    <input type="text" v-model="form.id" class="form-control" id="id" name="id">
+        <div class="container mt-5 d-flex flex-column align-items-center">
+            <h1 class="fw-semibold mb-4 text-zinc-800">{{ __('Update HallType') }}</h1>
+            <form @submit.prevent="submitForm" class="col-12">
+                <div class="mb-3">
+                <label for="name" class="form-label">{{ __('Name') }}</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    v-model="form.name"
+                    id="name"
+                    name="name"
+                    placeholder="Enter name"
+                />
                 </div>
-                <div class="form-group mb-3">
-                    <label for="name">Name</label>
-                    <input type="text" v-model="form.name" class="form-control" id="name" name="name">
+                <div class="mb-3">
+                <label for="description" class="form-label">{{ __('Description') }}</label>
+                <textarea
+                    class="form-control"
+                    v-model="form.description"
+                    id="description"
+                    name="description"
+                    rows="3"
+                    placeholder="Enter description"
+                ></textarea>
                 </div>
-                <div class="form-group mb-4">
-                    <label for="description">Description</label>
-                    <input type="text" v-model="form.description" class="form-control" id="description" name="description">
-                </div>
-                <button type="submit" @click="close" class="btn btn-dark text-white">Submit</button>
+                <button
+                type="submit"
+                @click="close"
+                class="btn btn-primary !font-medium !text-zinc-50"
+                >
+                    {{ __('Submit') }}
+                </button>
             </form>
         </div>
     </Modal>
