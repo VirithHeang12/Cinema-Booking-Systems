@@ -58,6 +58,7 @@
     "Update Country": "Update Countries",
     "Delete Country": "Delete Countries",
     "Import Country": "Import Country",
+    "Import Genres": "Import Genres",
     "Upload": "Upload",
     "Please select spreadsheet file": "Please select spreadsheet file",
     "Country name is required": "Country name is required",
@@ -71,6 +72,12 @@
     "Delete Classification": "Delete Classification",
     "Classification name is required.": "Classification name is required.",
     "Classification name must not exceed 50 characters.": "Classification name must not exceed 50 characters.",
-    "Classification description is required.": "Classification description is required."
+    "Classification description is required.": "Classification description is required.",
+    "Genre name is required": "Genre name is required.",
+    "Genre name must not exceed 50 characters.": "Genre name must not exceed 50 characters.",
+    "Create Genre": "Create Genre",
+    "Edit Genre": "Edit Genre",
+    "Are you want to delete this genre?": "Are you want to delete this genre?",
+    "Description": "Description"
 
 }

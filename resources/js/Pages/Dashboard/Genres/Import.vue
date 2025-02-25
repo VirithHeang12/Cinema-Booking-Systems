@@ -1,11 +1,11 @@
 <template>
   <Modal v-slot="{ close }">
     <div class="container d-flex flex-column align-items-center">
-      <h1 class="fw-semibold mb-4 !text-zinc-800">Import Genres</h1>
+      <h1 class="fw-semibold mb-4 !text-zinc-800">{{ __('Import Genres') }}</h1>
       <form @submit.prevent="submitForm" class="col-12">
         <div class="mb-3">
           <label for="file" class="form-label"
-            >Please select spreadsheet file:</label
+            >{{ __('Please select spreadsheet file') }}</label
           >
           <input
             type="file"
@@ -21,7 +21,7 @@
           type="submit"
           class="btn btn-primary px-5 float-end !font-medium !text-zinc-50"
         >
-          Upload
+          {{__('Upload')}}
         </button>
       </form>
     </div>
