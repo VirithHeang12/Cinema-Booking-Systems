@@ -17,7 +17,7 @@
                 <v-menu>
                     <template v-slot:activator="{ props }">
                         <v-btn color="primary" dark v-bind="props">
-                            <lang-flag :iso="getLocale().toLowerCase()" />
+                            <flag :iso="getLocale().toLowerCase()" />
                         </v-btn>
                     </template>
 

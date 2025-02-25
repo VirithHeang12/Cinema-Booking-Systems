@@ -22,6 +22,7 @@
 <script setup>
 import { defineProps } from 'vue';
 import { useForm } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
 
 const props = defineProps({
     screen_type: {
@@ -36,6 +37,6 @@ const form = useForm({
 });
 
 const submitForm = () => {
-    form.put(route('dashboard.screen-types.update', props.screen_type.id));
+    form.put(route('dashboard.screen_types.update', props.screen_type.id));
 }
 </script>
