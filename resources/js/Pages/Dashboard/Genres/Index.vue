@@ -123,22 +123,34 @@
 </script> -->
 
 <template>
-    <data-table-server :showNo="true" title="Genre" :serverItems="serverItems" :items-length="totalItems"
-        :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
-        @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true"
-        @view="viewCallback"
-      @delete="deleteCallback"
-      @edit="editCallback"
-      @create="createCallback"
-      @import="importCallback"
-      @export="exportCallback"/>
+    <data-table-server 
+    :showNo="true" 
+    :title="__('Genres')" 
+    :serverItems="serverItems"  
+    :items-length="totalItems"
+    :headers="headers" 
+    :loading="loading" 
+    :server-items="serverItems" 
+    :items-per-page="itemsPerPage" 
+    item-value="id"
+    @update:options="loadItems" 
+    :has-create="true" 
+    :has-import="true" 
+    :has-export="true"
+    @view="viewCallback"
+    @delete="deleteCallback"
+    @edit="editCallback"
+    @create="createCallback"
+    @import="importCallback"
+    @export="exportCallback"/>
   </template>
 
   <script setup>
-    import { computed, ref } from 'vue'
-    import { router } from '@inertiajs/vue3';
-    import { route } from 'ziggy-js';
-    import { visitModal } from '@inertiaui/modal-vue';
+    import { computed, ref } from "vue";
+    import { visitModal } from "@inertiaui/modal-vue";
+    import { router } from "@inertiajs/vue3";
+    import { route } from "ziggy-js";
+    import { __ } from 'matice';
 
     const props = defineProps({
         genres: {
@@ -162,25 +174,25 @@
 
     const headers = [
         {
-            title: 'Name',
+            title:  __('Name'),
             align: 'start',
             sortable: true,
             key: 'name',
         },
         {
-            title: 'Description',
+            title:  __('Description'),
             align: 'start',
             sortable: true,
             key: 'description',
         },
         {
-            title: 'Created At',
+            title:  __('Created At'),
             align: 'start',
             sortable: true,
             key: 'created_at',
         },
         {
-            title: 'Updated At',
+            title:  __('Updated At'),
             align: 'start',
             sortable: true,
             key: 'updated_at',

@@ -52,6 +52,7 @@
     "Update Country": "Crear Países",
     "Delete Country": "Actualizar Países",
     "Import Country": "País de importación",
+    "Import Genres": "Importar Géneros",
     "Upload": "Subir",
     "Please select spreadsheet file": "Por favor seleccione el archivo de hoja de cálculo",
     "Country name is required": "El nombre del país es obligatorio",
@@ -73,6 +74,12 @@
     "Import HallType": "Importación HallType",
     "HallType name is required.": "El nombre del tipo HallType es obligatorio.",
     "HallType name must not exceed 50 characters.": "El nombre de HallType no debe exceder los 50 caracteres.",
-    "Do you want to delete this HallType ?": "¿Quieres eliminar este HallType?"
+    "Do you want to delete this HallType ?": "¿Quieres eliminar este HallType?",
+    "Genre name is required.": "El nombre del género es obligatorio.",
+    "Genre name must not exceed 50 characters.": "El nombre del género no debe exceder los 50 caracteres.",
+    "Create Genre": "Crear Género",
+    "Edit Genre": "Editar Género",
+    "Are you sure you want to delete this genre?": "¿Estás seguro de que deseas eliminar este género?",
+    "Description": "Descripción"
 
 }
