@@ -1,12 +1,10 @@
 <template>
-    <Modal v-slot="{ close }">
-        <div>
-            <h1>Delete Language</h1>
-            <form @submit.prevent="submitForm">
-                <button @click="close">Delete</button>
-            </form>
-        </div>
-    </Modal>
+    <div>
+        <h1>Delete Language</h1>
+        <form @submit.prevent="submitForm">
+            <button>Delete</button>
+        </form>
+    </div>
 </template>
 
 <script setup>

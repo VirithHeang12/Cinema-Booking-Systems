@@ -1,23 +1,21 @@
 <template>
-    <Modal v-slot="{ close }">
-        <div>
-            <h1>{{ __('Create Language') }}</h1>
-            <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
-                <vee-field name="code" v-slot="{ field, errors }">
-                    <v-text-field v-bind="field" :error-messages="errors" v-model="form.code" :label="__('Code')"
-                        variant="outlined"></v-text-field>
-                </vee-field>
+    <div>
+        <h1>{{ __('Create Language') }}</h1>
+        <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
+            <vee-field name="code" v-slot="{ field, errors }">
+                <v-text-field v-bind="field" :error-messages="errors" v-model="form.code" :label="__('Code')"
+                    variant="outlined"></v-text-field>
+            </vee-field>
 
-                <vee-field name="name" v-slot="{ field, errors }">
-                    <v-text-field v-bind="field" :error-messages="errors" v-model="form.name" :label="__('Name')"
-                        variant="outlined"></v-text-field>
-                </vee-field>
+            <vee-field name="name" v-slot="{ field, errors }">
+                <v-text-field v-bind="field" :error-messages="errors" v-model="form.name" :label="__('Name')"
+                    variant="outlined"></v-text-field>
+            </vee-field>
 
-                <v-btn @click="close" color="primary" :disabled="!meta.valid || form.processing"
-                    :loading="form.processing" @click.prevent="submitForm(setErrors)" block>Submit</v-btn>
-            </vee-form>
-        </div>
-    </Modal>
+            <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
+                @click.prevent="submitForm(setErrors)" block>Submit</v-btn>
+        </vee-form>
+    </div>
 </template>
 
 <script setup>
