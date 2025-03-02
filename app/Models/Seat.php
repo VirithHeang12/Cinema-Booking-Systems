@@ -17,4 +17,34 @@ class Seat extends Model
         'row',
         'number',
     ];
+
+    /**
+     * Get the show seats for the seat.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function showseats(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ShowSeat::class);
+    }
+
+    /**
+     * Get the hall that owns the seat.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function hall(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Hall::class);
+    }
+
+    /**
+     * Get the seat type that owns the seat.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function seatType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(SeatType::class);
+    }
 }

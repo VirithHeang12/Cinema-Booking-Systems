@@ -15,4 +15,6 @@ class AudioSystem extends Model
         'name',
         'description',
     ];
+
+    // This Model will be removed soon. (reduce project scope)
 }

@@ -13,12 +13,42 @@ class Booking extends Model
 
     use SoftDeletes;
     protected $fillable = [
+        'user_id',
         'guest_email',
+        'payment_method_id',
         'qr_code',
         'total_amount',
         'booking_date',
         'status',
-        'user_id',
-        'payment_method_id',
     ];
+
+    /**
+     * Get the showseats for the booking.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function showSeats(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ShowSeat::class);
+    }
+
+    /**
+     * Get the payment method that owns the booking.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function paymentMethod(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
+    /**
+     * Get the user that owns the booking.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

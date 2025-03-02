@@ -12,4 +12,14 @@ class Country extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = ['name'];
+
+    /**
+     * Get the movies for the country.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function movies(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Movie::class);
+    }
 }

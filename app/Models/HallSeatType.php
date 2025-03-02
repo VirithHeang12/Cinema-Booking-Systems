@@ -16,4 +16,24 @@ class HallSeatType extends Model
         'hall_type_id',
         'maximum_capacity',
     ];
+
+    /**
+     * Get the hall that owns the hall seat type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function hall(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Hall::class);
+    }
+
+    /**
+     * Get the seat type that owns the hall seat type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function seatType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(SeatType::class);
+    }
 }

@@ -17,4 +17,35 @@ class ShowSeat extends Model
         'booking_id',
         'status',
     ];
+
+    /**
+     * Get the show that owns the show seat.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function show(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Show::class);
+    }
+
+    /**
+     * Get the seat that owns the show seat.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function seat(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Seat::class);
+    }
+
+    /**
+     * Get the booking that owns the show seat.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function booking(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Booking::class);
+    }
+
 }
