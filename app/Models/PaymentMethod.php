@@ -12,4 +12,14 @@ class PaymentMethod extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = ['name', 'description', 'is_active'];
+
+    /**
+     * Get the bookings for the payment method.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function paymentmethods(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

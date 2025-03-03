@@ -15,4 +15,14 @@ class ScreenType extends Model
         'name',
         'description',
     ];
+
+    /**
+     * Get the shows for the screen.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function shows(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Show::class);
+    }
 }
