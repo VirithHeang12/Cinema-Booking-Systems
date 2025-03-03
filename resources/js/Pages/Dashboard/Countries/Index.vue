@@ -103,11 +103,12 @@ const createCallback = () => {
             slideover: true,
             position: 'right',
             closeExplicitly: true,
-            maxWidth: '2xl',
+            maxWidth: 'xl',
         },
 
     });
 };
+
 
 const importCallback = () => {
     visitModal(route("dashboard.countries.import.show"), {
