@@ -12,4 +12,7 @@ class ProductionCompany extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = ['name', 'description'];
+
+    // This Model will be removed soon. (reduce project scope)
+
 }

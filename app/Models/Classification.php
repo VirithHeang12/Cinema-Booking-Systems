@@ -12,4 +12,14 @@ class Classification extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = ['name', 'description'];
+
+    /**
+     * Get the movies for the classification.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function movies(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Movie::class);
+    }
 }

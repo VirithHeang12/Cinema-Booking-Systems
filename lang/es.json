@@ -79,7 +79,6 @@
     "Genre name must not exceed 50 characters.": "El nombre del género no debe exceder los 50 caracteres.",
     "Create Genre": "Crear Género",
     "Edit Genre": "Editar Género",
-    "Are you sure you want to delete this genre?": "¿Estás seguro de que deseas eliminar este género?",
-    "Description": "Descripción"
+    "Are you sure you want to delete this genre?": "¿Estás seguro de que deseas eliminar este género?"
 
 }

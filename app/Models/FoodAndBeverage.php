@@ -13,4 +13,7 @@ class FoodAndBeverage extends Model
     use SoftDeletes;
 
     protected $fillable = ['name', 'image', 'price'];
+
+    // This Model will be removed soon. (reduce project scope)
+
 }
