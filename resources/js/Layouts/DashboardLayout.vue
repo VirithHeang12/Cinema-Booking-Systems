@@ -13,6 +13,7 @@
         </v-main>
         <Footer />
     </v-app>
+
 </template>
 
 <script setup>

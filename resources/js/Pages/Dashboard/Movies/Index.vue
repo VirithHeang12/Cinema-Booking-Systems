@@ -8,8 +8,9 @@
 
 <script setup>
     import { computed, ref } from 'vue'
-    import { router } from '@inertiajs/vue3';
     import { route } from 'ziggy-js';
+    import { router } from '@inertiajs/vue3';
+    import { visitModal } from '@inertiaui/modal-vue';
 
     const props = defineProps({
         movies: {
@@ -17,8 +18,6 @@
             required: true,
         }
     });
-
-    console.log(props.movies);
 
     const serverItems = computed(() => {
         return props.movies.data;
@@ -54,25 +53,31 @@
     }
 
     const viewCallback = (item) => {
-        router.get(route('dashboard.movies.show', {
-            movie: item.id,
-        }));
+        // router.get(route('dashboard.movies.show', {
+        //     movie: item.id,
+        // }));
     };
 
     const editCallback = (item) => {
-        router.get(route('dashboard.movies.edit', {
-            movie: item.id,
-        }));
+        // router.get(route('dashboard.movies.edit', {
+        //     movie: item.id,
+        // }));
     };
 
     const deleteCallback = (item) => {
-        router.get(route('dashboard.movies.delete', {
-            movie: item.id,
-        }));
+        // router.get(route('dashboard.movies.delete', {
+        //     movie: item.id,
+        // }));
+
     };
 
+    /**
+     * Create callback
+     *
+     * @returns {void}
+     */
     const createCallback = () => {
-        router.get(route('dashboard.movies.create'));
+        visitModal(route('dashboard.movies.create'));
     };
 
     const importCallback = () => {

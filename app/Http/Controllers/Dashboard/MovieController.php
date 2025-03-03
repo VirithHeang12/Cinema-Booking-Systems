@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\QueryBuilder;
+use InertiaUI\Modal\Modal;
 
 class MovieController extends Controller
 {
@@ -35,12 +36,12 @@ class MovieController extends Controller
     /**
      * Show the form for creating a new Movie.
      *
-     * @return \Inertia\Response
+     * @return Modal
      *
      */
-    public function create(): \Inertia\Response
+    public function create(): Modal
     {
-        return Inertia::render('Dashboard/Movies/Create');
+        return Inertia::modal('Dashboard/Movies/Create')->baseRoute('dashboard.movies.index');
     }
 
     /**

@@ -1,5 +1,7 @@
 import './bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import "vue-multiselect/dist/vue-multiselect.css";
+
 
 import DefaultLayout from './Layouts/DefaultLayout.vue';
 
@@ -10,6 +12,9 @@ import { Link } from "@inertiajs/vue3";
 
 // Inertia Modal
 import { renderApp, ModalLink, Modal, putConfig } from '@inertiaui/modal-vue'
+
+// Vue Multiselect
+import VueMultiselect from 'vue-multiselect'
 
 // Custom components
 import DataTable from './Components/DataTable.vue';
@@ -42,20 +47,20 @@ const vuetify = createVuetify({
 })
 
 putConfig({
-    type: 'modal',
-    navigate: false,
+    type: 'slideover',
+    navigate: true,
     modal: {
         closeButton: true,
         closeExplicitly: false,
         maxWidth: '2xl',
-        paddingClasses: 'p-4 sm:p-6',
+        paddingClasses: 'p-8 sm:p-6',
         panelClasses: 'bg-white rounded',
         position: 'center',
     },
     slideover: {
         closeButton: true,
-        closeExplicitly: false,
-        maxWidth: 'md',
+        closeExplicitly: true,
+        maxWidth: '4xl',
         paddingClasses: 'p-4 sm:p-6',
         panelClasses: 'bg-white min-h-screen',
         position: 'right',
@@ -110,6 +115,7 @@ createInertiaApp({
         app.component('DataTableServer', DataTableServer);
         app.component("vee-form", Form);
         app.component("vee-field", Field);
+        app.component('vue-multiselect', VueMultiselect);
 
         app.mount(el)
     },
