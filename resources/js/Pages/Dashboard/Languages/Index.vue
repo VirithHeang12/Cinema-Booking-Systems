@@ -4,8 +4,8 @@
 </template>
 
 <script setup>
-    import { computed, ref } from 'vue';
-    import { router } from '@inertiajs/vue3';
+    import { computed, ref } from 'vue'
+    import { visitModal } from '@inertiaui/modal-vue';
     import { route } from 'ziggy-js';
 
     const props = defineProps({
@@ -68,24 +68,58 @@
     ]);
 
     const viewCallback = (item) => {
-        router.get(route('dashboard.languages.show', {
+        visitModal(route('dashboard.languages.show', {
             language: item.id,
-        }));
+        }), {
+            method: 'get',
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+        });
+
     };
 
     const editCallback = (item) => {
-        router.get(route('dashboard.languages.edit', {
+        visitModal(route('dashboard.languages.edit', {
             language: item.id,
-        }));
+        }), {
+            method: 'get',
+            config: {
+                slideover: true,
+                position: 'right',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+        });
     };
 
     const deleteCallback = (item) => {
-        router.get(route('dashboard.languages.delete', {
+        visitModal(route('dashboard.languages.delete', {
             language: item.id,
-        }));
+        }), {
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+
+        });
+
     };
 
     const createCallback = () => {
-        router.get(route('dashboard.languages.create'));
+        visitModal(route('dashboard.languages.create'), {
+            config: {
+                slideover: true,
+                position: 'right',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+
+        });
     };
 </script>

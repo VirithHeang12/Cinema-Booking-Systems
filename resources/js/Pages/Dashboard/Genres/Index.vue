@@ -1,3 +1,127 @@
+<!-- <template>
+    <data-table title="Genre" :items="items" :headers="headers" :sort-by="sortBy" @view="viewCallback"
+        @delete="deleteCallback" @edit="editCallback" @create="createCallback" />
+</template>
+
+<script setup>
+    import { computed, ref } from 'vue'
+    import { visitModal } from '@inertiaui/modal-vue';
+    import { route } from 'ziggy-js';
+
+    const props = defineProps({
+        genres: {
+            type: Array,
+            required: true,
+        }
+    });
+
+    const items = computed(() => {
+        return props.genres;
+    });
+
+    const headers = [
+        {
+            title: 'Name',
+            align: 'start',
+            sortable: true,
+            key: 'name',
+        },
+        {
+            title: 'Description',
+            align: 'start',
+            sortable: true,
+            key: 'description',
+        },
+        {
+            title: 'Created At',
+            align: 'start',
+            sortable: true,
+            key: 'created_at',
+        },
+        {
+            title: 'Updated At',
+            align: 'start',
+            sortable: true,
+            key: 'updated_at',
+        },
+    ];
+
+    const sortBy = ref([
+        {
+            key: 'name',
+            direction: 'asc',
+        },
+        {
+            key: 'Description',
+            direction: 'asc',
+        },
+        {
+            key: 'created_at',
+            direction: 'asc',
+        },
+        {
+            key: 'updated_at',
+            direction: 'asc',
+        }
+    ]);
+
+    const viewCallback = (item) => {
+        visitModal(route('dashboard.genres.show', {
+            genre: item.id,
+        }), {
+            method: 'get',
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+        });
+
+    };
+
+    const editCallback = (item) => {
+        visitModal(route('dashboard.genres.edit', {
+            genre: item.id,
+        }), {
+            method: 'get',
+            config: {
+                slideover: true,
+                position: 'right',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+        });
+    };
+
+    const deleteCallback = (item) => {
+        visitModal(route('dashboard.genres.delete', {
+            genre: item.id,
+        }), {
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+
+        });
+
+    };
+
+    const createCallback = () => {
+        visitModal(route('dashboard.genres.create'), {
+            config: {
+                slideover: true,
+                position: 'right',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+
+        });
+    };
+</script> -->
+
 <template>
     <data-table-server :showNo="true" :title="__('Genres')" :serverItems="serverItems" :items-length="totalItems"
         :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
@@ -8,6 +132,7 @@
 
 <script setup>
     import { computed, ref } from "vue";
+    import { visitModal } from "@inertiaui/modal-vue";
     import { router } from "@inertiajs/vue3";
     import { route } from "ziggy-js";
     import { __ } from 'matice';
@@ -80,29 +205,70 @@
     }
 
     const viewCallback = (item) => {
-        router.get(route('dashboard.genres.show', {
+        visitModal(route('dashboard.genres.show', {
             genre: item.id,
-        }));
+        }), {
+            method: 'get',
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+        });
+
     };
 
     const editCallback = (item) => {
-        router.get(route('dashboard.genres.edit', {
+        visitModal(route('dashboard.genres.edit', {
             genre: item.id,
-        }));
+        }), {
+            method: 'get',
+            config: {
+                slideover: true,
+                position: 'right',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+        });
     };
 
     const deleteCallback = (item) => {
-        router.get(route('dashboard.genres.delete', {
+        visitModal(route('dashboard.genres.delete', {
             genre: item.id,
-        }));
+        }), {
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+
+        });
+
     };
 
     const createCallback = () => {
-        router.get(route('dashboard.genres.create'));
+        visitModal(route('dashboard.genres.create'), {
+            config: {
+                slideover: true,
+                position: 'right',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+
+        });
     };
 
     const importCallback = () => {
-        router.get(route('dashboard.genres.import.show'));
+        visitModal(route("dashboard.genres.import.show"), {
+            config: {
+                slideover: false,
+                position: "center",
+                closeExplicitly: true,
+                maxWidth: "xl",
+            },
+        });
     };
 
     const exportCallback = () => {

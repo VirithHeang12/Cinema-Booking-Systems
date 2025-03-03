@@ -1,23 +1,27 @@
 <template>
-    <div>
-        <h4 class="text-gray-600 mb-5">{{ __('Create Country') }}</h4>
-        <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
-            <vee-field name="name" v-slot="{ field, errors }">
-                <div class="mb-3">
-                    <label for="name" class="form-label">{{ __('Name') }}</label>
-                    <input type="text" id="name" class="form-control" v-bind="field" v-model="form.name"
-                        :aria-describedby="'nameError'" />
-                    <span v-if="errors.length" id="nameError" class="text-danger">{{ errors[0] }}</span>
-                </div>
-            </vee-field>
-            <v-btn color="primary" class="mt-4 d-inline-flex justify-content-start "
-                :disabled="!meta.valid || form.processing" @click.prevent="submitForm(setErrors)">
-                <span v-if="form.processing" class="spinner-border spinner-border-sm me-2" role="status"
-                    aria-hidden="true"></span>
-                {{ __('Submit') }}
-            </v-btn>
-        </vee-form>
-    </div>
+    <Modal v-slot="{ close }">
+        <div>
+            <h4 class="text-gray-600 mb-5">{{ __('Create Country') }}</h4>
+            <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
+                <vee-field name="name" v-slot="{ field, errors }">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">{{ __('Name') }}</label>
+                        <input type="text" id="name" class="form-control" v-bind="field" v-model="form.name"
+                            :aria-describedby="'nameError'" />
+                        <span v-if="errors.length" id="nameError" class="text-danger">{{ errors[0] }}</span>
+                    </div>
+                </vee-field>
+                <v-btn @click="close" color="primary" class="mt-4 d-inline-flex justify-content-start "
+                    :disabled="!meta.valid || form.processing" @click.prevent="submitForm(setErrors)">
+                    <span v-if="form.processing" class="spinner-border spinner-border-sm me-2" role="status"
+                        aria-hidden="true"></span>
+                    {{ __('Submit') }}
+                </v-btn>
+
+
+            </vee-form>
+        </div>
+    </Modal>
 </template>
 
 <script setup>

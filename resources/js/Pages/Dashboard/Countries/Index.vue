@@ -8,6 +8,7 @@
 
 <script setup>
     import { computed, ref } from 'vue'
+    import { visitModal } from '@inertiaui/modal-vue';
     import { router } from '@inertiajs/vue3';
     import { route } from 'ziggy-js';
     import { __ } from 'matice';
@@ -53,29 +54,70 @@
     }
 
     const viewCallback = (item) => {
-        router.get(route('dashboard.countries.show', {
+        visitModal(route('dashboard.countries.show', {
             country: item.id,
-        }));
+        }), {
+            method: 'get',
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: 'xl',
+            },
+        });
     };
 
     const editCallback = (item) => {
-        router.get(route('dashboard.countries.edit', {
+        visitModal(route('dashboard.countries.edit', {
             country: item.id,
-        }));
+        }), {
+            method: 'get',
+            config: {
+                slideover: true,
+                position: 'right',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+        });
     };
 
     const deleteCallback = (item) => {
-        router.get(route('dashboard.countries.delete', {
+        visitModal(route('dashboard.countries.delete', {
             country: item.id,
-        }));
+        }), {
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: 'xl',
+
+            },
+
+        });
+
     };
 
     const createCallback = () => {
-        router.get(route('dashboard.countries.create'));
+        visitModal(route('dashboard.countries.create'), {
+            config: {
+                slideover: true,
+                position: 'right',
+                closeExplicitly: true,
+                maxWidth: '2xl',
+            },
+
+        });
     };
 
     const importCallback = () => {
-        router.get(route('dashboard.countries.import.show'));
+        visitModal(route("dashboard.countries.import.show"), {
+            config: {
+                slideover: false,
+                position: "center",
+                closeExplicitly: true,
+                maxWidth: "xl",
+            },
+        });
     };
 
     const exportCallback = () => {
