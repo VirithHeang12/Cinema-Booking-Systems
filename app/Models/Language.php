@@ -16,4 +16,24 @@ class Language extends Model
         'name',
         'code',
     ];
+
+    /**
+     * Get movies that use this language.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function movies(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Movie::class);
+    }
+
+    /**
+     * Get movie subtitles that use this language.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function movieSubtitles(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(MovieSubtitle::class);
+    }
 }

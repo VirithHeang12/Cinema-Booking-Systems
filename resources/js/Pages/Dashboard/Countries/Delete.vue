@@ -21,13 +21,13 @@
                         </g>
                     </svg>
                 </div>
-                <p class="my-4 text-gray-600 text-[18px]">{{__('Are you sure you want to delete this country?')}}</p>
+                <p class="my-4 text-gray-600 text-[18px]">{{ __('Are you sure you want to delete this country?') }}</p>
                 <div class="d-flex justify-content-end gap-3">
                     <button type="button" @click="close" class="btn btn-secondary text-white">
-                        {{__('Cancel')}}
+                        {{ __('Cancel') }}
                     </button>
-                    <button type="submit"  @click="close" class="btn btn-danger text-white">
-                        {{__('Delete')}}
+                    <button type="submit" @click="close" class="btn btn-danger text-white">
+                        {{ __('Delete') }}
                     </button>
                 </div>
             </div>
@@ -37,17 +37,17 @@
 
 
 <script setup>
-import { defineProps } from 'vue';
-import { router } from '@inertiajs/vue3';
+    import { defineProps } from 'vue';
+    import { router } from '@inertiajs/vue3';
 
-const props = defineProps({
-    country: {
-        type: Object,
-        required: true,
+    const props = defineProps({
+        country: {
+            type: Object,
+            required: true,
+        }
+    });
+
+    const submitForm = () => {
+        router.delete(route('dashboard.countries.destroy', props.country.id));
     }
-});
-
-const submitForm = () => {
-    router.delete(route('dashboard.countries.destroy', props.country.id));
-}
 </script>

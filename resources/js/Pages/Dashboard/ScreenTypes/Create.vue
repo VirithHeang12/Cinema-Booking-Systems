@@ -20,15 +20,15 @@
 </template>
 
 <script setup>
-import { useForm } from '@inertiajs/vue3'
-import { route } from 'ziggy-js'
+    import { useForm } from '@inertiajs/vue3'
+    import { route } from 'ziggy-js'
 
-const form = useForm({
-    name: '',
-    description: '',
-});
+    const form = useForm({
+        name: '',
+        description: '',
+    });
 
-const submitForm = () => {
-    form.post(route('dashboard.screen_types.store'));
-}
+    const submitForm = () => {
+        form.post(route('dashboard.screen_types.store'));
+    }
 </script>

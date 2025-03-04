@@ -17,4 +17,7 @@ class BookingFB extends Model
         'quantity',
         'amount',
     ];
+
+    // This Model will be removed soon. (reduce project scope)
+
 }

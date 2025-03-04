@@ -15,4 +15,14 @@ class HallType extends Model
         'name',
         'description',
     ];
+
+    /**
+     * Get the halls for the hall type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function halls(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Hall::class);
+    }
 }

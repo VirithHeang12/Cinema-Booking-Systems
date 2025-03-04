@@ -23,13 +23,12 @@ class Movie extends Model
         'description',
         'release_date',
         'duration',
+        'country_id',
+        'language_id',
         'rating',
         'trailer_url',
         'thumbnail_url',
-        'production_company_id',
-        'country_id',
-        'classification_id',
-        'language_id'
+        'classification_id'
     ];
 
     /**
@@ -40,16 +39,6 @@ class Movie extends Model
     protected $casts = [
         'release_date' => 'datetime',
     ];
-
-    /**
-     * Get the production company that owns the movie.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function productionCompany(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(ProductionCompany::class);
-    }
 
     /**
      * Get the country that owns the movie.

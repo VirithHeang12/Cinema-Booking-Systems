@@ -123,29 +123,14 @@
 </script> -->
 
 <template>
-    <data-table-server 
-    :showNo="true" 
-    :title="__('Genres')" 
-    :serverItems="serverItems"  
-    :items-length="totalItems"
-    :headers="headers" 
-    :loading="loading" 
-    :server-items="serverItems" 
-    :items-per-page="itemsPerPage" 
-    item-value="id"
-    @update:options="loadItems" 
-    :has-create="true" 
-    :has-import="true" 
-    :has-export="true"
-    @view="viewCallback"
-    @delete="deleteCallback"
-    @edit="editCallback"
-    @create="createCallback"
-    @import="importCallback"
-    @export="exportCallback"/>
-  </template>
+    <data-table-server :showNo="true" :title="__('Genres')" :serverItems="serverItems" :items-length="totalItems"
+        :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
+        @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true" @view="viewCallback"
+        @delete="deleteCallback" @edit="editCallback" @create="createCallback" @import="importCallback"
+        @export="exportCallback" />
+</template>
 
-  <script setup>
+<script setup>
     import { computed, ref } from "vue";
     import { visitModal } from "@inertiaui/modal-vue";
     import { router } from "@inertiajs/vue3";
@@ -174,25 +159,25 @@
 
     const headers = [
         {
-            title:  __('Name'),
+            title: __('Name'),
             align: 'start',
             sortable: true,
             key: 'name',
         },
         {
-            title:  __('Description'),
+            title: __('Description'),
             align: 'start',
             sortable: true,
             key: 'description',
         },
         {
-            title:  __('Created At'),
+            title: __('Created At'),
             align: 'start',
             sortable: true,
             key: 'created_at',
         },
         {
-            title:  __('Updated At'),
+            title: __('Updated At'),
             align: 'start',
             sortable: true,
             key: 'updated_at',
@@ -276,17 +261,17 @@
     };
 
     const importCallback = () => {
-    visitModal(route("dashboard.genres.import.show"), {
-      config: {
-        slideover: false,
-        position: "center",
-        closeExplicitly: true,
-        maxWidth: "xl",
-      },
-    });
-  };
+        visitModal(route("dashboard.genres.import.show"), {
+            config: {
+                slideover: false,
+                position: "center",
+                closeExplicitly: true,
+                maxWidth: "xl",
+            },
+        });
+    };
 
-  const exportCallback = () => {
-    window.location.href = route("dashboard.genres.export");
-  };
-  </script>
+    const exportCallback = () => {
+        window.location.href = route("dashboard.genres.export");
+    };
+</script>

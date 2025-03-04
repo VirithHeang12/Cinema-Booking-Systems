@@ -16,4 +16,24 @@ class SeatType extends Model
         'description',
         'price',
     ];
+
+    /**
+     * Get the seats for the seat type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function seats(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Seat::class);
+    }
+
+    /**
+     * Get the hall seat types for the seat type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function hallSeatTypes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(HallSeatType::class);
+    }
 }

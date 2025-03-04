@@ -41,6 +41,16 @@ class MovieSubtitle extends Model
     {
         return $this->belongsTo(Language::class);
     }
+
+    /**
+     * Get the shows for the movie subtitle.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function shows(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Show::class);
+    }
 }
 
 

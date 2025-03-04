@@ -1,13 +1,9 @@
 <template>
     <data-table-server :showNo="true" :title="__('Hall Types')" :serverItems="serverItems" :items-length="totalItems"
         :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
-        @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true" :sort-by="sortBy" 
-        @view="viewCallback"
-        @delete="deleteCallback" 
-        @edit="editCallback" 
-        @create="createCallback"
-        @import="importCallback"
-        @export="exportCallback"/>
+        @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true" :sort-by="sortBy"
+        @view="viewCallback" @delete="deleteCallback" @edit="editCallback" @create="createCallback"
+        @import="importCallback" @export="exportCallback" />
 </template>
 
 <script setup>
@@ -148,15 +144,15 @@
         });
 
     };
-    
+
     const importCallback = () => {
         visitModal(route("dashboard.hall_types.import.show"), {
-        config: {
-            slideover: false,
-            position: "center",
-            closeExplicitly: true,
-            maxWidth: "xl",
-        },
+            config: {
+                slideover: false,
+                position: "center",
+                closeExplicitly: true,
+                maxWidth: "xl",
+            },
         });
     };
 

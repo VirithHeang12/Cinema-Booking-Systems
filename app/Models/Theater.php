@@ -20,4 +20,14 @@ class Theater extends Model
         'address',
     ];
 
+    /**
+     * Get the halls for the theater.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function halls(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Hall::class);
+    }
+
 }

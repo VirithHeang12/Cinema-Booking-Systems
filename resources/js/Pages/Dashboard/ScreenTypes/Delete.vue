@@ -25,18 +25,18 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-import { router } from '@inertiajs/vue3';
-import { route } from 'ziggy-js';
+    import { defineProps } from 'vue';
+    import { router } from '@inertiajs/vue3';
+    import { route } from 'ziggy-js';
 
-const props = defineProps({
-    screen_type: {
-        type: Object,
-        required: true,
+    const props = defineProps({
+        screen_type: {
+            type: Object,
+            required: true,
+        }
+    });
+
+    const submitForm = () => {
+        router.delete(route('dashboard.screen_types.destroy', props.screen_type.id));
     }
-});
-
-const submitForm = () => {
-    router.delete(route('dashboard.screen_types.destroy', props.screen_type.id));
-}
 </script>

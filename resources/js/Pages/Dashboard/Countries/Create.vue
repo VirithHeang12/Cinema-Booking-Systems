@@ -1,4 +1,3 @@
-
 <template>
     <Modal v-slot="{ close }">
         <div>
@@ -26,21 +25,21 @@
 </template>
 
 <script setup>
-import { markRaw } from 'vue';
-import { useForm } from '@inertiajs/vue3';
-import * as yup from 'yup';
-import { __ } from 'matice';
+    import { markRaw } from 'vue';
+    import { useForm } from '@inertiajs/vue3';
+    import * as yup from 'yup';
+    import { __ } from 'matice';
 
-const schema = markRaw(yup.object({
-    name: yup.string().required(__('Country name is required')),
-}));
+    const schema = markRaw(yup.object({
+        name: yup.string().required(__('Country name is required')),
+    }));
 
-const form = useForm({
-    name: '',
-});
+    const form = useForm({
+        name: '',
+    });
 
-const submitForm = () => {
-    form.post(route('dashboard.countries.store'));
-}
+    const submitForm = () => {
+        form.post(route('dashboard.countries.store'));
+    }
 
 </script>

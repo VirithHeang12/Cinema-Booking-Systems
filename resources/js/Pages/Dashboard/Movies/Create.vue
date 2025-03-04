@@ -1,61 +1,71 @@
 <template>
-    <div>
-        <h4 class="text-gray-600">Create Movie</h4>
-        <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
-            <vee-field name="title" v-slot="{ field, errors }">
-                <v-text-field v-bind="field" :error-messages="errors" v-model="form.title" :label="__('Title')"
-                    variant="outlined"></v-text-field>
-            </vee-field>
+    <Modal v-slot="{ close }">
+        <v-card>
+            <h4 class="text-gray-600">Create Movie</h4>
+            <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
+                <vee-field name="title" v-slot="{ field, errors }">
+                    <v-text-field v-bind="field" :error-messages="errors" v-model="form.title" :label="__('Title')"
+                        variant="outlined"></v-text-field>
+                </vee-field>
 
-            <vee-field name="description" v-slot="{ field, errors }">
-                <v-textarea v-bind="field" :error-messages="errors" v-model="form.description"
-                    :label="__('Description')" variant="outlined"></v-textarea>
-            </vee-field>
+                <vee-field name="description" v-slot="{ field, errors }">
+                    <v-textarea v-bind="field" :error-messages="errors" v-model="form.description"
+                        :label="__('Description')" variant="outlined"></v-textarea>
+                </vee-field>
 
-            <vee-field name="release_date" v-slot="{ field, errors }">
-                <v-text-field type="date" v-bind="field" :error-messages="errors" v-model="form.release_date"
-                    :label="__('Release Date')" variant="outlined"></v-text-field>
-            </vee-field>
+                <vee-field name="release_date" v-slot="{ field, errors }">
+                    <v-text-field type="date" v-bind="field" :error-messages="errors" v-model="form.release_date"
+                        :label="__('Release Date')" variant="outlined"></v-text-field>
+                </vee-field>
 
-            <vee-field name="duration" v-slot="{ field, errors }">
-                <v-text-field type="number" v-bind="field" :error-messages="errors" v-model="form.duration"
-                    :label="__('Duration')" variant="outlined"></v-text-field>
-            </vee-field>
+                <vee-field name="duration" v-slot="{ field, errors }">
+                    <v-text-field type="number" v-bind="field" :error-messages="errors" v-model="form.duration"
+                        :label="__('Duration')" variant="outlined"></v-text-field>
+                </vee-field>
 
-            <vee-field name="rating" v-slot="{ field, errors }">
-                <v-text-field v-bind="field" :error-messages="errors" v-model="form.rating" :label="__('Rating')"
-                    variant="outlined"></v-text-field>
-            </vee-field>
+                <vee-field name="rating" v-slot="{ field, errors }">
+                    <v-text-field v-bind="field" :error-messages="errors" v-model="form.rating" :label="__('Rating')"
+                        variant="outlined"></v-text-field>
+                </vee-field>
 
-            <vee-field name="trailer_url" v-slot="{ field, errors }">
-                <v-text-field v-bind="field" :error-messages="errors" v-model="form.trailer_url"
-                    :label="__('Trailer URL')" variant="outlined"></v-text-field>
-            </vee-field>
+                <vee-field name="trailer_url" v-slot="{ field, errors }">
+                    <v-text-field v-bind="field" :error-messages="errors" v-model="form.trailer_url"
+                        :label="__('Trailer URL')" variant="outlined"></v-text-field>
+                </vee-field>
 
-            <vee-field name="thumbnail_url" v-slot="{ field, errors }">
-                <v-text-field v-bind="field" :error-messages="errors" v-model="form.thumbnail_url"
-                    :label="__('Thumbnail URL')" variant="outlined"></v-text-field>
-            </vee-field>
+                <vee-field name="thumbnail_url" v-slot="{ field, errors }">
+                    <v-text-field v-bind="field" :error-messages="errors" v-model="form.thumbnail_url"
+                        :label="__('Thumbnail URL')" variant="outlined"></v-text-field>
+                </vee-field>
 
-            <vee-field name="country_id" v-slot="{ errors }">
-                <v-autocomplete :error-messages="errors" v-model="form.country_id" :label="__('Country')"
-                    variant="outlined" :items="countries" item-title="name" item-value="id"></v-autocomplete>
-            </vee-field>
+                <vee-field name="country_id" v-slot="{ errors }">
+                    <v-autocomplete :error-messages="errors" v-model="form.country_id" :label="__('Country')"
+                        variant="outlined" :items="countries" item-title="name" item-value="id"></v-autocomplete>
+                </vee-field>
 
-            <vee-field name="movieGenres" v-slot="{ field, errors }">
-                <v-select v-bind="field" :error-messages="errors" v-model="form.movieGenres" :label="__('Genre')"
-                    variant="outlined" :items="genres" item-title="name" item-value="id" multiple></v-select>
-            </vee-field>
+                <vee-field name="movieGenres" v-slot="{ field, errors }">
+                    <v-select v-bind="field" :error-messages="errors" v-model="form.movieGenres" :label="__('Genre')"
+                        variant="outlined" :items="genres" item-title="name" item-value="id" multiple></v-select>
+                </vee-field>
 
-            <vee-field name="movieSubtitles" v-slot="{ field, errors }">
-                <v-select v-bind="field" :error-messages="errors" v-model="form.movieSubtitles" :label="__('Language')"
-                    variant="outlined" :items="languages" item-title="name" item-value="id" multiple></v-select>
-            </vee-field>
+                <vee-field name="movieSubtitles" v-slot="{ field, errors }">
+                    <v-select v-bind="field" :error-messages="errors" v-model="form.movieSubtitles"
+                        :label="__('Language')" variant="outlined" :items="languages" item-title="name" item-value="id"
+                        multiple></v-select>
+                </vee-field>
 
-            <v-btn @click="close" color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
-                @click.prevent="submitForm(setErrors)" block>Submit</v-btn>
-        </vee-form>
-    </div>
+                <vee-field name="movieSubtitles">
+                    <vue-multiselect :searchable="true" :close-on-select="false" v-model="form.movieSubtitles"
+                        :options="languages" label="name" track-by="id" placeholder="Select language"
+                        :multiple="true"></vue-multiselect>
+                </vee-field>
+
+
+                <v-btn @click="close" color="primary" :disabled="!meta.valid || form.processing"
+                    :loading="form.processing" @click.prevent="submitForm(setErrors)" block>Submit</v-btn>
+            </vee-form>
+        </v-card>
+    </Modal>
 </template>
 
 <script setup>
@@ -176,3 +186,13 @@
     });
 
 </script>
+
+<style>
+    .im-modal-content {
+        padding: 50px;
+    }
+
+    .im-close-button {
+        background-color: red;
+    }
+</style>
