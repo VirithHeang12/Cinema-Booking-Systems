@@ -12,17 +12,32 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('seats', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('hall_id')
-                ->constrained()
+            $table->uuid('id')
+                ->primary()
+                ->comment('Unique identifier for the seat');
+
+            $table->foreignUuid('hall_id')
+                ->nullable()
+                ->index()
+                ->constrained('halls')
                 ->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->foreignId('seat_type_id')
-                ->constrained()
+                ->onUpdate('cascade')
+                ->comment('Foreign key to the hall');
+
+            $table->foreignUuid('seat_type_id')
+                ->nullable()
+                ->index()
+                ->constrained('seat_types')
                 ->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->char('row', length: 3);
-            $table->tinyInteger('number');
+                ->onUpdate('cascade')
+                ->comment('Foreign key to the seat type');
+
+            $table->char('row', length: 3)
+                ->comment('Row of the seat');
+
+            $table->tinyInteger('number')
+                ->comment('Number of the seat');
+
             $table->softDeletes();
             $table->timestamps();
         });

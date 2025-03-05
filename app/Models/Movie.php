@@ -5,13 +5,33 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Str;
 
 class Movie extends Model
 {
-    /** @use HasFactory<\Database\Factories\MovieFactory> */
     use HasFactory;
     use SoftDeletes;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'movies';
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * The "type" of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
 
     /**
      * The attributes that are mass assignable.
@@ -32,13 +52,16 @@ class Movie extends Model
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'release_date' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'release_date'      => 'datetime',
+        ];
+    }
 
     /**
      * Get the country that owns the movie.
@@ -88,5 +111,19 @@ class Movie extends Model
     public function movieSubtitles(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(MovieSubtitle::class);
+    }
+
+    /**
+     * The booting method of the model
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->id = (string) Str::uuid();
+        });
     }
 }

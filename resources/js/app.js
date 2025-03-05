@@ -16,6 +16,9 @@ import { renderApp, ModalLink, Modal, putConfig } from '@inertiaui/modal-vue'
 // Vue Multiselect
 import VueMultiselect from 'vue-multiselect'
 
+// ApexCharts
+import VueApexCharts from "vue3-apexcharts";
+
 // Custom components
 import DataTable from './Components/DataTable.vue';
 
@@ -116,6 +119,7 @@ createInertiaApp({
         app.component("vee-form", Form);
         app.component("vee-field", Field);
         app.component('vue-multiselect', VueMultiselect);
+        app.component('apexchart', VueApexCharts);
 
         app.mount(el)
     },

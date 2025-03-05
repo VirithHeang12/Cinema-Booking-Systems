@@ -18,6 +18,7 @@
         "@inertiajs/vue3": "^2.0.1",
         "@inertiaui/modal-vue": "file:vendor/inertiaui/modal/vue",
         "@vitejs/plugin-vue": "^5.2.1",
+        "apexcharts": "^4.5.0",
         "bootstrap": "^5.3.3",
         "bootstrap-icons": "^1.11.3",
         "matice": "^1.1.5",
@@ -26,6 +27,7 @@
         "vite-plugin-vuetify": "^2.0.4",
         "vue-flag-icon": "^2.1.0",
         "vue-multiselect": "^3.2.0",
+        "vue3-apexcharts": "^1.8.0",
         "vuetify": "^3.7.5",
         "yup": "^1.6.1",
         "ziggy-js": "^2.5.0"
