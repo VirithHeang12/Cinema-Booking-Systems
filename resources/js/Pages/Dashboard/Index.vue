@@ -20,12 +20,67 @@
                 <div id="chart-pie" class="border p-3 rounded-3"></div>
             </div>
         </div>
+
+        <apexchart width="500" type="bar" :options="barChartOptions" :series="barChartSeries"></apexchart>
     </div>
 </template>
 
 <script setup>
-    import { onMounted } from 'vue';
+    import { onMounted, ref } from 'vue';
     import ApexCharts from 'apexcharts';
+
+    const barChartOptions = ref({
+        chart: {
+            type: 'bar',
+        },
+        xaxis: {
+            type: 'category'
+        },
+    });
+
+    const barChartSeries = ref([
+        {
+            name: 'Series 1',
+            data: [
+                {
+                    x: 'Jan',
+                    y: 30,
+                },
+                {
+                    x: 'Feb',
+                    y: 40,
+                },
+                {
+                    x: 'Mar',
+                    y: 45,
+                },
+                {
+                    x: 'Apr',
+                    y: 50,
+                },
+                {
+                    x: 'May',
+                    y: 49,
+                },
+                {
+                    x: 'Jun',
+                    y: 60,
+                },
+                {
+                    x: 'Jul',
+                    y: 70,
+                },
+                {
+                    x: 'Aug',
+                    y: 91,
+                },
+                {
+                    x: 'Sep',
+                    y: 125,
+                },
+            ],
+        },
+    ]);
 
     const randomizeArray = (arr) => arr.map(() => Math.floor(Math.random() * 100));
     const sparklineData = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
