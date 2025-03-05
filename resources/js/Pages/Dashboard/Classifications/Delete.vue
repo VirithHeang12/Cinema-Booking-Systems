@@ -36,16 +36,16 @@
 
 
 <script setup>
-import { router } from '@inertiajs/vue3';
+    import { router } from '@inertiajs/vue3';
 
-const props = defineProps({
-    classification: {
-        type: Object,
-        required: true,
+    const props = defineProps({
+        classification: {
+            type: Object,
+            required: true,
+        }
+    });
+
+    const submitForm = () => {
+        router.delete(route('dashboard.classifications.destroy', props.classification.id));
     }
-});
-
-const submitForm = () => {
-    router.delete(route('dashboard.classifications.destroy', props.classification.id));
-}
 </script>

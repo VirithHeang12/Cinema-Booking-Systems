@@ -8,9 +8,9 @@
 
 <script setup>
     import { computed, ref } from 'vue'
-    import { visitModal } from '@inertiaui/modal-vue';
-    import { router } from '@inertiajs/vue3';
     import { route } from 'ziggy-js';
+    import { router } from '@inertiajs/vue3';
+    import { visitModal } from '@inertiaui/modal-vue';
 
     const props = defineProps({
         movies: {
@@ -18,8 +18,6 @@
             required: true,
         }
     });
-
-    console.log(props.movies);
 
     const serverItems = computed(() => {
         return props.movies.data;
@@ -55,71 +53,35 @@
     }
 
     const viewCallback = (item) => {
-        visitModal(route('dashboard.movies.show', {
-            movie: item.id,
-        }), {
-            method: 'get',
-            config: {
-                slideover: false,
-                position: 'center',
-                closeExplicitly: true,
-                maxWidth: 'xl',
-            },
-        });
+        // router.get(route('dashboard.movies.show', {
+        //     movie: item.id,
+        // }));
     };
 
     const editCallback = (item) => {
-        visitModal(route('dashboard.movies.edit', {
-            movie: item.id,
-        }), {
-            method: 'get',
-            config: {
-                slideover: true,
-                position: 'right',
-                closeExplicitly: true,
-                maxWidth: '2xl',
-            },
-        });
+        // router.get(route('dashboard.movies.edit', {
+        //     movie: item.id,
+        // }));
     };
 
     const deleteCallback = (item) => {
-        visitModal(route('dashboard.movies.delete', {
-            movie: item.id,
-        }), {
-            config: {
-                slideover: false,
-                position: 'center',
-                closeExplicitly: true,
-                maxWidth: 'xl',
-
-            },
-
-        });
+        // router.get(route('dashboard.movies.delete', {
+        //     movie: item.id,
+        // }));
 
     };
 
+    /**
+     * Create callback
+     *
+     * @returns {void}
+     */
     const createCallback = () => {
-        // visitModal(route('dashboard.movies.create'), {
-        //     config: {
-        //         slideover: true,
-        //         position: 'right',
-        //         closeExplicitly: true,
-        //         maxWidth: '2xl',
-        //     },
-
-        // });
-        router.get(route('dashboard.movies.create'));
+        visitModal(route('dashboard.movies.create'));
     };
 
     const importCallback = () => {
-        visitModal(route("dashboard.movies.import.show"), {
-            config: {
-                slideover: false,
-                position: "center",
-                closeExplicitly: true,
-                maxWidth: "xl",
-            },
-        });
+        router.get(route('dashboard.movies.import.show'));
     };
 
     const exportCallback = () => {

@@ -12,10 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('seat_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', length: 30)->unique();
-            $table->string('description', length: 255)->nullable();
-            $table->double('price', 8, 2);
+            $table->uuid('id')
+                ->primary()
+                ->comment('Unique identifier for the seat type');
+
+            $table->string('name')
+                ->unique()
+                ->nullable(false)
+                ->comment('Name of the seat type');
+
+            $table->string('description')
+                ->nullable()
+                ->comment('Description of the seat type');
+
+            $table->double('price', 8, 2)
+                ->comment('Price of the seat type');
+
             $table->softDeletes();
             $table->timestamps();
         });

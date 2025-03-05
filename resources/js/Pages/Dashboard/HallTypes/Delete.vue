@@ -10,7 +10,7 @@
                 <button class="btn btn-dark" @click="close">{{ __('Cancel') }}</button>
             </div>
         </div>
-    </Modal> 
+    </Modal>
 </template>
 
 <script setup>

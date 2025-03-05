@@ -12,31 +12,45 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('shows', function (Blueprint $table) {
-            $table->id();
-            $table->dateTime('show_time')->nullable(false);
+            $table->uuid('id')
+                ->primary()
+                ->comment('Unique identifier for the show');
+
+            $table->timestamp('show_time')
+                ->nullable(false)
+                ->comment('Time of the show');
+
             $table->enum('status', [
                 'Scheduled',
                 'Showing',
                 'Already',
-            ])->default('Scheduled');
+            ])
+                ->default('Scheduled')
+                ->comment('Status of the show');
 
-            $table->foreignId('movie_subtitle_id')
+            $table->foreignUuid('movie_subtitle_id')
                 ->nullable()
-                ->constrained()
+                ->index()
+                ->constrained('movie_subtitles')
                 ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->onUpdate('cascade')
+                ->comment('Foreign key to the movie subtitle');
 
-            $table->foreignId('hall_id')
+            $table->foreignUuid('hall_id')
                 ->nullable()
-                ->constrained()
+                ->index()
+                ->constrained('halls')
                 ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->onUpdate('cascade')
+                ->comment('Foreign key to the hall');
 
-            $table->foreignId('screen_type_id')
-            ->nullable()
-            ->constrained()
-            ->onDelete('set null')
-            ->onUpdate('cascade');
+            $table->foreignUuid('screen_type_id')
+                ->nullable()
+                ->index()
+                ->constrained('screen_types')
+                ->onDelete('set null')
+                ->onUpdate('cascade')
+                ->comment('Foreign key to the screen type');
 
             $table->softDeletes();
             $table->timestamps();
