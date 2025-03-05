@@ -120,7 +120,10 @@ const pieChartOptions = ref({
     labels: ['Action', 'Comedy', 'Drama', 'Horror', 'Romance'],
     title: {
         text: 'Ticket Sales by Genre',
-        style: { fontSize: '18px' }
+        style: {
+            fontSize: '18px',
+            color: "oklch(0.446 0.043 257.281)",
+        }
     }
 });
 const pieChartSeries = ref([32, 26, 18, 15, 9]);
