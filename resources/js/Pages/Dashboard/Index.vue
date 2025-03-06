@@ -17,10 +17,25 @@
         </div>
 
         <apexchart width="500" type="bar" :options="barChartOptions" :series="barChartSeries"></apexchart>
+
+        <div class="col-12 col-md-6">
+                <div class="border p-2 rounded-3">
+                    <apexchart 
+    width="100%" 
+    height="313" 
+    type="bar" 
+    :options="columnChartOptions" 
+    :series="columnChartSeries">
+</apexchart>
+
+                </div>
+        </div>
     </div>
+
 </template>
 
 <script setup>
+import { data } from 'autoprefixer';
 import { ref } from 'vue';
 
 const barChartOptions = ref({
@@ -127,4 +142,52 @@ const pieChartOptions = ref({
     }
 });
 const pieChartSeries = ref([32, 26, 18, 15, 9]);
+
+const colors = ['#FF4560', '#008FFB', '#000000', '#FEB019', '#775DD0', '#546E7A', '#26A69A', '#D10CE8'];
+
+const columnChartOptions = ref({
+    chart: {
+        type: 'bar',
+        height: 350,
+    },
+    plotOptions: {
+        bar: {
+            columnWidth: '45%',
+            distributed: true,
+        },
+    },
+    colors: colors,
+    dataLabels: {
+        enabled: true,
+    },
+    legend: {
+        show: true,
+    },
+    title: {
+        text: 'Movies per Genre',
+        style: {
+            fontSize: '18px',
+            color: "oklch(0.446 0.043 257.281)",
+        }
+    },
+});
+
+const columnChartSeries = ref([
+    {
+        name: 'Number of Movies',
+        data: [
+            { x: 'Action', y: 120 },
+            { x: 'Adventure', y: 95 },
+            { x: 'Drama', y: 160 },
+            { x: 'Fantasy', y: 80 },
+            { x: 'Horror', y: 60 },
+            { x: 'Mystery', y: 70 },
+            { x: 'Romance', y: 110 },
+            { x: 'Sci-Fi', y: 90 },
+            { x: 'Thriller', y: 100 },
+        ],
+
+    },
+]);
+
 </script>
