@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
+            $table->id()
                 ->comment('Unique identifier for the booking');
 
             $table->string('guest_email')
@@ -40,7 +39,7 @@ return new class extends Migration
             ])->default('Pending')
                 ->comment('Status of the booking');
 
-            $table->foreignUuid('user_id')
+            $table->foreignId('user_id')
                 ->nullable()
                 ->index()
                 ->constrained('users')
@@ -48,7 +47,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->comment('Foreign key to the user');
 
-            $table->foreignUuid('payment_method_id')
+            $table->foreignId('payment_method_id')
                 ->nullable()
                 ->index()
                 ->constrained('payment_methods')

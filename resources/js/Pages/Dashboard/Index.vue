@@ -35,112 +35,113 @@
 </template>
 
 <script setup>
-import { data } from 'autoprefixer';
-import { ref } from 'vue';
+    import { ref } from 'vue';
 
-const barChartOptions = ref({
-    chart: {
-        type: 'bar',
-    },
-    xaxis: {
-        type: 'category'
-    },
-});
+    const barChartOptions = ref({
+        chart: {
+            type: 'bar',
+        },
+        xaxis: {
+            type: 'category'
+        },
+    });
 
-const barChartSeries = ref([
-    {
-        name: 'Series 1',
-        data: [
-            {
-                x: 'Jan',
-                y: 30,
-            },
-            {
-                x: 'Feb',
-                y: 40,
-            },
-            {
-                x: 'Mar',
-                y: 45,
-            },
-            {
-                x: 'Apr',
-                y: 50,
-            },
-            {
-                x: 'May',
-                y: 49,
-            },
-            {
-                x: 'Jun',
-                y: 60,
-            },
-            {
-                x: 'Jul',
-                y: 70,
-            },
-            {
-                x: 'Aug',
-                y: 91,
-            },
-            {
-                x: 'Sep',
-                y: 125,
-            },
-        ],
-    },
-]);
-
+    const barChartSeries = ref([
+        {
+            name: 'Series 1',
+            data: [
+                {
+                    x: 'Jan',
+                    y: 30,
+                },
+                {
+                    x: 'Feb',
+                    y: 40,
+                },
+                {
+                    x: 'Mar',
+                    y: 45,
+                },
+                {
+                    x: 'Apr',
+                    y: 50,
+                },
+                {
+                    x: 'May',
+                    y: 49,
+                },
+                {
+                    x: 'Jun',
+                    y: 60,
+                },
+                {
+                    x: 'Jul',
+                    y: 70,
+                },
+                {
+                    x: 'Aug',
+                    y: 91,
+                },
+                {
+                    x: 'Sep',
+                    y: 125,
+                },
+            ],
+        },
+    ]);
 
 
-const lineChartOptions = ref({
-    chart: {
-        type: 'line',
-        height: 300,
-        zoom: { enabled: false },
-    },
-    title: {
-        text: 'Monthly Seat Type Bookings',
-        style: {
-            fontSize: '18px',
-            color: "oklch(0.446 0.043 257.281)",
+
+    const lineChartOptions = ref({
+        chart: {
+            type: 'line',
+            height: 300,
+            zoom: { enabled: false },
+        },
+        title: {
+            text: 'Monthly Seat Type Bookings',
+            style: {
+                fontSize: '18px',
+                color: "oklch(0.446 0.043 257.281)",
+            }
+        },
+        xaxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
+        },
+        colors: ['#1E88E5', '#FF4081', '#FFC107']
+    });
+
+    const lineChartSeries = ref([
+        {
+            name: 'Regular',
+            data: [150, 180, 210, 250, 220, 270, 300, 280, 350]
+        },
+        {
+            name: 'VIP',
+            data: [30, 40, 50, 70, 60, 80, 100, 90, 120]
+        },
+        {
+            name: 'Gold',
+            data: [10, 15, 25, 30, 40, 50, 60, 45, 70]
         }
-    },
-    xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
-    },
-    colors: ['#1E88E5', '#FF4081', '#FFC107']
-});
+    ]);
 
-const lineChartSeries = ref([
-    {
-        name: 'Regular',
-        data: [150, 180, 210, 250, 220, 270, 300, 280, 350]
-    },
-    {
-        name: 'VIP',
-        data: [30, 40, 50, 70, 60, 80, 100, 90, 120]
-    },
-    {
-        name: 'Gold',
-        data: [10, 15, 25, 30, 40, 50, 60, 45, 70]
-    }
-]);
-
-const pieChartOptions = ref({
-    chart: {
-        type: 'pie',
-        height: 100
-    },
-    labels: ['Action', 'Comedy', 'Drama', 'Horror', 'Romance'],
-    title: {
-        text: 'Ticket Sales by Genre',
-        style: {
-            fontSize: '18px',
-            color: "oklch(0.446 0.043 257.281)",
+    const pieChartOptions = ref({
+        chart: {
+            type: 'pie',
+            height: 100
+        },
+        labels: ['Action', 'Comedy', 'Drama', 'Horror', 'Romance'],
+        title: {
+            text: 'Ticket Sales by Genre',
+            style: {
+                fontSize: '18px',
+                color: "oklch(0.446 0.043 257.281)",
+            }
         }
     }
 });
+
 const pieChartSeries = ref([32, 26, 18, 15, 9]);
 
 const colors = ['#FF4560', '#008FFB', '#000000', '#FEB019', '#775DD0', '#546E7A', '#26A69A', '#D10CE8'];
@@ -189,5 +190,4 @@ const columnChartSeries = ref([
 
     },
 ]);
-
 </script>
