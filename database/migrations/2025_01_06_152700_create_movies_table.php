@@ -13,8 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('movies', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
+            $table->id()
                 ->comment('Unique identifier for the movie');
 
             $table->string('title')
@@ -48,7 +47,7 @@ return new class extends Migration
                 ->unique()
                 ->comment('URL of the thumbnail of the movie');
 
-            $table->foreignUuid('country_id')
+            $table->foreignId('country_id')
                 ->nullable()
                 ->index()
                 ->constrained('countries')
@@ -56,7 +55,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->comment('Country where the movie was produced');
 
-            $table->foreignUuid('classification_id')
+            $table->foreignId('classification_id')
                 ->nullable()
                 ->index()
                 ->constrained('classifications')
@@ -64,7 +63,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->comment('Classification of the movie');
 
-            $table->foreignUuid('language_id')
+            $table->foreignId('language_id')
                 ->nullable()
                 ->index()
                 ->constrained('languages')

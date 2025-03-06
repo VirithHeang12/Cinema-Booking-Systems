@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('screen_types', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
+            $table->id()
                 ->comment('Unique identifier for the screen type');
 
             $table->string('name')

@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('movie_subtitles', function (Blueprint $table) {
-            $table->uuid('id')->primary()->comment('Unique identifier for the movie subtitle');
+            $table->id()
+                ->comment('Unique identifier for the movie subtitle');
 
-            $table->foreignUuid('movie_id')
+            $table->foreignId('movie_id')
                 ->nullable()
                 ->index()
                 ->constrained('movies')
@@ -22,7 +23,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->comment('Foreign key to the movie');
 
-            $table->foreignUuid('language_id')
+            $table->foreignId('language_id')
                 ->nullable()
                 ->index()
                 ->constrained('languages')

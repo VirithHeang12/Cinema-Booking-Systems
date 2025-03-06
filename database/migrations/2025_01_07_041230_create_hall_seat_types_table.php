@@ -12,11 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('hall_seat_types', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
+            $table->id()
                 ->comment('Unique identifier for the hall seat type');
 
-            $table->foreignUuid('hall_id')
+            $table->foreignId('hall_id')
                 ->nullable()
                 ->index()
                 ->constrained('halls')
@@ -24,15 +23,15 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->comment('Foreign key to the hall');
 
-            $table->foreignUuid('hall_type_id')
+            $table->foreignId('seat_type_id')
                 ->nullable()
                 ->index()
-                ->constrained('hall_types')
+                ->constrained('seat_types')
                 ->onDelete('cascade')
                 ->onUpdate('cascade')
-                ->comment('Foreign key to the hall type');
+                ->comment('Foreign key to the seat type');
 
-            $table->integer('maximun_capacity')
+            $table->integer('maximum_capacity')
                 ->comment('Maximum capacity of the hall seat type');
 
             $table->softDeletes();

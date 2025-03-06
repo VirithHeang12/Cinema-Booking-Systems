@@ -12,11 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('halls', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
+            $table->id()
                 ->comment('Unique identifier for the hall');
 
-            $table->foreignUuid('hall_type_id')
+            $table->foreignId('hall_type_id')
                 ->nullable()
                 ->index()
                 ->constrained('hall_types')
