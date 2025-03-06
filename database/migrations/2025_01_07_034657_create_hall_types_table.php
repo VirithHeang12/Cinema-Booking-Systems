@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('hall_types', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
+            $table->id()
                 ->comment('Unique identifier for the hall type');
 
             $table->string('name')
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->string('description')
                 ->nullable()
                 ->comment('Description of the hall type');
-                
+
             $table->softDeletes();
             $table->timestamps();
         });
