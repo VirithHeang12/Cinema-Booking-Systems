@@ -8,7 +8,6 @@
 
 <script setup>
     import { computed, ref } from 'vue'
-    import { visitModal } from '@inertiaui/modal-vue';
     import { router } from '@inertiajs/vue3';
     import { route } from 'ziggy-js';
 
@@ -18,8 +17,6 @@
             required: true,
         }
     });
-
-    console.log(props.halls);
 
     const serverItems = computed(() => {
         return props.halls.data;
@@ -55,71 +52,29 @@
     }
 
     const viewCallback = (item) => {
-        visitModal(route('dashboard.halls.show', {
+        router.get(route('dashboard.halls.show', {
             movie: item.id,
-        }), {
-            method: 'get',
-            config: {
-                slideover: false,
-                position: 'center',
-                closeExplicitly: true,
-                maxWidth: 'xl',
-            },
-        });
+        }));
     };
 
     const editCallback = (item) => {
-        visitModal(route('dashboard.halls.edit', {
+        router.get(route('dashboard.halls.edit', {
             movie: item.id,
-        }), {
-            method: 'get',
-            config: {
-                slideover: true,
-                position: 'right',
-                closeExplicitly: true,
-                maxWidth: '2xl',
-            },
-        });
+        }));
     };
 
     const deleteCallback = (item) => {
-        visitModal(route('dashboard.halls.delete', {
+        router.get(route('dashboard.halls.delete', {
             movie: item.id,
-        }), {
-            config: {
-                slideover: false,
-                position: 'center',
-                closeExplicitly: true,
-                maxWidth: 'xl',
-
-            },
-
-        });
-
+        }));
     };
 
     const createCallback = () => {
-        // visitModal(route('dashboard.halls.create'), {
-        //     config: {
-        //         slideover: true,
-        //         position: 'right',
-        //         closeExplicitly: true,
-        //         maxWidth: '2xl',
-        //     },
-
-        // });
         router.get(route('dashboard.halls.create'));
     };
 
     const importCallback = () => {
-        visitModal(route("dashboard.halls.import.show"), {
-            config: {
-                slideover: false,
-                position: "center",
-                closeExplicitly: true,
-                maxWidth: "xl",
-            },
-        });
+        router.get(route('dashboard.halls.import.show'));
     };
 
     const exportCallback = () => {

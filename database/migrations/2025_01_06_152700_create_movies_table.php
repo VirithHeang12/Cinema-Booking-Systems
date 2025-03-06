@@ -13,55 +13,63 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('movies', function (Blueprint $table) {
-            $table->id();
-            $table->string('title', length: 255)
-                ->nullable(false)
-                ->unique();
+            $table->id()
+                ->comment('Unique identifier for the movie');
 
-            $table->text('description')->nullable(false);
+            $table->string('title')
+                ->nullable(false)
+                ->unique()
+                ->comment('Title of the movie');
+
+            $table->text('description')
+                ->nullable(false)
+                ->comment('Description of the movie');
 
             $table->timestamp('release_date')
-                ->nullable(false);
+                ->nullable(false)
+                ->comment('Release date of the movie');
 
             $table->integer('duration')
-                ->nullable(false);
+                ->nullable(false)
+                ->comment('Duration of the movie in minutes');
 
             $table->decimal('rating', 3, 1)
                 ->check('rating >= 0.0 and rating <= 10.0')
-                ->nullable(true);
+                ->nullable(true)
+                ->comment('Rating of the movie');
 
-            $table->string('trailer_url', length: 255)
-                ->unique();
+            $table->string('trailer_url')
+                ->unique()
+                ->comment('URL of the trailer of the movie');
 
-            $table->string('thumbnail_url', length: 255)
+            $table->string('thumbnail_url')
                 ->nullable(false)
-                ->unique();
-
-
-            $table->foreignId('production_company_id')
-                ->nullable()
-                ->constrained('production_companies')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
-
+                ->unique()
+                ->comment('URL of the thumbnail of the movie');
 
             $table->foreignId('country_id')
                 ->nullable()
-                ->constrained()
+                ->index()
+                ->constrained('countries')
                 ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->onUpdate('cascade')
+                ->comment('Country where the movie was produced');
 
             $table->foreignId('classification_id')
                 ->nullable()
-                ->constrained()
+                ->index()
+                ->constrained('classifications')
                 ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->onUpdate('cascade')
+                ->comment('Classification of the movie');
 
             $table->foreignId('language_id')
                 ->nullable()
+                ->index()
                 ->constrained('languages')
                 ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->onUpdate('cascade')
+                ->comment('Language of the movie');
 
             $table->softDeletes();
             $table->timestamps();

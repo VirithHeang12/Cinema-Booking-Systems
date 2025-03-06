@@ -12,14 +12,26 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('halls', function (Blueprint $table) {
-            $table->id();
+            $table->id()
+                ->comment('Unique identifier for the hall');
+
             $table->foreignId('hall_type_id')
                 ->nullable()
-                ->constrained()
+                ->index()
+                ->constrained('hall_types')
                 ->onDelete('set null')
-                ->onUpdate('cascade');
-            $table->string('name', length: 30)->unique();
-            $table->string('description', length: 255)->nullable();
+                ->onUpdate('cascade')
+                ->comment('Foreign key to the hall type');
+
+            $table->string('name')
+                ->unique()
+                ->nullable(false)
+                ->comment('Name of the hall');
+
+            $table->string('description')
+                ->nullable()
+                ->comment('Description of the hall');
+
             $table->softDeletes();
             $table->timestamps();
         });

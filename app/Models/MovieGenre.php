@@ -12,6 +12,13 @@ class MovieGenre extends Model
     use SoftDeletes;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'movie_genres';
+
+    /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [

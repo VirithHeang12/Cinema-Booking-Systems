@@ -12,11 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id();
-            $table->string('guest_email', 255)->nullable();
-            $table->string('qr_code', 255)->unique();
-            $table->decimal('total_amount', 10, 2);
-            $table->dateTime('booking_date');
+            $table->id()
+                ->comment('Unique identifier for the booking');
+
+            $table->string('guest_email')
+                ->nullable()
+                ->comment('Email of the guest');
+
+            $table->string('qr_code')
+                ->unique()
+                ->comment('QR code of the booking');
+
+            $table->decimal('total_amount', 10, 2)
+                ->comment('Total amount of the booking');
+
+            $table->timestamp('booking_date')
+                ->comment('Date of the booking');
+
             $table->enum('status', [
                 'Pending',
                 'Confirmed',
@@ -24,19 +36,24 @@ return new class extends Migration
                 'Completed',
                 'Failed',
                 'Refunded'
-            ])->default('Pending');
+            ])->default('Pending')
+                ->comment('Status of the booking');
 
             $table->foreignId('user_id')
                 ->nullable()
+                ->index()
                 ->constrained('users')
                 ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->onUpdate('cascade')
+                ->comment('Foreign key to the user');
 
             $table->foreignId('payment_method_id')
                 ->nullable()
+                ->index()
                 ->constrained('payment_methods')
                 ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->onUpdate('cascade')
+                ->comment('Foreign key to the payment method');
 
             $table->softDeletes();
             $table->timestamps();

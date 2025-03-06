@@ -9,9 +9,12 @@ use App\Http\Controllers\Dashboard\HallController;
 use App\Http\Controllers\Dashboard\HallTypeController;
 use App\Http\Controllers\Dashboard\MovieController;
 use App\Http\Controllers\Dashboard\ScreenTypeController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Models\ScreenType;
 
 Route::prefix('dashboard')->name('dashboard.')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('index');
+
     Route::get('classifications/import', [ClassificationController::class, 'showImport'])->name('classifications.import.show');
     Route::post('classifications/import', [ClassificationController::class, 'import'])->name('classifications.import');
     Route::get('classifications/export', [ClassificationController::class, 'export'])->name('classifications.export')->withoutMiddleware(['web']);
@@ -33,10 +36,6 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('screen_types/import', [ScreenTypeController::class, 'showImport'])->name('screen_types.import.show');
     Route::get('screen_types/import', [ScreenTypeController::class, 'import'])->name('screen_types.import');
     Route::get('screen_types/export', [ScreenTypeController::class, 'export'])->name('screen_types.export')->withoutMiddleware(['web']);
-
-    Route::get('hall_types/import', [HallTypeController::class, 'showImport'])->name('hall_types.import.show');
-    Route::post('hall_types/import', [HallTypeController::class, 'import'])->name('hall_types.import');
-    Route::get('hall_types/export', [HallTypeController::class, 'export'])->name('hall_types.export')->withoutMiddleware(['web']);
 
     Route::get('languages/{language}/delete', [LanguageController::class, 'delete'])->name('languages.delete');
     Route::get('countries/{country}/delete', [CountryController::class, 'delete'])->name('countries.delete');

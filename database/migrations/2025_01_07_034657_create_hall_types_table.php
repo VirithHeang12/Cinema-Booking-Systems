@@ -12,9 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('hall_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', length: 30)->unique();
-            $table->string('description', length: 255)->nullable();
+            $table->id()
+                ->comment('Unique identifier for the hall type');
+
+            $table->string('name')
+                ->unique()
+                ->nullable(false)
+                ->comment('Name of the hall type');
+
+            $table->string('description')
+                ->nullable()
+                ->comment('Description of the hall type');
+
             $table->softDeletes();
             $table->timestamps();
         });

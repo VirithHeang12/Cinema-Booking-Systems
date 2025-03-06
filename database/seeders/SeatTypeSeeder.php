@@ -14,19 +14,19 @@ class SeatTypeSeeder extends Seeder
     {
         $seatTypes = [
             [
-                'name' => 'VIP',
-                'description' => 'Very Important Person',
-                'price' => 1000000,
+                'name'          => 'VIP',
+                'description'   => 'Very Important Person',
+                'price'         => 1000000,
             ],
             [
-                'name' => 'VVIP',
-                'description' => 'Very Very Important Person',
-                'price' => 2000000,
+                'name'          => 'VVIP',
+                'description'   => 'Very Very Important Person',
+                'price'         => 2000000,
             ],
             [
-                'name' => 'SVIP',
-                'description' => 'Super Very Important Person',
-                'price' => 3000000,
+                'name'          => 'SVIP',
+                'description'   => 'Super Very Important Person',
+                'price'         => 3000000,
             ],
         ];
 

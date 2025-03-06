@@ -12,10 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('banners', function (Blueprint $table) {
-            $table->id();
-            $table->string('urlImgage');
-            $table->datetime('display_start_date');
-            $table->datetime('display_end_date');
+            $table->id()
+                ->comment('Unique identifier for the banner');
+
+            $table->string('image_url')
+                ->nullable(false)
+                ->comment('URL of the banner image');
+
+            $table->timestamp('display_start_date')
+                ->comment('Date and time when the banner should start displaying');
+
+            $table->timestamp('display_end_date')
+                ->comment('Date and time when the banner should stop displaying');
+
             $table->softDeletes();
             $table->timestamps();
         });

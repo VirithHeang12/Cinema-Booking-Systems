@@ -20,23 +20,23 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-import { useForm } from '@inertiajs/vue3';
-import { route } from 'ziggy-js';
+    import { defineProps } from 'vue';
+    import { useForm } from '@inertiajs/vue3';
+    import { route } from 'ziggy-js';
 
-const props = defineProps({
-    screen_type: {
-        type: Object,
-        required: true,
+    const props = defineProps({
+        screen_type: {
+            type: Object,
+            required: true,
+        }
+    });
+
+    const form = useForm({
+        name: props.screen_type.name,
+        description: props.screen_type.description,
+    });
+
+    const submitForm = () => {
+        form.put(route('dashboard.screen_types.update', props.screen_type.id));
     }
-});
-
-const form = useForm({
-    name: props.screen_type.name,
-    description: props.screen_type.description,
-});
-
-const submitForm = () => {
-    form.put(route('dashboard.screen_types.update', props.screen_type.id));
-}
 </script>

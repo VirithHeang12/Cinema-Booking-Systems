@@ -8,12 +8,31 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Genre extends Model
 {
-    /** @use HasFactory<\Database\Factories\GenreFactory> */
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name', 'description'];
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'genres';
 
-    // Bonjour!!
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'description'
+    ];
 
+    /**
+     * Get the movie genres.
+     */
+    public function movieGenres()
+    {
+        return $this->hasMany(MovieGenre::class);
+    }
 }

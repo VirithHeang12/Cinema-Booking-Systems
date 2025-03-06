@@ -16,21 +16,21 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useForm } from "@inertiajs/vue3";
+    import { ref } from "vue";
+    import { useForm } from "@inertiajs/vue3";
 
-const form = useForm({
-    file: null,
-});
-const fileInput = ref(null);
+    const form = useForm({
+        file: null,
+    });
+    const fileInput = ref(null);
 
-const submitForm = () => {
-    if (!fileInput.value?.files[0]) {
-        alert("Please select a file before uploading.");
-        return;
-    }
-    form.file = fileInput.value.files[0];
+    const submitForm = () => {
+        if (!fileInput.value?.files[0]) {
+            alert("Please select a file before uploading.");
+            return;
+        }
+        form.file = fileInput.value.files[0];
 
-    form.post(route("dashboard.screen_types.import"));
-};
+        form.post(route("dashboard.screen_types.import"));
+    };
 </script>

@@ -8,9 +8,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MovieSubtitle extends Model
 {
-    /** @use HasFactory<\Database\Factories\MovieSubtitleFactory> */
     use HasFactory;
     use SoftDeletes;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'movie_subtitles';
 
     /**
      * The attributes that are mass assignable.
@@ -40,6 +46,16 @@ class MovieSubtitle extends Model
     public function language(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Language::class);
+    }
+
+    /**
+     * Get the shows for the movie subtitle.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function shows(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Show::class);
     }
 }
 
