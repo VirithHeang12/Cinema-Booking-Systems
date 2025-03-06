@@ -22,15 +22,16 @@ class DatabaseSeeder extends Seeder
             PaymentMethodSeeder::class,
             SeatTypeSeeder::class,
             ScreenTypeSeeder::class,
+            UserSeeder::class,
             BookingSeeder::class,
-            HallSeatTypeSeeder::class,
             HallSeeder::class,
-            MovieGenreSeeder::class,
+            HallSeatTypeSeeder::class,
             MovieSeeder::class,
+            MovieGenreSeeder::class,
             MovieSubtitleSeeder::class,
             SeatSeeder::class,
-            ShowSeatSeeder::class,
             ShowSeeder::class,
+            ShowSeatSeeder::class,
         ]);
     }
 }

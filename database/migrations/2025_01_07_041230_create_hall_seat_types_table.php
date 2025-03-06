@@ -23,15 +23,15 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->comment('Foreign key to the hall');
 
-            $table->foreignId('hall_type_id')
+            $table->foreignId('seat_type_id')
                 ->nullable()
                 ->index()
-                ->constrained('hall_types')
+                ->constrained('seat_types')
                 ->onDelete('cascade')
                 ->onUpdate('cascade')
-                ->comment('Foreign key to the hall type');
+                ->comment('Foreign key to the seat type');
 
-            $table->integer('maximun_capacity')
+            $table->integer('maximum_capacity')
                 ->comment('Maximum capacity of the hall seat type');
 
             $table->softDeletes();

@@ -25,7 +25,7 @@ class HallSeatType extends Model
      */
     protected $fillable = [
         'hall_id',
-        'hall_type_id',
+        'seat_type_id',
         'maximum_capacity',
     ];
 
