@@ -1,5 +1,5 @@
 <template>
-    <data-table-server :showNo="true" title="Movie" :serverItems="serverItems" :items-length="totalItems"
+    <data-table-server :showNo="true" title="Hall" :serverItems="serverItems" :items-length="totalItems"
         :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
         @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true" @view="viewCallback"
         @edit="editCallback" @delete="deleteCallback" @create="createCallback" @import="importCallback"
@@ -8,27 +8,26 @@
 
 <script setup>
     import { computed, ref } from 'vue'
-    import { route } from 'ziggy-js';
     import { router } from '@inertiajs/vue3';
-    import { visitModal } from '@inertiaui/modal-vue';
+    import { route } from 'ziggy-js';
 
     const props = defineProps({
-        movies: {
+        halls: {
             type: Object,
             required: true,
         }
     });
 
     const serverItems = computed(() => {
-        return props.movies.data;
+        return props.halls.data;
     });
 
     const totalItems = computed(() => {
-        return props.movies.total;
+        return props.halls.total;
     });
 
     const itemsPerPage = computed(() => {
-        return props.movies.per_page;
+        return props.halls.per_page;
     });
 
     const loading = ref(false);
@@ -53,39 +52,33 @@
     }
 
     const viewCallback = (item) => {
-        // router.get(route('dashboard.movies.show', {
-        //     movie: item.id,
-        // }));
+        router.get(route('dashboard.halls.show', {
+            movie: item.id,
+        }));
     };
 
     const editCallback = (item) => {
-        // router.get(route('dashboard.movies.edit', {
-        //     movie: item.id,
-        // }));
+        router.get(route('dashboard.halls.edit', {
+            movie: item.id,
+        }));
     };
 
     const deleteCallback = (item) => {
-        // router.get(route('dashboard.movies.delete', {
-        //     movie: item.id,
-        // }));
-
+        router.get(route('dashboard.halls.delete', {
+            movie: item.id,
+        }));
     };
 
-    /**
-     * Create callback
-     *
-     * @returns {void}
-     */
     const createCallback = () => {
-        visitModal(route('dashboard.movies.create'));
+        router.get(route('dashboard.halls.create'));
     };
 
     const importCallback = () => {
-        router.get(route('dashboard.movies.import.show'));
+        router.get(route('dashboard.halls.import.show'));
     };
 
     const exportCallback = () => {
-        window.location.href = route("dashboard.movies.export");
+        window.location.href = route("dashboard.halls.export");
     };
 
 

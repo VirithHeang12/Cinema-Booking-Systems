@@ -1,5 +1,4 @@
 <template>
-
     <Head :title="title" />
     <v-app>
         <Header />
@@ -13,6 +12,7 @@
         </v-main>
         <Footer />
     </v-app>
+
 </template>
 
 <script setup>

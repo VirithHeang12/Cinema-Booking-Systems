@@ -1,13 +1,13 @@
 <template>
     <Modal v-slot="{ close }">
         <div>
-            <h3 class="text-center mb-4">Delete HallType</h3>
-            <p class="text-center text-gray-700 my-8">Do you want to delete this HallType ?</p>
+            <h3 class="text-center mb-4">{{ __('Delete HallType') }}</h3>
+            <p class="text-center text-gray-700 my-8">{{ __('Do you want to delete this HallType ?') }}</p>
             <div class="d-flex justify-content-center gap-4">
                 <form @submit.prevent="submitForm">
-                    <button class="btn btn-danger" @click="close">Delete</button>
+                    <button class="btn btn-danger" @click="close">{{ __('Delete') }}</button>
                 </form>
-                <button class="btn btn-dark" @click="close">Cancel</button>
+                <button class="btn btn-dark" @click="close">{{ __('Cancel') }}</button>
             </div>
         </div>
     </Modal>

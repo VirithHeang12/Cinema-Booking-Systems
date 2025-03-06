@@ -5,13 +5,33 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Str;
 
 class Movie extends Model
 {
-    /** @use HasFactory<\Database\Factories\MovieFactory> */
     use HasFactory;
     use SoftDeletes;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'movies';
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * The "type" of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
 
     /**
      * The attributes that are mass assignable.
@@ -23,32 +43,24 @@ class Movie extends Model
         'description',
         'release_date',
         'duration',
+        'country_id',
+        'language_id',
         'rating',
         'trailer_url',
         'thumbnail_url',
-        'production_company_id',
-        'country_id',
-        'classification_id',
-        'language_id'
+        'classification_id'
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'release_date' => 'datetime',
-    ];
-
-    /**
-     * Get the production company that owns the movie.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function productionCompany(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    protected function casts(): array
     {
-        return $this->belongsTo(ProductionCompany::class);
+        return [
+            'release_date'      => 'datetime',
+        ];
     }
 
     /**
@@ -99,5 +111,19 @@ class Movie extends Model
     public function movieSubtitles(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(MovieSubtitle::class);
+    }
+
+    /**
+     * The booting method of the model
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->id = (string) Str::uuid();
+        });
     }
 }

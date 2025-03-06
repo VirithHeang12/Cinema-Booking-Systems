@@ -1,13 +1,9 @@
 <template>
-    <data-table-server :showNo="true" title="HallType" :serverItems="serverItems" :items-length="totalItems"
+    <data-table-server :showNo="true" :title="__('Hall Types')" :serverItems="serverItems" :items-length="totalItems"
         :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
-        @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true" :sort-by="sortBy" 
-        @view="viewCallback"
-        @delete="deleteCallback" 
-        @edit="editCallback" 
-        @create="createCallback"
-        @import="importCallback"
-        @export="exportCallback"/>
+        @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true" :sort-by="sortBy"
+        @view="viewCallback" @delete="deleteCallback" @edit="editCallback" @create="createCallback"
+        @import="importCallback" @export="exportCallback" />
 </template>
 
 <script setup>
@@ -15,6 +11,7 @@
     import { visitModal } from '@inertiaui/modal-vue';
     import { router } from '@inertiajs/vue3';
     import { route } from 'ziggy-js';
+    import { __ } from 'matice';
 
     const props = defineProps({
         hall_types: {
@@ -38,25 +35,19 @@
 
     const headers = [
         {
-            title: 'Name',
+            title: __('Name'),
             align: 'start',
             sortable: true,
             key: 'name',
         },
         {
-            title: 'Description',
-            align: 'start',
-            sortable: true,
-            key: 'description',
-        },
-        {
-            title: 'Created At',
+            title: __('Created At'),
             align: 'start',
             sortable: true,
             key: 'created_at',
         },
         {
-            title: 'Updated At',
+            title: __('Updated At'),
             align: 'start',
             sortable: true,
             key: 'updated_at',
@@ -86,10 +77,6 @@
     const sortBy = ref([
         {
             key: 'name',
-            direction: 'asc',
-        },
-        {
-            key: 'description',
             direction: 'asc',
         },
         {
@@ -157,15 +144,15 @@
         });
 
     };
-    
+
     const importCallback = () => {
         visitModal(route("dashboard.hall_types.import.show"), {
-        config: {
-            slideover: false,
-            position: "center",
-            closeExplicitly: true,
-            maxWidth: "xl",
-        },
+            config: {
+                slideover: false,
+                position: "center",
+                closeExplicitly: true,
+                maxWidth: "xl",
+            },
         });
     };
 

@@ -7,6 +7,7 @@ use App\Models\Language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use InertiaUI\Modal\Modal;
 
 class LanguageController extends Controller
 {
@@ -27,12 +28,12 @@ class LanguageController extends Controller
     /**
      * Show the form for creating a new language.
      *
-     * @return \Inertia\Response
+     * @return Modal
      *
      */
-    public function create(): \Inertia\Response
+    public function create(): Modal
     {
-        return Inertia::render('Dashboard/Languages/Create');
+        return Inertia::modal('Dashboard/Languages/Create')->baseRoute('dashboard.languages.index');
     }
 
     /**

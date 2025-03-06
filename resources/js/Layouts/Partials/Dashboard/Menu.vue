@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer rail app expand-on-hover :temporary="modalExists">
         <v-list density="compact">
-            <template v-for="item in items" :key="item.group">
+            <template v-for="item in itemGroups" :key="item.group">
                 <v-list-group :value="item.group">
                     <template v-slot:activator="{ props }">
                         <v-list-item v-bind="props" :prepend-icon="item.icon" :title="__(item.group)"></v-list-item>
@@ -11,6 +11,9 @@
                         @click="navigateCallback(subItem.route)"></v-list-item>
                 </v-list-group>
             </template>
+            <v-list-item v-for="item in items" :key="item.value" :prepend-icon="item.icon" :title="__(item.title)"
+                :value="item.value" @click="navigateCallback(item.route)">
+            </v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>
@@ -38,7 +41,7 @@
     });
 
 
-    const items = ref([
+    const itemGroups = ref([
         {
             group: 'Setting',
             icon: 'mdi-cog-outline',
@@ -79,17 +82,28 @@
                     value: 'hall_types',
                     route: 'dashboard.hall_types.index'
                 },
-                {
-                    title: 'Movies',
-                    icon: 'mdi-movie',
-                    value: 'movies',
-                    route: 'dashboard.movies.index'
-                }
+
             ]
         },
     ]);
+
+    const items = ref([
+        {
+            title: 'Movies',
+            icon: 'mdi-movie',
+            value: 'movies',
+            route: 'dashboard.movies.index'
+        },
+        {
+            title: 'Halls',
+            icon: 'mdi-monitor',
+            value: 'halls',
+            route: 'dashboard.halls.index'
+        }
+    ])
 
     const navigateCallback = (r) => {
         router.get(route(r));
     }
 </script>
+

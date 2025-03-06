@@ -12,11 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('classifications', function (Blueprint $table) {
-            $table->id();
-            $table->string('name',length: 50)
+            $table->uuid('id')
+                ->primary()
+                ->comment('Unique identifier for the classification');
+
+            $table->string('name')
                 ->nullable(false)
-                ->unique();
-            $table->text('description')->nullable(false);
+                ->unique()
+                ->comment('Name of the classification');
+
+            $table->text('description')
+                ->nullable(false)
+                ->comment('Description of the classification');
+                
             $table->softDeletes();
             $table->timestamps();
         });

@@ -113,6 +113,7 @@
 
     const createCallback = () => {
         visitModal(route('dashboard.languages.create'), {
+            navigate: true,
             config: {
                 slideover: true,
                 position: 'right',

@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Hall;
 use App\Models\Movie;
 use App\Models\MovieGenre;
 use App\Models\MovieSubtitle;
+use App\Models\SeatType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\QueryBuilder;
-use InertiaUI\Modal\Modal;
 
-class MovieController extends Controller
+class HallController extends Controller
 {
     /**
      * Display a listing of Movies.
@@ -23,25 +24,26 @@ class MovieController extends Controller
     {
         $perPage = request()->query('itemsPerPage', 5);
 
-        $movies = QueryBuilder::for(Movie::class)
-            ->with(['movieGenres'])
+        $halls = QueryBuilder::for(Hall::class)
             ->paginate($perPage)
             ->appends(request()->query());
 
-        return Inertia::render('Dashboard/Movies/Index', [
-            'movies'     => $movies,
+        return Inertia::render('Dashboard/Halls/Index', [
+            'halls'     => $halls,
         ]);
     }
 
     /**
      * Show the form for creating a new Movie.
      *
-     * @return Modal
+     * @return \Inertia\Response
      *
      */
-    public function create(): Modal
+    public function create(): \Inertia\Response
     {
-        return Inertia::modal('Dashboard/Movies/Create')->baseRoute('dashboard.movies.index');
+        return Inertia::render('Dashboard/Halls/Create', [
+            'seatTypes' => SeatType::all(),
+        ]);
     }
 
     /**
