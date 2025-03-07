@@ -35,7 +35,12 @@
 </template>
 
 <script setup>
+    import { computed } from 'vue';
     import { ref } from 'vue';
+
+    const props = defineProps({
+        moviesByYear: Array
+    });
 
     const barChartOptions = ref({
         chart: {
@@ -46,51 +51,17 @@
         },
     });
 
-    const barChartSeries = ref([
-        {
-            name: 'Series 1',
-            data: [
-                {
-                    x: 'Jan',
-                    y: 30,
-                },
-                {
-                    x: 'Feb',
-                    y: 40,
-                },
-                {
-                    x: 'Mar',
-                    y: 45,
-                },
-                {
-                    x: 'Apr',
-                    y: 50,
-                },
-                {
-                    x: 'May',
-                    y: 49,
-                },
-                {
-                    x: 'Jun',
-                    y: 60,
-                },
-                {
-                    x: 'Jul',
-                    y: 70,
-                },
-                {
-                    x: 'Aug',
-                    y: 91,
-                },
-                {
-                    x: 'Sep',
-                    y: 125,
-                },
-            ],
-        },
-    ]);
-
-
+    const barChartSeries = computed(() => {
+        return [
+            {
+                name: 'Series 1',
+                data: props.moviesByYear.map((item) => ({
+                    x: item.year,
+                    y: item.count
+                }))
+            },
+        ]
+    });
 
     const lineChartOptions = ref({
         chart: {
