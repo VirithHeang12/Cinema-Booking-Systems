@@ -111,7 +111,7 @@ const barChartOptions = ref({
             }
         }
     }
-});
+    );
 
 const pieChartSeries = ref([32, 26, 18, 15, 9]);
 
