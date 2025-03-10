@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('classifications', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
+            $table->id()
                 ->comment('Unique identifier for the classification');
 
             $table->string('name')
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->text('description')
                 ->nullable(false)
                 ->comment('Description of the classification');
-                
+
             $table->softDeletes();
             $table->timestamps();
         });

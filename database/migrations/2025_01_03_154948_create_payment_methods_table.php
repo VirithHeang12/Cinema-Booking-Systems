@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payment_methods', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
+            $table->id()
                 ->comment('Unique identifier for the payment method');
 
             $table->string('name')
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->text('description')
                 ->nullable()
                 ->comment('Description of the payment method');
-                
+
             $table->boolean('is_active')
                 ->default(true)
                 ->comment('Indicates if the payment method is active');

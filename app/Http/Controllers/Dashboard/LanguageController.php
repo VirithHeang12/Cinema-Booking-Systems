@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Languages\SaveRequest;
+use App\Http\Requests\Languages\UpdateRequest;
 use App\Models\Language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,10 +20,12 @@ class LanguageController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $languages = Language::all();
+        $perPage = request()->query('itemsPerPage', 5);
+
+        $languages = Language::paginate($perPage)->appends(request()->query());
 
         return Inertia::render('Dashboard/Languages/Index', [
-            'languages'     => $languages,
+            'languages'     => $languages
         ]);
     }
 
@@ -33,34 +37,37 @@ class LanguageController extends Controller
      */
     public function create(): Modal
     {
-        return Inertia::modal('Dashboard/Languages/Create')->baseRoute('dashboard.languages.index');
+        return Inertia::modal('Dashboard/Languages/Create')
+            ->baseRoute('dashboard.languages.index');
     }
 
     /**
      * Store a newly created language in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Languages\SaveRequest  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
     {
         DB::beginTransaction();
 
         try {
 
+            $data = $request->validated();
+
             Language::create([
-                'name' => $request->name,
-                'code' => $request->code,
+                'name'          => $data['name'],
+                'code'          => $data['code'],
             ]);
 
             DB::commit();
 
-            return redirect()->route('dashboard.languages.index')->with('success', 'Language created.');
+            return redirect()->route('dashboard.languages.index')->with('success', __('Language created.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.languages.index')->with('error', 'Language not created.');
+            return redirect()->route('dashboard.languages.index')->with('error', __('Language not created.'));
         }
     }
 
@@ -73,9 +80,9 @@ class LanguageController extends Controller
      */
     public function show(Language $language): \Inertia\Response
     {
-        return Inertia::render('Dashboard/Languages/Show', [
+        return Inertia::modal('Dashboard/Languages/Show', [
             'language'      => $language,
-        ]);
+        ])->baseRoute('dashboard.languages.index');
     }
 
     /**
@@ -87,9 +94,9 @@ class LanguageController extends Controller
      */
     public function edit(Language $language): \Inertia\Response
     {
-        return Inertia::render('Dashboard/Languages/Edit', [
+        return Inertia::modal('Dashboard/Languages/Edit', [
             'language'      => $language,
-        ]);
+        ])->baseRoute('dashboard.languages.index');
     }
 
     /**
@@ -100,24 +107,26 @@ class LanguageController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Language $language): \Illuminate\Http\RedirectResponse
+    public function update(UpdateRequest $request, Language $language): \Illuminate\Http\RedirectResponse
     {
         DB::beginTransaction();
 
         try {
 
+            $data = $request->validated();
+
             $language->update([
-                'name' => $request->name,
-                'code' => $request->code,
+                'name'          => $data['name'],
+                'code'          => $data['code'],
             ]);
 
             DB::commit();
 
-            return redirect()->route('dashboard.languages.index')->with('success', 'Language updated.');
+            return redirect()->route('dashboard.languages.index')->with('success', __('Language updated.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.languages.index')->with('error', 'Language not updated.');
+            return redirect()->route('dashboard.languages.index')->with('error', __('Language not updated.'));
         }
     }
 
@@ -132,7 +141,7 @@ class LanguageController extends Controller
     {
         return Inertia::render('Dashboard/Languages/Delete', [
             'language'      => $language,
-        ]);
+        ])->baseRoute('dashboard.languages.index');
     }
 
     /**
@@ -152,11 +161,11 @@ class LanguageController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.languages.index')->with('success', 'Language deleted.');
+            return redirect()->route('dashboard.languages.index')->with('success', __('Language deleted.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.languages.index')->with('error', 'Language not deleted.');
+            return redirect()->route('dashboard.languages.index')->with('error', __('Language not deleted.'));
         }
     }
 }

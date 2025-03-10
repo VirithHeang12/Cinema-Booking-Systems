@@ -10,6 +10,10 @@ import { createApp } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { Link } from "@inertiajs/vue3";
 
+// Vue toastify
+import Vue3Toastify from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 // Inertia Modal
 import { renderApp, ModalLink, Modal, putConfig } from '@inertiaui/modal-vue'
 
@@ -91,6 +95,12 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(FlagIcon)
+            .use(
+                Vue3Toastify,
+                {
+                    autoClose: 3000,
+                }
+            )
             .use(vuetify);
 
         app.mixin({

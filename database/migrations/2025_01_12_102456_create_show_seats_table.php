@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('show_seats', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
+            $table->id()
                 ->comment('Unique identifier for the show seat');
 
             $table->enum('status', [
@@ -23,7 +22,7 @@ return new class extends Migration
                 ->default('Available')
                 ->comment('Status of the show seat');
 
-            $table->foreignUuid('show_id')
+            $table->foreignId('show_id')
                 ->nullable()
                 ->index()
                 ->constrained('shows')
@@ -31,7 +30,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->comment('Foreign key to the show');
 
-            $table->foreignUuid('seat_id')
+            $table->foreignId('seat_id')
                 ->nullable()
                 ->index()
                 ->constrained('seats')
@@ -39,7 +38,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->comment('Foreign key to the seat');
 
-            $table->foreignUuid('booking_id')
+            $table->foreignId('booking_id')
                 ->nullable()
                 ->index()
                 ->constrained('bookings')
