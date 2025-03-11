@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Languages\SaveRequest;
 use App\Http\Requests\Languages\UpdateRequest;
 use App\Models\Language;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use InertiaUI\Modal\Modal;
@@ -135,11 +134,11 @@ class LanguageController extends Controller
      *
      * @param  \App\Models\Language  $language
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function delete(Language $language): \Inertia\Response
+    public function delete(Language $language): Modal
     {
-        return Inertia::render('Dashboard/Languages/Delete', [
+        return Inertia::modal('Dashboard/Languages/Delete', [
             'language'      => $language,
         ])->baseRoute('dashboard.languages.index');
     }
