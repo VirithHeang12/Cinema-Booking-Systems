@@ -89,9 +89,9 @@ class LanguageController extends Controller
      *
      * @param  \App\Models\Language  $language
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function edit(Language $language): \Inertia\Response
+    public function edit(Language $language): Modal
     {
         return Inertia::modal('Dashboard/Languages/Edit', [
             'language'      => $language,
