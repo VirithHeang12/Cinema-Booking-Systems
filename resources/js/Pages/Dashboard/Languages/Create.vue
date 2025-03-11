@@ -3,18 +3,32 @@
         <div>
             <h1>{{ __('Create Language') }}</h1>
             <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
-                <vee-field name="code" v-slot="{ field, errors }">
-                    <v-text-field v-bind="field" :error-messages="errors" v-model="form.code" :label="__('Code')"
-                        variant="outlined"></v-text-field>
-                </vee-field>
+                <v-row dense>
+                    <v-col :cols="12" :md="6">
+                        <vee-field name="name" v-slot="{ field, errors }">
+                            <v-text-field v-bind="field" v-model="form.name" label="Name" variant="outlined"
+                                :error-messages="errors"></v-text-field>
+                        </vee-field>
+                    </v-col>
+                    <v-col :cols="12" :md="6">
+                        <vee-field name="code" v-slot="{ field, errors }">
+                            <v-text-field v-bind="field" v-model="form.code" label="Code" variant="outlined"
+                                :error-messages="errors"></v-text-field>
+                        </vee-field>
+                    </v-col>
+                </v-row>
 
-                <vee-field name="name" v-slot="{ field, errors }">
-                    <v-text-field v-bind="field" :error-messages="errors" v-model="form.name" :label="__('Name')"
-                        variant="outlined"></v-text-field>
-                </vee-field>
+                <v-row dense>
+                    <v-col :cols="12">
+                        <v-btn color="primary" class="mt-4 d-inline-flex justify-content-start "
+                            :disabled="!meta.valid || form.processing" @click.prevent="submitForm(setErrors, close)">
+                            <span v-if="form.processing" class="spinner-border spinner-border-sm me-2" role="status"
+                                aria-hidden="true"></span>
+                            Submit
+                        </v-btn>
+                    </v-col>
+                </v-row>
 
-                <v-btn @click="close" color="primary" :disabled="!meta.valid || form.processing"
-                    :loading="form.processing" @click.prevent="submitForm(setErrors)" block>Submit</v-btn>
             </vee-form>
         </div>
     </Modal>
@@ -36,8 +50,16 @@
         code: '',
     });
 
-    const submitForm = () => {
-        form.post(route('dashboard.languages.store'));
+    const submitForm = (setErrors, close) => {
+        form.post(route('dashboard.languages.store'), {
+            preserveState: true,
+            onError: (errors) => {
+                setErrors(errors);
+            },
+            onSuccess: () => {
+                close();
+            },
+        });
     }
 
 </script>
