@@ -90,7 +90,11 @@
     };
 
     const editCallback = (item) => {
+        console.log(item);
+        return;
+        console.log(route("dashboard.classifications.edit", { classification: item.id }));
         visitModal(
+
             route("dashboard.classifications.edit", {
                 classification: item.id,
             }),

@@ -191,8 +191,22 @@
     .im-modal-content {
         padding: 50px;
     }
-
     .im-close-button {
-        background-color: red;
+        margin: 15px;
+    }
+    .im-close-button svg path{
+        stroke: rgb(114, 114, 114);
+        transition: 0.3s;
+    }
+    .im-close-button:hover.im-close-button svg path{
+        stroke: rgb(56, 56, 56);
+    }
+    .im-slideover-positioner{
+        height: 100vh;
+        padding: 9px;
+    }
+    .im-slideover-content {
+        min-height: 98vh;
+        border-radius: 10px;
     }
 </style>

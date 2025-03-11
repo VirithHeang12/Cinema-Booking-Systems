@@ -1,7 +1,7 @@
 <template>
     <Modal v-slot="{ close }">
-        <div>
-            <h1>{{ __('Create Language') }}</h1>
+        <div class="p-2">
+            <h3 class="font-semibold text-neutral-800 mb-5">{{ __('Create Language') }}</h3>
             <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
                 <v-row dense>
                     <v-col :cols="12" :md="6">

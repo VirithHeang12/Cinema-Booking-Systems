@@ -41,6 +41,7 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::post('genres/import', [GenreController::class, 'import'])->name('genres.import');
     Route::get('genres/export', [GenreController::class, 'export'])->name('genres.export')->withoutMiddleware(['web']);
 
+
     Route::get('languages/{language}/delete', [LanguageController::class, 'delete'])->name('languages.delete');
     Route::get('countries/{country}/delete', [CountryController::class, 'delete'])->name('countries.delete');
     Route::get('hall_types/{hall_type}/delete', [HallTypeController::class, 'delete'])->name('hall_types.delete');

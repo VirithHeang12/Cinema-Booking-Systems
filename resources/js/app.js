@@ -67,7 +67,7 @@ putConfig({
     slideover: {
         closeButton: true,
         closeExplicitly: true,
-        maxWidth: '4xl',
+        maxWidth: '3xl',
         paddingClasses: 'p-4 sm:p-6',
         panelClasses: 'bg-white min-h-screen',
         position: 'right',
