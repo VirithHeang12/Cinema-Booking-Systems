@@ -201,12 +201,14 @@
     .im-close-button:hover.im-close-button svg path{
         stroke: rgb(56, 56, 56);
     }
+    .im-slideover-container{
+        scrollbar-width: none!important;
+    }
     .im-slideover-positioner{
-        height: 100vh;
         padding: 9px;
     }
     .im-slideover-content {
-        min-height: 98vh;
+        min-height: 98vh!important;
         border-radius: 10px;
     }
 </style>
