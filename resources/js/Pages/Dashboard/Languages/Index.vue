@@ -7,12 +7,11 @@
 </template>
 
 <script setup>
-    import { computed, onUpdated, ref, watch } from "vue";
+    import { computed, ref, watch } from "vue";
     import { visitModal } from "@inertiaui/modal-vue";
     import { router, usePage } from "@inertiajs/vue3";
     import { route } from "ziggy-js";
     import { __ } from 'matice';
-    import { onMounted } from "vue";
     import { toast } from 'vue3-toastify';
 
     const props = defineProps({
@@ -78,7 +77,7 @@
     const viewCallback = (item) => {
         visitModal(
             route("dashboard.languages.show", {
-                classification: item.id,
+                language: item.id,
             })
         );
     };
@@ -86,7 +85,7 @@
     const editCallback = (item) => {
         visitModal(
             route("dashboard.languages.edit", {
-                classification: item.id,
+                language: item.id,
             })
         );
     };
@@ -94,7 +93,7 @@
     const deleteCallback = (item) => {
         visitModal(
             route("dashboard.languages.delete", {
-                classification: item.id,
+                language: item.id,
             })
         );
     };
@@ -127,12 +126,14 @@
 
     const page = usePage();
 
+    /**
+     * Watch for flash messages
+     *
+     * @return void
+     */
     watch(() => page.props.flash, (flash) => {
         const success = page.props.flash.success;
         const error = page.props.flash.error;
-
-        console.log(page.props);
-        console.log(success, error);
 
         if (success) {
             notify(success);
