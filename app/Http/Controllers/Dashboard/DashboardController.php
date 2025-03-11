@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\ShowSeat;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,12 +15,62 @@ class DashboardController extends Controller
     public function index()
     {
         $moviesByYear = $this->moviesByYear();
-        $ticketSalesByGenre = $this->ticketSalesByGenre();
+        $percentagesPerGenre = $this->ticketSalesByGenre();
+        $totalBookingRevenue = $this->totalBookingRevenue();
+        $totalBookingTicket = $this->totalBookingTicket();
+        $totalCustomers = $this->totalCustomers();
 
         return Inertia::render('Dashboard/Index', [
-            'moviesByYear'      => $moviesByYear
+            'moviesByYear'              => $moviesByYear,
+            'percentagesPerGenre'       => $percentagesPerGenre,
+            'totalBookingRevenue'       => $totalBookingRevenue,
+            'totalBookingTicket'        => $totalBookingTicket,
+            'totalCustomers'             => $totalCustomers,
         ]);
     }
+
+    /**
+     *
+     * Total booking revenue
+     *
+     * @return int
+     */
+    public function totalBookingRevenue(): int
+    {
+        return ShowSeat::whereNotNull('booking_id')
+            ->join('seats', 'show_seats.seat_id', '=', 'seats.id')
+            ->join('seat_types', 'seats.seat_type_id', '=', 'seat_types.id')
+            ->sum('seat_types.price');
+    }
+
+    /**
+     *
+     * Total booking ticket
+     *
+     * @return int
+     */
+    public function totalBookingTicket(): int
+    {
+        return ShowSeat::whereNotNull('booking_id')
+            ->distinct('booking_id')
+            ->count();
+    }
+
+    /**
+     *
+     * Total Customers
+     *
+     * @return int
+     */
+    public function totalCustomers(): int
+    {
+        return Booking::whereHas('showSeats', function ($query) {
+            $query->whereNotNull('booking_id');
+        })
+            ->distinct('user_id')
+            ->count('user_id');
+    }
+
 
     /**
      * Generate movies by year data for chart
@@ -53,35 +104,50 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        $genreWithMovies = Genre::withCount('movieGenres')
-            ->orderBy('movie_genres_count', 'desc')
-            ->get();
-
-        $countGenreWithMovies = count(collect($genreWithMovies)->filter(function ($genre) {
-            return $genre->movie_genres_count > 0;
-        }));
-
-        $ticketSalesByGenre = [];
-
         $showSeatCount = ShowSeat::count();
 
-        foreach ($genres as $genre) {
-            $ticketSalesByGenre[] = [
-                'genre'     => $genre->name,
-                'sales'     => (ShowSeat::whereHas('show', function ($query) use ($genre) {
-                    $query->whereHas('movieSubtitle', function ($query) use ($genre) {
-                        $query->whereHas('movie', function ($query) use ($genre) {
-                            $query->whereHas('movieGenres', function ($query) use ($genre) {
-                                $query->where('genre_id', $genre->id);
-                            });
-                        });
+        $numberOfTicketsByMovie = [];
+
+        $movies = Movie::whereHas('movieGenres')->get();
+
+        foreach ($movies as $movie) {
+            $numberOfTicketsByMovie[] = [
+                'movie'     => $movie->title,
+                'sales'     => ShowSeat::whereHas('show', function ($query) use ($movie) {
+                    $query->whereHas('movieSubtitle', function ($query) use ($movie) {
+                        $query->where('movie_id', $movie->id);
                     });
-                })->count() / ($countGenreWithMovies * $showSeatCount)) * 100
+                })->count(),
+                'genres'    => $movie->movieGenres()->pluck('genre_id')->toArray(),
             ];
         }
 
-        dd($ticketSalesByGenre);
+        $totalTicketsByGenre = [];
+        foreach ($genres as $genre) {
+            $genreMovies = collect($numberOfTicketsByMovie)->filter(function ($movie) use ($genre) {
+                return in_array($genre->id, $movie['genres']);
+            });
 
-        return $ticketSalesByGenre;
+            $adjustedSales = 0;
+            foreach ($genreMovies as $genreMovie) {
+                $adjustedSales += $genreMovie['sales'] / count($genreMovie['genres']);
+            }
+
+            $totalTicketsByGenre[] = [
+                'genre'     => $genre->name,
+                'sales'     => $adjustedSales
+            ];
+        }
+
+        $percentagesPerGenre = [];
+
+        foreach ($totalTicketsByGenre as $genre) {
+            $percentagesPerGenre[] = [
+                'genre'             => $genre['genre'],
+                'percentage'        => ($genre['sales'] / $showSeatCount) * 100
+            ];
+        }
+
+        return $percentagesPerGenre;
     }
 }
