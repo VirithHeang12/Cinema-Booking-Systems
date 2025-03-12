@@ -1,5 +1,5 @@
 <template>
-    <v-footer name="footer" app color="#242424" class="flex justify-center">
+    <v-footer name="footer" app color="#242424" class="flex justify-center z-1">
         <v-container class="flex justify-between items-center">
             <div class="basis-[33.33%] text-sm">
                 <span>© 2025 Eternal Cineplex. All rights reserved.</span>
