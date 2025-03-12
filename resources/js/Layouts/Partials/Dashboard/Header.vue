@@ -10,7 +10,8 @@
                         Tickets
                     </v-btn>
 
-                    <v-btn icon="mdi-account" color="white" class="opacity-65 hover:opacity-100"></v-btn>
+                    <v-btn @click="logout" icon="mdi-account" color="white"
+                        class="opacity-65 hover:opacity-100"></v-btn>
 
                     <v-btn icon="mdi-bell" color="white" class="opacity-65 hover:opacity-100"></v-btn>
                 </div>
@@ -56,6 +57,10 @@
             method: "get",
             replace: true,
         });
+    }
+
+    const logout = () => {
+        router.post(route('logout'));
     }
 </script>
 
