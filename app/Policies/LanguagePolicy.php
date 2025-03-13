@@ -9,6 +9,22 @@ use Illuminate\Auth\Access\Response;
 class LanguagePolicy
 {
     /**
+     * Before all checks.
+     *
+     * @param User $user
+     * @param string $ability
+     *
+     * @return mixed
+     */
+    public function before(User $user, $ability)
+    {
+        // return true;
+
+        return null;
+    }
+
+
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
@@ -37,7 +53,7 @@ class LanguagePolicy
      */
     public function update(User $user, Language $language): bool
     {
-        return false;
+        return true;
     }
 
     /**

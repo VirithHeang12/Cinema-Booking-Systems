@@ -17,6 +17,7 @@
         "lorisleiva/laravel-actions": "^2.8",
         "maatwebsite/excel": "^3.1",
         "mcamara/laravel-localization": "^2.2",
+        "spatie/laravel-permission": "^6.16",
         "spatie/laravel-query-builder": "^6.3",
         "tightenco/ziggy": "^2.4"
     },
