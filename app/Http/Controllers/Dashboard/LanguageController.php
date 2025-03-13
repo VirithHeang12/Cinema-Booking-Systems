@@ -78,7 +78,7 @@ class LanguageController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function show(Language $language): \Inertia\Response
+public function show(Language $language): Modal
     {
         return Inertia::modal('Dashboard/Languages/Show', [
             'language'      => $language,
