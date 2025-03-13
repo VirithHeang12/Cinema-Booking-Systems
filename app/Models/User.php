@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     use SoftDeletes;
     use HasApiTokens;
+    use HasRoles;
 
     /**
      * The table associated with the model.
@@ -30,6 +32,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'github_id',
+        'github_token',
+        'github_refresh_token',
         'password',
         'phone_number',
     ];

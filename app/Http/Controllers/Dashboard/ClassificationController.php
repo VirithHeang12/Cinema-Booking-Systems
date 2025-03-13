@@ -10,6 +10,8 @@ use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ClassificationsImport;
 use App\Exports\ClassificationsExport;
+use InertiaUI\Modal\Modal;
+
 
 class ClassificationController extends Controller
 {
@@ -30,12 +32,13 @@ class ClassificationController extends Controller
     /**
      * Show the form for creating a new classification.
      *
-     * @return \Inertia\Response
+     * @return Modal
      *
      */
-    public function create(): \Inertia\Response
+    public function create(): Modal
     {
-        return Inertia::render('Dashboard/Classifications/Create');
+        return Inertia::modal('Dashboard/Classifications/Create')
+            ->baseRoute('dashboard.classifications.index');
     }
 
     /**
@@ -83,11 +86,13 @@ class ClassificationController extends Controller
      *
      * @param  \App\Models\Classification  $classification
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function edit(Classification $classification): \Inertia\Response
+    public function edit(Classification $classification): Modal
     {
-        return Inertia::render('Dashboard/Classifications/Edit', ['classification' => $classification]);
+        return Inertia::modal('Dashboard/Classifications/Edit', [
+            'classification' => $classification
+        ])->baseRoute('dashboard.classifications.index');
     }
 
     /**
@@ -159,7 +164,8 @@ class ClassificationController extends Controller
      * Show Import classifications form.
      * @return \Inertia\Response
      */
-    public function showImport(){
+    public function showImport()
+    {
         return Inertia::render('Dashboard/Classifications/Import');
     }
 
@@ -194,5 +200,4 @@ class ClassificationController extends Controller
     {
         return Excel::download(new ClassificationsExport, 'classifications.xlsx');
     }
-
 }
