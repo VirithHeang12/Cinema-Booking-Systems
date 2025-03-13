@@ -1,9 +1,10 @@
 <template>
     <div class="container mt-4">
-        <div class="row justify-evenly">
-            <div class="col-12 col-md-3 border p-3 rounded-3">
+        <div class="row g-5">
+            <div class="col-12 col-md-4">
+               <div class="border p-3 rounded-3">
                 <div class="d-flex items-center gap-3">
-                    <div class="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center">
+                    <div class="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center ms-2">
                         <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -16,16 +17,18 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-2xl font-semibold text-slate-700 mb-0">
+                        <p class="text-2xl font-semibold text-slate-700 mb-0 text-center">
                             ${{ animatedRevenue.toLocaleString() }}
                         </p>
                         <p class="text-slate-500 mb-0 ">Total Booking Revenue</p>
                     </div>
                 </div>
+               </div>
             </div>
-            <div class="col-12 col-md-3 border p-3 rounded-3">
-                <div class="d-flex items-center gap-3">
-                    <div class="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center">
+            <div class="col-12 col-md-4">
+                <div class="border p-3 rounded-3">
+                    <div class="d-flex items-center gap-3">
+                    <div class="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center ms-2">
                         <svg width="38px" height="38px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -39,16 +42,18 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-2xl font-semibold text-slate-700 mb-0">
+                        <p class="text-2xl font-semibold text-slate-700 mb-0 text-center">
                             {{ animatedTicket.toLocaleString() }}
                         </p>
                         <p class="text-slate-500 mb-0 ">Total Booking Tickets</p>
                     </div>
                 </div>
+                </div>
             </div>
-            <div class="col-12 col-md-3 border p-3 rounded-3">
-                <div class="d-flex items-center gap-3">
-                    <div class="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center">
+            <div class="col-12 col-md-4">
+                <div class="border p-3 rounded-3">
+                    <div class="d-flex items-center gap-3">
+                    <div class="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center ms-2">
                         <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -74,11 +79,12 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-2xl font-semibold text-slate-700 mb-0">
+                        <p class="text-2xl font-semibold text-slate-700 mb-0 text-center">
                             {{ animatedCustomer.toLocaleString() }}
                         </p>
                         <p class="text-slate-500 mb-0 ">Total Customers</p>
                     </div>
+                </div>
                 </div>
             </div>
 
