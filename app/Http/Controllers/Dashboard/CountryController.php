@@ -10,6 +10,7 @@ use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CountriesImport;
 use App\Exports\CountriesExport;
+use InertiaUI\Modal\Modal;
 
 class CountryController extends Controller
 {
@@ -29,15 +30,17 @@ class CountryController extends Controller
     }
 
     /**
-     * Show the form for creating a new country.
+     * Show the form for creating a new Country.
      *
-     * @return \Inertia\Response
+     * @return Modal
      *
      */
-    public function create(): \Inertia\Response
+    public function create(): Modal
     {
-        return Inertia::render('Dashboard/Countries/Create');
+        return Inertia::modal('Dashboard/Countries/Create')->baseRoute('dashboard.countries.index');
     }
+
+
     /**
      * Store a newly created country in storage.
      *
@@ -66,13 +69,14 @@ class CountryController extends Controller
     }
 
     /**
-     * Edit a country
+     * Show the form for editing a  Country.
      *
-     *  @return \Inertia\Response
+     * @return Modal
+     *
      */
-    public function edit(Country $country): \Inertia\Response
+    public function edit(Country $country): Modal
     {
-        return Inertia::render('Dashboard/Countries/Edit', ['country' => $country]);
+        return Inertia::modal('Dashboard/Countries/Edit', ['country' => $country])->baseRoute('dashboard.countries.index');
     }
 
     /**
@@ -103,29 +107,29 @@ class CountryController extends Controller
     }
 
     /**
-     * Delete a country
+     * Show a country
      *
-     * @param  \App\Models\Country  $country
+     * @return Modal
      *
-     * @return \Inertia\Response
+     *
      */
-    public function show(Country $country): \Inertia\Response
+    public function show(Country $country): Modal
     {
-        return Inertia::render('Dashboard/Countries/Show', [
+        return Inertia::modal('Dashboard/Countries/Show', [
             'country'      => $country,
-        ]);
+        ])->baseRoute('dashboard.countries.index');
     }
     /**
      * Show the form for deleting the specified country.
      *
      * @param  \App\Models\Country  $country
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function delete(Country $country): \Inertia\Response
+    public function delete(Country $country): Modal
     {
-        return Inertia::render('Dashboard/Countries/Delete', [
+        return Inertia::modal('Dashboard/Countries/Delete', [
             'country'      => $country,
-        ]);
+        ])->baseRoute('dashboard.countries.index');
     }
     /**
      * Remove the specified country from storage.
@@ -150,10 +154,10 @@ class CountryController extends Controller
 
     /**
      * Show Import countries form.
-     * @return \Inertia\Response
+     * @return Modal
      */
     public function showImport(){
-        return Inertia::render('Dashboard/Countries/Import');
+        return Inertia::modal('Dashboard/Countries/Import')->baseRoute('dashboard.countries.index');
     }
 
      /**
