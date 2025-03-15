@@ -17,15 +17,15 @@ class DashboardController extends Controller
         $moviesByYear = $this->moviesByYear();
         $percentagesPerGenre = $this->ticketSalesByGenre();
         $totalBookingRevenue = $this->totalBookingRevenue();
-        $totalBookingTicket = $this->totalBookingTicket();
-        $totalCustomers = $this->totalCustomers();
+        $totalBookingTicket  = $this->totalBookingTicket();
+        $totalMovies         = $this->totalMovies();
 
         return Inertia::render('Dashboard/Index', [
             'moviesByYear'              => $moviesByYear,
             'percentagesPerGenre'       => $percentagesPerGenre,
             'totalBookingRevenue'       => $totalBookingRevenue,
             'totalBookingTicket'        => $totalBookingTicket,
-            'totalCustomers'             => $totalCustomers,
+            'totalMovies'               => $totalMovies,
         ]);
     }
 
@@ -62,15 +62,10 @@ class DashboardController extends Controller
      *
      * @return int
      */
-    public function totalCustomers(): int
+    public function totalMovies(): int
     {
-        return Booking::whereHas('showSeats', function ($query) {
-            $query->whereNotNull('booking_id');
-        })
-            ->distinct('user_id')
-            ->count('user_id');
+        return Movie::count();
     }
-
 
     /**
      * Generate movies by year data for chart
