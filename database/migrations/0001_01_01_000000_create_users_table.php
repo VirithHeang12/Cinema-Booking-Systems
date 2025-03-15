@@ -15,6 +15,19 @@ return new class extends Migration
             $table->id()
                 ->comment('Unique identifier for the user');
 
+            $table->string('github_id')
+                ->nullable()
+                ->unique()
+                ->comment('GitHub ID of the user');
+
+            $table->string('github_token')
+                ->nullable()
+                ->comment('GitHub token of the user');
+
+            $table->string('github_refresh_token')
+                ->nullable()
+                ->comment('GitHub refresh token of the user');
+
             $table->string('name')
                 ->comment('Full name of the user');
 

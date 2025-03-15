@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\ShowSeat;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -15,11 +16,55 @@ class DashboardController extends Controller
     {
         $moviesByYear = $this->moviesByYear();
         $percentagesPerGenre = $this->ticketSalesByGenre();
+        $totalBookingRevenue = $this->totalBookingRevenue();
+        $totalBookingTicket  = $this->totalBookingTicket();
+        $totalMovies         = $this->totalMovies();
 
         return Inertia::render('Dashboard/Index', [
             'moviesByYear'              => $moviesByYear,
-            'percentagesPerGenre'       => $percentagesPerGenre
+            'percentagesPerGenre'       => $percentagesPerGenre,
+            'totalBookingRevenue'       => $totalBookingRevenue,
+            'totalBookingTicket'        => $totalBookingTicket,
+            'totalMovies'               => $totalMovies,
         ]);
+    }
+
+    /**
+     *
+     * Total booking revenue
+     *
+     * @return int
+     */
+    public function totalBookingRevenue(): int
+    {
+        return ShowSeat::whereNotNull('booking_id')
+            ->join('seats', 'show_seats.seat_id', '=', 'seats.id')
+            ->join('seat_types', 'seats.seat_type_id', '=', 'seat_types.id')
+            ->sum('seat_types.price');
+    }
+
+    /**
+     *
+     * Total booking ticket
+     *
+     * @return int
+     */
+    public function totalBookingTicket(): int
+    {
+        return ShowSeat::whereNotNull('booking_id')
+            ->distinct('booking_id')
+            ->count();
+    }
+
+    /**
+     *
+     * Total Customers
+     *
+     * @return int
+     */
+    public function totalMovies(): int
+    {
+        return Movie::count();
     }
 
     /**

@@ -1,7 +1,7 @@
 <template>
     <Modal v-slot="{ close }">
         <div>
-            <h4 class="text-gray-600">{{ __('Update Country') }}</h4>
+            <h4 class="text-gray-700">{{ __('Update Country') }}</h4>
             <form @submit.prevent="submitForm">
                 <div class="form-group">
                     <label for="name" class="text-gray-600">{{ __('Name') }}</label>

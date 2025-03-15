@@ -7,6 +7,7 @@ use App\Http\Requests\Languages\SaveRequest;
 use App\Http\Requests\Languages\UpdateRequest;
 use App\Models\Language;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use InertiaUI\Modal\Modal;
 
@@ -77,7 +78,7 @@ class LanguageController extends Controller
      *
      * @return \Inertia\Response
      */
-public function show(Language $language): Modal
+    public function show(Language $language): Modal
     {
         return Inertia::modal('Dashboard/Languages/Show', [
             'language'      => $language,
@@ -91,8 +92,24 @@ public function show(Language $language): Modal
      *
      * @return Modal
      */
-    public function edit(Language $language): Modal
+    public function edit(Language $language)
     {
+        // $response = Gate::inspect('update-language', $language);
+
+        // if ($response->allowed()) {
+        //     return Inertia::modal('Dashboard/Languages/Edit', [
+        //         'language'      => $language,
+        //     ])->baseRoute('dashboard.languages.index');
+        // } else {
+        //     return redirect()->route('dashboard.languages.index')->with('error', $response->message());
+        // }
+
+        // if (! Gate::allows('update-language', $language)) {
+        //     abort(403);
+        // }
+
+        Gate::authorize('update', $language);
+
         return Inertia::modal('Dashboard/Languages/Edit', [
             'language'      => $language,
         ])->baseRoute('dashboard.languages.index');
@@ -108,6 +125,7 @@ public function show(Language $language): Modal
      */
     public function update(UpdateRequest $request, Language $language): \Illuminate\Http\RedirectResponse
     {
+
         DB::beginTransaction();
 
         try {

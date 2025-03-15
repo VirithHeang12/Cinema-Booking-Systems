@@ -2,8 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Language;
+use App\Models\User;
+use App\Policies\LanguagePolicy;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -30,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureCommands();
         $this->configureModels();
         $this->configureVite();
+        $this->configureGates();
     }
 
     /**
@@ -82,5 +88,23 @@ class AppServiceProvider extends ServiceProvider
     private function configureVite(): void
     {
         Vite::usePrefetchStrategy('aggressive');
+    }
+
+    /**
+     * Configure gates
+     *
+     * @return void
+     */
+    private function configureGates(): void
+    {
+        // Gate::define('update-language', function (User $user, Language $language) {
+        //     return Response::denyAsNotFound();
+        // });
+
+        // Gate::before(function (User $user, string $ability) {
+        //     if ($user->id == 8) {
+        //         return true;
+        //     }
+        // });
     }
 }
