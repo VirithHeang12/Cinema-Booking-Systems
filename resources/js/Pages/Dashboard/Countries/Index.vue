@@ -63,6 +63,7 @@
                 position: 'center',
                 closeExplicitly: true,
                 maxWidth: 'xl',
+                paddingClasses: 'p-4 sm:p-6',
             },
         });
     };
@@ -90,7 +91,7 @@
                 position: 'center',
                 closeExplicitly: true,
                 maxWidth: 'xl',
-
+                paddingClasses: 'p-4 sm:p-6',
             },
 
         });
@@ -116,6 +117,7 @@
                 position: "center",
                 closeExplicitly: true,
                 maxWidth: "xl",
+                paddingClasses: 'p-4 sm:p-6',
             },
         });
     };

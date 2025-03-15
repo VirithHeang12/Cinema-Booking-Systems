@@ -1,7 +1,7 @@
 <template>
     <Modal v-slot="{ close }">
         <div>
-            <h4 class="text-gray-600 mb-5">{{ __('Create Country') }}</h4>
+            <h4 class="text-gray-700 mb-5">{{ __('Create Country') }}</h4>
             <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
                 <vee-field name="name" v-slot="{ field, errors }">
                     <div class="mb-3">
@@ -43,3 +43,9 @@
     }
 
 </script>
+
+<style>
+.im-close-button{
+    background-color: transparent!important;
+}
+</style>
