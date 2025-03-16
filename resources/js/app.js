@@ -59,7 +59,7 @@ putConfig({
     modal: {
         closeButton: true,
         closeExplicitly: false,
-        maxWidth: '2xl',
+        maxWidth: 'xl',
         paddingClasses: 'p-8 sm:p-6',
         panelClasses: 'bg-white rounded',
         position: 'center',
@@ -67,7 +67,7 @@ putConfig({
     slideover: {
         closeButton: true,
         closeExplicitly: true,
-        maxWidth: '4xl',
+        maxWidth: 'xl',
         paddingClasses: 'p-4 sm:p-6',
         panelClasses: 'bg-white min-h-screen',
         position: 'right',

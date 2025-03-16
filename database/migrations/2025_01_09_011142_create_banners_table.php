@@ -23,6 +23,7 @@ return new class extends Migration
                 ->comment('Date and time when the banner should start displaying');
 
             $table->timestamp('display_end_date')
+                ->nullable()
                 ->comment('Date and time when the banner should stop displaying');
 
             $table->softDeletes();
