@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\PermissionEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Genre;
 use App\Models\Movie;
@@ -10,11 +11,17 @@ use App\Models\Booking;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        if (Auth::user()->cannot(PermissionEnum::VIEW_DASHBOARD)) {
+            abort(403);
+        }
+
         $moviesByYear = $this->moviesByYear();
         $percentagesPerGenre = $this->ticketSalesByGenre();
         $totalBookingRevenue = $this->totalBookingRevenue();
