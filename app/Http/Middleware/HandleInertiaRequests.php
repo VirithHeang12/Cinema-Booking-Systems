@@ -2,9 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\PermissionEnum;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Spatie\Permission\Contracts\Permission;
 
 class HandleInertiaRequests extends Middleware
 {

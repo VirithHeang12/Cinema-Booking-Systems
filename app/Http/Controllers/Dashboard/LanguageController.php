@@ -20,6 +20,8 @@ class LanguageController extends Controller
      */
     public function index(): \Inertia\Response
     {
+        Gate::authorize('viewAny', Language::class);
+
         $perPage = request()->query('itemsPerPage', 5);
 
         $languages = Language::paginate($perPage)->appends(request()->query());
@@ -37,6 +39,8 @@ class LanguageController extends Controller
      */
     public function create(): Modal
     {
+        Gate::authorize('create', Language::class);
+
         return Inertia::modal('Dashboard/Languages/Create')
             ->baseRoute('dashboard.languages.index');
     }
@@ -50,6 +54,8 @@ class LanguageController extends Controller
      */
     public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('create', Language::class);
+
         DB::beginTransaction();
 
         try {
@@ -80,6 +86,8 @@ class LanguageController extends Controller
      */
     public function show(Language $language): Modal
     {
+        Gate::authorize('view', $language);
+
         return Inertia::modal('Dashboard/Languages/Show', [
             'language'      => $language,
         ])->baseRoute('dashboard.languages.index');
@@ -94,20 +102,6 @@ class LanguageController extends Controller
      */
     public function edit(Language $language)
     {
-        // $response = Gate::inspect('update-language', $language);
-
-        // if ($response->allowed()) {
-        //     return Inertia::modal('Dashboard/Languages/Edit', [
-        //         'language'      => $language,
-        //     ])->baseRoute('dashboard.languages.index');
-        // } else {
-        //     return redirect()->route('dashboard.languages.index')->with('error', $response->message());
-        // }
-
-        // if (! Gate::allows('update-language', $language)) {
-        //     abort(403);
-        // }
-
         Gate::authorize('update', $language);
 
         return Inertia::modal('Dashboard/Languages/Edit', [
@@ -125,6 +119,7 @@ class LanguageController extends Controller
      */
     public function update(UpdateRequest $request, Language $language): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('update', $language);
 
         DB::beginTransaction();
 
@@ -156,6 +151,8 @@ class LanguageController extends Controller
      */
     public function delete(Language $language): Modal
     {
+        Gate::authorize('delete', $language);
+
         return Inertia::modal('Dashboard/Languages/Delete', [
             'language'      => $language,
         ])->baseRoute('dashboard.languages.index');
@@ -170,6 +167,7 @@ class LanguageController extends Controller
      */
     public function destroy(Language $language): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('delete', $language);
         DB::beginTransaction();
 
         try {

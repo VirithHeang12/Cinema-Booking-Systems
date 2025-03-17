@@ -121,6 +121,8 @@
         toast(message, {
             autoClose: 1500,
             position: toast.POSITION.BOTTOM_RIGHT,
+            type: 'success',
+            hideProgressBar: true,
         });
     }
 
