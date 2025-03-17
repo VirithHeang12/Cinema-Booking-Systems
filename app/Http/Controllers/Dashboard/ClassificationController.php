@@ -74,11 +74,13 @@ class ClassificationController extends Controller
      *
      * @param  \App\Models\Classification  $classification
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function show(Classification $classification): \Inertia\Response
+    public function show(Classification $classification): Modal
     {
-        return Inertia::render('Dashboard/Classifications/Show', ['classification' => $classification]);
+        return Inertia::modal('Dashboard/Classifications/Show',[
+            'classification' => $classification
+        ])->baseRoute('dashboard.classifications.index');
     }
 
     /**
@@ -128,11 +130,13 @@ class ClassificationController extends Controller
      * Show the form for deleting the specified classification.
      *
      * @param  \App\Models\Classification  $classification
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function delete(Classification $classification): \Inertia\Response
+    public function delete(Classification $classification): Modal
     {
-        return Inertia::render('Dashboard/Classifications/Delete', ['classification' => $classification]);
+        return Inertia::modal('Dashboard/Classifications/Delete', [
+            'classification' => $classification
+        ])->baseRoute('dashboard.classifications.index');
     }
 
 
@@ -152,21 +156,21 @@ class ClassificationController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.classifications.index')->with('success', 'Classification deleted.');
+            return redirect()->route('dashboard.classifications.index')->with('success', __('Classification deleted.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.classifications.index')->with('error', 'Classification not deleted.');
+            return redirect()->route('dashboard.classifications.index')->with('error', __('Classification not deleted.'));
         }
     }
 
     /**
      * Show Import classifications form.
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function showImport()
+    public function showImport(): Modal
     {
-        return Inertia::render('Dashboard/Classifications/Import');
+        return Inertia::modal('Dashboard/Classifications/Import')->baseRoute('dashboard.classifications.index');
     }
 
     /**
