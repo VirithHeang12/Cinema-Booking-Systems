@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\RoleEnum;
 use App\Models\Language;
 use App\Models\User;
 use App\Policies\LanguagePolicy;
@@ -97,14 +98,20 @@ class AppServiceProvider extends ServiceProvider
      */
     private function configureGates(): void
     {
-        // Gate::define('update-language', function (User $user, Language $language) {
-        //     return Response::denyAsNotFound();
-        // });
+        /**
+         * Allow admin to do anything
+         *
+         * @param User $user
+         * @param string $ability
+         *
+         * @return Response|null
+         */
+        Gate::before(function (User $user, string $ability) {
+            if ($user->hasRole(RoleEnum::ADMIN)) {
+                return Response::allow();
+            }
 
-        // Gate::before(function (User $user, string $ability) {
-        //     if ($user->id == 8) {
-        //         return true;
-        //     }
-        // });
+            return null;
+        });
     }
 }
