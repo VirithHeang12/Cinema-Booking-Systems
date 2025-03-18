@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\HallTypesImport;
 use App\Exports\HallTypesExport;
 use InertiaUI\Modal\Modal;
+use Illuminate\Support\Facades\Gate;
 
 class HallTypeController extends Controller
 {
@@ -23,6 +24,8 @@ class HallTypeController extends Controller
      */
     public function index(): \Inertia\Response
     {
+        Gate::authorize('viewAny', HallType::class);
+
         $perPage = request()->query('itemsPerPage', 5);
         $hall_types = HallType::paginate($perPage)->appends(request()->query());
 
@@ -39,6 +42,8 @@ class HallTypeController extends Controller
      */
     public function create(): Modal
     {
+        Gate::authorize('create', HallType::class);
+
         return Inertia::modal('Dashboard/HallTypes/Create')
             ->baseRoute('dashboard.hall_types.index');
     }
@@ -52,6 +57,8 @@ class HallTypeController extends Controller
      */
     public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('create', HallType::class);
+
         DB::beginTransaction();
 
         try {
@@ -82,6 +89,8 @@ class HallTypeController extends Controller
      */
     public function show(HallType $hall_type): Modal
     {
+        Gate::authorize('view', $hall_type);
+
         return Inertia::modal('Dashboard/HallTypes/Show', [
             'hall_type'      => $hall_type,
         ])->baseRoute('dashboard.hall_types.index');
@@ -96,6 +105,8 @@ class HallTypeController extends Controller
      */
     public function edit(HallType $hall_type): Modal
     {
+        Gate::authorize('update', $hall_type);
+
         return Inertia::modal('Dashboard/HallTypes/Edit', [
             'hall_type'      => $hall_type,
         ])->baseRoute('dashboard.hall_types.index');
@@ -111,6 +122,8 @@ class HallTypeController extends Controller
      */
     public function update(UpdateRequest $request, HallType $hall_type): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('update', $hall_type);
+
         DB::beginTransaction();
 
         try {
@@ -141,6 +154,8 @@ class HallTypeController extends Controller
      */
     public function delete(HallType $hall_type): Modal
     {
+        Gate::authorize('delete', $hall_type);
+
         return Inertia::modal('Dashboard/HallTypes/Delete', [
             'hall_type'      => $hall_type,
         ])->baseRoute('dashboard.hall_types.index');
@@ -155,6 +170,8 @@ class HallTypeController extends Controller
      */
     public function destroy(HallType $hall_type): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('delete', $hall_type);
+
         DB::beginTransaction();
 
         try {
@@ -176,6 +193,8 @@ class HallTypeController extends Controller
      * @return \Inertia\Response
      */
     public function showImport(){
+        Gate::authorize('import', HallType::class);
+
         return Inertia::render('Dashboard/HallTypes/Import')
             ->baseRoute('dashboard.hall_types.index');
     }
@@ -189,6 +208,8 @@ class HallTypeController extends Controller
      */
     public function import(Request $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('import', HallType::class);
+
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
@@ -208,6 +229,8 @@ class HallTypeController extends Controller
 
     public function export()
     {
+        Gate::authorize('export', HallType::class);
+
         return Excel::download(new HallTypesExport, 'hall_types.xlsx');
     }
 }
