@@ -59,6 +59,7 @@
     "Are you sure you want to delete this country?": "Estás seguro de que deseas eliminar este país?",
     "Language name is required": "El nombre del idioma es obligatorio",
     "Language code is required": "El código de idioma es obligatorio",
+    "Country name must not be greater than 50 characters": "El nombre del país no debe tener más de 50 caracteres",
     "rating must be at least 1": "la calificación debe ser al menos 1",
     "Show Classification": "Mostrar Clasificación",
     "Create Classification": "Crear Clasificación",
