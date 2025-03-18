@@ -35,6 +35,9 @@ class PermissionSeeder extends Seeder
             PermissionEnum::CREATE_LANGUAGE,
             PermissionEnum::VIEW_ANY_LANGUAGES,
             PermissionEnum::VIEW_LANGUAGE,
+            PermissionEnum::CREATE_CLASSIFICATION,
+            PermissionEnum::VIEW_ANY_CLASSIFICATIONS,
+            PermissionEnum::VIEW_CLASSIFICATION,
         ]);
 
         $user               = User::create([
