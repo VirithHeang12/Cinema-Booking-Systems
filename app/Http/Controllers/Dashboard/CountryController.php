@@ -10,6 +10,8 @@ use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CountriesImport;
 use App\Exports\CountriesExport;
+use App\Http\Requests\Countries\SaveRequest;
+use App\Http\Requests\Countries\UpdateRequest;
 use InertiaUI\Modal\Modal;
 
 class CountryController extends Controller
@@ -48,14 +50,15 @@ class CountryController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
     {
         DB::beginTransaction();
 
         try {
 
+            $data = $request->validated();
             Country::create([
-                'name' => $request->name,
+                'name' => $data['name'],
             ]);
 
             DB::commit();
@@ -87,13 +90,14 @@ class CountryController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Country $country): \Illuminate\Http\RedirectResponse
+    public function update(UpdateRequest $request, Country $country): \Illuminate\Http\RedirectResponse
     {
         DB::beginTransaction();
 
         try {
+            $data = $request->validated();
             $country->update([
-                'name' => $request->name,
+                'name' => $data['name']
             ]);
 
             DB::commit();
