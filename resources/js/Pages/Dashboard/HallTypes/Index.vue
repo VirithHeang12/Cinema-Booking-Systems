@@ -7,11 +7,12 @@
 </template>
 
 <script setup>
-    import { computed, ref } from 'vue'
+    import { computed, ref, watch } from 'vue'
     import { visitModal } from '@inertiaui/modal-vue';
-    import { router } from '@inertiajs/vue3';
+    import { router, usePage } from '@inertiajs/vue3';
     import { route } from 'ziggy-js';
     import { __ } from 'matice';
+    import { toast } from 'vue3-toastify';
 
     const props = defineProps({
         hall_types: {
@@ -159,4 +160,38 @@
     const exportCallback = () => {
         window.location.href = route("dashboard.hall_types.export");
     };
+
+    /**
+     * Notify the user
+     *
+     * @param {string} message
+     *
+     * @return void
+     */
+     const notify = (message) => {
+        toast(message, {
+            autoClose: 1500,
+            position: toast.POSITION.BOTTOM_RIGHT,
+        });
+    }
+
+    const page = usePage();
+
+    /**
+     * Watch for flash messages
+     *
+     * @return void
+     */
+    watch(() => page.props.flash, (flash) => {
+        const success = page.props.flash.success;
+        const error = page.props.flash.error;
+
+        if (success) {
+            notify(success);
+        } else if (error) {
+            notify(error);
+        }
+    }, {
+        deep: true,
+    });
 </script>
