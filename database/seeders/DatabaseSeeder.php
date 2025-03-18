@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {;
         $this->call([
+            PermissionSeeder::class,
             BannerSeeder::class,
             ClassificationSeeder::class,
             CountrySeeder::class,
@@ -22,7 +23,6 @@ class DatabaseSeeder extends Seeder
             PaymentMethodSeeder::class,
             SeatTypeSeeder::class,
             ScreenTypeSeeder::class,
-            UserSeeder::class,
             BookingSeeder::class,
             HallSeeder::class,
             HallSeatTypeSeeder::class,

@@ -60,7 +60,6 @@ putConfig({
         closeButton: true,
         closeExplicitly: false,
         maxWidth: 'xl',
-        paddingClasses: 'p-8 sm:p-6',
         panelClasses: 'bg-white rounded',
         position: 'center',
     },

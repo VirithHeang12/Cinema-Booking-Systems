@@ -22,7 +22,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'          => 'required|string|max:100|unique:countries,name,' . $this->country->id,
+            'name'          => 'required|string|max:50|unique:countries,name,' . $this->country->id,
         ];
     }
 
@@ -36,7 +36,7 @@ class UpdateRequest extends FormRequest
         return [
             'name.required' => 'Name is required',
             'name.string' => 'Name must be a string',
-            'name.max' => 'Name must not be greater than 100 characters',
+            'name.max' => 'Name must not be greater than 50 characters',
             'name.unique' => 'Name must be unique',
         ];
     }

@@ -22,11 +22,11 @@ class SaveRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:100|unique:countries',
+            'name' => 'required|string|max:50|unique:countries',
         ];
     }
 
-      /**
+    /**
      * Get the error messages for the defined validation rules.
      *
      * @return array<string, string>
@@ -36,7 +36,7 @@ class SaveRequest extends FormRequest
         return [
             'name.required' => 'Name is required',
             'name.string' => 'Name must be a string',
-            'name.max' => 'Name must not be greater than 100 characters',
+            'name.max' => 'Name must not be greater than 50 characters',
             'name.unique' => 'Name must be unique',
         ];
     }

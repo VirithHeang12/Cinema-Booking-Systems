@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\PermissionEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Genre;
 use App\Models\Movie;
@@ -9,16 +10,24 @@ use App\Models\ShowSeat;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        if (Auth::user()->cannot(PermissionEnum::VIEW_DASHBOARD)) {
+            abort(403);
+        }
+
         $moviesByYear = $this->moviesByYear();
         $percentagesPerGenre = $this->ticketSalesByGenre();
         $totalBookingRevenue = $this->totalBookingRevenue();
         $totalBookingTicket  = $this->totalBookingTicket();
         $totalMovies         = $this->totalMovies();
+        $bookingTrends       = $this->getBookingTrends();
 
         return Inertia::render('Dashboard/Index', [
             'moviesByYear'              => $moviesByYear,
@@ -26,6 +35,7 @@ class DashboardController extends Controller
             'totalBookingRevenue'       => $totalBookingRevenue,
             'totalBookingTicket'        => $totalBookingTicket,
             'totalMovies'               => $totalMovies,
+            'bookingTrends'             => $bookingTrends,
         ]);
     }
 
@@ -144,5 +154,29 @@ class DashboardController extends Controller
         }
 
         return $percentagesPerGenre;
+    }
+
+    /**
+     * Get booking trends per month from January to the current month.
+     *
+     * @return array
+     */
+    public function getBookingTrends(): array
+    {
+        // Get the bookings for the current year and group them by month using Eloquent
+        $bookingsByMonth = Booking::whereYear('booking_date', Carbon::now()->year)
+            ->selectRaw('MONTH(booking_date) as month, COUNT(id) as total_bookings')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        // Ensure all months (Jan to current) are included, even if there are no bookings
+        return collect(range(1, Carbon::now()->month))->map(function ($month) use ($bookingsByMonth) {
+            $booking = $bookingsByMonth->firstWhere('month', $month);
+            return [
+                'month' => $month,
+                'total_bookings' => $booking ? $booking->total_bookings : 0,
+            ];
+        })->toArray();
     }
 }

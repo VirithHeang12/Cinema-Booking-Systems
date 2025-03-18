@@ -1,4 +1,5 @@
 <template>
+
     <Head :title="title" />
     <v-app class="!bg-yellow-50">
         <Header />
@@ -9,8 +10,8 @@
                 </slot>
             </v-container>
         </v-main>
-        <Footer/>
-        <Menu/>
+        <Footer />
+        <Menu />
     </v-app>
 
 </template>
@@ -27,4 +28,5 @@
             default: 'Eternal',
         },
     });
+
 </script>

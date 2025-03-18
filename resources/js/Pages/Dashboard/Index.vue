@@ -17,8 +17,9 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-zinc-500 text-uppercase text-sm tracking-wide font-medium my-2">Total Booking
-                                Revenue</p>
+                            <p class="text-zinc-500 text-uppercase text-sm tracking-wide font-medium my-2">
+                                Total Booking Revenue
+                            </p>
                             <p class="text-2xl font-bold text-zinc-700 mb-1">
                                 ${{ animatedRevenue.toLocaleString() }}
                             </p>
@@ -38,15 +39,15 @@
                                     <path
                                         d="M5 12.0002C5 10.694 4.16519 9.58273 3 9.1709V7.6C3 7.03995 3 6.75992 3.10899 6.54601C3.20487 6.35785 3.35785 6.20487 3.54601 6.10899C3.75992 6 4.03995 6 4.6 6H19.4C19.9601 6 20.2401 6 20.454 6.10899C20.6422 6.20487 20.7951 6.35785 20.891 6.54601C21 6.75992 21 7.03995 21 7.6V9.17071C19.8348 9.58254 19 10.694 19 12.0002C19 13.3064 19.8348 14.4175 21 14.8293V16.4C21 16.9601 21 17.2401 20.891 17.454C20.7951 17.6422 20.6422 17.7951 20.454 17.891C20.2401 18 19.9601 18 19.4 18H4.6C4.03995 18 3.75992 18 3.54601 17.891C3.35785 17.7951 3.20487 17.6422 3.10899 17.454C3 17.2401 3 16.9601 3 16.4V14.8295C4.16519 14.4177 5 13.3064 5 12.0002Z"
                                         stroke="#46608b" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                    </path>
+                                        stroke-linejoin="round"></path>
                                 </g>
                             </svg>
                         </div>
                         <div>
-                            <p class="text-zinc-500 text-uppercase text-sm tracking-wide font-medium my-2">Total Booking
-                                Tickets</p>
-                            <p class="text-2xl font-bold text-zinc-700 mb-1 ">
+                            <p class="text-zinc-500 text-uppercase text-sm tracking-wide font-medium my-2">
+                                Total Booking Tickets
+                            </p>
+                            <p class="text-2xl font-bold text-zinc-700 mb-1">
                                 {{ animatedTicket.toLocaleString() }}
                             </p>
                         </div>
@@ -81,17 +82,16 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-zinc-500 text-uppercase text-sm tracking-wide font-medium my-2">Total Movies
+                            <p class="text-zinc-500 text-uppercase text-sm tracking-wide font-medium my-2">
+                                Total Movies
                             </p>
-                            <p class="text-2xl font-bold text-zinc-700 mb-1 ">
+                            <p class="text-2xl font-bold text-zinc-700 mb-1">
                                 {{ animatedMovies.toLocaleString() }}
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
         <div class="row !my-[50px]">
             <div class="col-12 col-md-6">
@@ -100,148 +100,213 @@
                     </apexchart>
                 </div>
             </div>
+
+            <div class="col-12 col-md-6">
+                <div class="border p-2 pb-0 rounded-3">
+                    <apexchart width="100%" height="310" type="area" :options="areaChartOptions"
+                        :series="areaChartSeries"></apexchart>
+                </div>
+            </div>
         </div>
 
-        <apexchart width="500" type="bar" :options="barChartOptions" :series="barChartSeries"></apexchart>
+        <!-- <apexchart width="500" type="bar" :options="barChartOptions" :series="barChartSeries"></apexchart> -->
 
         <div class="col-12 col-md-6">
             <div class="border p-2 rounded-3">
                 <apexchart width="100%" height="313" type="bar" :options="columnChartOptions"
                     :series="columnChartSeries">
                 </apexchart>
-
             </div>
         </div>
     </div>
-
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue';
-import { ref } from 'vue';
+    import { computed, onMounted } from "vue";
+    import { ref } from "vue";
 
-const props = defineProps({
-    moviesByYear: Array,
-    percentagesPerGenre: Array,
-    totalBookingRevenue: Number,
-    totalBookingTicket: Number,
-    totalMovies: Number,
-});
+    const props = defineProps({
+        moviesByYear: Array,
+        percentagesPerGenre: Array,
+        totalBookingRevenue: Number,
+        totalBookingTicket: Number,
+        totalMovies: Number,
+        bookingTrends: Array,
+    });
 
+    const animatedRevenue = ref(0);
+    const animatedTicket = ref(0);
+    const animatedMovies = ref(0);
 
-const animatedRevenue = ref(0);
-const animatedTicket = ref(0);
-const animatedMovies = ref(0);
+    const animateRevenue = (target, animatedValue) => {
+        const duration = 2000;
+        const increment = target / (duration / 50);
+        let currentRevenue = 0;
 
-const animateRevenue = (target, animatedValue) => {
-    const duration = 2000;
-    const increment = target / (duration / 50);
-    let currentRevenue = 0;
+        const interval = setInterval(() => {
+            if (currentRevenue < target) {
+                currentRevenue += increment;
+                animatedValue.value = Math.round(currentRevenue);
+            } else {
+                animatedValue.value = target;
+                clearInterval(interval);
+            }
+        }, 50);
+    };
 
-    const interval = setInterval(() => {
-        if (currentRevenue < target) {
-            currentRevenue += increment;
-            animatedValue.value = Math.round(currentRevenue);
-        } else {
-            animatedValue.value = target;
-            clearInterval(interval);
-        }
-    }, 50);
-};
+    onMounted(() => {
+        animateRevenue(props.totalBookingRevenue, animatedRevenue);
+        animateRevenue(props.totalBookingTicket, animatedTicket);
+        animateRevenue(props.totalMovies, animatedMovies);
+    });
 
-onMounted(() => {
-    animateRevenue(props.totalBookingRevenue, animatedRevenue);
-    animateRevenue(props.totalBookingTicket, animatedTicket);
-    animateRevenue(props.totalMovies, animatedMovies);
-});
+    // const barChartOptions = ref({
+    //     chart: {
+    //         type: 'bar',
+    //     },
+    //     xaxis: {
+    //         type: 'category'
+    //     },
+    // });
 
+    // const barChartSeries = computed(() => {
+    //     return [
+    //         {
+    //             name: 'Series 1',
+    //             data: props.moviesByYear.map((item) => ({
+    //                 x: item.year,
+    //                 y: item.count
+    //             }))
+    //         },
+    //     ]
+    // });
 
-// const barChartOptions = ref({
-//     chart: {
-//         type: 'bar',
-//     },
-//     xaxis: {
-//         type: 'category'
-//     },
-// });
-
-// const barChartSeries = computed(() => {
-//     return [
-//         {
-//             name: 'Series 1',
-//             data: props.moviesByYear.map((item) => ({
-//                 x: item.year,
-//                 y: item.count
-//             }))
-//         },
-//     ]
-// });
-
-
-
-const pieChartOptions = computed(() => ({
-    chart: {
-        type: 'pie',
-        height: 100
-    },
-    labels: props.percentagesPerGenre.map((item) => item.genre),
-    title: {
-        text: 'Ticket Sales by Genre',
-        style: {
-            fontSize: '18px',
-            color: "oklch(0.446 0.043 257.281)",
-        }
-    }
-}));
-
-const pieChartSeries = computed(() => {
-    return props.percentagesPerGenre.map((item) => item.percentage);
-});
-
-const colors = ['#FF4560', '#008FFB', '#000000', '#FEB019', '#775DD0', '#546E7A', '#26A69A', '#D10CE8'];
-
-const columnChartOptions = ref({
-    chart: {
-        type: 'bar',
-        height: 350,
-    },
-    plotOptions: {
-        bar: {
-            columnWidth: '45%',
-            distributed: true,
+    const pieChartOptions = computed(() => ({
+        chart: {
+            type: "pie",
+            height: 100,
         },
-    },
-    colors: colors,
-    dataLabels: {
-        enabled: true,
-    },
-    legend: {
-        show: true,
-    },
-    title: {
-        text: 'Movies per Genre',
-        style: {
-            fontSize: '18px',
-            color: "oklch(0.446 0.043 257.281)",
-        }
-    },
-});
+        labels: props.percentagesPerGenre.map((item) => item.genre),
+        title: {
+            text: "Ticket Sales by Genre",
+            style: {
+                fontSize: "18px",
+                color: "#3F3F46",
+                margin: "20px",
+            },
+        },
+    }));
 
-const columnChartSeries = ref([
-    {
-        name: 'Number of Movies',
-        data: [
-            { x: 'Action', y: 120 },
-            { x: 'Adventure', y: 95 },
-            { x: 'Drama', y: 160 },
-            { x: 'Fantasy', y: 80 },
-            { x: 'Horror', y: 60 },
-            { x: 'Mystery', y: 70 },
-            { x: 'Romance', y: 110 },
-            { x: 'Sci-Fi', y: 90 },
-            { x: 'Thriller', y: 100 },
-        ],
+    const pieChartSeries = computed(() => {
+        return props.percentagesPerGenre.map((item) => item.percentage);
+    });
 
-    },
-]);
+    // Spline Area Chart Options
+    const areaChartOptions = computed(() => ({
+        chart: {
+            type: "area",
+            height: 100,
+            toolbar: {
+                tools: {
+                    zoomin: false,
+                    zoomout: false,
+                    zoom: false,
+                    pan: false,
+                    reset: false,
+                },
+            },
+        },
+        title: {
+            text: "Booking Trends Per Month",
+            style: {
+                fontSize: "18px",
+                color: "#3F3F46",
+            },
+        },
+        xaxis: {
+            categories: props.bookingTrends.map((item) => {
+                const monthNames = [
+                    "January", "February", "March", "April", "May", "June", "July", "August",
+                    "September", "October", "November", "December"
+                ];
+                return monthNames[item.month - 1];
+            }),
+        },
+        fill: {
+            type: "gradient",
+            gradient: {
+                shade: "light",
+                type: "vertical",
+                gradientToColors: ["#abe3f4"],
+                stops: [0, 100],
+            },
+        },
+        stroke: {
+            curve: "smooth",
+        },
+    }));
+
+
+    // Spline Area Chart Series
+    const areaChartSeries = computed(() => [
+        {
+            name: "Bookings",
+            data: props.bookingTrends.map((item) => item.total_bookings),
+        },
+    ]);
+
+    const colors = [
+        "#FF4560",
+        "#008FFB",
+        "#000000",
+        "#FEB019",
+        "#775DD0",
+        "#546E7A",
+        "#26A69A",
+        "#D10CE8",
+    ];
+
+    const columnChartOptions = ref({
+        chart: {
+            type: "bar",
+            height: 350,
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: "45%",
+                distributed: true,
+            },
+        },
+        colors: colors,
+        dataLabels: {
+            enabled: true,
+        },
+        legend: {
+            show: true,
+        },
+        title: {
+            text: "Movies per Genre",
+            style: {
+                fontSize: "18px",
+                color: "#3F3F46",
+            },
+        },
+    });
+
+    const columnChartSeries = ref([
+        {
+            name: "Number of Movies",
+            data: [
+                { x: "Action", y: 120 },
+                { x: "Adventure", y: 95 },
+                { x: "Drama", y: 160 },
+                { x: "Fantasy", y: 80 },
+                { x: "Horror", y: 60 },
+                { x: "Mystery", y: 70 },
+                { x: "Romance", y: 110 },
+                { x: "Sci-Fi", y: 90 },
+                { x: "Thriller", y: 100 },
+            ],
+        },
+    ]);
 </script>

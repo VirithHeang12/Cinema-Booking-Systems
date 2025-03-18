@@ -16,7 +16,7 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
 
     Route::get('classifications/import', [ClassificationController::class, 'showImport'])->name('classifications.import.show');
     Route::post('classifications/import', [ClassificationController::class, 'import'])->name('classifications.import');
-    Route::get('classifications/export', [ClassificationController::class, 'export'])->name('classifications.export')->withoutMiddleware(['web']);
+    Route::get('classifications/export', [ClassificationController::class, 'export'])->name('classifications.export');
     Route::get('countries/import', [CountryController::class, 'showImport'])->name('countries.import.show');
     Route::post('countries/import', [CountryController::class, 'import'])->name('countries.import');
     Route::get('countries/export', [CountryController::class, 'export'])->name('countries.export')->withoutMiddleware(['web']);
