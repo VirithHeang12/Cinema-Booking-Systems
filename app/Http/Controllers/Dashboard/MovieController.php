@@ -3,6 +3,15 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Classifications\SaveRequest;
+use App\Http\Resources\Api\ClassificationResource;
+use App\Http\Resources\Api\CountryResource;
+use App\Http\Resources\Api\GenreResource;
+use App\Http\Resources\Api\LanguageResource;
+use App\Models\Classification;
+use App\Models\Country;
+use App\Models\Genre;
+use App\Models\Language;
 use App\Models\Movie;
 use App\Models\MovieGenre;
 use App\Models\MovieSubtitle;
@@ -41,47 +50,57 @@ class MovieController extends Controller
      */
     public function create(): Modal
     {
-        return Inertia::modal('Dashboard/Movies/Create')->baseRoute('dashboard.movies.index');
+        $genres = GenreResource::collection(Genre::all())->toArray(request());
+        $countries = CountryResource::collection(Country::all())->toArray(request());
+        $classifications = ClassificationResource::collection(Classification::all())->toArray(request());
+        $languages = LanguageResource::collection(Language::all())->toArray(request());
+
+        return Inertia::modal('Dashboard/Movies/Create', [
+            'genres'                => $genres,
+            'countries'             => $countries,
+            'classifications'       => $classifications,
+            'languages'             => $languages,
+        ])->baseRoute('dashboard.movies.index');
     }
 
     /**
      * Store a newly created Movie in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  SaveRequest  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
     {
         DB::beginTransaction();
 
         try {
 
+            $data = $request->validated();
+
             $movie = Movie::create([
-                'title'                     => $request->title,
-                'description'               => $request->description,
-                'release_date'              => $request->release_date,
-                'duration'                  => $request->duration,
-                'rating'                    => $request->rating,
-                'trailer_url'               => $request->trailer_url,
-                'thumbnail_url'             => $request->thumbnail_url,
-                'production_company_id'     => $request->production_company_id,
-                'country_id'                => $request->country_id,
-                'classification_id'         => $request->classification_id,
-                'language_id'               => $request->language_id,
+                'title'                     => $data['title'],
+                'description'               => $data['description'],
+                'release_date'              => $data['release_date'],
+                'duration'                  => $data['duration'],
+                'rating'                    => $data['rating'],
+                'trailer_url'               => $data['trailer_url'],
+                'thumbnail_url'             => $data['thumbnail_url'],
+                'country_id'                => $data['country_id'],
+                'classification_id'         => $data['classification_id'],
+                'spoken_language_id'        => $data['spoken_language_id'],
             ]);
 
-            foreach ($request->movieGenres as $genre) {
+            foreach ($data['movieGenres'] as $genre) {
                 MovieGenre::create([
-                    'movie_id' => $movie->id,
-                    'genre_id' => $genre,
+                    'movie_id'      => $movie->id,
+                    'genre_id'      => $genre,
                 ]);
             }
-
-            foreach ($request->movieSubtitles as $subtitle) {
+            foreach ($data['movieSubtitles'] as $subtitle) {
                 MovieSubtitle::create([
-                    'movie_id' => $movie->id,
-                    'language_id' => $subtitle,
+                    'movie_id'      => $movie->id,
+                    'language_id'   => $subtitle,
                 ]);
             }
 
@@ -89,7 +108,6 @@ class MovieController extends Controller
 
             return redirect()->route('dashboard.movies.index')->with('success', 'Movie created.');
         } catch (\Exception $e) {
-            dd($e);
             DB::rollBack();
 
             return redirect()->route('dashboard.movies.index')->with('error', 'Movie not created.');
