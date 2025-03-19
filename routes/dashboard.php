@@ -36,11 +36,6 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::get('screen_types/import', [ScreenTypeController::class, 'import'])->name('screen_types.import');
     Route::get('screen_types/export', [ScreenTypeController::class, 'export'])->name('screen_types.export')->withoutMiddleware(['web']);
 
-    Route::get('genres/import', [GenreController::class, 'showImport'])->name('genres.import.show');
-    Route::post('genres/import', [GenreController::class, 'import'])->name('genres.import');
-    Route::get('genres/export', [GenreController::class, 'export'])->name('genres.export')->withoutMiddleware(['web']);
-
-
     Route::get('languages/{language}/delete', [LanguageController::class, 'delete'])->name('languages.delete');
     Route::get('countries/{country}/delete', [CountryController::class, 'delete'])->name('countries.delete');
     Route::get('hall_types/{hall_type}/delete', [HallTypeController::class, 'delete'])->name('hall_types.delete');

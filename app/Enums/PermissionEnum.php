@@ -37,4 +37,15 @@ enum PermissionEnum: string
     case EXPORT_COUNTRY         = 'EXPORT COUNTRY';
     case RESTORE_COUNTRY        = 'RESTORE COUNTRY';
     case FORCE_DELETE_COUNTRY   = 'FORCE DELETE COUNTRY';
+
+    // HallType Permissions
+    case VIEW_ANY_HALLTYPES    = 'VIEW ANY HALLTYPES';
+    case VIEW_HALLTYPE         = 'VIEW HALLTYPE';
+    case CREATE_HALLTYPE         = 'CREATE HALLTYPE';
+    case UPDATE_HALLTYPE         = 'UPDATE HALLTYPE';
+    case DELETE_HALLTYPE         = 'DELETE HALLTYPE';
+    case IMPORT_HALLTYPE         = 'IMPORT HALLTYPE';
+    case EXPORT_HALLTYPE         = 'EXPORT HALLTYPE';
+    case RESTORE_HALLTYPE        = 'RESTORE HALLTYPE';
+    case FORCE_DELETE_HALLTYPE  = 'FORCE DELETE HALLTYPE';
 }
