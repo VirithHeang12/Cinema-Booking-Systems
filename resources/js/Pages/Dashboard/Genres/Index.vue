@@ -1,127 +1,3 @@
-<!-- <template>
-    <data-table title="Genre" :items="items" :headers="headers" :sort-by="sortBy" @view="viewCallback"
-        @delete="deleteCallback" @edit="editCallback" @create="createCallback" />
-</template>
-
-<script setup>
-    import { computed, ref } from 'vue'
-    import { visitModal } from '@inertiaui/modal-vue';
-    import { route } from 'ziggy-js';
-
-    const props = defineProps({
-        genres: {
-            type: Array,
-            required: true,
-        }
-    });
-
-    const items = computed(() => {
-        return props.genres;
-    });
-
-    const headers = [
-        {
-            title: 'Name',
-            align: 'start',
-            sortable: true,
-            key: 'name',
-        },
-        {
-            title: 'Description',
-            align: 'start',
-            sortable: true,
-            key: 'description',
-        },
-        {
-            title: 'Created At',
-            align: 'start',
-            sortable: true,
-            key: 'created_at',
-        },
-        {
-            title: 'Updated At',
-            align: 'start',
-            sortable: true,
-            key: 'updated_at',
-        },
-    ];
-
-    const sortBy = ref([
-        {
-            key: 'name',
-            direction: 'asc',
-        },
-        {
-            key: 'Description',
-            direction: 'asc',
-        },
-        {
-            key: 'created_at',
-            direction: 'asc',
-        },
-        {
-            key: 'updated_at',
-            direction: 'asc',
-        }
-    ]);
-
-    const viewCallback = (item) => {
-        visitModal(route('dashboard.genres.show', {
-            genre: item.id,
-        }), {
-            method: 'get',
-            config: {
-                slideover: false,
-                position: 'center',
-                closeExplicitly: true,
-                maxWidth: '2xl',
-            },
-        });
-
-    };
-
-    const editCallback = (item) => {
-        visitModal(route('dashboard.genres.edit', {
-            genre: item.id,
-        }), {
-            method: 'get',
-            config: {
-                slideover: true,
-                position: 'right',
-                closeExplicitly: true,
-                maxWidth: '2xl',
-            },
-        });
-    };
-
-    const deleteCallback = (item) => {
-        visitModal(route('dashboard.genres.delete', {
-            genre: item.id,
-        }), {
-            config: {
-                slideover: false,
-                position: 'center',
-                closeExplicitly: true,
-                maxWidth: '2xl',
-            },
-
-        });
-
-    };
-
-    const createCallback = () => {
-        visitModal(route('dashboard.genres.create'), {
-            config: {
-                slideover: true,
-                position: 'right',
-                closeExplicitly: true,
-                maxWidth: '2xl',
-            },
-
-        });
-    };
-</script> -->
-
 <template>
     <data-table-server :showNo="true" :title="__('Genres')" :serverItems="serverItems" :items-length="totalItems"
         :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
@@ -131,11 +7,12 @@
 </template>
 
 <script setup>
-    import { computed, ref } from "vue";
+    import { computed, ref , watch } from "vue";
     import { visitModal } from "@inertiaui/modal-vue";
-    import { router } from "@inertiajs/vue3";
+    import { router , usePage } from "@inertiajs/vue3";
     import { route } from "ziggy-js";
     import { __ } from 'matice';
+    import { toast } from 'vue3-toastify';
 
     const props = defineProps({
         genres: {
@@ -274,4 +151,40 @@
     const exportCallback = () => {
         window.location.href = route("dashboard.genres.export");
     };
+
+    /**
+     * Notify the user
+     *
+     * @param {string} message
+     *
+     * @return void
+     */
+     const notify = (message) => {
+        toast(message, {
+        autoClose: 1500,
+        position: toast.POSITION.BOTTOM_RIGHT,
+        type: 'success',
+    });
+    }
+
+    const page = usePage();
+
+    /**
+     * Watch for flash messages
+     *
+     * @return void
+     */
+    watch(() => page.props.flash, (flash) => {
+        const success = page.props.flash.success;
+        const error = page.props.flash.error;
+
+        if (success) {
+            notify(success);
+        } else if (error) {
+            notify(error);
+        }
+    }, {
+        deep: true,
+    });
+
 </script>

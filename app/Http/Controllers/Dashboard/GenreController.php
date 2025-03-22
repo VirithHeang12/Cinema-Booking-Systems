@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Genre;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\GenresImport;
 use App\Exports\GenresExport;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use InertiaUI\Modal\Modal;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\Genres\SaveRequest;
+use App\Http\Requests\Genres\UpdateRequest;
 
 class GenreController extends Controller
 {
@@ -22,7 +24,8 @@ class GenreController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        // $genres = Genre::all();
+        Gate::authorize('viewAny', Genre::class);
+
         $perPage = request()->query('itemsPerPage', 5);
         $genres = Genre::paginate($perPage)->appends(request()->query());
 
@@ -34,39 +37,44 @@ class GenreController extends Controller
     /**
      * Show the form for creating a new genre.
      *
-     * @return \Inertia\Response
+     * @return Modal
      *
      */
-    public function create(): \Inertia\Response
+    public function create(): Modal
     {
-        return Inertia::render('Dashboard/Genres/Create');
-    }
+        Gate::authorize('create', Genre::class);
 
+        return Inertia::modal('Dashboard/Genres/Create')
+            ->baseRoute('dashboard.genres.index');
+    }
+    
     /**
      * Store a newly created genre in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\SaveRequest  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('create', Genre::class);
         DB::beginTransaction();
 
         try {
 
-            $genre = Genre::create([
-                'name' => $request->name,
-                'description' => $request->description,
+            $data = $request->validated();
+            Genre::create([
+                'name' => $data['name'],
+                'description' => $data['description'],
             ]);
             
             DB::commit();
           
-            return redirect()->route('dashboard.genres.index')->with('success', 'Genre created.');
+            return redirect()->route('dashboard.genres.index')->with('success', __('Genre created.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.genres.index')->with('error', 'Genre not created.');
+            return redirect()->route('dashboard.genres.index')->with('error', __('Genre not created.'));
         }
     }
 
@@ -75,13 +83,12 @@ class GenreController extends Controller
      *
      * @param  \App\Models\Genre  $genre
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function show(Genre $genre): \Inertia\Response
+    public function show(Genre $genre): Modal
     {
-        return Inertia::render('Dashboard/Genres/Show', [
-            'genre'      => $genre,
-        ]);
+        Gate::authorize('view', $genre);
+        return Inertia::modal('Dashboard/Genres/Show', ['genre' => $genre])->baseRoute('dashboard.genres.index');
     }
 
     /**
@@ -89,13 +96,12 @@ class GenreController extends Controller
      *
      * @param  \App\Models\Genre  $genre
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function edit(Genre $genre): \Inertia\Response
+    public function edit(Genre $genre): Modal
     {
-        return Inertia::render('Dashboard/Genres/Edit', [
-            'genre'      => $genre,
-        ]);
+        Gate::authorize('update', $genre);
+        return Inertia::modal('Dashboard/Genres/Edit', ['genre' => $genre])->baseRoute('dashboard.genres.index');
     }
 
     /**
@@ -106,24 +112,26 @@ class GenreController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Genre $genre): \Illuminate\Http\RedirectResponse
+    public function update(UpdateRequest $request, Genre $genre): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('update', $genre);
         DB::beginTransaction();
 
         try {
 
+            $data = $request->validated();
             $genre->update([
-                'name' => $request->name,
-                'description' => $request->description,
+                'name' => $data['name'],
+                'description' => $data['description'],
             ]);
 
             DB::commit();
 
-            return redirect()->route('dashboard.genres.index')->with('success', 'Genre updated.');
+            return redirect()->route('dashboard.genres.index')->with('success', __('Genre updated.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.genres.index')->with('error', 'Genre not updated.');
+            return redirect()->route('dashboard.genres.index')->with('error', __('Genre not updated.'));
         }
     }
 
@@ -132,13 +140,12 @@ class GenreController extends Controller
      *
      * @param  \App\Models\Genre  $genre
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function delete(Genre $genre): \Inertia\Response
+    public function delete(Genre $genre): Modal
     {
-        return Inertia::render('Dashboard/Genres/Delete', [
-            'genre'      => $genre,
-        ]);
+        Gate::authorize('delete', $genre);
+        return Inertia::modal('Dashboard/Genres/Delete', ['genre' => $genre])->baseRoute('dashboard.genres.index');
     }
 
     /**
@@ -150,6 +157,7 @@ class GenreController extends Controller
      */
     public function destroy(Genre $genre): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('delete', $genre);
         DB::beginTransaction();
 
         try {
@@ -158,11 +166,11 @@ class GenreController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.genres.index')->with('success', 'Genre deleted.');
+            return redirect()->route('dashboard.genres.index')->with('success', __('Genre deleted.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.genres.index')->with('error', 'Genre not deleted.');
+            return redirect()->route('dashboard.genres.index')->with('error', __('Genre not deleted.'));
         }
     }
 
@@ -171,6 +179,7 @@ class GenreController extends Controller
      * @return \Inertia\Response
      */
     public function showImport(){
+        Gate::authorize('import', Genre::class);
         return Inertia::render('Dashboard/Genres/Import');
     }
 
@@ -183,6 +192,7 @@ class GenreController extends Controller
      */
     public function import(Request $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('import', Genre::class);
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
@@ -193,7 +203,7 @@ class GenreController extends Controller
             Excel::import(new GenresImport, $request->file('file'));
             DB::commit();
 
-            return redirect()->route('dashboard.genres.index')->with('success', 'Genres imported.');
+            return redirect()->route('dashboard.genres.index')->with('success', __('Genres imported.'));
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('dashboard.genres.index')->with('error', $e->getMessage());
@@ -203,6 +213,7 @@ class GenreController extends Controller
 
     public function export()
     {
+        Gate::authorize('export', Genre::class);
         return Excel::download(new GenresExport, 'genres.xlsx');
     }
 

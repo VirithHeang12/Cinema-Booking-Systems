@@ -63,8 +63,4 @@
     const submitForm = () => {
         form.post(route("dashboard.genres.store"));
     };
-
-
-
-
 </script>
