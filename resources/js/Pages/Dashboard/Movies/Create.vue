@@ -1,190 +1,158 @@
 <template>
     <Modal v-slot="{ close }">
-        <v-card>
-            <h4 class="text-gray-600">Create Movie</h4>
-            <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
-                <vee-field name="title" v-slot="{ field, errors }">
-                    <v-text-field v-bind="field" :error-messages="errors" v-model="form.title" :label="__('Title')"
-                        variant="outlined"></v-text-field>
-                </vee-field>
+        <h4 class="text-gray-600">Create Movie</h4>
+        <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
+            <vee-field name="title" v-slot="{ field, errors }">
+                <v-text-field v-bind="field" :error-messages="errors" v-model="form.title" :label="__('Title')"
+                    variant="outlined"></v-text-field>
+            </vee-field>
 
-                <vee-field name="description" v-slot="{ field, errors }">
-                    <v-textarea v-bind="field" :error-messages="errors" v-model="form.description"
-                        :label="__('Description')" variant="outlined"></v-textarea>
-                </vee-field>
+            <vee-field name="description" v-slot="{ field, errors }">
+                <v-textarea v-bind="field" :error-messages="errors" v-model="form.description"
+                    :label="__('Description')" variant="outlined"></v-textarea>
+            </vee-field>
 
-                <vee-field name="release_date" v-slot="{ field, errors }">
-                    <v-text-field type="date" v-bind="field" :error-messages="errors" v-model="form.release_date"
-                        :label="__('Release Date')" variant="outlined"></v-text-field>
-                </vee-field>
+            <vee-field name="release_date" v-slot="{ field, errors }">
+                <v-text-field type="date" v-bind="field" :error-messages="errors" v-model="form.release_date"
+                    :label="__('Release Date')" variant="outlined"></v-text-field>
+            </vee-field>
 
-                <vee-field name="duration" v-slot="{ field, errors }">
-                    <v-text-field type="number" v-bind="field" :error-messages="errors" v-model="form.duration"
-                        :label="__('Duration')" variant="outlined"></v-text-field>
-                </vee-field>
+            <vee-field name="duration" v-slot="{ field, errors }">
+                <v-text-field type="number" v-bind="field" :error-messages="errors" v-model="form.duration"
+                    :label="__('Duration')" variant="outlined"></v-text-field>
+            </vee-field>
 
-                <vee-field name="rating" v-slot="{ field, errors }">
-                    <v-text-field v-bind="field" :error-messages="errors" v-model="form.rating" :label="__('Rating')"
-                        variant="outlined"></v-text-field>
-                </vee-field>
+            <vee-field name="rating" v-slot="{ field, errors }">
+                <v-text-field v-bind="field" :error-messages="errors" v-model="form.rating" :label="__('Rating')"
+                    variant="outlined"></v-text-field>
+            </vee-field>
 
-                <vee-field name="trailer_url" v-slot="{ field, errors }">
-                    <v-text-field v-bind="field" :error-messages="errors" v-model="form.trailer_url"
-                        :label="__('Trailer URL')" variant="outlined"></v-text-field>
-                </vee-field>
+            <vee-field name="trailer_url" v-slot="{ field, errors }">
+                <v-text-field v-bind="field" :error-messages="errors" v-model="form.trailer_url"
+                    :label="__('Trailer URL')" variant="outlined"></v-text-field>
+            </vee-field>
 
-                <vee-field name="thumbnail_url" v-slot="{ field, errors }">
-                    <v-text-field v-bind="field" :error-messages="errors" v-model="form.thumbnail_url"
-                        :label="__('Thumbnail URL')" variant="outlined"></v-text-field>
-                </vee-field>
+            <vee-field name="thumbnail_url" v-slot="{ field, errors }">
+                <v-text-field v-bind="field" :error-messages="errors" v-model="form.thumbnail_url"
+                    :label="__('Thumbnail URL')" variant="outlined"></v-text-field>
+            </vee-field>
 
-                <vee-field name="country_id" v-slot="{ errors }">
-                    <v-autocomplete :error-messages="errors" v-model="form.country_id" :label="__('Country')"
-                        variant="outlined" :items="countries" item-title="name" item-value="id"></v-autocomplete>
-                </vee-field>
+            <vee-field name="country_id" v-slot="{ errors, field: { value, ...field } }">
+                <v-autocomplete v-bind="field" :error-messages="errors" v-model="form.country_id" :label="__('Country')"
+                    variant="outlined" :items="countries" item-title="name" item-value="id"></v-autocomplete>
+            </vee-field>
 
-                <vee-field name="movieGenres" v-slot="{ field, errors }">
-                    <v-select v-bind="field" :error-messages="errors" v-model="form.movieGenres" :label="__('Genre')"
-                        variant="outlined" :items="genres" item-title="name" item-value="id" multiple></v-select>
-                </vee-field>
-
-                <vee-field name="movieSubtitles" v-slot="{ field, errors }">
-                    <v-select v-bind="field" :error-messages="errors" v-model="form.movieSubtitles"
-                        :label="__('Language')" variant="outlined" :items="languages" item-title="name" item-value="id"
-                        multiple></v-select>
-                </vee-field>
-
-                <vee-field name="movieSubtitles">
-                    <vue-multiselect :searchable="true" :close-on-select="false" v-model="form.movieSubtitles"
-                        :options="languages" label="name" track-by="id" placeholder="Select language"
-                        :multiple="true"></vue-multiselect>
-                </vee-field>
+            <vee-field name="classification_id" v-slot="{ errors, field: { value, ...field } }">
+                <v-autocomplete v-bind="field" :error-messages="errors" v-model="form.classification_id"
+                    :label="__('Classification')" variant="outlined" :items="classifications" item-title="name"
+                    item-value="id"></v-autocomplete>
+            </vee-field>
 
 
-                <v-btn @click="close" color="primary" :disabled="!meta.valid || form.processing"
-                    :loading="form.processing" @click.prevent="submitForm(setErrors)" block>Submit</v-btn>
-            </vee-form>
-        </v-card>
+            <vee-field name="spoken_language_id" v-slot="{ errors, field: { value, ...field } }">
+                <v-autocomplete v-bind="field" :error-messages="errors" v-model="form.spoken_language_id"
+                    :label="__('Spoken Language')" variant="outlined" :items="languages" item-title="name"
+                    item-value="id"></v-autocomplete>
+            </vee-field>
+
+            <label for="movieSubtitles">Subtitles</label>
+            <vee-field name="movieSubtitles">
+                <vue-multiselect :searchable="true" :close-on-select="false" v-model="form.movieSubtitles"
+                    :options="languages" label="name" track-by="id" :placeholder="__('Select language')"
+                    :multiple="true"></vue-multiselect>
+            </vee-field>
+
+            <label for="movieSubtitles">Genres</label>
+            <vee-field name="movieGenres">
+                <vue-multiselect :searchable="true" :close-on-select="false" v-model="form.movieGenres"
+                    :options="genres" label="name" track-by="id" :placeholder="__('Select genre')"
+                    :multiple="true"></vue-multiselect>
+            </vee-field>
+
+
+            <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
+                @click.prevent="submitForm(setErrors, close)" block>Submit</v-btn>
+        </vee-form>
     </Modal>
 </template>
 
 <script setup>
     import { useForm } from '@inertiajs/vue3';
-    import axios from 'axios';
     import { __ } from 'matice';
-    import { onMounted, ref } from 'vue';
     import * as yup from 'yup';
 
+    const props = defineProps({
+        countries: {
+            type: Array,
+            required: true,
+        },
+        genres: {
+            type: Array,
+            required: true,
+        },
+        languages: {
+            type: Array,
+            required: true,
+        },
+        classifications: {
+            type: Array,
+            required: true,
+        },
+    });
+
     const schema = yup.object().shape({
-        // title: yup.string().required(__('title is required')),
-        // release_date: yup.date()
-        //     .required(__('release date is required'))
-        //     .max(new Date(), __('release date cannot be in the future')),
-        // duration: yup.number().required(__('duration is required')),
-        // rating: yup.number().min(1, __('rating must be at least 1')).max(10, __('rating must be at most 10')).required(__('rating is required')).typeError(__('rating must be a number')),
-        // country_id: yup.number().required(__('country is required')),
-        // movieGenres: yup.array().of(yup.number()).min(1, __('at least one genre is required')).required(__('genre is required')),
-        // movieLanguages: yup.array().of(yup.number()).min(1, __('at least one language is required')).required(__('language is required')),
+        title: yup.string().required(__('title is required')),
+        description: yup.string().nullable(),
+        release_date: yup.date()
+            .required(__('release date is required'))
+            .max(new Date(), __('release date cannot be in the future')),
+        duration: yup.number().required(__('duration is required')).min(1, __('duration must be at least 1 minute')).typeError(__('duration must be a number')),
+        rating: yup.number().min(1, __('rating must be at least 1')).max(10, __('rating must be at most 10')).typeError(__('rating must be a number')),
+        trailer_url: yup.string().url(__('trailer url must be a valid url')),
+        thumbnail_url: yup.string().url(__('thumbnail url must be a valid url')),
+        country_id: yup.number().required(__('country is required')),
+        classification_id: yup.number().required(__('classification is required')),
+        spoken_language_id: yup.number().required(__('spoken language is required')),
+        movieGenres: yup.array().of(yup.number()).min(1, __('at least one genre is required')).required(__('genre is required')),
+        movieSubtitles: yup.array().of(yup.number()).min(1, __('at least one language is required')).required(__('language is required')),
     });
 
     const form = useForm({
-        title: '',
-        description: '',
-        release_date: '',
-        duration: '',
-        rating: '',
-        trailer_url: '',
-        thumbnail_url: '',
-        production_company_id: '',
-        country_id: '',
-        movieGenres: [],
-        movieSubtitles: [],
+        title: null,
+        description: null,
+        release_date: null,
+        duration: null,
+        rating: null,
+        trailer_url: null,
+        thumbnail_url: null,
+        country_id: null,
+        classification_id: null,
+        spoken_language_id: null,
+        movieGenres: null,
+        movieSubtitles: null,
     });
 
-    const countries = ref([]);
-    const genres = ref([]);
-    const languages = ref([]);
-
-    const submitForm = () => {
-        form.post(route('dashboard.movies.store'));
-    }
-
     /**
-     * Load countries
+     * Submit the form
      *
-     * @returns {Promise<void>}
+     * @param setErrors
+     * @param close
+     *
+     * @returns void
      */
-    const loadCountries = async () => {
-        try {
-            const response = await axios.get('http://cinema-booking-systems.test/api/v1/dashboard/countries', {
-                headers: {
-                    'Accept': 'application/json',
-                }
-            });
-
-            if (response.data) {
-                countries.value = response.data;
-            }
-        } catch (error) {
-            console.error(error);
-        }
+    const submitForm = (setErrors, close) => {
+        form.post(route('dashboard.movies.store'), {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                form.reset();
+                close();
+            },
+            onError: (errors) => {
+                setErrors(errors);
+            },
+        });
     }
-
-    /**
-     * Load Genres
-     *
-     * @returns {Promise<void>}
-     */
-    const loadGenres = async () => {
-        try {
-            const response = await axios.get('http://cinema-booking-systems.test/api/v1/dashboard/genres', {
-                headers: {
-                    'Accept': 'application/json',
-                }
-            });
-
-            if (response.data) {
-                genres.value = response.data;
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    /**
-     * Load Languages
-     *
-     * @returns {Promise<void>}
-     */
-    const loadLanguages = async () => {
-        try {
-            const response = await axios.get('http://cinema-booking-systems.test/api/v1/dashboard/languages', {
-                headers: {
-                    'Accept': 'application/json',
-                }
-            });
-
-            if (response.data) {
-                languages.value = response.data;
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    /**
-     * on mounted
-     *
-     * @returns {Promise<void>}
-     */
-    onMounted(async () => {
-        await Promise.all([
-            loadCountries(),
-            loadGenres(),
-            loadLanguages(),
-        ]);
-    });
-
 </script>
 
 <style>
@@ -193,6 +161,30 @@
     }
 
     .im-close-button {
-        background-color: red;
+        margin: 15px;
+    }
+
+    .im-close-button svg path {
+        stroke: rgb(114, 114, 114);
+        transition: 0.3s;
+    }
+
+    .im-close-button:hover.im-close-button svg path {
+        stroke: rgb(56, 56, 56);
+    }
+
+    .im-slideover-container {
+
+        scrollbar-width: none !important;
+    }
+
+    .im-slideover-positioner {
+        padding: 9px;
+    }
+
+    .im-slideover-content {
+
+        min-height: 98vh !important;
+        border-radius: 10px;
     }
 </style>

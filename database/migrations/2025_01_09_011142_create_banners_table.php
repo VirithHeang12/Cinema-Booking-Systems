@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('banners', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
+            $table->id()
                 ->comment('Unique identifier for the banner');
 
             $table->string('image_url')
@@ -24,6 +23,7 @@ return new class extends Migration
                 ->comment('Date and time when the banner should start displaying');
 
             $table->timestamp('display_end_date')
+                ->nullable()
                 ->comment('Date and time when the banner should stop displaying');
 
             $table->softDeletes();

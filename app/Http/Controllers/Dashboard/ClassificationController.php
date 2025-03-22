@@ -10,6 +10,10 @@ use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ClassificationsImport;
 use App\Exports\ClassificationsExport;
+use InertiaUI\Modal\Modal;
+use Illuminate\Support\Facades\Gate;
+
+
 
 class ClassificationController extends Controller
 {
@@ -20,6 +24,8 @@ class ClassificationController extends Controller
      */
     public function index(): \Inertia\Response
     {
+        Gate::authorize('viewAny', Classification::class);
+
         $perPage = request()->query('itemsPerPage', 5);
         $classifications = Classification::paginate($perPage)->appends(request()->query());
         return Inertia::render('Dashboard/Classifications/Index', [
@@ -30,12 +36,15 @@ class ClassificationController extends Controller
     /**
      * Show the form for creating a new classification.
      *
-     * @return \Inertia\Response
+     * @return Modal
      *
      */
-    public function create(): \Inertia\Response
+    public function create(): Modal
     {
-        return Inertia::render('Dashboard/Classifications/Create');
+        Gate::authorize('create', Classification::class);
+
+        return Inertia::modal('Dashboard/Classifications/Create')
+            ->baseRoute('dashboard.classifications.index');
     }
 
     /**
@@ -47,6 +56,8 @@ class ClassificationController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('create', Classification::class);
+
         DB::beginTransaction();
 
         try {
@@ -71,11 +82,15 @@ class ClassificationController extends Controller
      *
      * @param  \App\Models\Classification  $classification
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function show(Classification $classification): \Inertia\Response
+    public function show(Classification $classification): Modal
     {
-        return Inertia::render('Dashboard/Classifications/Show', ['classification' => $classification]);
+        Gate::authorize('view', $classification);
+
+        return Inertia::modal('Dashboard/Classifications/Show',[
+            'classification' => $classification
+        ])->baseRoute('dashboard.classifications.index');
     }
 
     /**
@@ -83,11 +98,15 @@ class ClassificationController extends Controller
      *
      * @param  \App\Models\Classification  $classification
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function edit(Classification $classification): \Inertia\Response
+    public function edit(Classification $classification): Modal
     {
-        return Inertia::render('Dashboard/Classifications/Edit', ['classification' => $classification]);
+        Gate::authorize('update', $classification);
+
+        return Inertia::modal('Dashboard/Classifications/Edit', [
+            'classification' => $classification
+        ])->baseRoute('dashboard.classifications.index');
     }
 
     /**
@@ -100,6 +119,8 @@ class ClassificationController extends Controller
      */
     public function update(Request $request, Classification $classification): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('update', $classification);
+
         DB::beginTransaction();
 
         try {
@@ -123,11 +144,15 @@ class ClassificationController extends Controller
      * Show the form for deleting the specified classification.
      *
      * @param  \App\Models\Classification  $classification
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function delete(Classification $classification): \Inertia\Response
+    public function delete(Classification $classification): Modal
     {
-        return Inertia::render('Dashboard/Classifications/Delete', ['classification' => $classification]);
+        Gate::authorize('delete', $classification);
+
+        return Inertia::modal('Dashboard/Classifications/Delete', [
+            'classification' => $classification
+        ])->baseRoute('dashboard.classifications.index');
     }
 
 
@@ -140,6 +165,8 @@ class ClassificationController extends Controller
      */
     public function destroy(Classification $classification): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('delete', $classification);
+
         DB::beginTransaction();
 
         try {
@@ -147,20 +174,23 @@ class ClassificationController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.classifications.index')->with('success', 'Classification deleted.');
+            return redirect()->route('dashboard.classifications.index')->with('success', __('Classification deleted.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.classifications.index')->with('error', 'Classification not deleted.');
+            return redirect()->route('dashboard.classifications.index')->with('error', __('Classification not deleted.'));
         }
     }
 
     /**
      * Show Import classifications form.
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function showImport(){
-        return Inertia::render('Dashboard/Classifications/Import');
+    public function showImport(): Modal
+    {
+        Gate::authorize('import', Classification::class);
+
+        return Inertia::modal('Dashboard/Classifications/Import')->baseRoute('dashboard.classifications.index');
     }
 
     /**
@@ -172,6 +202,8 @@ class ClassificationController extends Controller
      */
     public function import(Request $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('import', Classification::class);
+
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
@@ -192,7 +224,8 @@ class ClassificationController extends Controller
 
     public function export()
     {
+        Gate::authorize('export', Classification::class);
+
         return Excel::download(new ClassificationsExport, 'classifications.xlsx');
     }
-
 }

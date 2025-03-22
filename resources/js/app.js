@@ -10,6 +10,10 @@ import { createApp } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { Link } from "@inertiajs/vue3";
 
+// Vue toastify
+import Vue3Toastify from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 // Inertia Modal
 import { renderApp, ModalLink, Modal, putConfig } from '@inertiaui/modal-vue'
 
@@ -55,15 +59,14 @@ putConfig({
     modal: {
         closeButton: true,
         closeExplicitly: false,
-        maxWidth: '2xl',
-        paddingClasses: 'p-8 sm:p-6',
+        maxWidth: 'xl',
         panelClasses: 'bg-white rounded',
         position: 'center',
     },
     slideover: {
         closeButton: true,
         closeExplicitly: true,
-        maxWidth: '4xl',
+        maxWidth: 'xl',
         paddingClasses: 'p-4 sm:p-6',
         panelClasses: 'bg-white min-h-screen',
         position: 'right',
@@ -91,6 +94,12 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(FlagIcon)
+            .use(
+                Vue3Toastify,
+                {
+                    autoClose: 3000,
+                }
+            )
             .use(vuetify);
 
         app.mixin({

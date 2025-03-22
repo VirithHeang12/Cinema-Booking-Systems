@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Str;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     use SoftDeletes;
     use HasApiTokens;
+    use HasRoles;
 
     /**
      * The table associated with the model.
@@ -24,20 +25,6 @@ class User extends Authenticatable
     protected $table = 'users';
 
     /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'id';
-
-    /**
-     * The "type" of the auto-incrementing ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -45,6 +32,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'github_id',
+        'github_token',
+        'github_refresh_token',
         'password',
         'phone_number',
     ];
@@ -81,19 +71,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class);
     }
-
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($user) {
-            $user->id = Str::uuid();
-        });
-    }
-
 }

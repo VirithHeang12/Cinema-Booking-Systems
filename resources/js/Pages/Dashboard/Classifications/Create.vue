@@ -1,6 +1,6 @@
 <template>
     <Modal v-slot="{ close }">
-        <div class="container mt-5 d-flex flex-column align-items-center">
+        <div class="container mt-5 d-flex flex-column align-items-center justify-center">
             <h1 class="fw-semibold mb-3 text-zinc-800">Create Classification</h1>
             <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
                 class="col-12">
@@ -35,6 +35,7 @@
                         aria-hidden="true"></span>
                     {{ __("Submit") }}
                 </button>
+
             </vee-form>
         </div>
     </Modal>

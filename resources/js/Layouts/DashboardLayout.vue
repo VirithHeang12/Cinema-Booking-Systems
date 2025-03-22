@@ -1,8 +1,8 @@
 <template>
+
     <Head :title="title" />
-    <v-app>
+    <v-app class="!bg-yellow-50">
         <Header />
-        <Menu />
         <v-main class="d-flex align-start justify-center bg-neutral-50" style="min-height: 300px;">
             <v-container>
                 <slot>
@@ -11,6 +11,7 @@
             </v-container>
         </v-main>
         <Footer />
+        <Menu />
     </v-app>
 
 </template>
@@ -27,4 +28,5 @@
             default: 'Eternal',
         },
     });
+
 </script>

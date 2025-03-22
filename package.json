@@ -28,6 +28,7 @@
         "vue-flag-icon": "^2.1.0",
         "vue-multiselect": "^3.2.0",
         "vue3-apexcharts": "^1.8.0",
+        "vue3-toastify": "^0.2.8",
         "vuetify": "^3.7.5",
         "yup": "^1.6.1",
         "ziggy-js": "^2.5.0"

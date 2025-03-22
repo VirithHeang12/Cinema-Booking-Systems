@@ -66,6 +66,7 @@
     "Are you sure you want to delete this country?": "តើអ្នកពិតជាចង់លុបប្រទេសមែនដែរឬទេ?",
     "Language name is required": "សូមបញ្ចូលឈ្មោះភាសា",
     "Language code is required": "សូមបញ្ចូលកូដភាសា",
+    "Country name must not be greater than 50 characters": "ឈ្មោះប្រទេសមិនត្រូវធំជាង 50 តួអក្សរទេ",
     "rating must be at least 1": "ការវាយតម្លៃត្រូវតែចាប់ផ្តើមពី 1",
     "Classification name is required.": "សូមបញ្ចូលឈ្មោះកម្រិតភាពយន្ដ",
     "Classification name must not exceed 50 characters.": "ឈ្មោះកម្រិតភាពយន្ដមិនអាចលើលពី ៥០តួអក្សរទេ",

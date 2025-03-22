@@ -12,11 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('movie_genres', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
+            $table->id()
                 ->comment('Unique identifier for the movie genre');
 
-            $table->foreignUuid('movie_id')
+            $table->foreignId('movie_id')
                 ->nullable()
                 ->index()
                 ->constrained('movies')
@@ -24,7 +23,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->comment('Foreign key to the movie');
 
-            $table->foreignUuid('genre_id')
+            $table->foreignId('genre_id')
                 ->nullable()
                 ->index()
                 ->constrained('genres')

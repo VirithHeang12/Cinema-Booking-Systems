@@ -12,15 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('genres', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
+            $table->id()
                 ->comment('Unique identifier for the genre');
 
             $table->string('name')
                 ->nullable(false)
                 ->unique()
                 ->comment('Name of the genre');
-                
+
             $table->text('description')
                 ->nullable()
                 ->comment('Description of the genre');

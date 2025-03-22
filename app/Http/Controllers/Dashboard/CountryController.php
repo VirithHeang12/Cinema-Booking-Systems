@@ -10,6 +10,10 @@ use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CountriesImport;
 use App\Exports\CountriesExport;
+use App\Http\Requests\Countries\SaveRequest;
+use App\Http\Requests\Countries\UpdateRequest;
+use InertiaUI\Modal\Modal;
+use Illuminate\Support\Facades\Gate;
 
 class CountryController extends Controller
 {
@@ -20,6 +24,8 @@ class CountryController extends Controller
      */
     public function index(): \Inertia\Response
     {
+        Gate::authorize('viewAny', Country::class);
+
         $perPage = request()->query('itemsPerPage', 5);
         $countries = Country::paginate($perPage)->appends(request()->query());
 
@@ -29,15 +35,18 @@ class CountryController extends Controller
     }
 
     /**
-     * Show the form for creating a new country.
+     * Show the form for creating a new Country.
      *
-     * @return \Inertia\Response
+     * @return Modal
      *
      */
-    public function create(): \Inertia\Response
+    public function create(): Modal
     {
-        return Inertia::render('Dashboard/Countries/Create');
+        Gate::authorize('create', Country::class);
+        return Inertia::modal('Dashboard/Countries/Create')->baseRoute('dashboard.countries.index');
     }
+
+
     /**
      * Store a newly created country in storage.
      *
@@ -45,14 +54,17 @@ class CountryController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('create', Country::class);
+
         DB::beginTransaction();
 
         try {
 
+            $data = $request->validated();
             Country::create([
-                'name' => $request->name,
+                'name' => $data['name'],
             ]);
 
             DB::commit();
@@ -66,13 +78,15 @@ class CountryController extends Controller
     }
 
     /**
-     * Edit a country
+     * Show the form for editing a  Country.
      *
-     *  @return \Inertia\Response
+     * @return Modal
+     *
      */
-    public function edit(Country $country): \Inertia\Response
+    public function edit(Country $country): Modal
     {
-        return Inertia::render('Dashboard/Countries/Edit', ['country' => $country]);
+        Gate::authorize('update', $country);
+        return Inertia::modal('Dashboard/Countries/Edit', ['country' => $country])->baseRoute('dashboard.countries.index');
     }
 
     /**
@@ -83,13 +97,15 @@ class CountryController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Country $country): \Illuminate\Http\RedirectResponse
+    public function update(UpdateRequest $request, Country $country): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('update', $country);
         DB::beginTransaction();
 
         try {
+            $data = $request->validated();
             $country->update([
-                'name' => $request->name,
+                'name' => $data['name']
             ]);
 
             DB::commit();
@@ -103,29 +119,32 @@ class CountryController extends Controller
     }
 
     /**
-     * Delete a country
+     * Show a country
      *
-     * @param  \App\Models\Country  $country
+     * @return Modal
      *
-     * @return \Inertia\Response
+     *
      */
-    public function show(Country $country): \Inertia\Response
+    public function show(Country $country): Modal
     {
-        return Inertia::render('Dashboard/Countries/Show', [
+        Gate::authorize('view', $country);
+
+        return Inertia::modal('Dashboard/Countries/Show', [
             'country'      => $country,
-        ]);
+        ])->baseRoute('dashboard.countries.index');
     }
     /**
      * Show the form for deleting the specified country.
      *
      * @param  \App\Models\Country  $country
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function delete(Country $country): \Inertia\Response
+    public function delete(Country $country): Modal
     {
-        return Inertia::render('Dashboard/Countries/Delete', [
+        Gate::authorize('delete', $country);
+        return Inertia::modal('Dashboard/Countries/Delete', [
             'country'      => $country,
-        ]);
+        ])->baseRoute('dashboard.countries.index');
     }
     /**
      * Remove the specified country from storage.
@@ -136,6 +155,7 @@ class CountryController extends Controller
      */
     public function destroy(Country $country): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('delete', arguments: $country);
         DB::beginTransaction();
 
         try {
@@ -150,10 +170,10 @@ class CountryController extends Controller
 
     /**
      * Show Import countries form.
-     * @return \Inertia\Response
+     * @return Modal
      */
     public function showImport(){
-        return Inertia::render('Dashboard/Countries/Import');
+        return Inertia::modal('Dashboard/Countries/Import')->baseRoute('dashboard.countries.index');
     }
 
      /**
@@ -165,6 +185,7 @@ class CountryController extends Controller
      */
     public function import(Request $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('import', Country::class);
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
@@ -184,6 +205,7 @@ class CountryController extends Controller
 
     public function export()
     {
+        Gate::authorize('import', arguments: Country::class);
         return Excel::download(new CountriesExport, 'countries.xlsx');
     }
 }
