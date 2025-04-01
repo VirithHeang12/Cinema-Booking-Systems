@@ -17,12 +17,10 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::get('classifications/import', [ClassificationController::class, 'showImport'])->name('classifications.import.show');
     Route::post('classifications/import', [ClassificationController::class, 'import'])->name('classifications.import');
     Route::get('classifications/export', [ClassificationController::class, 'export'])->name('classifications.export');
+
     Route::get('countries/import', [CountryController::class, 'showImport'])->name('countries.import.show');
     Route::post('countries/import', [CountryController::class, 'import'])->name('countries.import');
     Route::get('countries/export', [CountryController::class, 'export'])->name('countries.export')->withoutMiddleware(['web']);
-    Route::get('genres/import', [GenreController::class, 'showImport'])->name('genres.import.show');
-    Route::post('genres/import', [GenreController::class, 'import'])->name('genres.import');
-
 
     Route::get('genres/import', [GenreController::class, 'showImport'])->name('genres.import.show');
     Route::post('genres/import', [GenreController::class, 'import'])->name('genres.import');
@@ -35,10 +33,6 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::get('screen_types/import', [ScreenTypeController::class, 'showImport'])->name('screen_types.import.show');
     Route::get('screen_types/import', [ScreenTypeController::class, 'import'])->name('screen_types.import');
     Route::get('screen_types/export', [ScreenTypeController::class, 'export'])->name('screen_types.export')->withoutMiddleware(['web']);
-
-    Route::get('genres/import', [GenreController::class, 'showImport'])->name('genres.import.show');
-    Route::post('genres/import', [GenreController::class, 'import'])->name('genres.import');
-    Route::get('genres/export', [GenreController::class, 'export'])->name('genres.export')->withoutMiddleware(['web']);
 
 
     Route::get('languages/{language}/delete', [LanguageController::class, 'delete'])->name('languages.delete');

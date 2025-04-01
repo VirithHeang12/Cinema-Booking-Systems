@@ -38,4 +38,36 @@ enum PermissionEnum: string
     case RESTORE_MOVIE = 'RESTORE MOVIE';
     case FORCE_DELETE_MOVIE = 'FORCE DELETE MOVIE';
 
+    // Country Permissions
+    case VIEW_ANY_COUNTRIES     = 'VIEW ANY COUNTRIES';
+    case VIEW_COUNTRY           = 'VIEW COUNTRY';
+    case CREATE_COUNTRY         = 'CREATE COUNTRY';
+    case UPDATE_COUNTRY         = 'UPDATE COUNTRY';
+    case DELETE_COUNTRY         = 'DELETE COUNTRY';
+    case IMPORT_COUNTRY         = 'IMPORT COUNTRY';
+    case EXPORT_COUNTRY         = 'EXPORT COUNTRY';
+    case RESTORE_COUNTRY        = 'RESTORE COUNTRY';
+    case FORCE_DELETE_COUNTRY   = 'FORCE DELETE COUNTRY';
+
+    // HallType Permissions
+    case VIEW_ANY_HALLTYPES    = 'VIEW ANY HALLTYPES';
+    case VIEW_HALLTYPE         = 'VIEW HALLTYPE';
+    case CREATE_HALLTYPE         = 'CREATE HALLTYPE';
+    case UPDATE_HALLTYPE         = 'UPDATE HALLTYPE';
+    case DELETE_HALLTYPE         = 'DELETE HALLTYPE';
+    case IMPORT_HALLTYPE         = 'IMPORT HALLTYPE';
+    case EXPORT_HALLTYPE         = 'EXPORT HALLTYPE';
+    case RESTORE_HALLTYPE        = 'RESTORE HALLTYPE';
+    case FORCE_DELETE_HALLTYPE  = 'FORCE DELETE HALLTYPE';
+
+     // Genre Permissions
+     case VIEW_ANY_GENRES = 'VIEW ANY GENRES';
+     case VIEW_GENRE = 'VIEW GENRE';
+     case CREATE_GENRE = 'CREATE GENRE';
+     case UPDATE_GENRE = 'UPDATE GENRE';
+     case DELETE_GENRE = 'DELETE GENRE';
+     case IMPORT_GENRE = 'IMPORT GENRE';
+     case EXPORT_GENRE = 'EXPORT GENRE';
+     case RESTORE_GENRE = 'RESTORE GENRE';
+     case FORCE_DELETE_GENRE = 'FORCE DELETE GENRE';
 }

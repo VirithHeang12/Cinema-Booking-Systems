@@ -38,6 +38,15 @@ class PermissionSeeder extends Seeder
             PermissionEnum::CREATE_CLASSIFICATION,
             PermissionEnum::VIEW_ANY_CLASSIFICATIONS,
             PermissionEnum::VIEW_CLASSIFICATION,
+            PermissionEnum::CREATE_COUNTRY,
+            PermissionEnum::VIEW_ANY_COUNTRIES,
+            PermissionEnum::VIEW_COUNTRY,
+            PermissionEnum::CREATE_HALLTYPE,
+            PermissionEnum::VIEW_ANY_HALLTYPES,
+            PermissionEnum::VIEW_HALLTYPE,
+            PermissionEnum::CREATE_GENRE,
+            PermissionEnum::VIEW_ANY_GENRES,
+            PermissionEnum::VIEW_GENRE,
         ]);
 
         $user               = User::create([

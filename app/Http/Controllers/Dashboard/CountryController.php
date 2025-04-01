@@ -10,7 +10,10 @@ use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CountriesImport;
 use App\Exports\CountriesExport;
+use App\Http\Requests\Countries\SaveRequest;
+use App\Http\Requests\Countries\UpdateRequest;
 use InertiaUI\Modal\Modal;
+use Illuminate\Support\Facades\Gate;
 
 class CountryController extends Controller
 {
@@ -21,6 +24,8 @@ class CountryController extends Controller
      */
     public function index(): \Inertia\Response
     {
+        Gate::authorize('viewAny', Country::class);
+
         $perPage = request()->query('itemsPerPage', 5);
         $countries = Country::paginate($perPage)->appends(request()->query());
 
@@ -37,6 +42,7 @@ class CountryController extends Controller
      */
     public function create(): Modal
     {
+        Gate::authorize('create', Country::class);
         return Inertia::modal('Dashboard/Countries/Create')->baseRoute('dashboard.countries.index');
     }
 
@@ -48,14 +54,17 @@ class CountryController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('create', Country::class);
+
         DB::beginTransaction();
 
         try {
 
+            $data = $request->validated();
             Country::create([
-                'name' => $request->name,
+                'name' => $data['name'],
             ]);
 
             DB::commit();
@@ -76,6 +85,7 @@ class CountryController extends Controller
      */
     public function edit(Country $country): Modal
     {
+        Gate::authorize('update', $country);
         return Inertia::modal('Dashboard/Countries/Edit', ['country' => $country])->baseRoute('dashboard.countries.index');
     }
 
@@ -87,13 +97,15 @@ class CountryController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Country $country): \Illuminate\Http\RedirectResponse
+    public function update(UpdateRequest $request, Country $country): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('update', $country);
         DB::beginTransaction();
 
         try {
+            $data = $request->validated();
             $country->update([
-                'name' => $request->name,
+                'name' => $data['name']
             ]);
 
             DB::commit();
@@ -115,6 +127,8 @@ class CountryController extends Controller
      */
     public function show(Country $country): Modal
     {
+        Gate::authorize('view', $country);
+
         return Inertia::modal('Dashboard/Countries/Show', [
             'country'      => $country,
         ])->baseRoute('dashboard.countries.index');
@@ -127,6 +141,7 @@ class CountryController extends Controller
      */
     public function delete(Country $country): Modal
     {
+        Gate::authorize('delete', $country);
         return Inertia::modal('Dashboard/Countries/Delete', [
             'country'      => $country,
         ])->baseRoute('dashboard.countries.index');
@@ -140,6 +155,7 @@ class CountryController extends Controller
      */
     public function destroy(Country $country): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('delete', arguments: $country);
         DB::beginTransaction();
 
         try {
@@ -169,6 +185,7 @@ class CountryController extends Controller
      */
     public function import(Request $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('import', Country::class);
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
@@ -188,6 +205,7 @@ class CountryController extends Controller
 
     public function export()
     {
+        Gate::authorize('import', arguments: Country::class);
         return Excel::download(new CountriesExport, 'countries.xlsx');
     }
 }
