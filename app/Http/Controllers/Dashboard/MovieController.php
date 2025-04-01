@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Classifications\SaveRequest;
+use App\Http\Requests\Movies\SaveRequest;
+use App\Http\Requests\Movies\UpdateRequest;
 use App\Http\Resources\Api\ClassificationResource;
 use App\Http\Resources\Api\CountryResource;
 use App\Http\Resources\Api\GenreResource;
 use App\Http\Resources\Api\LanguageResource;
+use App\Http\Resources\MovieResource;
 use App\Models\Classification;
 use App\Models\Country;
 use App\Models\Genre;
@@ -33,9 +35,11 @@ class MovieController extends Controller
         $perPage = request()->query('itemsPerPage', 5);
 
         $movies = QueryBuilder::for(Movie::class)
-            ->with(['movieGenres'])
+            ->with(['movieGenres', 'country', 'classification', 'language', 'movieSubtitles'])
             ->paginate($perPage)
             ->appends(request()->query());
+
+        $movies = MovieResource::collection($movies)->response()->getData(true);
 
         return Inertia::render('Dashboard/Movies/Index', [
             'movies'     => $movies,
@@ -94,13 +98,13 @@ class MovieController extends Controller
             foreach ($data['movieGenres'] as $genre) {
                 MovieGenre::create([
                     'movie_id'      => $movie->id,
-                    'genre_id'      => $genre,
+                    'genre_id'      => $genre['id'],
                 ]);
             }
             foreach ($data['movieSubtitles'] as $subtitle) {
                 MovieSubtitle::create([
                     'movie_id'      => $movie->id,
-                    'language_id'   => $subtitle,
+                    'language_id'   => $subtitle['id'],
                 ]);
             }
 
@@ -108,6 +112,7 @@ class MovieController extends Controller
 
             return redirect()->route('dashboard.movies.index')->with('success', 'Movie created.');
         } catch (\Exception $e) {
+            dd($e->getMessage());
             DB::rollBack();
 
             return redirect()->route('dashboard.movies.index')->with('error', 'Movie not created.');
@@ -121,53 +126,104 @@ class MovieController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function show(Movie $hall_type): \Inertia\Response
+    public function show(Movie $movie): \Inertia\Response
     {
         return Inertia::render('Dashboard/Movies/Show', [
-            'hall_type'      => $hall_type,
+            'movie'      => $movie,
         ]);
     }
 
     /**
      * Show the form for editing the specified Movie.
      *
-     * @param  \App\Models\Movie  $Movie
+     * @param  \App\Models\Movie  $movie
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function edit(Movie $hall_type): \Inertia\Response
+    public function edit(Movie $movie): Modal
     {
-        return Inertia::render('Dashboard/Movies/Edit', [
-            'hall_type'      => $hall_type,
-        ]);
+        $genres = GenreResource::collection(Genre::all())->toArray(request());
+        $countries = CountryResource::collection(Country::all())->toArray(request());
+        $classifications = ClassificationResource::collection(Classification::all())->toArray(request());
+        $languages = LanguageResource::collection(Language::all())->toArray(request());
+
+        $movie->load(['movieGenres', 'movieSubtitles', 'movieGenres.genre', 'movieSubtitles.language']);
+
+        $movie->movieGenres = $movie->movieGenres->map(function ($genre) {
+            return [
+                'id'            => $genre->genre->id,
+                'name'          => $genre->genre->name,
+            ];
+        });
+
+        $movie->movieSubtitles = $movie->movieSubtitles->map(function ($subtitle) {
+            return [
+                'id'            => $subtitle->language->id,
+                'name'          => $subtitle->language->name,
+            ];
+        });
+
+        return Inertia::modal('Dashboard/Movies/Edit', [
+            'movie'                 => $movie->load(['movieGenres', 'movieSubtitles']),
+            'genres'                => $genres,
+            'countries'             => $countries,
+            'classifications'       => $classifications,
+            'languages'             => $languages,
+        ])->baseRoute('dashboard.movies.index');
     }
 
     /**
      * Update the specified Movie in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateRequest  $request
      * @param  \App\Models\Movie  $Movie
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Movie $hall_type): \Illuminate\Http\RedirectResponse
+    public function update(UpdateRequest $request, Movie $movie): \Illuminate\Http\RedirectResponse
     {
+        $data = $request->validated();
+
         DB::beginTransaction();
 
         try {
-
-            $hall_type->update([
-                'name' => $request->name,
-                'description' => $request->description,
+            $movie->update([
+                'title'                     => $data['title'],
+                'description'               => $data['description'],
+                'release_date'              => $data['release_date'],
+                'duration'                  => $data['duration'],
+                'rating'                    => $data['rating'],
+                'trailer_url'               => $data['trailer_url'],
+                'thumbnail_url'             => $data['thumbnail_url'],
+                'country_id'                => $data['country_id'],
+                'classification_id'         => $data['classification_id'],
+                'spoken_language_id'        => $data['spoken_language_id'],
             ]);
+
+            $movie->movieGenres()->delete();
+            $movie->movieSubtitles()->delete();
+
+            foreach ($data['movieGenres'] as $genre) {
+                MovieGenre::create([
+                    'movie_id'      => $movie->id,
+                    'genre_id'      => $genre['id'],
+                ]);
+            }
+
+            foreach ($data['movieSubtitles'] as $subtitle) {
+                MovieSubtitle::create([
+                    'movie_id'      => $movie->id,
+                    'language_id'   => $subtitle['id'],
+                ]);
+            }
 
             DB::commit();
 
-            return redirect()->route('dashboard.hall_types.index')->with('success', 'Movie updated.');
+            return redirect()->route('dashboard.movies.index')->with('success', 'Movie updated.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.hall_types.index')->with('error', 'Movie not updated.');
+            return redirect()->route('dashboard.movies.index')->with('error', 'Movie not updated.');
         }
     }
 
