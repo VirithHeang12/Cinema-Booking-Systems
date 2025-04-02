@@ -1,7 +1,8 @@
 <template>
     <Modal v-slot="{ close }">
         <h4 class="text-gray-600">Create Movie</h4>
-        <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
+        <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
+            :initialValues="form">
             <vee-field name="title" v-slot="{ field, errors }">
                 <v-text-field v-bind="field" :error-messages="errors" v-model="form.title" :label="__('Title')"
                     variant="outlined"></v-text-field>
@@ -97,6 +98,10 @@
             type: Array,
             required: true,
         },
+        movie: {
+            type: Object,
+            required: true,
+        },
     });
 
     const schema = yup.object().shape({
@@ -118,18 +123,18 @@
 
 
     const form = useForm({
-        title: null,
-        description: null,
-        release_date: null,
-        duration: null,
-        rating: null,
-        trailer_url: null,
-        thumbnail_url: null,
-        country_id: null,
-        classification_id: null,
-        spoken_language_id: null,
-        movieGenres: null,
-        movieSubtitles: null,
+        title: props.movie.title,
+        description: props.movie.description,
+        release_date: props.movie.release_date,
+        duration: props.movie.duration,
+        rating: props.movie.rating,
+        trailer_url: props.movie.trailer_url,
+        thumbnail_url: props.movie.thumbnail_url,
+        country_id: props.movie.country_id,
+        classification_id: props.movie.classification_id,
+        spoken_language_id: props.movie.spoken_language_id,
+        movieGenres: props.movie.movieGenres,
+        movieSubtitles: props.movie.movieSubtitles,
     });
 
     /**
@@ -141,18 +146,27 @@
      * @returns void
      */
     const submitForm = (setErrors, close) => {
-        form.post(route('dashboard.movies.store'), {
-            preserveState: true,
-            preserveScroll: true,
-            onSuccess: () => {
-                form.reset();
-                close();
-            },
-            onError: (errors) => {
-                setErrors(errors);
-            },
-        });
-    }
+        form.method = "PUT";
+        form.transform((data) => ({
+            ...data,
+            _method: "PUT",
+        })).post(
+            route("dashboard.movies.update", {
+                movie: props.movie.id,
+            }),
+            {
+                preserveScroll: true,
+                preserveState: true,
+                onError: (errors) => {
+                    setErrors(errors.errors);
+                },
+                onSuccess: () => {
+                    form.reset();
+                    close();
+                },
+            }
+        );
+    };
 </script>
 
 <style>

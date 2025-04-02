@@ -84,6 +84,8 @@ createInertiaApp({
         }
         if (name.includes('Dashboard')) {
             page.default.layout = DashboardLayout
+        } else if (name.includes('Auth')) {
+            page.default.layout = null
         } else {
             page.default.layout = page.default.layout || DefaultLayout
         }

@@ -7,10 +7,11 @@
 </template>
 
 <script setup>
-    import { computed, ref } from 'vue'
+    import { computed, ref, watch } from 'vue'
     import { route } from 'ziggy-js';
-    import { router } from '@inertiajs/vue3';
+    import { router, usePage } from '@inertiajs/vue3';
     import { visitModal } from '@inertiaui/modal-vue';
+    import { toast } from 'vue3-toastify';
 
     const props = defineProps({
         movies: {
@@ -24,7 +25,7 @@
     });
 
     const totalItems = computed(() => {
-        return props.movies.total;
+        return props.movies.meta.total;
     });
 
     const itemsPerPage = computed(() => {
@@ -35,11 +36,29 @@
 
     const headers = [
         {
-            title: 'Name',
+            title: 'Title',
             align: 'start',
             sortable: true,
-            key: 'name',
-        }
+            key: 'title',
+        },
+        {
+            title: 'Duration',
+            align: 'start',
+            sortable: true,
+            key: 'duration',
+        },
+        {
+            title: 'Release Date',
+            align: 'start',
+            sortable: true,
+            key: 'release_date',
+        },
+        {
+            title: 'Country',
+            align: 'start',
+            sortable: true,
+            key: 'country',
+        },
     ];
 
 
@@ -59,9 +78,9 @@
     };
 
     const editCallback = (item) => {
-        // router.get(route('dashboard.movies.edit', {
-        //     movie: item.id,
-        // }));
+        visitModal(route('dashboard.movies.edit', {
+            movie: item.id,
+        }));
     };
 
     const deleteCallback = (item) => {
@@ -87,6 +106,42 @@
     const exportCallback = () => {
         window.location.href = route("dashboard.movies.export");
     };
+
+    /**
+     * Notify the user
+     *
+     * @param {string} message
+     *
+     * @return void
+     */
+    const notify = (message) => {
+        toast(message, {
+            autoClose: 1500,
+            position: toast.POSITION.BOTTOM_RIGHT,
+            type: 'success',
+            hideProgressBar: true,
+        });
+    }
+
+    const page = usePage();
+
+    /**
+     * Watch for flash messages
+     *
+     * @return void
+     */
+    watch(() => page.props.flash, (flash) => {
+        const success = page.props.flash.success;
+        const error = page.props.flash.error;
+
+        if (success) {
+            notify(success);
+        } else if (error) {
+            notify(error);
+        }
+    }, {
+        deep: true,
+    });
 
 
 </script>
