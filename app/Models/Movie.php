@@ -29,7 +29,7 @@ class Movie extends Model
         'release_date',
         'duration',
         'country_id',
-        'language_id',
+        'spoken_language_id',
         'rating',
         'trailer_url',
         'thumbnail_url',
@@ -44,7 +44,7 @@ class Movie extends Model
     protected function casts(): array
     {
         return [
-            'release_date'      => 'datetime',
+            'release_date'      => 'datetime:Y-m-d',
         ];
     }
 
@@ -75,7 +75,7 @@ class Movie extends Model
      */
     public function language(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Language::class);
+        return $this->belongsTo(Language::class, 'spoken_language_id');
     }
 
     /**

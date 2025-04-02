@@ -44,6 +44,9 @@ class PermissionSeeder extends Seeder
             PermissionEnum::CREATE_HALLTYPE,
             PermissionEnum::VIEW_ANY_HALLTYPES,
             PermissionEnum::VIEW_HALLTYPE,
+            PermissionEnum::CREATE_GENRE,
+            PermissionEnum::VIEW_ANY_GENRES,
+            PermissionEnum::VIEW_GENRE,
         ]);
 
         $user               = User::create([

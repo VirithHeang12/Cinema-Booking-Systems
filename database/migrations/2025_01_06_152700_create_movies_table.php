@@ -63,7 +63,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->comment('Classification of the movie');
 
-            $table->foreignId('language_id')
+            $table->foreignId('spoken_language_id')
                 ->nullable()
                 ->index()
                 ->constrained('languages')

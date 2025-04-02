@@ -27,6 +27,17 @@ enum PermissionEnum: string
     case RESTORE_CLASSIFICATION = 'RESTORE CLASSIFICATION';
     case FORCE_DELETE_CLASSIFICATION = 'FORCE DELETE CLASSIFICATION';
 
+    // Movie Permissions
+    case VIEW_ANY_MOVIES = 'VIEW ANY MOVIES';
+    case VIEW_MOVIE = 'VIEW MOVIE';
+    case CREATE_MOVIE = 'CREATE MOVIE';
+    case UPDATE_MOVIE = 'UPDATE MOVIE';
+    case DELETE_MOVIE = 'DELETE MOVIE';
+    case IMPORT_MOVIE = 'IMPORT MOVIE';
+    case EXPORT_MOVIE = 'EXPORT MOVIE';
+    case RESTORE_MOVIE = 'RESTORE MOVIE';
+    case FORCE_DELETE_MOVIE = 'FORCE DELETE MOVIE';
+
     // Country Permissions
     case VIEW_ANY_COUNTRIES     = 'VIEW ANY COUNTRIES';
     case VIEW_COUNTRY           = 'VIEW COUNTRY';
@@ -48,4 +59,15 @@ enum PermissionEnum: string
     case EXPORT_HALLTYPE         = 'EXPORT HALLTYPE';
     case RESTORE_HALLTYPE        = 'RESTORE HALLTYPE';
     case FORCE_DELETE_HALLTYPE  = 'FORCE DELETE HALLTYPE';
+
+     // Genre Permissions
+     case VIEW_ANY_GENRES = 'VIEW ANY GENRES';
+     case VIEW_GENRE = 'VIEW GENRE';
+     case CREATE_GENRE = 'CREATE GENRE';
+     case UPDATE_GENRE = 'UPDATE GENRE';
+     case DELETE_GENRE = 'DELETE GENRE';
+     case IMPORT_GENRE = 'IMPORT GENRE';
+     case EXPORT_GENRE = 'EXPORT GENRE';
+     case RESTORE_GENRE = 'RESTORE GENRE';
+     case FORCE_DELETE_GENRE = 'FORCE DELETE GENRE';
 }
