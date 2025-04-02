@@ -1,6 +1,8 @@
 <template>
     <Head title="About" />
-    <v-container class="my-[30px] font-cus">
+    <TheMovieDetailCard />
+
+    <!-- <v-container class="my-[30px] font-cus">
         <div class="row">
             <div class="col-12">
                 <img src="/public/image/banner_about.jpg" alt="" class="img-fluid w-100 h-[200px] rounded-[25px]" />
@@ -33,12 +35,13 @@
             </div>
 
         </div>
-    </v-container>
+    </v-container> -->
 </template>
 
 <script setup>
 import {Head} from '@inertiajs/vue3';
 import { __ } from 'matice';
+import TheMovieDetailCard from '../Components/TheMovieDetailCard.vue';
 
 const items = [
     {
