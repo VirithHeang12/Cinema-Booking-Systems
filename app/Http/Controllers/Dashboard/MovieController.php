@@ -17,11 +17,11 @@ use App\Models\Language;
 use App\Models\Movie;
 use App\Models\MovieGenre;
 use App\Models\MovieSubtitle;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\QueryBuilder;
 use InertiaUI\Modal\Modal;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class MovieController extends Controller
 {
@@ -35,6 +35,12 @@ class MovieController extends Controller
         $perPage = request()->query('itemsPerPage', 5);
 
         $movies = QueryBuilder::for(Movie::class)
+            ->allowedFilters([
+                AllowedFilter::callback('search', function ($query, $value) {
+                    $query->where('title', 'like', "%{$value}%")
+                        ->orWhere('description', 'like', "%{$value}%");
+                }),
+            ])
             ->with(['movieGenres', 'country', 'classification', 'language', 'movieSubtitles'])
             ->paginate($perPage)
             ->appends(request()->query());
