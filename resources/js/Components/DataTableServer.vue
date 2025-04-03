@@ -87,8 +87,9 @@
 
                     <!-- Create Button -->
                     <v-btn v-if="hasCreate" @click="createItem()"
-                        :class="['m-2', 'fw-medium', '!tracking-normal', buttonClass]" prepend-icon="mdi-plus"
-                        :color="createColor" :variant="buttonVariant">
+                        :class="['m-2', 'fw-medium', '!tracking-normal', buttonClass]" :color="createColor"
+                        :variant="buttonVariant">
+                        <v-icon class="me-2">mdi-plus</v-icon>
                         {{ createButtonText }}
                     </v-btn>
                 </v-toolbar>

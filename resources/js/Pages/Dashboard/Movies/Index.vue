@@ -28,11 +28,11 @@
             </template>
 
             <!-- Custom buttons for the toolbar -->
-            <template #buttons>
+            <!-- <template #buttons>
                 <v-btn color="info" variant="tonal" class="me-2 fw-medium" prepend-icon="mdi-star">
                     {{ __('Popular') }}
                 </v-btn>
-            </template>
+            </template> -->
 
             <!-- Duration custom column -->
             <template #item.duration="{ item }">
