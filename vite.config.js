@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vuePlugin from '@vitejs/plugin-vue';
 import vuetify from 'vite-plugin-vuetify';
-import vueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
     plugins: [
@@ -13,9 +12,6 @@ export default defineConfig({
         vuePlugin(),
         vuetify({
             autoImport: true,
-        }),
-        vueDevTools({
-            enabled: true,
         }),
     ],
     server: {

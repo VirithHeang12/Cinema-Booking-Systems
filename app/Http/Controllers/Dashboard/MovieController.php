@@ -17,11 +17,11 @@ use App\Models\Language;
 use App\Models\Movie;
 use App\Models\MovieGenre;
 use App\Models\MovieSubtitle;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\QueryBuilder;
 use InertiaUI\Modal\Modal;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class MovieController extends Controller
 {
@@ -32,9 +32,33 @@ class MovieController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $perPage = request()->query('itemsPerPage', 5);
+        $perPage = request()->query('itemsPerPage', 10);
 
         $movies = QueryBuilder::for(Movie::class)
+            ->allowedFilters([
+                AllowedFilter::callback('search', function ($query, $value) {
+                    $query->where('title', 'like', "%{$value}%")
+                        ->orWhere('description', 'like', "%{$value}%");
+                }),
+                AllowedFilter::callback('country', function ($query, $value) {
+                    $query->whereHas('country', function ($q) use ($value) {
+                        $q->where('name', $value);
+                    });
+                }),
+                AllowedFilter::callback('classification', function ($query, $value) {
+                    $query->whereHas('classification', function ($q) use ($value) {
+                        $q->where('name', $value);
+                    });
+                }),
+                AllowedFilter::callback('year', function ($query, $value) {
+                    $query->whereYear('release_date', $value);
+                }),
+            ])
+            ->allowedSorts(
+                'title',
+                'release_date',
+                'duration',
+            )
             ->with(['movieGenres', 'country', 'classification', 'language', 'movieSubtitles'])
             ->paginate($perPage)
             ->appends(request()->query());
@@ -142,10 +166,10 @@ class MovieController extends Controller
      */
     public function edit(Movie $movie): Modal
     {
-        $genres = GenreResource::collection(Genre::all())->toArray(request());
-        $countries = CountryResource::collection(Country::all())->toArray(request());
-        $classifications = ClassificationResource::collection(Classification::all())->toArray(request());
-        $languages = LanguageResource::collection(Language::all())->toArray(request());
+        $genres             = GenreResource::collection(Genre::all())->toArray(request());
+        $countries          = CountryResource::collection(Country::all())->toArray(request());
+        $classifications    = ClassificationResource::collection(Classification::all())->toArray(request());
+        $languages          = LanguageResource::collection(Language::all())->toArray(request());
 
         $movie->load(['movieGenres', 'movieSubtitles', 'movieGenres.genre', 'movieSubtitles.language']);
 
@@ -232,13 +256,13 @@ class MovieController extends Controller
      *
      * @param  \App\Models\Movie  $Movie
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function delete(Movie $hall_type): \Inertia\Response
+    public function delete(Movie $movie): Modal
     {
-        return Inertia::render('Dashboard/Movies/Delete', [
-            'hall_type'      => $hall_type,
-        ]);
+        return Inertia::modal('Dashboard/Movies/Delete', [
+            'movie'      => $movie,
+        ])->baseRoute('dashboard.movies.index');
     }
 
     /**
@@ -248,21 +272,20 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Movie $hall_type): \Illuminate\Http\RedirectResponse
+    public function destroy(Movie $movie): \Illuminate\Http\RedirectResponse
     {
         DB::beginTransaction();
 
         try {
-
-            $hall_type->delete();
+            $movie->delete();
 
             DB::commit();
 
-            return redirect()->route('dashboard.hall_types.index')->with('success', 'Movie deleted.');
+            return redirect()->route('dashboard.movies.index')->with('success', 'Movie deleted.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.hall_types.index')->with('error', 'Movie not deleted.');
+            return redirect()->route('dashboard.movies.index')->with('error', 'Movie not deleted.');
         }
     }
 }
