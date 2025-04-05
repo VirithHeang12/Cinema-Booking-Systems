@@ -1,34 +1,34 @@
 <template>
-    <div class="movie-list-container pa-4">
+    <div class="movie-list-container">
         <!-- Main table component -->
         <data-table-server :showNo="true" title="Movies" createButtonText="New Movie" :serverItems="serverItems"
             :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
             item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
             @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
             @search="handleSearch" emptyStateText="No movies found in the database" :emptyStateAction="true"
-            emptyStateActionText="Add First Movie" @empty-action="createCallback" buttonVariant="elevated"
+            emptyStateActionText="Add First Movie" @empty-action="createCallback" buttonVariant="outlined"
             viewTooltip="View Movie Details" editTooltip="Edit Movie Information" deleteTooltip="Delete this Movie"
-            titleClass="!text-3xl !text-primary" :hasFilter="true" @filter-apply="applyFilters"
-            @filter-clear="clearFilters" :tableClasses="'movie-data-table elevation-1'" iconSize="small"
+            titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="true" @filter-apply="applyFilters"
+            @filter-clear="clearFilters" tableClasses="movie-data-table elevation-2 rounded-lg" iconSize="small"
             deleteConfirmText="Are you sure you want to delete this movie? This action cannot be undone."
-            toolbarColor="grey-lighten-4" :showSelect="false">
+            toolbarColor="white" :showSelect="false">
 
             <!-- Filter Content -->
             <template #filter>
                 <div class="filter-section">
                     <v-select v-model="filterCountry" :items="countryOptions" label="Country" clearable
-                        variant="outlined" density="compact" class="mb-3"></v-select>
+                        variant="outlined" density="compact" class="mb-3" hide-details></v-select>
 
                     <v-select v-model="filterClassification" :items="classificationOptions" label="Classification"
-                        clearable variant="outlined" density="compact" class="mb-3"></v-select>
+                        clearable variant="outlined" density="compact" class="mb-3" hide-details></v-select>
 
                     <v-select v-model="filterYear" :items="yearOptions" label="Release Year" clearable
-                        variant="outlined" density="compact" class="mb-3"></v-select>
+                        variant="outlined" density="compact" class="mb-3" hide-details></v-select>
                 </div>
             </template>
 
             <!-- Duration custom column -->
-            <template #item.duration="{ item }">
+            <template v-slot:[`item.duration`]="{ item }">
                 <div class="d-flex align-center">
                     <v-icon size="x-small" color="grey" class="me-1">mdi-clock-outline</v-icon>
                     {{ item.duration }} minutes
@@ -36,9 +36,9 @@
             </template>
 
             <!-- Release Date custom column -->
-            <template #item.release_date="{ item }">
-                <v-chip size="small" :color="isRecentRelease(item.release_date) ? 'success' : 'grey'"
-                    :text-color="isRecentRelease(item.release_date) ? 'white' : ''" variant="outlined"
+            <template v-slot:[`item.release_date`]="{ item }">
+                <v-chip size="small" :color="isRecentRelease(item.release_date) ? 'success' : 'grey-lighten-1'"
+                    :text-color="isRecentRelease(item.release_date) ? 'white' : 'grey-darken-3'" variant="flat"
                     class="font-weight-medium">
                     {{ formatDate(item.release_date) }}
                 </v-chip>
@@ -60,9 +60,12 @@
         <!-- Trailer Dialog -->
         <v-dialog v-model="trailerDialog" max-width="800">
             <v-card>
-                <v-card-title class="headline">{{ selectedMovie?.title }} - Trailer</v-card-title>
+                <v-card-title class="headline d-flex align-center">
+                    <v-icon class="me-2">mdi-movie</v-icon>
+                    {{ selectedMovie?.title }} - Trailer
+                </v-card-title>
                 <v-card-text>
-                    <div class="trailer-placeholder d-flex align-center justify-center bg-grey-lighten-3"
+                    <div class="trailer-placeholder d-flex align-center justify-center bg-grey-lighten-3 rounded-lg"
                         style="height: 400px;">
                         <v-icon size="64" color="grey">mdi-video</v-icon>
                     </div>
@@ -187,12 +190,17 @@
         page.value = options.page;
         sortBy.value = options.sortBy;
 
+        let sortKeyWithDirection = options.sortBy.length > 0 ? options.sortBy[0].key : null;
+
+        if (sortKeyWithDirection) {
+            sortKeyWithDirection = options.sortBy[0].order === 'asc' ? sortKeyWithDirection : '-' + sortKeyWithDirection;
+        }
+
         router.reload({
             data: {
                 page: options.page,
                 itemsPerPage: options.itemsPerPage,
-                sort: options.sortBy.length > 0 ? options.sortBy[0].key : null,
-                direction: options.sortBy.length > 0 ? options.sortBy[0].order : null,
+                sort: sortKeyWithDirection,
                 'filter[search]': searchTerm.value,
                 'filter[country]': filterCountry.value,
                 'filter[year]': filterYear.value,
@@ -374,27 +382,55 @@
 
 <style scoped>
     .movie-list-container {
-        max-width: 1400px;
-        margin: 0 auto;
+        width: 100%;
+        padding: 24px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .filter-section {
         min-width: 300px;
-        padding: 8px;
+        padding: 16px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
     }
 
     .movie-data-table :deep(.v-data-table__td) {
-        padding-top: 12px !important;
-        padding-bottom: 12px !important;
+        padding-top: 14px !important;
+        padding-bottom: 14px !important;
+        font-size: 14px !important;
     }
 
     /* Custom styling for the data table */
     :deep(.v-data-table-server .v-data-table) {
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        box-shadow: none;
         border-radius: 8px;
+        overflow: hidden;
     }
 
     :deep(.v-data-table__tbody tr:hover) {
-        background-color: rgba(0, 0, 0, 0.02);
+        background-color: rgba(66, 133, 244, 0.05);
+    }
+
+    :deep(.v-data-table__thead th) {
+        background-color: #f5f5f5;
+        font-weight: 600 !important;
+        color: #333 !important;
+        text-transform: none !important;
+        letter-spacing: 0 !important;
+    }
+
+    :deep(.v-data-table__thead tr th:first-child) {
+        border-top-left-radius: 8px;
+    }
+
+    :deep(.v-data-table__thead tr th:last-child) {
+        border-top-right-radius: 8px;
+    }
+
+    :deep(.v-btn) {
+        text-transform: none;
+        letter-spacing: 0;
     }
 </style>

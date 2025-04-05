@@ -12,32 +12,6 @@
 
                     <v-spacer></v-spacer>
 
-                    <!-- Column Visibility Menu -->
-                    <!-- Enable dynamic column display option -->
-                    <v-menu v-if="hasColumnVisibility" v-model="columnMenu" :close-on-content-click="false">
-                        <template v-slot:activator="{ props }">
-                            <v-btn v-bind="props" color="grey-darken-1" variant="tonal" class="me-2 fw-medium"
-                                prepend-icon="mdi-view-column">
-                                {{ __('Columns') }}
-                            </v-btn>
-                        </template>
-                        <v-card min-width="250" class="pa-3">
-                            <v-card-title class="pb-2">{{ __('Column Visibility') }}</v-card-title>
-                            <v-divider></v-divider>
-                            <v-card-text>
-                                <v-checkbox v-for="header in originalHeaders" :key="header.key" v-model="visibleColumns"
-                                    :value="header.key" :label="header.title" hide-details density="compact"
-                                    class="mb-1"></v-checkbox>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="error" variant="text" @click="resetColumns">{{ __('Reset') }}</v-btn>
-                                <v-btn color="primary" variant="text" @click="columnMenu = false">{{ __('Done')
-                                }}</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-menu>
-
                     <!-- Search Field -->
                     <v-text-field v-if="showSearch" v-model="searchValue" :placeholder="searchPlaceholder"
                         prepend-inner-icon="mdi-magnify" hide-details single-line density="compact"
@@ -175,23 +149,6 @@
                 <slot name="footer"></slot>
             </template>
         </v-data-table-server>
-
-        <!-- Bulk Action Confirmation Dialog -->
-        <v-dialog v-model="bulkActionDialog" max-width="500px">
-            <v-card>
-                <v-card-title class="headline">{{ bulkActionTitle }}</v-card-title>
-                <v-card-text>
-                    {{ bulkActionText }}
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="grey-darken-1" variant="text" @click="bulkActionDialog = false">{{ __('Cancel')
-                        }}</v-btn>
-                    <v-btn :color="bulkActionColor" variant="text" @click="confirmBulkAction">{{ bulkActionConfirmText
-                        }}</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
     </div>
 </template>
 
@@ -234,11 +191,6 @@
             default: true,
         },
         hasFilter: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-        hasColumnVisibility: {
             type: Boolean,
             required: false,
             default: false,
@@ -493,23 +445,12 @@
     const sortBy = ref(props.initialSortBy);
     const searchValue = ref('');
     const filterMenu = ref(false);
-    const columnMenu = ref(false);
     const activeFilters = ref(0);
     const selectedItems = ref([]);
-    const visibleColumns = ref([]);
-    const originalHeaders = ref([...props.headers]);
-    const bulkActionDialog = ref(false);
-    const bulkActionTitle = ref('');
-    const bulkActionText = ref('');
-    const bulkActionType = ref('');
-    const bulkActionColor = ref('primary');
-    const bulkActionConfirmText = ref('Confirm');
     const searchTimeout = ref(null);
 
     // Set default visible columns on mount
     onMounted(() => {
-        resetColumns();
-
         // Load saved state if enabled
         if (props.rememberState && props.stateId) {
             loadSavedState();
@@ -531,9 +472,7 @@
 
     const computedHeaders = computed(() => {
         // Filter headers based on visible columns if column visibility is enabled
-        let headers = props.hasColumnVisibility
-            ? props.headers.filter(header => visibleColumns.value.includes(header.key))
-            : props.headers;
+        let headers = props.headers;
 
         if (props.showNo) {
             headers = [
@@ -590,7 +529,6 @@
         'filter-apply',
         'filter-clear',
         'empty-action',
-        'bulk-action',
         'column-update',
         'selection-change',
     ]);
@@ -679,42 +617,6 @@
         emits('empty-action');
     };
 
-    // Column visibility methods
-    const resetColumns = () => {
-        visibleColumns.value = props.headers.map(header => header.key);
-    };
-
-    // Watch for column changes
-    watch(visibleColumns, (newValue) => {
-        emits('column-update', newValue);
-
-        // Save state if enabled
-        if (props.rememberState && props.stateId) {
-            saveState();
-        }
-    });
-
-    // Bulk actions
-    const triggerBulkAction = (type, title, text, confirmText = 'Confirm', color = 'primary') => {
-        if (selectedItems.value.length === 0) {
-            return;
-        }
-
-        bulkActionType.value = type;
-        bulkActionTitle.value = title;
-        bulkActionText.value = text;
-        bulkActionConfirmText.value = confirmText;
-        bulkActionColor.value = color;
-        bulkActionDialog.value = true;
-    };
-
-    const confirmBulkAction = () => {
-        emits('bulk-action', {
-            type: bulkActionType.value,
-            items: selectedItems.value
-        });
-        bulkActionDialog.value = false;
-    };
 
     // State management
     const saveState = () => {
@@ -724,12 +626,16 @@
             itemsPerPage: itemsPerPage.value,
             page: page.value,
             sortBy: sortBy.value,
-            visibleColumns: visibleColumns.value,
         };
 
         localStorage.setItem(`dt-state-${props.stateId}`, JSON.stringify(state));
     };
 
+    /**
+     * Load saved state from localStorage
+     *
+     * @returns {void}
+     */
     const loadSavedState = () => {
         if (!props.stateId) return;
 
@@ -741,7 +647,6 @@
                 if (state.itemsPerPage) itemsPerPage.value = state.itemsPerPage;
                 if (state.page) page.value = state.page;
                 if (state.sortBy) sortBy.value = state.sortBy;
-                if (state.visibleColumns) visibleColumns.value = state.visibleColumns;
             }
         } catch (error) {
             console.error('Error loading saved state:', error);
@@ -757,7 +662,5 @@
         clearSearch,
         applyFilters,
         clearFilters,
-        triggerBulkAction,
-        resetColumns
     });
 </script>
