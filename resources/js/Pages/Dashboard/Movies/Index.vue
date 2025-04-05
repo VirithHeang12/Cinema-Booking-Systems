@@ -6,7 +6,7 @@
             item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
             @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
             @search="handleSearch" emptyStateText="No movies found in the database" :emptyStateAction="true"
-            emptyStateActionText="Add First Movie" @empty-action="createCallback" buttonVariant="elevated"
+            emptyStateActionText="Add First Movie" @empty-action="createCallback" buttonVariant="outlined"
             viewTooltip="View Movie Details" editTooltip="Edit Movie Information" deleteTooltip="Delete this Movie"
             titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="true" @filter-apply="applyFilters"
             @filter-clear="clearFilters" tableClasses="movie-data-table elevation-2 rounded-lg" iconSize="small"
@@ -28,7 +28,7 @@
             </template>
 
             <!-- Duration custom column -->
-            <template #item.duration="{ item }">
+            <template v-slot:[`item.duration`]="{ item }">
                 <div class="d-flex align-center">
                     <v-icon size="x-small" color="grey" class="me-1">mdi-clock-outline</v-icon>
                     {{ item.duration }} minutes
@@ -36,7 +36,7 @@
             </template>
 
             <!-- Release Date custom column -->
-            <template #item.release_date="{ item }">
+            <template v-slot:[`item.release_date`]="{ item }">
                 <v-chip size="small" :color="isRecentRelease(item.release_date) ? 'success' : 'grey-lighten-1'"
                     :text-color="isRecentRelease(item.release_date) ? 'white' : 'grey-darken-3'" variant="flat"
                     class="font-weight-medium">
