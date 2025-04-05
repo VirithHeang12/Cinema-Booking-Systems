@@ -186,6 +186,10 @@
      * @return void
      */
     function loadItems(options) {
+        if (!filterClassification.value && !filterCountry.value && !filterYear.value && !searchTerm.value && !options.search && options.sortBy.length === 0) {
+            return;
+        }
+
         loading.value = true;
         page.value = options.page;
         sortBy.value = options.sortBy;

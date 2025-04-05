@@ -4,8 +4,7 @@
             :items="items" :items-length="itemsLength" v-model:items-per-page="itemsPerPage" :headers="computedHeaders"
             :loading="loading" :items-per-page-options="itemsPerPageOptions" :hover="hover" :search="searchValue"
             :class="tableClasses" :footer-props="footerProps" :item-class="itemClass" v-model:page="page"
-            v-model:sort-by="sortBy" v-model:selected="selectedItems" :show-select="showSelect"
-            :single-select="singleSelect">
+            v-model:sort-by="sortBy" :show-select="showSelect" :single-select="singleSelect">
             <template v-slot:top>
                 <v-toolbar flat :color="toolbarColor" class="data-table-toolbar">
                     <v-toolbar-title :class="['fw-semibold', titleClass]">{{ title }}</v-toolbar-title>
@@ -530,7 +529,6 @@
         'filter-clear',
         'empty-action',
         'column-update',
-        'selection-change',
     ]);
 
     // Methods
@@ -541,6 +539,10 @@
         // Save state if enabled
         if (props.rememberState && props.stateId) {
             saveState();
+        }
+
+        if (!options.search && options.sortBy.length === 0) {
+            return;
         }
 
         emits('update:options', options);
@@ -598,10 +600,6 @@
         }
     });
 
-    // Watch for selection changes
-    watch(selectedItems, (newValue) => {
-        emits('selection-change', newValue);
-    });
 
     const applyFilters = () => {
         filterMenu.value = false;
@@ -658,7 +656,6 @@
         page,
         itemsPerPage,
         sortBy,
-        selectedItems,
         clearSearch,
         applyFilters,
         clearFilters,

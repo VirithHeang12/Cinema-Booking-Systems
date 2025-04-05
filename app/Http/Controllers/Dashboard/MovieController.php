@@ -106,6 +106,10 @@ class MovieController extends Controller
 
             $data = $request->validated();
 
+            if ($request->hasFile('thumbnail_file')) {
+                $data['thumbnail_url'] = $request->file('thumbnail_file')->store('movies');
+            }
+
             $movie = Movie::create([
                 'title'                     => $data['title'],
                 'description'               => $data['description'],
@@ -113,7 +117,6 @@ class MovieController extends Controller
                 'duration'                  => $data['duration'],
                 'rating'                    => $data['rating'],
                 'trailer_url'               => $data['trailer_url'],
-                'thumbnail_url'             => $data['thumbnail_url'],
                 'country_id'                => $data['country_id'],
                 'classification_id'         => $data['classification_id'],
                 'spoken_language_id'        => $data['spoken_language_id'],
