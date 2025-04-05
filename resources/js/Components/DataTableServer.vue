@@ -575,7 +575,7 @@
         return `${Math.max(width, 100)}px`;
     };
 
-    const itemsPerPageOptions = [5, 10, 20, 30, 40, 50, 100];
+    const itemsPerPageOptions = [10, 20, 30, 40, 50, 100];
 
     // Emit events
     const emits = defineEmits([
@@ -585,7 +585,7 @@
         'create',
         'import',
         'export',
-        '@update:options',
+        'update:options',
         'search',
         'filter-apply',
         'filter-clear',
@@ -605,7 +605,7 @@
             saveState();
         }
 
-        emits('@update:options', options);
+        emits('update:options', options);
     };
 
     const viewItem = (item) => {

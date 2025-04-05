@@ -2,24 +2,21 @@
     <Modal v-slot="{ close }">
         <div class="movie-form-container">
             <div class="form-header">
-                <h2 class="form-title">Update Movie</h2>
+                <h2 class="form-title">Edit Movie</h2>
                 <v-btn icon class="close-btn" @click="close">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
             </div>
 
             <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
-                class="form-wrapper">
-                <div class="form-body">
-                    <MovieForm :form="form" :countries="countries" :genres="genres" :languages="languages"
-                        :classifications="classifications" />
-                </div>
-
+                :initialValues="form">
+                <movie-form :form="form" :countries="countries" :genres="genres" :languages="languages"
+                    :classifications="classifications"></movie-form>
                 <div class="form-actions">
                     <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
                         @click.prevent="submitForm(setErrors, close)" size="large" block>
-                        <v-icon class="me-2">mdi-content-save</v-icon>
-                        Update
+                        <v-icon class="me-2">mdi-check</v-icon>
+                        Submit
                     </v-btn>
                 </div>
             </vee-form>
@@ -89,8 +86,12 @@
         _method: 'PUT'
     });
 
+    /**
+     * Pre-fill the form with existing movie data
+     *
+     * @returns void
+     */
     onMounted(() => {
-        // Pre-fill the form with the existing movie data
         form.title = props.movie.title;
         form.description = props.movie.description;
         form.release_date = props.movie.release_date;
@@ -105,15 +106,14 @@
     });
 
     /**
-    * Submit the form
-         *
-         * @param setErrors
-         * @param close
-         *
-         * @returns void
-         */
+     * Submit the form data to the server
+     *
+     * @param setErrors
+     * @param close 
+     *
+     * @returns void
+     */
     const submitForm = (setErrors, close) => {
-        form.method = "PUT";
         form.transform((data) => ({
             ...data,
             _method: "PUT",

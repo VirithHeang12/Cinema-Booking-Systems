@@ -72,7 +72,8 @@
                                 <div>
                                     <ImageUpload v-model="form.thumbnail_file" label="Thumbnail"
                                         input-id="movie-thumbnail" />
-                                    <div v-if="errors.length" class="text-error text-xs mt-1 ml-3">{{ errors[0] }}</div>
+                                    <div v-if="errors.length" class="text-error text-xs mt-1 ml-3">{{
+                                        errors[0] }}</div>
                                 </div>
                             </vee-field>
                         </div>
@@ -151,8 +152,8 @@
 
 <style scoped>
     .form-content {
-        padding: 0;
-        flex: 1;
+        padding: 0 24px;
+        max-height: 70vh;
         overflow-y: auto;
         scrollbar-width: thin;
     }
@@ -167,6 +168,7 @@
     }
 
     .form-section {
+        padding-top: 10px;
         margin-bottom: 24px;
     }
 
@@ -183,26 +185,8 @@
         gap: 16px;
     }
 
-    /* Error text styling */
-    .text-error {
-        color: #ff5252;
-    }
-
-    .text-xs {
-        font-size: 0.75rem;
-    }
-
-    .mt-1 {
-        margin-top: 0.25rem;
-    }
-
-    .ml-3 {
-        margin-left: 0.75rem;
-    }
-
-    @media (max-width: 768px) {
-        .form-grid {
-            grid-template-columns: 1fr;
-        }
+    .subtitle-card,
+    .genre-card {
+        height: 100%;
     }
 </style>

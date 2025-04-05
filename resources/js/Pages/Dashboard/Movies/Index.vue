@@ -11,7 +11,7 @@
             titleClass="!text-3xl !text-primary" :hasFilter="true" @filter-apply="applyFilters"
             @filter-clear="clearFilters" :tableClasses="'movie-data-table elevation-1'" iconSize="small"
             deleteConfirmText="Are you sure you want to delete this movie? This action cannot be undone."
-            toolbarColor="grey-lighten-4" v-model:selected="selectedItems" :showSelect="true">
+            toolbarColor="grey-lighten-4" :showSelect="false">
 
             <!-- Filter Content -->
             <template #filter>
@@ -19,20 +19,13 @@
                     <v-select v-model="filterCountry" :items="countryOptions" label="Country" clearable
                         variant="outlined" density="compact" class="mb-3"></v-select>
 
+                    <v-select v-model="filterClassification" :items="classificationOptions" label="Classification"
+                        clearable variant="outlined" density="compact" class="mb-3"></v-select>
+
                     <v-select v-model="filterYear" :items="yearOptions" label="Release Year" clearable
                         variant="outlined" density="compact" class="mb-3"></v-select>
-
-                    <v-checkbox v-model="filterRecent" label="Recent Releases (Last 12 Months)"
-                        hide-details></v-checkbox>
                 </div>
             </template>
-
-            <!-- Custom buttons for the toolbar -->
-            <!-- <template #buttons>
-                <v-btn color="info" variant="tonal" class="me-2 fw-medium" prepend-icon="mdi-star">
-                    {{ __('Popular') }}
-                </v-btn>
-            </template> -->
 
             <!-- Duration custom column -->
             <template #item.duration="{ item }">
@@ -62,30 +55,6 @@
                     </template>
                 </v-tooltip>
             </template>
-
-            <!-- Custom header content -->
-            <template #header>
-                <div class="d-flex align-center px-4 py-2 bg-primary-lighten-5" v-if="selectedItems.length > 0">
-                    <span class="text-subtitle-1 me-4">{{ selectedItems.length }} items selected</span>
-                    <v-btn size="small" color="error" variant="tonal" @click="bulkDelete">
-                        Delete Selected
-                    </v-btn>
-                    <v-btn size="small" color="primary" variant="tonal" class="ms-2" @click="exportSelected">
-                        Export Selected
-                    </v-btn>
-                </div>
-            </template>
-
-            <!-- Custom footer content -->
-            <template #footer>
-                <div class="d-flex justify-space-between align-center pa-4 bg-grey-lighten-4">
-                    <div class="text-caption text-grey">Last updated: {{ lastUpdated }}</div>
-                    <div class="text-caption">
-                        <v-icon size="x-small" color="primary" class="me-1">mdi-information</v-icon>
-                        Showing {{ serverItems.length }} of {{ totalItems }} movies
-                    </div>
-                </div>
-            </template>
         </data-table-server>
 
         <!-- Trailer Dialog -->
@@ -108,7 +77,7 @@
 </template>
 
 <script setup>
-    import { ref, computed, watch, onMounted } from 'vue';
+    import { ref, computed, watch } from 'vue';
     import { __ } from 'matice';
     import { route } from 'ziggy-js';
     import { router, usePage } from '@inertiajs/vue3';
@@ -124,7 +93,6 @@
 
     // State variables
     const loading = ref(false);
-    const selectedItems = ref([]);
     const trailerDialog = ref(false);
     const selectedMovie = ref(null);
     const searchTerm = ref('');
@@ -135,7 +103,7 @@
     // Filter states
     const filterCountry = ref(null);
     const filterYear = ref(null);
-    const filterRecent = ref(false);
+    const filterClassification = ref(null);
 
     // Computed properties
     const serverItems = computed(() => {
@@ -150,12 +118,19 @@
         return props.movies.per_page;
     });
 
-    // Options for filters
+    // Compute countries to only show unique values
     const countryOptions = computed(() => {
         const countries = [...new Set(props.movies.data.map(movie => movie.country))];
         return countries.map(country => ({ title: country, value: country }));
     });
 
+    // Compute classifications to only show unique values
+    const classificationOptions = computed(() => {
+        const classifications = [...new Set(props.movies.data.map(movie => movie.classification))];
+        return classifications.map(classification => ({ title: classification, value: classification }));
+    });
+
+    // Compute classifications to only show unique values
     const yearOptions = computed(() => {
         const years = [...new Set(props.movies.data.map(movie => {
             const date = new Date(movie.release_date);
@@ -189,49 +164,72 @@
         {
             title: 'Country',
             align: 'start',
-            sortable: true,
+            sortable: false,
             key: 'country',
         },
+        {
+            title: 'Classification',
+            align: 'start',
+            sortable: false,
+            key: 'classification',
+        }
     ];
 
-    // Methods
+    /**
+     * Load items from the server
+     *
+     * @param options
+     *
+     * @return void
+     */
     function loadItems(options) {
         loading.value = true;
         page.value = options.page;
         sortBy.value = options.sortBy;
 
-        // Simulate API call
-        setTimeout(() => {
-            router.reload({
-                data: {
-                    page: options.page,
-                    itemsPerPage: options.itemsPerPage,
-                    sort: options.sortBy.length > 0 ? options.sortBy[0].key : null,
-                    direction: options.sortBy.length > 0 ? options.sortBy[0].order : null,
-                    'filter[search]': searchTerm.value,
-                    country: filterCountry.value,
-                    year: filterYear.value,
-                    recent: filterRecent.value ? 1 : 0
-                },
-                preserveState: true,
-                only: ['movies'],
-                onSuccess: () => {
-                    loading.value = false;
-                    lastUpdated.value = new Date().toLocaleString();
-                },
-                onError: () => {
-                    loading.value = false;
-                    notify('Failed to load data', 'error');
-                }
-            });
-        }, 500);
+        router.reload({
+            data: {
+                page: options.page,
+                itemsPerPage: options.itemsPerPage,
+                sort: options.sortBy.length > 0 ? options.sortBy[0].key : null,
+                direction: options.sortBy.length > 0 ? options.sortBy[0].order : null,
+                'filter[search]': searchTerm.value,
+                'filter[country]': filterCountry.value,
+                'filter[year]': filterYear.value,
+                'filter[classification]': filterClassification.value,
+            },
+            preserveState: true,
+            only: ['movies'],
+            onSuccess: () => {
+                loading.value = false;
+                lastUpdated.value = new Date().toLocaleString();
+            },
+            onError: () => {
+                loading.value = false;
+                notify('Failed to load data', 'error');
+            }
+        });
     }
 
+    /**
+     * Handle search input
+     *
+     * @param value
+     *
+     * @return void
+     */
     function handleSearch(value) {
         searchTerm.value = value;
         loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value });
     }
 
+    /**
+     * Format the date to a readable format
+     *
+     * @param dateString
+     *
+     * @return string
+     */
     function formatDate(dateString) {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', {
@@ -257,39 +255,47 @@
         loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value });
     }
 
+    /**
+     * Clear all filters
+     *
+     * @return void
+     */
     function clearFilters() {
         filterCountry.value = null;
+        filterClassification.value = null;
         filterYear.value = null;
-        filterRecent.value = false;
         loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value });
     }
 
-    function bulkDelete() {
-        if (selectedItems.value.length === 0) return;
+    /**
+     * Open the create movie slideover
+     *
+     * @return void
+     */
+    const createCallback = () => {
+        visitModal(route('dashboard.movies.create'));
+    };
 
-        const ids = selectedItems.value.map(item => item.id);
-        router.delete(route('dashboard.movies.bulk-destroy'), {
-            data: { ids },
-            onSuccess: () => {
-                selectedItems.value = [];
-                notify('Selected movies deleted successfully');
-            }
-        });
-    }
-
-    function exportSelected() {
-        if (selectedItems.value.length === 0) return;
-
-        const ids = selectedItems.value.map(item => item.id).join(',');
-        window.location.href = route("dashboard.movies.export", { ids });
-    }
-
+    /**
+     * Open the view movie slideover
+     *
+     * @param item
+     *
+     * @return void
+     */
     const viewCallback = (item) => {
         router.get(route('dashboard.movies.show', {
             movie: item.id,
         }));
     };
 
+    /**
+     * Open the edit movie slideover
+     *
+     * @param item
+     *
+     * @return void
+     */
     const editCallback = (item) => {
         visitModal(route('dashboard.movies.edit', {
             movie: item.id,
@@ -309,14 +315,20 @@
         }));
     };
 
-    const createCallback = () => {
-        visitModal(route('dashboard.movies.create'));
-    };
-
+    /**
+     * Open the import movies slideover
+     *
+     * @return void
+     */
     const importCallback = () => {
         router.get(route('dashboard.movies.import.show'));
     };
 
+    /**
+     * Export movies
+     *
+     * @return void
+     */
     const exportCallback = () => {
         window.location.href = route("dashboard.movies.export");
     };
@@ -358,10 +370,6 @@
         deep: true,
     });
 
-    // Initial load
-    onMounted(() => {
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: [] });
-    });
 </script>
 
 <style scoped>

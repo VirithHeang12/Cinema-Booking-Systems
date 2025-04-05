@@ -32,7 +32,7 @@ class MovieController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $perPage = request()->query('itemsPerPage', 5);
+        $perPage = request()->query('itemsPerPage', 10);
 
         $movies = QueryBuilder::for(Movie::class)
             ->allowedFilters([
@@ -40,7 +40,25 @@ class MovieController extends Controller
                     $query->where('title', 'like', "%{$value}%")
                         ->orWhere('description', 'like', "%{$value}%");
                 }),
+                AllowedFilter::callback('country', function ($query, $value) {
+                    $query->whereHas('country', function ($q) use ($value) {
+                        $q->where('name', $value);
+                    });
+                }),
+                AllowedFilter::callback('classification', function ($query, $value) {
+                    $query->whereHas('classification', function ($q) use ($value) {
+                        $q->where('name', $value);
+                    });
+                }),
+                AllowedFilter::callback('year', function ($query, $value) {
+                    $query->whereYear('release_date', $value);
+                }),
             ])
+            ->allowedSorts(
+                'title',
+                'release_date',
+                'duration',
+            )
             ->with(['movieGenres', 'country', 'classification', 'language', 'movieSubtitles'])
             ->paginate($perPage)
             ->appends(request()->query());
@@ -148,10 +166,10 @@ class MovieController extends Controller
      */
     public function edit(Movie $movie): Modal
     {
-        $genres = GenreResource::collection(Genre::all())->toArray(request());
-        $countries = CountryResource::collection(Country::all())->toArray(request());
-        $classifications = ClassificationResource::collection(Classification::all())->toArray(request());
-        $languages = LanguageResource::collection(Language::all())->toArray(request());
+        $genres             = GenreResource::collection(Genre::all())->toArray(request());
+        $countries          = CountryResource::collection(Country::all())->toArray(request());
+        $classifications    = ClassificationResource::collection(Classification::all())->toArray(request());
+        $languages          = LanguageResource::collection(Language::all())->toArray(request());
 
         $movie->load(['movieGenres', 'movieSubtitles', 'movieGenres.genre', 'movieSubtitles.language']);
 
