@@ -13,6 +13,7 @@
                     <v-spacer></v-spacer>
 
                     <!-- Column Visibility Menu -->
+                    <!-- Enable dynamic column display option -->
                     <v-menu v-if="hasColumnVisibility" v-model="columnMenu" :close-on-content-click="false">
                         <template v-slot:activator="{ props }">
                             <v-btn v-bind="props" color="grey-darken-1" variant="tonal" class="me-2 fw-medium"
@@ -134,8 +135,8 @@
 
                     <v-tooltip v-if="hasDelete" :text="deleteTooltip" location="top">
                         <template v-slot:activator="{ props }">
-                            <v-icon v-bind="props" :color="deleteColor" :size="iconSize"
-                                @click="showDeleteConfirm(item)" :class="iconClass">
+                            <v-icon v-bind="props" :color="deleteColor" :size="iconSize" @click="deleteItem(item)"
+                                :class="iconClass">
                                 {{ deleteIcon }}
                             </v-icon>
                         </template>
@@ -175,21 +176,6 @@
             </template>
         </v-data-table-server>
 
-        <!-- Delete Confirmation Dialog -->
-        <v-dialog v-model="deleteDialog" max-width="500px">
-            <v-card>
-                <v-card-title class="headline">{{ __('Confirm Deletion') }}</v-card-title>
-                <v-card-text>
-                    {{ deleteConfirmText }}
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="grey-darken-1" variant="text" @click="closeDeleteDialog">{{ __('Cancel') }}</v-btn>
-                    <v-btn color="error" variant="text" @click="confirmDelete">{{ __('Delete') }}</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
         <!-- Bulk Action Confirmation Dialog -->
         <v-dialog v-model="bulkActionDialog" max-width="500px">
             <v-card>
@@ -200,9 +186,9 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="grey-darken-1" variant="text" @click="bulkActionDialog = false">{{ __('Cancel')
-                    }}</v-btn>
+                        }}</v-btn>
                     <v-btn :color="bulkActionColor" variant="text" @click="confirmBulkAction">{{ bulkActionConfirmText
-                    }}</v-btn>
+                        }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -388,6 +374,7 @@
             required: false,
             default: 'primary',
         },
+
         importColor: {
             type: String,
             required: false,
@@ -504,8 +491,6 @@
     const itemsPerPage = ref(props.itemsPerPage);
     const page = ref(1);
     const sortBy = ref(props.initialSortBy);
-    const deleteDialog = ref(false);
-    const itemToDelete = ref(null);
     const searchValue = ref('');
     const filterMenu = ref(false);
     const columnMenu = ref(false);
@@ -529,11 +514,6 @@
         if (props.rememberState && props.stateId) {
             loadSavedState();
         }
-    });
-
-    // Computed properties
-    const computedCreateButtonText = computed(() => {
-        return props.createButtonText || `${__('New')} ${props.title}`;
     });
 
     const items = computed(() => {
@@ -636,19 +616,8 @@
         emits('edit', item);
     };
 
-    const showDeleteConfirm = (item) => {
-        itemToDelete.value = item;
-        deleteDialog.value = true;
-    };
-
-    const closeDeleteDialog = () => {
-        deleteDialog.value = false;
-        itemToDelete.value = null;
-    };
-
-    const confirmDelete = () => {
-        emits('delete', itemToDelete.value);
-        closeDeleteDialog();
+    const deleteItem = (item) => {
+        emits('delete', item);
     };
 
     const createItem = () => {

@@ -1,11 +1,11 @@
 <template>
     <div class="movie-list-container pa-4">
         <!-- Main table component -->
-        <data-table-server :showNo="true" title="Movies" :serverItems="serverItems" :items-length="totalItems"
-            :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage" item-value="id"
-            @update:options="loadItems" @view="viewCallback" @edit="editCallback" @delete="deleteCallback"
-            @create="createCallback" @import="importCallback" @export="exportCallback" @search="handleSearch"
-            emptyStateText="No movies found in the database" :emptyStateAction="true"
+        <data-table-server :showNo="true" title="Movies" createButtonText="New Movie" :serverItems="serverItems"
+            :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
+            item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
+            @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
+            @search="handleSearch" emptyStateText="No movies found in the database" :emptyStateAction="true"
             emptyStateActionText="Add First Movie" @empty-action="createCallback" buttonVariant="elevated"
             viewTooltip="View Movie Details" editTooltip="Edit Movie Information" deleteTooltip="Delete this Movie"
             titleClass="!text-3xl !text-primary" :hasFilter="true" @filter-apply="applyFilters"
@@ -296,14 +296,17 @@
         }));
     };
 
+    /**
+     * Show the delete confirmation dialog
+     *
+     * @param item
+     *
+     * @return void
+     */
     const deleteCallback = (item) => {
-        router.delete(route('dashboard.movies.destroy', {
+        visitModal(route('dashboard.movies.delete', {
             movie: item.id,
-        }), {
-            onSuccess: () => {
-                notify('Movie deleted successfully');
-            }
-        });
+        }));
     };
 
     const createCallback = () => {

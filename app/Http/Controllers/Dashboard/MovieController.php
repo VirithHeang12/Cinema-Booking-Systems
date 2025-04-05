@@ -238,13 +238,13 @@ class MovieController extends Controller
      *
      * @param  \App\Models\Movie  $Movie
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function delete(Movie $hall_type): \Inertia\Response
+    public function delete(Movie $movie): Modal
     {
-        return Inertia::render('Dashboard/Movies/Delete', [
-            'hall_type'      => $hall_type,
-        ]);
+        return Inertia::modal('Dashboard/Movies/Delete', [
+            'movie'      => $movie,
+        ])->baseRoute('dashboard.movies.index');
     }
 
     /**
@@ -254,21 +254,20 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Movie $hall_type): \Illuminate\Http\RedirectResponse
+    public function destroy(Movie $movie): \Illuminate\Http\RedirectResponse
     {
         DB::beginTransaction();
 
         try {
-
-            $hall_type->delete();
+            $movie->delete();
 
             DB::commit();
 
-            return redirect()->route('dashboard.hall_types.index')->with('success', 'Movie deleted.');
+            return redirect()->route('dashboard.movies.index')->with('success', 'Movie deleted.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.hall_types.index')->with('error', 'Movie not deleted.');
+            return redirect()->route('dashboard.movies.index')->with('error', 'Movie not deleted.');
         }
     }
 }
