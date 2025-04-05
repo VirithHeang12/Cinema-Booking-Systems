@@ -175,23 +175,6 @@
                 <slot name="footer"></slot>
             </template>
         </v-data-table-server>
-
-        <!-- Bulk Action Confirmation Dialog -->
-        <v-dialog v-model="bulkActionDialog" max-width="500px">
-            <v-card>
-                <v-card-title class="headline">{{ bulkActionTitle }}</v-card-title>
-                <v-card-text>
-                    {{ bulkActionText }}
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="grey-darken-1" variant="text" @click="bulkActionDialog = false">{{ __('Cancel')
-                        }}</v-btn>
-                    <v-btn :color="bulkActionColor" variant="text" @click="confirmBulkAction">{{ bulkActionConfirmText
-                        }}</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
     </div>
 </template>
 
@@ -498,12 +481,6 @@
     const selectedItems = ref([]);
     const visibleColumns = ref([]);
     const originalHeaders = ref([...props.headers]);
-    const bulkActionDialog = ref(false);
-    const bulkActionTitle = ref('');
-    const bulkActionText = ref('');
-    const bulkActionType = ref('');
-    const bulkActionColor = ref('primary');
-    const bulkActionConfirmText = ref('Confirm');
     const searchTimeout = ref(null);
 
     // Set default visible columns on mount
@@ -590,7 +567,6 @@
         'filter-apply',
         'filter-clear',
         'empty-action',
-        'bulk-action',
         'column-update',
         'selection-change',
     ]);
@@ -694,28 +670,6 @@
         }
     });
 
-    // Bulk actions
-    const triggerBulkAction = (type, title, text, confirmText = 'Confirm', color = 'primary') => {
-        if (selectedItems.value.length === 0) {
-            return;
-        }
-
-        bulkActionType.value = type;
-        bulkActionTitle.value = title;
-        bulkActionText.value = text;
-        bulkActionConfirmText.value = confirmText;
-        bulkActionColor.value = color;
-        bulkActionDialog.value = true;
-    };
-
-    const confirmBulkAction = () => {
-        emits('bulk-action', {
-            type: bulkActionType.value,
-            items: selectedItems.value
-        });
-        bulkActionDialog.value = false;
-    };
-
     // State management
     const saveState = () => {
         if (!props.stateId) return;
@@ -730,6 +684,11 @@
         localStorage.setItem(`dt-state-${props.stateId}`, JSON.stringify(state));
     };
 
+    /**
+     * Load saved state from localStorage
+     *
+     * @returns {void}
+     */
     const loadSavedState = () => {
         if (!props.stateId) return;
 
@@ -757,7 +716,6 @@
         clearSearch,
         applyFilters,
         clearFilters,
-        triggerBulkAction,
         resetColumns
     });
 </script>
