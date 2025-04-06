@@ -4,8 +4,7 @@
             :items="items" :items-length="itemsLength" v-model:items-per-page="itemsPerPage" :headers="computedHeaders"
             :loading="loading" :items-per-page-options="itemsPerPageOptions" :hover="hover" :search="searchValue"
             :class="tableClasses" :footer-props="footerProps" :item-class="itemClass" v-model:page="page"
-            v-model:sort-by="sortBy" v-model:selected="selectedItems" :show-select="showSelect"
-            :single-select="singleSelect">
+            v-model:sort-by="sortBy" :show-select="showSelect" :single-select="singleSelect">
             <template v-slot:top>
                 <v-toolbar flat :color="toolbarColor" class="data-table-toolbar">
                     <v-toolbar-title :class="['fw-semibold', titleClass]">{{ title }}</v-toolbar-title>
@@ -15,8 +14,7 @@
                     <!-- Search Field -->
                     <v-text-field v-if="showSearch" v-model="searchValue" :placeholder="searchPlaceholder"
                         prepend-inner-icon="mdi-magnify" hide-details single-line density="compact"
-                        class="data-table-search me-4" variant="outlined" clearable @click:clear="clearSearch"
-                        @keyup.enter="handleSearchEnter"></v-text-field>
+                        class="data-table-search me-4" variant="outlined" clearable></v-text-field>
 
                     <!-- Filter Button -->
                     <v-menu v-if="hasFilter" v-model="filterMenu" :close-on-content-click="false">
@@ -154,7 +152,7 @@
 
 <script setup>
     import { __ } from 'matice';
-    import { computed, ref, watch, onMounted, useSlots } from 'vue';
+    import { computed, ref, useSlots } from 'vue';
 
     // Add the useSlots composable to access the slots
     const slots = useSlots();
@@ -326,7 +324,6 @@
             required: false,
             default: 'primary',
         },
-
         importColor: {
             type: String,
             required: false,
@@ -417,16 +414,6 @@
             required: false,
             default: () => [],
         },
-        rememberState: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-        stateId: {
-            type: String,
-            required: false,
-            default: '',
-        },
         serverSideSearch: {
             type: Boolean,
             required: false,
@@ -446,16 +433,6 @@
     const searchValue = ref('');
     const filterMenu = ref(false);
     const activeFilters = ref(0);
-    const selectedItems = ref([]);
-    const searchTimeout = ref(null);
-
-    // Set default visible columns on mount
-    onMounted(() => {
-        // Load saved state if enabled
-        if (props.rememberState && props.stateId) {
-            loadSavedState();
-        }
-    });
 
     const items = computed(() => {
         if (props.showNo) {
@@ -525,23 +502,15 @@
         'import',
         'export',
         'update:options',
-        'search',
         'filter-apply',
         'filter-clear',
         'empty-action',
-        'column-update',
-        'selection-change',
     ]);
 
     // Methods
     const updateOptionsCallback = (options) => {
         page.value = options.page;
         sortBy.value = options.sortBy;
-
-        // Save state if enabled
-        if (props.rememberState && props.stateId) {
-            saveState();
-        }
 
         emits('update:options', options);
     };
@@ -570,39 +539,6 @@
         emits('export');
     };
 
-    const clearSearch = () => {
-        searchValue.value = '';
-        emits('search', '');
-    };
-
-    const handleSearchEnter = () => {
-        if (searchTimeout.value) {
-            clearTimeout(searchTimeout.value);
-        }
-        emits('search', searchValue.value);
-    };
-
-    // Watch for search changes with debounce for server-side search
-    watch(searchValue, (newValue) => {
-        if (props.serverSideSearch) {
-            if (searchTimeout.value) {
-                clearTimeout(searchTimeout.value);
-            }
-
-            searchTimeout.value = setTimeout(() => {
-                emits('search', newValue);
-            }, props.searchDebounce);
-        } else {
-            // For client-side search, emit immediately
-            emits('search', newValue);
-        }
-    });
-
-    // Watch for selection changes
-    watch(selectedItems, (newValue) => {
-        emits('selection-change', newValue);
-    });
-
     const applyFilters = () => {
         filterMenu.value = false;
         emits('filter-apply');
@@ -617,49 +553,11 @@
         emits('empty-action');
     };
 
-
-    // State management
-    const saveState = () => {
-        if (!props.stateId) return;
-
-        const state = {
-            itemsPerPage: itemsPerPage.value,
-            page: page.value,
-            sortBy: sortBy.value,
-        };
-
-        localStorage.setItem(`dt-state-${props.stateId}`, JSON.stringify(state));
-    };
-
-    /**
-     * Load saved state from localStorage
-     *
-     * @returns {void}
-     */
-    const loadSavedState = () => {
-        if (!props.stateId) return;
-
-        try {
-            const saved = localStorage.getItem(`dt-state-${props.stateId}`);
-            if (saved) {
-                const state = JSON.parse(saved);
-
-                if (state.itemsPerPage) itemsPerPage.value = state.itemsPerPage;
-                if (state.page) page.value = state.page;
-                if (state.sortBy) sortBy.value = state.sortBy;
-            }
-        } catch (error) {
-            console.error('Error loading saved state:', error);
-        }
-    };
-
     // Expose methods and props for parent component
     defineExpose({
         page,
         itemsPerPage,
         sortBy,
-        selectedItems,
-        clearSearch,
         applyFilters,
         clearFilters,
     });

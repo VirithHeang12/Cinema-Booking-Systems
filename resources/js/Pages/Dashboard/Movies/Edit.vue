@@ -77,6 +77,7 @@
         duration: '',
         rating: '',
         trailer_url: '',
+        thumbnail_url: null,
         thumbnail_file: null,
         country_id: '',
         classification_id: '',
@@ -98,18 +99,19 @@
         form.duration = props.movie.duration;
         form.rating = props.movie.rating;
         form.trailer_url = props.movie.trailer_url;
+        form.thumbnail_url = props.movie.thumbnail_url;
         form.country_id = props.movie.country_id;
         form.classification_id = props.movie.classification_id;
         form.spoken_language_id = props.movie.spoken_language_id;
-        form.movieGenres = props.movie.genres;
-        form.movieSubtitles = props.movie.subtitles;
+        form.movieGenres = props.movie.movieGenres;
+        form.movieSubtitles = props.movie.movieSubtitles;
     });
 
     /**
      * Submit the form data to the server
      *
      * @param setErrors
-     * @param close 
+     * @param close
      *
      * @returns void
      */

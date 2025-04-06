@@ -23,6 +23,7 @@ class MovieResource extends JsonResource
             'description'       => $this->description,
             'release_date'      => $this->release_date,
             'duration'          => $this->duration,
+            'trailer_url'       => $this->trailer_url,
             'classification'    => $this->classification?->name,
             'country'           => $this->country?->name,
             'language'          => $this->language?->name,

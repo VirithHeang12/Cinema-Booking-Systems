@@ -5,7 +5,7 @@
             :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
             item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
             @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
-            @search="handleSearch" emptyStateText="No movies found in the database" :emptyStateAction="true"
+            emptyStateText="No movies found in the database" :emptyStateAction="true"
             emptyStateActionText="Add First Movie" @empty-action="createCallback" buttonVariant="outlined"
             viewTooltip="View Movie Details" editTooltip="Edit Movie Information" deleteTooltip="Delete this Movie"
             titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="true" @filter-apply="applyFilters"
@@ -65,9 +65,19 @@
                     {{ selectedMovie?.title }} - Trailer
                 </v-card-title>
                 <v-card-text>
-                    <div class="trailer-placeholder d-flex align-center justify-center bg-grey-lighten-3 rounded-lg"
+                    <div v-if="selectedMovie?.trailer_url" class="trailer-container">
+                        <iframe :src="getYoutubeEmbedUrl(selectedMovie.trailer_url)" width="100%" height="400"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen class="rounded-lg"></iframe>
+                    </div>
+                    <div v-else
+                        class="trailer-placeholder d-flex align-center justify-center bg-grey-lighten-3 rounded-lg"
                         style="height: 400px;">
-                        <v-icon size="64" color="grey">mdi-video</v-icon>
+                        <div class="text-center">
+                            <v-icon size="64" color="grey">mdi-video-off</v-icon>
+                            <p class="mt-4 text-grey">No trailer available for this movie</p>
+                        </div>
                     </div>
                 </v-card-text>
                 <v-card-actions>
@@ -98,7 +108,6 @@
     const loading = ref(false);
     const trailerDialog = ref(false);
     const selectedMovie = ref(null);
-    const searchTerm = ref('');
     const lastUpdated = ref(new Date().toLocaleString());
     const page = ref(1);
     const sortBy = ref([]);
@@ -201,7 +210,7 @@
                 page: options.page,
                 itemsPerPage: options.itemsPerPage,
                 sort: sortKeyWithDirection,
-                'filter[search]': searchTerm.value,
+                'filter[search]': options.search,
                 'filter[country]': filterCountry.value,
                 'filter[year]': filterYear.value,
                 'filter[classification]': filterClassification.value,
@@ -217,18 +226,6 @@
                 notify('Failed to load data', 'error');
             }
         });
-    }
-
-    /**
-     * Handle search input
-     *
-     * @param value
-     *
-     * @return void
-     */
-    function handleSearch(value) {
-        searchTerm.value = value;
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value });
     }
 
     /**
@@ -260,7 +257,11 @@
     }
 
     function applyFilters() {
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value });
+        loadItems({
+            page: 1,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
+        });
     }
 
     /**
@@ -272,7 +273,11 @@
         filterCountry.value = null;
         filterClassification.value = null;
         filterYear.value = null;
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value });
+        loadItems({
+            page: 1,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
+        });
     }
 
     /**
@@ -378,6 +383,44 @@
         deep: true,
     });
 
+    /**
+     * Convert a YouTube URL to an embed URL
+     *
+     * @param {string} url - The YouTube URL (can be various formats)
+     * @return {string} - The embed URL
+     */
+    function getYoutubeEmbedUrl(url) {
+        if (!url) return '';
+
+        // Extract video ID from different YouTube URL formats
+        let videoId = '';
+
+        // youtube.com/watch?v=VIDEO_ID format
+        if (url.includes('youtube.com/watch')) {
+            const urlParams = new URLSearchParams(new URL(url).search);
+            videoId = urlParams.get('v');
+        }
+        // youtu.be/VIDEO_ID format
+        else if (url.includes('youtu.be')) {
+            videoId = url.split('youtu.be/')[1];
+        }
+        // youtube.com/embed/VIDEO_ID format
+        else if (url.includes('/embed/')) {
+            videoId = url.split('/embed/')[1];
+        }
+
+        // Remove any additional parameters
+        if (videoId && videoId.includes('&')) {
+            videoId = videoId.split('&')[0];
+        }
+
+        if (videoId && videoId.includes('?')) {
+            videoId = videoId.split('?')[0];
+        }
+
+        // Return the embed URL
+        return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
+    }
 </script>
 
 <style scoped>
