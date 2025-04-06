@@ -70,8 +70,8 @@
                         <div class="mb-3">
                             <vee-field name="thumbnail_file" v-slot="{ errors }">
                                 <div>
-                                    <ImageUpload v-model="form.thumbnail_file" label="Thumbnail"
-                                        input-id="movie-thumbnail" />
+                                    <ImageUpload :placeholderUrl="form.thumbnail_url" v-model="form.thumbnail_file"
+                                        label="Thumbnail" input-id="movie-thumbnail" />
                                     <div v-if="errors.length" class="text-error text-xs mt-1 ml-3">{{
                                         errors[0] }}</div>
                                 </div>
@@ -126,7 +126,7 @@
 <script setup>
     import { __ } from 'matice';
 
-    defineProps({
+    const props = defineProps({
         form: {
             type: Object,
             required: true

@@ -15,18 +15,24 @@
                 </button>
             </div>
             <div v-else class="image-upload-placeholder">
+                <input type="file" :id="inputId" accept="image/*" @change="handleFileUpload" class="file-input" />
+
+                <!-- Show placeholder image if URL is provided -->
+                <img v-if="placeholderUrl" :src="placeholderUrl" :alt="label + ' placeholder'"
+                    class="placeholder-image" />
+
+                <!-- Floating upload button -->
                 <label :for="inputId" class="upload-button">
                     <v-icon class="me-1">mdi-upload</v-icon>
                     {{ uploadButtonText }}
                 </label>
-                <input type="file" :id="inputId" accept="image/*" @change="handleFileUpload" class="file-input" />
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-    import { ref, computed, watch, onMounted } from 'vue';
+    import { ref, watch } from 'vue';
 
     const props = defineProps({
         modelValue: {
@@ -52,6 +58,10 @@
         inputId: {
             type: String,
             default: 'image-upload'
+        },
+        placeholderUrl: {
+            type: String,
+            default: ''
         }
     });
 
@@ -169,22 +179,36 @@
         align-items: center;
         justify-content: center;
         background-color: #f5f5f5;
+        position: relative;
+    }
+
+    .placeholder-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
     }
 
     .upload-button {
+        position: absolute;
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
         display: flex;
         align-items: center;
-        background-color: #e0e0e0;
+        background-color: rgba(224, 224, 224, 0.75);
         color: rgba(0, 0, 0, 0.87);
         padding: 8px 16px;
         border-radius: 4px;
         font-size: 14px;
         cursor: pointer;
-        transition: background-color 0.2s;
+        transition: background-color 0.2s, backdrop-filter 0.2s;
+        z-index: 2;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .upload-button:hover {
-        background-color: #d0d0d0;
+        background-color: rgba(208, 208, 208, 0.95);
     }
 
     .file-input {

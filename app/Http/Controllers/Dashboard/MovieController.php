@@ -18,6 +18,7 @@ use App\Models\Movie;
 use App\Models\MovieGenre;
 use App\Models\MovieSubtitle;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\QueryBuilder;
 use InertiaUI\Modal\Modal;
@@ -117,6 +118,7 @@ class MovieController extends Controller
                 'duration'                  => $data['duration'],
                 'rating'                    => $data['rating'],
                 'trailer_url'               => $data['trailer_url'],
+                'thumbnail_url'             => $data['thumbnail_url'],
                 'country_id'                => $data['country_id'],
                 'classification_id'         => $data['classification_id'],
                 'spoken_language_id'        => $data['spoken_language_id'],
@@ -139,7 +141,6 @@ class MovieController extends Controller
 
             return redirect()->route('dashboard.movies.index')->with('success', 'Movie created.');
         } catch (\Exception $e) {
-            dd($e->getMessage());
             DB::rollBack();
 
             return redirect()->route('dashboard.movies.index')->with('error', 'Movie not created.');
@@ -151,13 +152,43 @@ class MovieController extends Controller
      *
      * @param  \App\Models\Movie  $Movie
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function show(Movie $movie): \Inertia\Response
+    public function show(Movie $movie): Modal
     {
-        return Inertia::render('Dashboard/Movies/Show', [
-            'movie'      => $movie,
-        ]);
+        $genres             = GenreResource::collection(Genre::all())->toArray(request());
+        $countries          = CountryResource::collection(Country::all())->toArray(request());
+        $classifications    = ClassificationResource::collection(Classification::all())->toArray(request());
+        $languages          = LanguageResource::collection(Language::all())->toArray(request());
+
+        $movie->load(['movieGenres', 'movieSubtitles', 'movieGenres.genre', 'movieSubtitles.language']);
+
+        $movie->movieGenres = $movie->movieGenres->map(function ($genre) {
+            return [
+                'id'            => $genre->genre->id,
+                'name'          => $genre->genre->name,
+            ];
+        });
+
+        $movie->movieSubtitles = $movie->movieSubtitles->map(function ($subtitle) {
+            return [
+                'id'            => $subtitle->language->id,
+                'name'          => $subtitle->language->name,
+            ];
+        });
+
+        $movie->thumbnail_url = Storage::temporaryUrl(
+            $movie->thumbnail_url,
+            now()->addMinutes(5),
+        );
+
+        return Inertia::modal('Dashboard/Movies/Show', [
+            'movie'                 => $movie->load(['movieGenres', 'movieSubtitles']),
+            'genres'                => $genres,
+            'countries'             => $countries,
+            'classifications'       => $classifications,
+            'languages'             => $languages,
+        ])->baseRoute('dashboard.movies.index');
     }
 
     /**
@@ -190,6 +221,11 @@ class MovieController extends Controller
             ];
         });
 
+        $movie->thumbnail_url = Storage::temporaryUrl(
+            $movie->thumbnail_url,
+            now()->addMinutes(5),
+        );
+
         return Inertia::modal('Dashboard/Movies/Edit', [
             'movie'                 => $movie->load(['movieGenres', 'movieSubtitles']),
             'genres'                => $genres,
@@ -214,6 +250,18 @@ class MovieController extends Controller
         DB::beginTransaction();
 
         try {
+            if ($request->hasFile('thumbnail_file')) {
+                $data['thumbnail_url'] = $request->file('thumbnail_file')->store('movies');
+            }
+
+            if ($movie->thumbnail_url && $request->hasFile('thumbnail_file')) {
+                Storage::delete($movie->thumbnail_url);
+            }
+
+            if ($movie->thumbnail_url && !$request->hasFile('thumbnail_file')) {
+                $data['thumbnail_url'] = $movie->thumbnail_url;
+            }
+
             $movie->update([
                 'title'                     => $data['title'],
                 'description'               => $data['description'],
