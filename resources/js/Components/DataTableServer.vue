@@ -325,7 +325,6 @@
             required: false,
             default: 'primary',
         },
-
         importColor: {
             type: String,
             required: false,
@@ -416,16 +415,6 @@
             required: false,
             default: () => [],
         },
-        rememberState: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-        stateId: {
-            type: String,
-            required: false,
-            default: '',
-        },
         serverSideSearch: {
             type: Boolean,
             required: false,
@@ -448,12 +437,9 @@
     const selectedItems = ref([]);
     const searchTimeout = ref(null);
 
-    // Set default visible columns on mount
+    // No longer need onMounted hook for loading state, but keeping it for possible future use
     onMounted(() => {
-        // Load saved state if enabled
-        if (props.rememberState && props.stateId) {
-            loadSavedState();
-        }
+        // Empty onMounted hook
     });
 
     const items = computed(() => {
@@ -536,11 +522,6 @@
         page.value = options.page;
         sortBy.value = options.sortBy;
 
-        // Save state if enabled
-        if (props.rememberState && props.stateId) {
-            saveState();
-        }
-
         if (!options.search && options.sortBy.length === 0) {
             return;
         }
@@ -600,7 +581,6 @@
         }
     });
 
-
     const applyFilters = () => {
         filterMenu.value = false;
         emits('filter-apply');
@@ -613,42 +593,6 @@
 
     const emptyStateActionClick = () => {
         emits('empty-action');
-    };
-
-
-    // State management
-    const saveState = () => {
-        if (!props.stateId) return;
-
-        const state = {
-            itemsPerPage: itemsPerPage.value,
-            page: page.value,
-            sortBy: sortBy.value,
-        };
-
-        localStorage.setItem(`dt-state-${props.stateId}`, JSON.stringify(state));
-    };
-
-    /**
-     * Load saved state from localStorage
-     *
-     * @returns {void}
-     */
-    const loadSavedState = () => {
-        if (!props.stateId) return;
-
-        try {
-            const saved = localStorage.getItem(`dt-state-${props.stateId}`);
-            if (saved) {
-                const state = JSON.parse(saved);
-
-                if (state.itemsPerPage) itemsPerPage.value = state.itemsPerPage;
-                if (state.page) page.value = state.page;
-                if (state.sortBy) sortBy.value = state.sortBy;
-            }
-        } catch (error) {
-            console.error('Error loading saved state:', error);
-        }
     };
 
     // Expose methods and props for parent component
