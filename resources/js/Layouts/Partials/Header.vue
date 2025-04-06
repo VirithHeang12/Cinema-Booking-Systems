@@ -8,7 +8,7 @@
                 </v-card-text>
             </v-card>
             <v-card flat class="z-10">
-                <img width="50" height="20" src="/resources/assets/ChillGuy.jpg" alt="">
+                <img width="50" height="20" src="/resources/assets/images/placeholder.jpg" alt="">
             </v-card>
             <div class="flex align-center justify-center z-10">
                 <div class="flex gap-2 align-center">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Movies\ImportMoviesRequest;
 use App\Http\Requests\Movies\SaveRequest;
 use App\Http\Requests\Movies\UpdateRequest;
 use App\Http\Resources\Api\ClassificationResource;
@@ -10,6 +11,7 @@ use App\Http\Resources\Api\CountryResource;
 use App\Http\Resources\Api\GenreResource;
 use App\Http\Resources\Api\LanguageResource;
 use App\Http\Resources\MovieResource;
+use App\Imports\MoviesImport;
 use App\Models\Classification;
 use App\Models\Country;
 use App\Models\Genre;
@@ -18,10 +20,12 @@ use App\Models\Movie;
 use App\Models\MovieGenre;
 use App\Models\MovieSubtitle;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\QueryBuilder;
 use InertiaUI\Modal\Modal;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\QueryBuilder\AllowedFilter;
 
 class MovieController extends Controller
@@ -33,6 +37,8 @@ class MovieController extends Controller
      */
     public function index(): \Inertia\Response
     {
+        Gate::authorize('viewAny', Movie::class);
+
         $perPage = request()->query('itemsPerPage', 10);
 
         $movies = QueryBuilder::for(Movie::class)
@@ -79,6 +85,8 @@ class MovieController extends Controller
      */
     public function create(): Modal
     {
+        Gate::authorize('create', Movie::class);
+
         $genres = GenreResource::collection(Genre::all())->toArray(request());
         $countries = CountryResource::collection(Country::all())->toArray(request());
         $classifications = ClassificationResource::collection(Classification::all())->toArray(request());
@@ -101,6 +109,8 @@ class MovieController extends Controller
      */
     public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('create', Movie::class);
+
         DB::beginTransaction();
 
         try {
@@ -156,6 +166,8 @@ class MovieController extends Controller
      */
     public function show(Movie $movie): Modal
     {
+        Gate::authorize('view', $movie);
+
         $genres             = GenreResource::collection(Genre::all())->toArray(request());
         $countries          = CountryResource::collection(Country::all())->toArray(request());
         $classifications    = ClassificationResource::collection(Classification::all())->toArray(request());
@@ -200,6 +212,8 @@ class MovieController extends Controller
      */
     public function edit(Movie $movie): Modal
     {
+        Gate::authorize('update', $movie);
+
         $genres             = GenreResource::collection(Genre::all())->toArray(request());
         $countries          = CountryResource::collection(Country::all())->toArray(request());
         $classifications    = ClassificationResource::collection(Classification::all())->toArray(request());
@@ -245,6 +259,8 @@ class MovieController extends Controller
      */
     public function update(UpdateRequest $request, Movie $movie): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('update', $movie);
+
         $data = $request->validated();
 
         DB::beginTransaction();
@@ -311,6 +327,8 @@ class MovieController extends Controller
      */
     public function delete(Movie $movie): Modal
     {
+        Gate::authorize('delete', $movie);
+
         return Inertia::modal('Dashboard/Movies/Delete', [
             'movie'      => $movie,
         ])->baseRoute('dashboard.movies.index');
@@ -325,6 +343,8 @@ class MovieController extends Controller
      */
     public function destroy(Movie $movie): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('delete', $movie);
+
         DB::beginTransaction();
 
         try {
@@ -338,5 +358,53 @@ class MovieController extends Controller
 
             return redirect()->route('dashboard.movies.index')->with('error', 'Movie not deleted.');
         }
+    }
+
+    /**
+     * Show import movies form.
+     *
+     * @return Modal
+     */
+    public function showImport(): Modal
+    {
+        Gate::authorize('import', Movie::class);
+
+        return Inertia::modal('Dashboard/Movies/Import')->baseRoute('dashboard.movies.index');
+    }
+
+    /**
+     * Import movies from excel file.
+     *
+     * @param  ImportMoviesRequest  $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function import(ImportMoviesRequest $request): \Illuminate\Http\RedirectResponse
+    {
+        Gate::authorize('import', Movie::class);
+
+        DB::beginTransaction();
+
+        try {
+            Excel::import(new MoviesImport, $request->file('file'));
+            DB::commit();
+
+            return redirect()->route('dashboard.movies.index')->with('success', 'Movies imported.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('dashboard.movies.index')->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Show export movies form.
+     *
+     * @return Modal
+     */
+    public function export()
+    {
+        Gate::authorize('export', Movie::class);
+
+        return Excel::download(new MoviesExport, 'movies.xlsx');
     }
 }
