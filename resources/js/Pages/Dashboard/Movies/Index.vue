@@ -196,9 +196,9 @@
      *
      * @return void
      */
-    function loadItems(options) {
+    function loadItems(options, manual = false) {
         if (!filterClassification.value && !filterCountry.value && !filterYear.value && !searchTerm.value && !options.search && options.sortBy.length === 0) {
-            return;
+            if (!manual) return;
         }
 
         loading.value = true;
@@ -243,7 +243,7 @@
      */
     function handleSearch(value) {
         searchTerm.value = value;
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value });
+        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value }, true);
     }
 
     /**
@@ -275,7 +275,7 @@
     }
 
     function applyFilters() {
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value });
+        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value }, true);
     }
 
     /**
@@ -287,7 +287,7 @@
         filterCountry.value = null;
         filterClassification.value = null;
         filterYear.value = null;
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value });
+        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value }, true);
     }
 
     /**
