@@ -297,7 +297,7 @@
      * @return void
      */
     const viewCallback = (item) => {
-        router.get(route('dashboard.movies.show', {
+        visitModal(route('dashboard.movies.show', {
             movie: item.id,
         }));
     };
@@ -334,7 +334,7 @@
      * @return void
      */
     const importCallback = () => {
-        router.get(route('dashboard.movies.import.show'));
+        visitModal(route('dashboard.movies.import.show'));
     };
 
     /**

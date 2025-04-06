@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exports\MoviesExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Movies\ImportMoviesRequest;
 use App\Http\Requests\Movies\SaveRequest;
