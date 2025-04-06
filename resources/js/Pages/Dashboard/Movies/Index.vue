@@ -5,7 +5,7 @@
             :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
             item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
             @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
-            @search="handleSearch" emptyStateText="No movies found in the database" :emptyStateAction="true"
+            emptyStateText="No movies found in the database" :emptyStateAction="true"
             emptyStateActionText="Add First Movie" @empty-action="createCallback" buttonVariant="outlined"
             viewTooltip="View Movie Details" editTooltip="Edit Movie Information" deleteTooltip="Delete this Movie"
             titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="true" @filter-apply="applyFilters"
@@ -58,7 +58,6 @@
         </data-table-server>
 
         <!-- Trailer Dialog -->
-        <!-- Trailer Dialog -->
         <v-dialog v-model="trailerDialog" max-width="800">
             <v-card>
                 <v-card-title class="headline d-flex align-center">
@@ -109,7 +108,6 @@
     const loading = ref(false);
     const trailerDialog = ref(false);
     const selectedMovie = ref(null);
-    const searchTerm = ref('');
     const lastUpdated = ref(new Date().toLocaleString());
     const page = ref(1);
     const sortBy = ref([]);
@@ -196,11 +194,7 @@
      *
      * @return void
      */
-    function loadItems(options, manual = false) {
-        if (!filterClassification.value && !filterCountry.value && !filterYear.value && !searchTerm.value && !options.search && options.sortBy.length === 0) {
-            if (!manual) return;
-        }
-
+    function loadItems(options) {
         loading.value = true;
         page.value = options.page;
         sortBy.value = options.sortBy;
@@ -216,7 +210,7 @@
                 page: options.page,
                 itemsPerPage: options.itemsPerPage,
                 sort: sortKeyWithDirection,
-                'filter[search]': searchTerm.value,
+                'filter[search]': options.search,
                 'filter[country]': filterCountry.value,
                 'filter[year]': filterYear.value,
                 'filter[classification]': filterClassification.value,
@@ -232,18 +226,6 @@
                 notify('Failed to load data', 'error');
             }
         });
-    }
-
-    /**
-     * Handle search input
-     *
-     * @param value
-     *
-     * @return void
-     */
-    function handleSearch(value) {
-        searchTerm.value = value;
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value }, true);
     }
 
     /**
@@ -275,7 +257,11 @@
     }
 
     function applyFilters() {
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value }, true);
+        loadItems({
+            page: 1,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
+        });
     }
 
     /**
@@ -287,7 +273,11 @@
         filterCountry.value = null;
         filterClassification.value = null;
         filterYear.value = null;
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value }, true);
+        loadItems({
+            page: 1,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
+        });
     }
 
     /**

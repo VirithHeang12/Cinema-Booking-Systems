@@ -14,8 +14,7 @@
                     <!-- Search Field -->
                     <v-text-field v-if="showSearch" v-model="searchValue" :placeholder="searchPlaceholder"
                         prepend-inner-icon="mdi-magnify" hide-details single-line density="compact"
-                        class="data-table-search me-4" variant="outlined" clearable @click:clear="clearSearch"
-                        @keyup.enter="handleSearchEnter"></v-text-field>
+                        class="data-table-search me-4" variant="outlined" clearable></v-text-field>
 
                     <!-- Filter Button -->
                     <v-menu v-if="hasFilter" v-model="filterMenu" :close-on-content-click="false">
@@ -153,7 +152,7 @@
 
 <script setup>
     import { __ } from 'matice';
-    import { computed, ref, watch, onMounted, useSlots } from 'vue';
+    import { computed, ref, useSlots } from 'vue';
 
     // Add the useSlots composable to access the slots
     const slots = useSlots();
@@ -434,13 +433,6 @@
     const searchValue = ref('');
     const filterMenu = ref(false);
     const activeFilters = ref(0);
-    const selectedItems = ref([]);
-    const searchTimeout = ref(null);
-
-    // No longer need onMounted hook for loading state, but keeping it for possible future use
-    onMounted(() => {
-        // Empty onMounted hook
-    });
 
     const items = computed(() => {
         if (props.showNo) {
@@ -510,21 +502,15 @@
         'import',
         'export',
         'update:options',
-        'search',
         'filter-apply',
         'filter-clear',
         'empty-action',
-        'column-update',
     ]);
 
     // Methods
     const updateOptionsCallback = (options) => {
         page.value = options.page;
         sortBy.value = options.sortBy;
-
-        if (!options.search && options.sortBy.length === 0) {
-            return;
-        }
 
         emits('update:options', options);
     };
@@ -553,34 +539,6 @@
         emits('export');
     };
 
-    const clearSearch = () => {
-        searchValue.value = '';
-        emits('search', '');
-    };
-
-    const handleSearchEnter = () => {
-        if (searchTimeout.value) {
-            clearTimeout(searchTimeout.value);
-        }
-        emits('search', searchValue.value);
-    };
-
-    // Watch for search changes with debounce for server-side search
-    watch(searchValue, (newValue) => {
-        if (props.serverSideSearch) {
-            if (searchTimeout.value) {
-                clearTimeout(searchTimeout.value);
-            }
-
-            searchTimeout.value = setTimeout(() => {
-                emits('search', newValue);
-            }, props.searchDebounce);
-        } else {
-            // For client-side search, emit immediately
-            emits('search', newValue);
-        }
-    });
-
     const applyFilters = () => {
         filterMenu.value = false;
         emits('filter-apply');
@@ -600,7 +558,6 @@
         page,
         itemsPerPage,
         sortBy,
-        clearSearch,
         applyFilters,
         clearFilters,
     });
