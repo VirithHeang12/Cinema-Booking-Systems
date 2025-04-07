@@ -50,7 +50,7 @@ enum PermissionEnum: string
     case FORCE_DELETE_COUNTRY   = 'FORCE DELETE COUNTRY';
 
      // HallType Permissions
-     case VIEW_ANY_HALLTYPE    = 'VIEW ANY SCREENTYPES';
+     case VIEW_ANY_HALLTYPE    = 'VIEW ANY HALLTYPE';
      case VIEW_HALLTYPE         = 'VIEW HALLTYPE';
      case CREATE_HALLTYPE         = 'CREATE HALLTYPE';
      case UPDATE_HALLTYPE         = 'UPDATE HALLTYPE';

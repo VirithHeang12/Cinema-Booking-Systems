@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Enums\PermissionEnum;
 use App\Enums\RoleEnum;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -42,8 +41,11 @@ class PermissionSeeder extends Seeder
             PermissionEnum::VIEW_ANY_COUNTRIES,
             PermissionEnum::VIEW_COUNTRY,
             PermissionEnum::CREATE_HALLTYPE,
-            PermissionEnum::VIEW_ANY_HALLTYPES,
+            PermissionEnum::VIEW_ANY_HALLTYPE,
             PermissionEnum::VIEW_HALLTYPE,
+            PermissionEnum::CREATE_SCREENTYPE,
+            PermissionEnum::VIEW_ANY_SCREENTYPES,
+            PermissionEnum::VIEW_SCREENTYPE,
             PermissionEnum::CREATE_GENRE,
             PermissionEnum::VIEW_ANY_GENRES,
             PermissionEnum::VIEW_GENRE,
