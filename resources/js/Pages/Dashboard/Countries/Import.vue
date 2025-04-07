@@ -1,7 +1,10 @@
 <template>
     <Modal v-slot="{ close }">
-        <div class="container d-flex flex-column align-items-center">
-            <h1 class="fw-semibold mb-4 !text-zinc-800">{{ __('Import Country') }}</h1>
+        <div class="container d-flex flex-column ">
+            <div class="d-flex justify-between align-items-start">
+                <h1 class="fw-semibold mb-4 !text-zinc-700">{{ __('Import Country') }}</h1> <button type="button"
+                    class="btn-close shadow-none " aria-label="Close" @click="close"></button>
+            </div>
             <form @submit.prevent="submitForm" class="col-12">
                 <div class="mb-3">
                     <label for="file" class="form-label">{{ __('Please select spreadsheet file') }}:</label>
@@ -16,21 +19,21 @@
 </template>
 
 <script setup>
-    import { ref } from "vue";
-    import { useForm } from "@inertiajs/vue3";
+import { ref } from "vue";
+import { useForm } from "@inertiajs/vue3";
 
-    const form = useForm({
-        file: null,
-    });
-    const fileInput = ref(null);
+const form = useForm({
+    file: null,
+});
+const fileInput = ref(null);
 
-    const submitForm = () => {
-        if (!fileInput.value?.files[0]) {
-            alert("Please select a file before uploading.");
-            return;
-        }
-        form.file = fileInput.value.files[0];
+const submitForm = () => {
+    if (!fileInput.value?.files[0]) {
+        alert("Please select a file before uploading.");
+        return;
+    }
+    form.file = fileInput.value.files[0];
 
-        form.post(route("dashboard.countries.import"));
-    };
+    form.post(route("dashboard.countries.import"));
+};
 </script>

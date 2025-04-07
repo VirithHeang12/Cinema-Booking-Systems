@@ -1,9 +1,13 @@
 <template>
-    <data-table-server :showNo="true" :title="__('Countries')" :serverItems="serverItems" :items-length="totalItems"
-        :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
-        @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true" @view="viewCallback"
-        @edit="editCallback" @delete="deleteCallback" @create="createCallback" @import="importCallback"
-        @export="exportCallback" />
+    <div class="movie-list-container">
+        <data-table-server :showNo="true" :title="__('Countries')" :createButtonText="__('Create Country')"
+            :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
+            :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id" @update:options="loadItems"
+            :has-create="true" :has-import="true" :has-export="true" @view="viewCallback" @edit="editCallback"
+            @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
+            titleClass="text-2xl font-bold text-primary mb-4" iconSize="small" toolbarColor="white"
+            buttonVariant="outlined" @filter-apply="applyFilters" />
+    </div>
 </template>
 
 <script setup>
@@ -14,6 +18,10 @@ import { route } from "ziggy-js";
 import { __ } from 'matice';
 import { toast } from 'vue3-toastify';
 
+
+const sortBy = ref([]);
+const loading = ref(false);
+const lastUpdated = ref(new Date().toLocaleString());
 const props = defineProps({
     countries: {
         type: Object,
@@ -26,14 +34,13 @@ const serverItems = computed(() => {
 });
 
 const totalItems = computed(() => {
-    return props.countries.total;
+    return props.countries.meta.total;
 });
 
 const itemsPerPage = computed(() => {
     return props.countries.per_page;
 });
 
-const loading = ref(false);
 
 const headers = [
     {
@@ -41,16 +48,55 @@ const headers = [
         align: 'start',
         sortable: true,
         key: 'name',
-    }
+    },
 ];
 
+const page = usePage();
 
-function loadItems({ page, itemsPerPage }) {
+
+/**
+ * Load items from the server
+ *
+ * @param options
+ *
+ * @return void
+ */
+function loadItems(options) {
+    loading.value = true;
+    page.value = options.page;
+    sortBy.value = options.sortBy;
+
+    let sortKeyWithDirection = options.sortBy.length > 0 ? options.sortBy[0].key : null;
+
+    if (sortKeyWithDirection) {
+        sortKeyWithDirection = options.sortBy[0].order === 'asc' ? sortKeyWithDirection : '-' + sortKeyWithDirection;
+    }
+
     router.reload({
         data: {
-            page,
-            itemsPerPage
+            page: options.page,
+            itemsPerPage: options.itemsPerPage,
+            sort: sortKeyWithDirection,
+            'filter[search]': options.search,
         },
+        preserveState: true,
+        only: ['countries'],
+        onSuccess: () => {
+            loading.value = false;
+            lastUpdated.value = new Date().toLocaleString();
+        },
+        onError: () => {
+            loading.value = false;
+            notify('Failed to load data', 'error');
+        }
+    });
+}
+
+function applyFilters() {
+    loadItems({
+        page: 1,
+        itemsPerPage: itemsPerPage.value,
+        sortBy: sortBy.value,
     });
 }
 
@@ -147,7 +193,6 @@ const notify = (message) => {
     });
 }
 
-const page = usePage();
 
 /**
  * Watch for flash messages
@@ -168,3 +213,15 @@ watch(() => page.props.flash, (flash) => {
 });
 
 </script>
+
+
+
+<style scoped>
+.movie-list-container {
+    width: 100%;
+    padding: 24px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(21, 21, 21, 0.05);
+}
+</style>

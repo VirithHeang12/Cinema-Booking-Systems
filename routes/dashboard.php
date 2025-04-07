@@ -20,7 +20,7 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
 
     Route::get('countries/import', [CountryController::class, 'showImport'])->name('countries.import.show');
     Route::post('countries/import', [CountryController::class, 'import'])->name('countries.import');
-    Route::get('countries/export', [CountryController::class, 'export'])->name('countries.export')->withoutMiddleware(['web']);
+    Route::get('countries/export', [CountryController::class, 'export'])->name('countries.export');
 
     Route::get('genres/import', [GenreController::class, 'showImport'])->name('genres.import.show');
     Route::post('genres/import', [GenreController::class, 'import'])->name('genres.import');
