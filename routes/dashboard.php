@@ -20,7 +20,7 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
 
     Route::get('countries/import', [CountryController::class, 'showImport'])->name('countries.import.show');
     Route::post('countries/import', [CountryController::class, 'import'])->name('countries.import');
-    Route::get('countries/export', [CountryController::class, 'export'])->name('countries.export')->withoutMiddleware(['web']);
+    Route::get('countries/export', [CountryController::class, 'export'])->name('countries.export');
 
     Route::get('genres/import', [GenreController::class, 'showImport'])->name('genres.import.show');
     Route::post('genres/import', [GenreController::class, 'import'])->name('genres.import');
@@ -31,8 +31,12 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::get('hall_types/export', [HallTypeController::class, 'export'])->name('hall_types.export')->withoutMiddleware(['web']);
 
     Route::get('screen_types/import', [ScreenTypeController::class, 'showImport'])->name('screen_types.import.show');
-    Route::get('screen_types/import', [ScreenTypeController::class, 'import'])->name('screen_types.import');
+    Route::post('screen_types/import', [ScreenTypeController::class, 'import'])->name('screen_types.import');
     Route::get('screen_types/export', [ScreenTypeController::class, 'export'])->name('screen_types.export')->withoutMiddleware(['web']);
+
+    Route::get('movies/import', [MovieController::class, 'showImport'])->name('movies.import.show');
+    Route::post('movies/import', [MovieController::class, 'import'])->name('movies.import');
+    Route::get('movies/export', [MovieController::class, 'export'])->name('movies.export');
 
 
     Route::get('languages/{language}/delete', [LanguageController::class, 'delete'])->name('languages.delete');

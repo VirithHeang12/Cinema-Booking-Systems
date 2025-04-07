@@ -4,44 +4,17 @@
             :items="items" :items-length="itemsLength" v-model:items-per-page="itemsPerPage" :headers="computedHeaders"
             :loading="loading" :items-per-page-options="itemsPerPageOptions" :hover="hover" :search="searchValue"
             :class="tableClasses" :footer-props="footerProps" :item-class="itemClass" v-model:page="page"
-            v-model:sort-by="sortBy" v-model:selected="selectedItems" :show-select="showSelect"
-            :single-select="singleSelect">
+            v-model:sort-by="sortBy" :show-select="showSelect" :single-select="singleSelect">
             <template v-slot:top>
-                <v-toolbar flat :color="toolbarColor" class="data-table-toolbar">
+                <v-toolbar style="border-radius: 20px;" flat :color="toolbarColor" class="data-table-toolbar">
                     <v-toolbar-title :class="['fw-semibold', titleClass]">{{ title }}</v-toolbar-title>
 
                     <v-spacer></v-spacer>
 
-                    <!-- Column Visibility Menu -->
-                    <v-menu v-if="hasColumnVisibility" v-model="columnMenu" :close-on-content-click="false">
-                        <template v-slot:activator="{ props }">
-                            <v-btn v-bind="props" color="grey-darken-1" variant="tonal" class="me-2 fw-medium"
-                                prepend-icon="mdi-view-column">
-                                {{ __('Columns') }}
-                            </v-btn>
-                        </template>
-                        <v-card min-width="250" class="pa-3">
-                            <v-card-title class="pb-2">{{ __('Column Visibility') }}</v-card-title>
-                            <v-divider></v-divider>
-                            <v-card-text>
-                                <v-checkbox v-for="header in originalHeaders" :key="header.key" v-model="visibleColumns"
-                                    :value="header.key" :label="header.title" hide-details density="compact"
-                                    class="mb-1"></v-checkbox>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="error" variant="text" @click="resetColumns">{{ __('Reset') }}</v-btn>
-                                <v-btn color="primary" variant="text" @click="columnMenu = false">{{ __('Done')
-                                }}</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-menu>
-
                     <!-- Search Field -->
                     <v-text-field v-if="showSearch" v-model="searchValue" :placeholder="searchPlaceholder"
                         prepend-inner-icon="mdi-magnify" hide-details single-line density="compact"
-                        class="data-table-search me-4" variant="outlined" clearable @click:clear="clearSearch"
-                        @keyup.enter="handleSearchEnter"></v-text-field>
+                        class="data-table-search me-4" variant="outlined" clearable></v-text-field>
 
                     <!-- Filter Button -->
                     <v-menu v-if="hasFilter" v-model="filterMenu" :close-on-content-click="false">
@@ -134,8 +107,8 @@
 
                     <v-tooltip v-if="hasDelete" :text="deleteTooltip" location="top">
                         <template v-slot:activator="{ props }">
-                            <v-icon v-bind="props" :color="deleteColor" :size="iconSize"
-                                @click="showDeleteConfirm(item)" :class="iconClass">
+                            <v-icon v-bind="props" :color="deleteColor" :size="iconSize" @click="deleteItem(item)"
+                                :class="iconClass">
                                 {{ deleteIcon }}
                             </v-icon>
                         </template>
@@ -174,44 +147,12 @@
                 <slot name="footer"></slot>
             </template>
         </v-data-table-server>
-
-        <!-- Delete Confirmation Dialog -->
-        <v-dialog v-model="deleteDialog" max-width="500px">
-            <v-card>
-                <v-card-title class="headline">{{ __('Confirm Deletion') }}</v-card-title>
-                <v-card-text>
-                    {{ deleteConfirmText }}
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="grey-darken-1" variant="text" @click="closeDeleteDialog">{{ __('Cancel') }}</v-btn>
-                    <v-btn color="error" variant="text" @click="confirmDelete">{{ __('Delete') }}</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
-        <!-- Bulk Action Confirmation Dialog -->
-        <v-dialog v-model="bulkActionDialog" max-width="500px">
-            <v-card>
-                <v-card-title class="headline">{{ bulkActionTitle }}</v-card-title>
-                <v-card-text>
-                    {{ bulkActionText }}
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="grey-darken-1" variant="text" @click="bulkActionDialog = false">{{ __('Cancel')
-                    }}</v-btn>
-                    <v-btn :color="bulkActionColor" variant="text" @click="confirmBulkAction">{{ bulkActionConfirmText
-                    }}</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
     </div>
 </template>
 
 <script setup>
     import { __ } from 'matice';
-    import { computed, ref, watch, onMounted, useSlots } from 'vue';
+    import { computed, ref, useSlots } from 'vue';
 
     // Add the useSlots composable to access the slots
     const slots = useSlots();
@@ -248,11 +189,6 @@
             default: true,
         },
         hasFilter: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-        hasColumnVisibility: {
             type: Boolean,
             required: false,
             default: false,
@@ -478,16 +414,6 @@
             required: false,
             default: () => [],
         },
-        rememberState: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-        stateId: {
-            type: String,
-            required: false,
-            default: '',
-        },
         serverSideSearch: {
             type: Boolean,
             required: false,
@@ -504,37 +430,9 @@
     const itemsPerPage = ref(props.itemsPerPage);
     const page = ref(1);
     const sortBy = ref(props.initialSortBy);
-    const deleteDialog = ref(false);
-    const itemToDelete = ref(null);
     const searchValue = ref('');
     const filterMenu = ref(false);
-    const columnMenu = ref(false);
     const activeFilters = ref(0);
-    const selectedItems = ref([]);
-    const visibleColumns = ref([]);
-    const originalHeaders = ref([...props.headers]);
-    const bulkActionDialog = ref(false);
-    const bulkActionTitle = ref('');
-    const bulkActionText = ref('');
-    const bulkActionType = ref('');
-    const bulkActionColor = ref('primary');
-    const bulkActionConfirmText = ref('Confirm');
-    const searchTimeout = ref(null);
-
-    // Set default visible columns on mount
-    onMounted(() => {
-        resetColumns();
-
-        // Load saved state if enabled
-        if (props.rememberState && props.stateId) {
-            loadSavedState();
-        }
-    });
-
-    // Computed properties
-    const computedCreateButtonText = computed(() => {
-        return props.createButtonText || `${__('New')} ${props.title}`;
-    });
 
     const items = computed(() => {
         if (props.showNo) {
@@ -551,9 +449,7 @@
 
     const computedHeaders = computed(() => {
         // Filter headers based on visible columns if column visibility is enabled
-        let headers = props.hasColumnVisibility
-            ? props.headers.filter(header => visibleColumns.value.includes(header.key))
-            : props.headers;
+        let headers = props.headers;
 
         if (props.showNo) {
             headers = [
@@ -595,7 +491,7 @@
         return `${Math.max(width, 100)}px`;
     };
 
-    const itemsPerPageOptions = [5, 10, 20, 30, 40, 50, 100];
+    const itemsPerPageOptions = [10, 20, 30, 40, 50, 100];
 
     // Emit events
     const emits = defineEmits([
@@ -605,14 +501,10 @@
         'create',
         'import',
         'export',
-        '@update:options',
-        'search',
+        'update:options',
         'filter-apply',
         'filter-clear',
         'empty-action',
-        'bulk-action',
-        'column-update',
-        'selection-change',
     ]);
 
     // Methods
@@ -620,12 +512,7 @@
         page.value = options.page;
         sortBy.value = options.sortBy;
 
-        // Save state if enabled
-        if (props.rememberState && props.stateId) {
-            saveState();
-        }
-
-        emits('@update:options', options);
+        emits('update:options', options);
     };
 
     const viewItem = (item) => {
@@ -636,19 +523,8 @@
         emits('edit', item);
     };
 
-    const showDeleteConfirm = (item) => {
-        itemToDelete.value = item;
-        deleteDialog.value = true;
-    };
-
-    const closeDeleteDialog = () => {
-        deleteDialog.value = false;
-        itemToDelete.value = null;
-    };
-
-    const confirmDelete = () => {
-        emits('delete', itemToDelete.value);
-        closeDeleteDialog();
+    const deleteItem = (item) => {
+        emits('delete', item);
     };
 
     const createItem = () => {
@@ -662,39 +538,6 @@
     const exportItem = () => {
         emits('export');
     };
-
-    const clearSearch = () => {
-        searchValue.value = '';
-        emits('search', '');
-    };
-
-    const handleSearchEnter = () => {
-        if (searchTimeout.value) {
-            clearTimeout(searchTimeout.value);
-        }
-        emits('search', searchValue.value);
-    };
-
-    // Watch for search changes with debounce for server-side search
-    watch(searchValue, (newValue) => {
-        if (props.serverSideSearch) {
-            if (searchTimeout.value) {
-                clearTimeout(searchTimeout.value);
-            }
-
-            searchTimeout.value = setTimeout(() => {
-                emits('search', newValue);
-            }, props.searchDebounce);
-        } else {
-            // For client-side search, emit immediately
-            emits('search', newValue);
-        }
-    });
-
-    // Watch for selection changes
-    watch(selectedItems, (newValue) => {
-        emits('selection-change', newValue);
-    });
 
     const applyFilters = () => {
         filterMenu.value = false;
@@ -710,85 +553,12 @@
         emits('empty-action');
     };
 
-    // Column visibility methods
-    const resetColumns = () => {
-        visibleColumns.value = props.headers.map(header => header.key);
-    };
-
-    // Watch for column changes
-    watch(visibleColumns, (newValue) => {
-        emits('column-update', newValue);
-
-        // Save state if enabled
-        if (props.rememberState && props.stateId) {
-            saveState();
-        }
-    });
-
-    // Bulk actions
-    const triggerBulkAction = (type, title, text, confirmText = 'Confirm', color = 'primary') => {
-        if (selectedItems.value.length === 0) {
-            return;
-        }
-
-        bulkActionType.value = type;
-        bulkActionTitle.value = title;
-        bulkActionText.value = text;
-        bulkActionConfirmText.value = confirmText;
-        bulkActionColor.value = color;
-        bulkActionDialog.value = true;
-    };
-
-    const confirmBulkAction = () => {
-        emits('bulk-action', {
-            type: bulkActionType.value,
-            items: selectedItems.value
-        });
-        bulkActionDialog.value = false;
-    };
-
-    // State management
-    const saveState = () => {
-        if (!props.stateId) return;
-
-        const state = {
-            itemsPerPage: itemsPerPage.value,
-            page: page.value,
-            sortBy: sortBy.value,
-            visibleColumns: visibleColumns.value,
-        };
-
-        localStorage.setItem(`dt-state-${props.stateId}`, JSON.stringify(state));
-    };
-
-    const loadSavedState = () => {
-        if (!props.stateId) return;
-
-        try {
-            const saved = localStorage.getItem(`dt-state-${props.stateId}`);
-            if (saved) {
-                const state = JSON.parse(saved);
-
-                if (state.itemsPerPage) itemsPerPage.value = state.itemsPerPage;
-                if (state.page) page.value = state.page;
-                if (state.sortBy) sortBy.value = state.sortBy;
-                if (state.visibleColumns) visibleColumns.value = state.visibleColumns;
-            }
-        } catch (error) {
-            console.error('Error loading saved state:', error);
-        }
-    };
-
     // Expose methods and props for parent component
     defineExpose({
         page,
         itemsPerPage,
         sortBy,
-        selectedItems,
-        clearSearch,
         applyFilters,
         clearFilters,
-        triggerBulkAction,
-        resetColumns
     });
 </script>

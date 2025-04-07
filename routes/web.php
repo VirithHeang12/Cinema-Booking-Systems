@@ -6,42 +6,45 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ])->group(function() {
-    require_once __DIR__.'/dashboard.php';
-    require_once __DIR__.'/auth.php';
 
-    Route::get('/', function () {
-        $perPage = request()->query('itemsPerPage', 5);
-        $languages = Language::paginate($perPage)->appends(request()->query());
 
-        return Inertia::render('Index', [
-            'languages' => $languages
-        ]);
-    })->name('index');
+Route::middleware(['throttle:global'])->group(function () {
+    Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ])->group(function() {
+        require_once __DIR__.'/dashboard.php';
+        require_once __DIR__.'/auth.php';
 
-    Route::get('/about', function () {
-        return Inertia::render('About', ['title' => 'About']);
-    })->name('about');
+        Route::get('/', function () {
+            $perPage = request()->query('itemsPerPage', 5);
+            $languages = Language::paginate($perPage)->appends(request()->query());
 
-    Route::get('/contact', function () {
-        return Inertia::render('Contact', ['title' => 'Contact']);
-    })->name('contact');
+            return Inertia::render('Index', [
+                'languages' => $languages
+            ]);
+        })->name('index');
 
-    Route::get('/users', function () {
-        return Inertia::render('Create');
-    })->name('users.create');
+        Route::get('/about', function () {
+            return Inertia::render('About', ['title' => 'About']);
+        })->name('about');
 
-    Route::post('/users', function (Request $request) {
-        return redirect()->route('index');
-    })->name('users.store');
+        Route::get('/contact', function () {
+            return Inertia::render('Contact', ['title' => 'Contact']);
+        })->name('contact');
 
-    Route::get('/locations', function () {
-        return Inertia::render('Locations', ['title' => 'Locations']);
-    })->name('locations');
+        Route::get('/users', function () {
+            return Inertia::render('Create');
+        })->name('users.create');
 
-    Route::get('/promotions', function () {
-        return Inertia::render('Promotion', ['title' => 'Promotion']);
-    })->name('promotions');
+        Route::post('/users', function (Request $request) {
+            return redirect()->route('index');
+        })->name('users.store');
+
+        Route::get('/locations', function () {
+            return Inertia::render('Locations', ['title' => 'Locations']);
+        })->name('locations');
+
+        Route::get('/promotions', function () {
+            return Inertia::render('Promotion', ['title' => 'Promotion']);
+        })->name('promotions');
 
     Route::get('/privacy', function () {
         return Inertia::render('Privacy', ['title' => 'Privacy & Policy']);
@@ -55,3 +58,11 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
     })->name('checkout');
 });
 
+        Route::get('/privacy', function () {
+            return Inertia::render('Privacy', ['title' => 'Privacy & Policy']);
+        })->name('privacy');
+        Route::get('/terms', function () {
+            return Inertia::render('Terms', ['title' => 'Terms & Conditions']);
+        })->name('terms');
+    });
+});

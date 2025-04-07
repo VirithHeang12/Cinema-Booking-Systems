@@ -6,7 +6,7 @@
                     <div class="gradient-bg"></div>
                     <div class="row g-0">
                         <div class="col-12 col-md-6 p-5 rounded-tl-[25px] rounded-bl-[25px] min-h-[480px] md:!h-[480px] !text-white"
-                            style="z-index: 100;">
+                            style="z-index: 2;">
                             <h1 class="text-[45px] mb-0 fw-semibold">SEVENTEEN [RIGHT HERE] World Tour in Cinemas</h1>
                             <h4
                                 class="text-[30px] my-[20px] font-bold bg-gradient-to-r from-blue-600 to-blue-200 bg-clip-text text-transparent inline-block">

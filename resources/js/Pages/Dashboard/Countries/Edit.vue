@@ -1,7 +1,10 @@
 <template>
     <Modal v-slot="{ close }">
         <div>
-            <h4 class="text-gray-700">{{ __('Update Country') }}</h4>
+            <div class="d-flex justify-between align-items-start">
+                <h4 class="text-gray-700 mb-5">{{ __('Update Country') }}</h4>
+                <button type="button" class="btn-close shadow-none " aria-label="Close" @click="close"></button>
+            </div>
             <form @submit.prevent="submitForm">
                 <div class="form-group">
                     <label for="name" class="text-gray-600">{{ __('Name') }}</label>

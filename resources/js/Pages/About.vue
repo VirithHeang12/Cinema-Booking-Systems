@@ -1,6 +1,10 @@
 <template>
+  <div>
     <Head title="About" />
     <TheMovieDetailCard />
+    <TheExpansionPanel />
+  </div>
+
 
     <!-- <v-container class="my-[30px] font-cus">
         <div class="row">
@@ -42,6 +46,7 @@
 import {Head} from '@inertiajs/vue3';
 import { __ } from 'matice';
 import TheMovieDetailCard from '../Components/TheMovieDetailCard.vue';
+import TheExpansionPanel from '../Components/TheExpansionPanel.vue';
 
 const items = [
     {

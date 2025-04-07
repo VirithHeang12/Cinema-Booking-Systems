@@ -1,8 +1,11 @@
-
 <template>
     <Modal v-slot="{ close }">
         <div>
-            <h4 class="text-gray-700 mb-5">{{ __('Create Country') }}</h4>
+            <div class="d-flex justify-between align-items-start">
+                <h4 class="text-gray-700 mb-5">{{ __('Create Country') }}</h4>
+                <button type="button" class="btn-close shadow-none " aria-label="Close" @click="close"></button>
+            </div>
+
             <vee-form :validation-schema="schema" @submit="submitForm" v-slot="{ meta, setErrors }">
                 <vee-field name="name" v-slot="{ field, errors }">
                     <div class="mb-3">
@@ -39,8 +42,8 @@ import { __ } from 'matice';
 
 const schema = markRaw(yup.object({
     name: yup.string()
-            .required(__('Country name is required'))
-            .max(50, __("Country name must not be greater than 50 characters.")),
+        .required(__('Country name is required'))
+        .max(50, __("Country name must not be greater than 50 characters.")),
 }));
 
 const form = useForm({

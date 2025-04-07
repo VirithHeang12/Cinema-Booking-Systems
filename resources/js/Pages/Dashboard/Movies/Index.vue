@@ -1,41 +1,34 @@
 <template>
-    <div class="movie-list-container pa-4">
+    <div class="movie-list-container">
         <!-- Main table component -->
-        <data-table-server :showNo="true" title="Movies" :serverItems="serverItems" :items-length="totalItems"
-            :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage" item-value="id"
-            @update:options="loadItems" @view="viewCallback" @edit="editCallback" @delete="deleteCallback"
-            @create="createCallback" @import="importCallback" @export="exportCallback" @search="handleSearch"
+        <data-table-server :showNo="true" title="Movies" createButtonText="New Movie" :serverItems="serverItems"
+            :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
+            item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
+            @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
             emptyStateText="No movies found in the database" :emptyStateAction="true"
-            emptyStateActionText="Add First Movie" @empty-action="createCallback" buttonVariant="elevated"
+            emptyStateActionText="Add First Movie" @empty-action="createCallback" buttonVariant="outlined"
             viewTooltip="View Movie Details" editTooltip="Edit Movie Information" deleteTooltip="Delete this Movie"
-            titleClass="!text-3xl !text-primary" :hasFilter="true" @filter-apply="applyFilters"
-            @filter-clear="clearFilters" :tableClasses="'movie-data-table elevation-1'" iconSize="small"
+            titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="true" @filter-apply="applyFilters"
+            @filter-clear="clearFilters" tableClasses="movie-data-table elevation-2 rounded-lg" iconSize="small"
             deleteConfirmText="Are you sure you want to delete this movie? This action cannot be undone."
-            toolbarColor="grey-lighten-4" v-model:selected="selectedItems" :showSelect="true">
+            toolbarColor="white" :showSelect="false">
 
             <!-- Filter Content -->
             <template #filter>
                 <div class="filter-section">
                     <v-select v-model="filterCountry" :items="countryOptions" label="Country" clearable
-                        variant="outlined" density="compact" class="mb-3"></v-select>
+                        variant="outlined" density="compact" class="mb-3" hide-details></v-select>
+
+                    <v-select v-model="filterClassification" :items="classificationOptions" label="Classification"
+                        clearable variant="outlined" density="compact" class="mb-3" hide-details></v-select>
 
                     <v-select v-model="filterYear" :items="yearOptions" label="Release Year" clearable
-                        variant="outlined" density="compact" class="mb-3"></v-select>
-
-                    <v-checkbox v-model="filterRecent" label="Recent Releases (Last 12 Months)"
-                        hide-details></v-checkbox>
+                        variant="outlined" density="compact" class="mb-3" hide-details></v-select>
                 </div>
             </template>
 
-            <!-- Custom buttons for the toolbar -->
-            <!-- <template #buttons>
-                <v-btn color="info" variant="tonal" class="me-2 fw-medium" prepend-icon="mdi-star">
-                    {{ __('Popular') }}
-                </v-btn>
-            </template> -->
-
             <!-- Duration custom column -->
-            <template #item.duration="{ item }">
+            <template v-slot:[`item.duration`]="{ item }">
                 <div class="d-flex align-center">
                     <v-icon size="x-small" color="grey" class="me-1">mdi-clock-outline</v-icon>
                     {{ item.duration }} minutes
@@ -43,9 +36,9 @@
             </template>
 
             <!-- Release Date custom column -->
-            <template #item.release_date="{ item }">
-                <v-chip size="small" :color="isRecentRelease(item.release_date) ? 'success' : 'grey'"
-                    :text-color="isRecentRelease(item.release_date) ? 'white' : ''" variant="outlined"
+            <template v-slot:[`item.release_date`]="{ item }">
+                <v-chip size="small" :color="isRecentRelease(item.release_date) ? 'success' : 'grey-lighten-1'"
+                    :text-color="isRecentRelease(item.release_date) ? 'white' : 'grey-darken-3'" variant="flat"
                     class="font-weight-medium">
                     {{ formatDate(item.release_date) }}
                 </v-chip>
@@ -62,40 +55,29 @@
                     </template>
                 </v-tooltip>
             </template>
-
-            <!-- Custom header content -->
-            <template #header>
-                <div class="d-flex align-center px-4 py-2 bg-primary-lighten-5" v-if="selectedItems.length > 0">
-                    <span class="text-subtitle-1 me-4">{{ selectedItems.length }} items selected</span>
-                    <v-btn size="small" color="error" variant="tonal" @click="bulkDelete">
-                        Delete Selected
-                    </v-btn>
-                    <v-btn size="small" color="primary" variant="tonal" class="ms-2" @click="exportSelected">
-                        Export Selected
-                    </v-btn>
-                </div>
-            </template>
-
-            <!-- Custom footer content -->
-            <template #footer>
-                <div class="d-flex justify-space-between align-center pa-4 bg-grey-lighten-4">
-                    <div class="text-caption text-grey">Last updated: {{ lastUpdated }}</div>
-                    <div class="text-caption">
-                        <v-icon size="x-small" color="primary" class="me-1">mdi-information</v-icon>
-                        Showing {{ serverItems.length }} of {{ totalItems }} movies
-                    </div>
-                </div>
-            </template>
         </data-table-server>
 
         <!-- Trailer Dialog -->
         <v-dialog v-model="trailerDialog" max-width="800">
             <v-card>
-                <v-card-title class="headline">{{ selectedMovie?.title }} - Trailer</v-card-title>
+                <v-card-title class="headline d-flex align-center">
+                    <v-icon class="me-2">mdi-movie</v-icon>
+                    {{ selectedMovie?.title }} - Trailer
+                </v-card-title>
                 <v-card-text>
-                    <div class="trailer-placeholder d-flex align-center justify-center bg-grey-lighten-3"
+                    <div v-if="selectedMovie?.trailer_url" class="trailer-container">
+                        <iframe :src="getYoutubeEmbedUrl(selectedMovie.trailer_url)" width="100%" height="400"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen class="rounded-lg"></iframe>
+                    </div>
+                    <div v-else
+                        class="trailer-placeholder d-flex align-center justify-center bg-grey-lighten-3 rounded-lg"
                         style="height: 400px;">
-                        <v-icon size="64" color="grey">mdi-video</v-icon>
+                        <div class="text-center">
+                            <v-icon size="64" color="grey">mdi-video-off</v-icon>
+                            <p class="mt-4 text-grey">No trailer available for this movie</p>
+                        </div>
                     </div>
                 </v-card-text>
                 <v-card-actions>
@@ -108,7 +90,7 @@
 </template>
 
 <script setup>
-    import { ref, computed, watch, onMounted } from 'vue';
+    import { ref, computed, watch } from 'vue';
     import { __ } from 'matice';
     import { route } from 'ziggy-js';
     import { router, usePage } from '@inertiajs/vue3';
@@ -124,10 +106,8 @@
 
     // State variables
     const loading = ref(false);
-    const selectedItems = ref([]);
     const trailerDialog = ref(false);
     const selectedMovie = ref(null);
-    const searchTerm = ref('');
     const lastUpdated = ref(new Date().toLocaleString());
     const page = ref(1);
     const sortBy = ref([]);
@@ -135,7 +115,7 @@
     // Filter states
     const filterCountry = ref(null);
     const filterYear = ref(null);
-    const filterRecent = ref(false);
+    const filterClassification = ref(null);
 
     // Computed properties
     const serverItems = computed(() => {
@@ -150,12 +130,19 @@
         return props.movies.per_page;
     });
 
-    // Options for filters
+    // Compute countries to only show unique values
     const countryOptions = computed(() => {
         const countries = [...new Set(props.movies.data.map(movie => movie.country))];
         return countries.map(country => ({ title: country, value: country }));
     });
 
+    // Compute classifications to only show unique values
+    const classificationOptions = computed(() => {
+        const classifications = [...new Set(props.movies.data.map(movie => movie.classification))];
+        return classifications.map(classification => ({ title: classification, value: classification }));
+    });
+
+    // Compute classifications to only show unique values
     const yearOptions = computed(() => {
         const years = [...new Set(props.movies.data.map(movie => {
             const date = new Date(movie.release_date);
@@ -189,49 +176,65 @@
         {
             title: 'Country',
             align: 'start',
-            sortable: true,
+            sortable: false,
             key: 'country',
         },
+        {
+            title: 'Classification',
+            align: 'start',
+            sortable: false,
+            key: 'classification',
+        }
     ];
 
-    // Methods
+    /**
+     * Load items from the server
+     *
+     * @param options
+     *
+     * @return void
+     */
     function loadItems(options) {
         loading.value = true;
         page.value = options.page;
         sortBy.value = options.sortBy;
 
-        // Simulate API call
-        setTimeout(() => {
-            router.reload({
-                data: {
-                    page: options.page,
-                    itemsPerPage: options.itemsPerPage,
-                    sort: options.sortBy.length > 0 ? options.sortBy[0].key : null,
-                    direction: options.sortBy.length > 0 ? options.sortBy[0].order : null,
-                    'filter[search]': searchTerm.value,
-                    country: filterCountry.value,
-                    year: filterYear.value,
-                    recent: filterRecent.value ? 1 : 0
-                },
-                preserveState: true,
-                only: ['movies'],
-                onSuccess: () => {
-                    loading.value = false;
-                    lastUpdated.value = new Date().toLocaleString();
-                },
-                onError: () => {
-                    loading.value = false;
-                    notify('Failed to load data', 'error');
-                }
-            });
-        }, 500);
+        let sortKeyWithDirection = options.sortBy.length > 0 ? options.sortBy[0].key : null;
+
+        if (sortKeyWithDirection) {
+            sortKeyWithDirection = options.sortBy[0].order === 'asc' ? sortKeyWithDirection : '-' + sortKeyWithDirection;
+        }
+
+        router.reload({
+            data: {
+                page: options.page,
+                itemsPerPage: options.itemsPerPage,
+                sort: sortKeyWithDirection,
+                'filter[search]': options.search,
+                'filter[country]': filterCountry.value,
+                'filter[year]': filterYear.value,
+                'filter[classification]': filterClassification.value,
+            },
+            preserveState: true,
+            only: ['movies'],
+            onSuccess: () => {
+                loading.value = false;
+                lastUpdated.value = new Date().toLocaleString();
+            },
+            onError: () => {
+                loading.value = false;
+                notify('Failed to load data', 'error');
+            }
+        });
     }
 
-    function handleSearch(value) {
-        searchTerm.value = value;
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value });
-    }
-
+    /**
+     * Format the date to a readable format
+     *
+     * @param dateString
+     *
+     * @return string
+     */
     function formatDate(dateString) {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', {
@@ -254,66 +257,100 @@
     }
 
     function applyFilters() {
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value });
-    }
-
-    function clearFilters() {
-        filterCountry.value = null;
-        filterYear.value = null;
-        filterRecent.value = false;
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: sortBy.value });
-    }
-
-    function bulkDelete() {
-        if (selectedItems.value.length === 0) return;
-
-        const ids = selectedItems.value.map(item => item.id);
-        router.delete(route('dashboard.movies.bulk-destroy'), {
-            data: { ids },
-            onSuccess: () => {
-                selectedItems.value = [];
-                notify('Selected movies deleted successfully');
-            }
+        loadItems({
+            page: 1,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
         });
     }
 
-    function exportSelected() {
-        if (selectedItems.value.length === 0) return;
-
-        const ids = selectedItems.value.map(item => item.id).join(',');
-        window.location.href = route("dashboard.movies.export", { ids });
+    /**
+     * Clear all filters
+     *
+     * @return void
+     */
+    function clearFilters() {
+        filterCountry.value = null;
+        filterClassification.value = null;
+        filterYear.value = null;
+        loadItems({
+            page: 1,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
+        });
     }
 
+    /**
+     * Open the create movie slideover
+     *
+     * @return void
+     */
+    const createCallback = () => {
+        visitModal(route('dashboard.movies.create'));
+    };
+
+    /**
+     * Open the view movie slideover
+     *
+     * @param item
+     *
+     * @return void
+     */
     const viewCallback = (item) => {
-        router.get(route('dashboard.movies.show', {
+        visitModal(route('dashboard.movies.show', {
             movie: item.id,
         }));
     };
 
+    /**
+     * Open the edit movie slideover
+     *
+     * @param item
+     *
+     * @return void
+     */
     const editCallback = (item) => {
         visitModal(route('dashboard.movies.edit', {
             movie: item.id,
         }));
     };
 
+    /**
+     * Show the delete confirmation dialog
+     *
+     * @param item
+     *
+     * @return void
+     */
     const deleteCallback = (item) => {
-        router.delete(route('dashboard.movies.destroy', {
+        visitModal(route('dashboard.movies.delete', {
             movie: item.id,
         }), {
-            onSuccess: () => {
-                notify('Movie deleted successfully');
+            config: {
+                slideover: false
             }
         });
     };
 
-    const createCallback = () => {
-        visitModal(route('dashboard.movies.create'));
-    };
-
+    /**
+     * Open the import movies slideover
+     *
+     * @return void
+     */
     const importCallback = () => {
-        router.get(route('dashboard.movies.import.show'));
+        visitModal(route('dashboard.movies.import.show'), {
+            config: {
+                slideover: false,
+                closeExplicitly: true,
+            }
+        });
     };
 
+    /**
+     * Export movies
+     *
+     * @return void
+     */
     const exportCallback = () => {
         window.location.href = route("dashboard.movies.export");
     };
@@ -355,35 +392,94 @@
         deep: true,
     });
 
-    // Initial load
-    onMounted(() => {
-        loadItems({ page: 1, itemsPerPage: itemsPerPage.value, sortBy: [] });
-    });
+    /**
+     * Convert a YouTube URL to an embed URL
+     *
+     * @param {string} url - The YouTube URL (can be various formats)
+     * @return {string} - The embed URL
+     */
+    function getYoutubeEmbedUrl(url) {
+        if (!url) return '';
+
+        // Extract video ID from different YouTube URL formats
+        let videoId = '';
+
+        // youtube.com/watch?v=VIDEO_ID format
+        if (url.includes('youtube.com/watch')) {
+            const urlParams = new URLSearchParams(new URL(url).search);
+            videoId = urlParams.get('v');
+        }
+        // youtu.be/VIDEO_ID format
+        else if (url.includes('youtu.be')) {
+            videoId = url.split('youtu.be/')[1];
+        }
+        // youtube.com/embed/VIDEO_ID format
+        else if (url.includes('/embed/')) {
+            videoId = url.split('/embed/')[1];
+        }
+
+        // Remove any additional parameters
+        if (videoId && videoId.includes('&')) {
+            videoId = videoId.split('&')[0];
+        }
+
+        if (videoId && videoId.includes('?')) {
+            videoId = videoId.split('?')[0];
+        }
+
+        // Return the embed URL
+        return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
+    }
 </script>
 
 <style scoped>
     .movie-list-container {
-        max-width: 1400px;
-        margin: 0 auto;
+        border-radius: 12px;
+        border-radius: 20px;
     }
 
     .filter-section {
         min-width: 300px;
-        padding: 8px;
+        padding: 16px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
     }
 
     .movie-data-table :deep(.v-data-table__td) {
-        padding-top: 12px !important;
-        padding-bottom: 12px !important;
+        padding-top: 14px !important;
+        padding-bottom: 14px !important;
+        font-size: 14px !important;
     }
 
     /* Custom styling for the data table */
     :deep(.v-data-table-server .v-data-table) {
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        box-shadow: none;
         border-radius: 8px;
+        overflow: hidden;
     }
 
     :deep(.v-data-table__tbody tr:hover) {
-        background-color: rgba(0, 0, 0, 0.02);
+        background-color: rgba(66, 133, 244, 0.05);
+    }
+
+    :deep(.v-data-table__thead th) {
+        background-color: #f5f5f5;
+        font-weight: 600 !important;
+        color: #333 !important;
+        text-transform: none !important;
+        letter-spacing: 0 !important;
+    }
+
+    :deep(.v-data-table__thead tr th:first-child) {
+        border-top-left-radius: 8px;
+    }
+
+    :deep(.v-data-table__thead tr th:last-child) {
+        border-top-right-radius: 8px;
+    }
+
+    :deep(.v-btn) {
+        text-transform: none;
+        letter-spacing: 0;
     }
 </style>
