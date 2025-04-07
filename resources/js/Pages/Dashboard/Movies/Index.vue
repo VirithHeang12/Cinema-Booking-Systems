@@ -429,11 +429,9 @@
 
 <style scoped>
     .movie-list-container {
-        width: 100%;
-        padding: 24px;
-        background-color: white;
+        padding-top: 24px;
         border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-radius: 20px;
     }
 
     .filter-section {

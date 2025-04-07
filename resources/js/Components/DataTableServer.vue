@@ -6,7 +6,7 @@
             :class="tableClasses" :footer-props="footerProps" :item-class="itemClass" v-model:page="page"
             v-model:sort-by="sortBy" :show-select="showSelect" :single-select="singleSelect">
             <template v-slot:top>
-                <v-toolbar flat :color="toolbarColor" class="data-table-toolbar">
+                <v-toolbar style="border-radius: 20px;" flat :color="toolbarColor" class="data-table-toolbar">
                     <v-toolbar-title :class="['fw-semibold', titleClass]">{{ title }}</v-toolbar-title>
 
                     <v-spacer></v-spacer>
