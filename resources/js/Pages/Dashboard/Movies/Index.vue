@@ -325,7 +325,11 @@
     const deleteCallback = (item) => {
         visitModal(route('dashboard.movies.delete', {
             movie: item.id,
-        }));
+        }), {
+            config: {
+                slideover: false
+            }
+        });
     };
 
     /**
