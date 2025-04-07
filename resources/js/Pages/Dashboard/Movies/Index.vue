@@ -338,7 +338,12 @@
      * @return void
      */
     const importCallback = () => {
-        visitModal(route('dashboard.movies.import.show'));
+        visitModal(route('dashboard.movies.import.show'), {
+            config: {
+                slideover: false,
+                closeExplicitly: true,
+            }
+        });
     };
 
     /**
@@ -429,7 +434,6 @@
 
 <style scoped>
     .movie-list-container {
-        padding-top: 24px;
         border-radius: 12px;
         border-radius: 20px;
     }
