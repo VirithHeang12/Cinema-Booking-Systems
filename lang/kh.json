@@ -83,5 +83,13 @@
     "Genre name must not exceed 50 characters.": "ឈ្មោះប្រភេទភាពយន្ដមិនអាចលើលពី ៥០តួអក្សរទេ",
     "Create Genre": "បង្កើតប្រភេទភាពយន្ដ",
     "Edit Genre": "កែប្រែប្រភេទភាពយន្ដ",
-    "Are you want to delete this genre?": "តើអ្នកចង់លុបប្រភេទភាពយន្ដនេះឬទេ?"
+    "Are you want to delete this genre?": "តើអ្នកចង់លុបប្រភេទភាពយន្ដនេះឬទេ?",
+    "Tickets": "សំបុត្រ",
+    "Search Movies": "ស្វែងរកភាពយន្ដ",
+    "No movies found" : "មិនមានភាពយន្ដណាមួយទេ",
+    "Search": "ស្វែងរក",
+    "Cinemas": "រោងភាពយន្ដ",
+    "Promotions": "ការបញ្ចុះតម្លៃ",
+    "F&B": "អាហារនិងភេសជ្ជៈ",
+    "Profile": "គណនី"
 }

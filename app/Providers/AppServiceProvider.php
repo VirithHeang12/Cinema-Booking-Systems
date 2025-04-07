@@ -54,6 +54,7 @@ class AppServiceProvider extends ServiceProvider
                 $languages[$localeCode] = [
                     'path'      => LaravelLocalization::getLocalizedURL($localeCode, null, [], true),
                     'native'    => $properties['native'],
+                    'code'      => strtoupper($localeCode), 
                     'active'    => LaravelLocalization::getCurrentLocale() == $localeCode,
                 ];
 
