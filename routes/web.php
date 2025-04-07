@@ -9,9 +9,9 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
 Route::middleware(['throttle:global'])->group(function () {
-    Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ])->group(function() {
-        require_once __DIR__.'/dashboard.php';
-        require_once __DIR__.'/auth.php';
+    Route::prefix(LaravelLocalization::setLocale())->middleware(['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'])->group(function () {
+        require_once __DIR__ . '/dashboard.php';
+        require_once __DIR__ . '/auth.php';
 
         Route::get('/', function () {
             $perPage = request()->query('itemsPerPage', 5);
@@ -46,23 +46,15 @@ Route::middleware(['throttle:global'])->group(function () {
             return Inertia::render('Promotion', ['title' => 'Promotion']);
         })->name('promotions');
 
-    Route::get('/privacy', function () {
-        return Inertia::render('Privacy', ['title' => 'Privacy & Policy']);
-    })->name('privacy');
-    Route::get('/terms', function () {
-        return Inertia::render('Terms', ['title' => 'Terms & Conditions']);
-    })->name('terms');
-
-    Route::get('/checkout', function () {
-        return Inertia::render('Checkout', ['title' => 'Ticket Checkout']);
-    })->name('checkout');
-});
-
         Route::get('/privacy', function () {
             return Inertia::render('Privacy', ['title' => 'Privacy & Policy']);
         })->name('privacy');
         Route::get('/terms', function () {
             return Inertia::render('Terms', ['title' => 'Terms & Conditions']);
         })->name('terms');
+
+        Route::get('/checkout', function () {
+            return Inertia::render('Checkout', ['title' => 'Ticket Checkout']);
+        })->name('checkout');
     });
 });
