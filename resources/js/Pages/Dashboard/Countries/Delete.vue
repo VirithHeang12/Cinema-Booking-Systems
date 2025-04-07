@@ -3,6 +3,10 @@
 
         <form @submit.prevent="submitForm()">
             <div class="text-center">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close shadow-none" aria-label="Close" @click="close"></button>
+                </div>
+
                 <div class="d-flex justify-content-center">
                     <svg width="70px" height="70px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -21,7 +25,7 @@
                         </g>
                     </svg>
                 </div>
-                <p class="my-4 text-gray-600 text-[18px]">{{ __('Are you sure you want to delete this country?') }}</p>
+                <p class="my-5 text-gray-600 text-[18px]">{{ __('Are you sure you want to delete this country?') }}</p>
                 <div class="d-flex justify-content-end gap-3">
                     <button type="button" @click="close" class="btn btn-secondary text-white">
                         {{ __('Cancel') }}
@@ -37,17 +41,17 @@
 
 
 <script setup>
-    import { defineProps } from 'vue';
-    import { router } from '@inertiajs/vue3';
+import { defineProps } from 'vue';
+import { router } from '@inertiajs/vue3';
 
-    const props = defineProps({
-        country: {
-            type: Object,
-            required: true,
-        }
-    });
-
-    const submitForm = () => {
-        router.delete(route('dashboard.countries.destroy', props.country.id));
+const props = defineProps({
+    country: {
+        type: Object,
+        required: true,
     }
+});
+
+const submitForm = () => {
+    router.delete(route('dashboard.countries.destroy', props.country.id));
+}
 </script>

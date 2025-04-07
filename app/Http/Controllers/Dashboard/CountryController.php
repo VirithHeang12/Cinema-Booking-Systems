@@ -14,6 +14,9 @@ use App\Http\Requests\Countries\SaveRequest;
 use App\Http\Requests\Countries\UpdateRequest;
 use InertiaUI\Modal\Modal;
 use Illuminate\Support\Facades\Gate;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
+use App\Http\Resources\Api\CountryResource;
 
 class CountryController extends Controller
 {
@@ -27,12 +30,24 @@ class CountryController extends Controller
         Gate::authorize('viewAny', Country::class);
 
         $perPage = request()->query('itemsPerPage', 5);
-        $countries = Country::paginate($perPage)->appends(request()->query());
+
+        $countriesQuery = QueryBuilder::for(Country::class)
+            ->allowedFilters([
+                AllowedFilter::callback('search', function ($query, $value) {
+                    $query->where('name', 'like', "%{$value}%");
+                }),
+            ])
+            ->allowedSorts('name');
+
+        $countries = $countriesQuery->paginate($perPage)->appends(request()->query());
+
+        $countries = CountryResource::collection($countries)->response()->getData(true);
 
         return Inertia::render('Dashboard/Countries/Index', [
             'countries' => $countries,
         ]);
     }
+
 
     /**
      * Show the form for creating a new Country.
@@ -172,11 +187,12 @@ class CountryController extends Controller
      * Show Import countries form.
      * @return Modal
      */
-    public function showImport(){
+    public function showImport()
+    {
         return Inertia::modal('Dashboard/Countries/Import')->baseRoute('dashboard.countries.index');
     }
 
-     /**
+    /**
      * Import countries from excel file.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -205,7 +221,7 @@ class CountryController extends Controller
 
     public function export()
     {
-        Gate::authorize('import', arguments: Country::class);
+        Gate::authorize('export', Country::class);
         return Excel::download(new CountriesExport, 'countries.xlsx');
     }
 }
