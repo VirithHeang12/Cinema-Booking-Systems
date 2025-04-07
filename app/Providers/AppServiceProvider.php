@@ -3,13 +3,14 @@
 namespace App\Providers;
 
 use App\Enums\RoleEnum;
-use App\Models\Language;
 use App\Models\User;
-use App\Policies\LanguagePolicy;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -37,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureModels();
         $this->configureVite();
         $this->configureGates();
+        $this->configureRateLimiting();
     }
 
     /**
@@ -54,7 +56,7 @@ class AppServiceProvider extends ServiceProvider
                 $languages[$localeCode] = [
                     'path'      => LaravelLocalization::getLocalizedURL($localeCode, null, [], true),
                     'native'    => $properties['native'],
-                    'code'      => strtoupper($localeCode), 
+                    'code'      => strtoupper($localeCode),
                     'active'    => LaravelLocalization::getCurrentLocale() == $localeCode,
                 ];
 
@@ -113,6 +115,20 @@ class AppServiceProvider extends ServiceProvider
             }
 
             return null;
+        });
+    }
+
+    /**
+     * Configure rate limiting
+     *
+     * @return void
+     */
+    private function configureRateLimiting(): void
+    {
+        RateLimiter::for('global', function (Request $request) {
+            return $request->user()->hasRole(RoleEnum::ADMIN)
+                ? Limit::none()
+                : Limit::perMinute(100)->by($request->ip());
         });
     }
 }
