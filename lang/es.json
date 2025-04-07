@@ -80,6 +80,14 @@
     "Genre name must not exceed 50 characters.": "El nombre del género no debe exceder los 50 caracteres.",
     "Create Genre": "Crear Género",
     "Edit Genre": "Editar Género",
-    "Are you sure you want to delete this genre?": "¿Estás seguro de que deseas eliminar este género?"
+    "Are you sure you want to delete this genre?": "¿Estás seguro de que deseas eliminar este género?",
+    "Tickets": "Entradas",
+    "Search Movies": "Buscar películas",
+    "No movies found" : "No se encontraron películas",
+    "Search": "Buscar",
+    "Cinemas": "Cines",
+    "Promotions": "Promociones",
+    "F&B": "F&B",
+    "Profile": "Perfil"
 
 }
