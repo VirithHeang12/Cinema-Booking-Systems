@@ -47,6 +47,7 @@ import FlagIcon from 'vue-flag-icon'
 import DashboardLayout from './Layouts/DashboardLayout.vue';
 import { Field, Form } from 'vee-validate';
 import DataTableServer from './Components/DataTableServer.vue';
+import ImageUpload from './Components/ImageUpload.vue';
 
 const vuetify = createVuetify({
     components,
@@ -57,14 +58,14 @@ putConfig({
     type: 'slideover',
     navigate: true,
     modal: {
-        closeButton: true,
+        closeButton: false,
         closeExplicitly: false,
         maxWidth: 'xl',
         panelClasses: 'bg-white rounded',
         position: 'center',
     },
     slideover: {
-        closeButton: true,
+        closeButton: false,
         closeExplicitly: true,
         maxWidth: 'xl',
         paddingClasses: 'p-4 sm:p-6',
@@ -84,6 +85,8 @@ createInertiaApp({
         }
         if (name.includes('Dashboard')) {
             page.default.layout = DashboardLayout
+        } else if (name.includes('Auth')) {
+            page.default.layout = null
         } else {
             page.default.layout = page.default.layout || DefaultLayout
         }
@@ -125,10 +128,12 @@ createInertiaApp({
         app.component('Modal', Modal);
         app.component('DataTable', DataTable);
         app.component('DataTableServer', DataTableServer);
+        app.component('ImageUpload', ImageUpload);
         app.component("vee-form", Form);
         app.component("vee-field", Field);
         app.component('vue-multiselect', VueMultiselect);
         app.component('apexchart', VueApexCharts);
+
 
         app.mount(el)
     },

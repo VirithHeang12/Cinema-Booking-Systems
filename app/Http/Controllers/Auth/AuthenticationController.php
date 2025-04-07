@@ -79,17 +79,39 @@ class AuthenticationController extends Controller
      */
     public function storeLogin(LoginRequest $request): RedirectResponse
     {
-        $data = $request->validated();
+        try {
+            // Check if the user is already authenticated first
+            if (Auth::check()) {
+                return redirect()->route('index')->with('success', 'You are already logged in');
+            }
 
-        if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $data['remember'] ?? false)) {
-            $request->session()->regenerate();
+            $data = $request->validated();
 
-            return redirect()->route('index')->with('success', 'You are logged in');
+            // Determine login method (email or phone)
+            if (!empty($data['phone_number'])) {
+                $credentials = [
+                    'phone_number' => $data['phone_number'],
+                    'password' => $data['password'],
+                ];
+            } else {
+                $credentials = [
+                    'email'         => $data['email'],
+                    'password'      => $data['password'],
+                ];
+            }
+
+            // Attempt to authenticate
+            if (Auth::attempt($credentials, $request->boolean('remember', false))) {
+                $request->session()->regenerate();
+                return redirect()->intended('/')->with('success', 'Login successful');
+            }
+
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])->withInput();
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
         }
-
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->withInput();
     }
 
     /**
