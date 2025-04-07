@@ -3,9 +3,7 @@
         <div class="movie-form-container">
             <div class="form-header">
                 <h2 class="form-title">Create Movie</h2>
-                <v-btn icon class="close-btn" @click="close">
-                    <v-icon>mdi-close</v-icon>
-                </v-btn>
+                <button type="button" class="btn-close shadow-none " aria-label="Close" @click="close"></button>
             </div>
 
             <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
