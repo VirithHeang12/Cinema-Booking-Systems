@@ -4,41 +4,76 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Exports\ScreenTypesExport;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ScreenType\SaveRequest;
+use App\Http\Requests\ScreenType\UpdateRequest;
+use App\Http\Resources\Api\ScreenTypeResource;
 use App\Imports\ScreenTypeImport;
 use App\Models\ScreenType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use InertiaUI\Modal\Modal;
 use Maatwebsite\Excel\Facades\Excel;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ScreenTypeController extends Controller
 {
-    //
-    public function index()
+
+    /**
+     * Display a listing of the screen type.
+     *
+     * @return \Inertia\Response
+     *
+     */
+    public function index(): \Inertia\Response
     {
 
-         // $screenTypes = ScreenType::all();
-        $perPage = request()->query('itemsPerPage', 5);
-        $screenTypes = ScreenType::paginate($perPage)->appends(request()->query());
+        $perPage = request()->query('itemsPerPage', 10);
+
+        $screenTypes = QueryBuilder::for(ScreenType::class)
+            ->allowedFilters([AllowedFilter::callback('search', function ($query, $value) {
+                $query->where('name', 'like', "%{$value}%");
+             })])
+            ->allowedSorts('name')
+            ->paginate($perPage)
+            ->appends(request()->query());
+
+        $screenTypes = ScreenTypeResource::collection($screenTypes)->response()->getData(true);
 
         return Inertia::render('Dashboard/ScreenTypes/Index', [
-            'screenTypes'     => $screenTypes,
+            'screen_types' => $screenTypes,
         ]);
     }
 
-    public function create()
+    /**
+     * Show the form for creating a new screen type.
+     *
+     * @return \Inertia\Response
+     */
+
+    public function create(): Modal
     {
-        return Inertia::render('Dashboard/ScreenTypes/Create');
+        return Inertia::modal('Dashboard/ScreenTypes/Create')->baseRoute('dashboard.screen_types.index');
     }
 
-    public function store(Request $request)
+    /**
+     * Store a newly created screen type in storage.
+     *
+     * @param  \App\Http\Requests\ScreenType\SaveRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+
+    public function store(SaveRequest $request)
     {
         DB::beginTransaction();
 
+        $request->validated();
+
         try{
             ScreenType::create([
-                'name' => $request->name,
-                'description' => $request->description,
+                'name' => $request['name'],
+                'description' => $request['description'],
             ]);
 
             DB::commit();
@@ -51,28 +86,45 @@ class ScreenTypeController extends Controller
         }
     }
 
-    public function show(ScreenType $screen_type)
-    {
-        return Inertia::render('Dashboard/ScreenTypes/Show', [
-            'screen_type' => $screen_type,
-        ]);
-    }
+    /**
+     * Display the specified screen type.
+     *
+     * @param  \App\Models\ScreenType  $screen_type
+     * @return \Inertia\Response
+     */
 
-    public function edit(ScreenType $screen_type){
-        return Inertia::render('Dashboard/ScreenTypes/Edit', [
+    public function show(ScreenType $screen_type): Modal
+    {
+        return Inertia::modal('Dashboard/ScreenTypes/Show', [
             'screen_type'      => $screen_type,
         ]);
     }
 
-    public function update(Request $request, ScreenType $screen_type): \Illuminate\Http\RedirectResponse
+    /**
+     * Show the form for editing the specified screen type.
+     *
+     * @param  \App\Models\ScreenType  $screen_type
+     * @return \Inertia\Response
+     */
+
+    public function edit(ScreenType $screen_type): Modal
+    {
+        return Inertia::modal('Dashboard/ScreenTypes/Edit', [
+            'screen_type'      => $screen_type,
+        ])->baseRoute('dashboard.screen_types.index');
+    }
+
+    public function update(UpdateRequest $request, ScreenType $screen_type): \Illuminate\Http\RedirectResponse
     {
         DB::beginTransaction();
+
+        $request->validated();
 
         try {
 
             $screen_type->update([
-                'name' => $request->name,
-                'description' => $request->description,
+                'name' => $request['name'],
+                'description' => $request['description'],
             ]);
 
             DB::commit();
@@ -85,11 +137,12 @@ class ScreenTypeController extends Controller
         }
     }
 
-    public function delete(ScreenType $screen_type): \inertia\response{
+    public function delete(ScreenType $screen_type): Modal
+    {
 
-        return Inertia::render('Dashboard/ScreenTypes/Delete', [
-            'screen_type'      => $screen_type,
-        ]);
+        return Inertia::modal('Dashboard/ScreenTypes/Delete', [
+            'screen_type' => $screen_type,
+        ])->baseRoute('dashboard.screen_types.index');
     }
 
     public function destroy(ScreenType $screen_type): \Illuminate\Http\RedirectResponse
