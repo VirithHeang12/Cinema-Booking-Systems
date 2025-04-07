@@ -49,5 +49,9 @@ Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedi
     Route::get('/terms', function () {
         return Inertia::render('Terms', ['title' => 'Terms & Conditions']);
     })->name('terms');
+
+    Route::get('/checkout', function () {
+        return Inertia::render('Checkout', ['title' => 'Ticket Checkout']);
+    })->name('checkout');
 });
 
