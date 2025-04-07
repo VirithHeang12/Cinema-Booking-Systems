@@ -408,4 +408,6 @@ class MovieController extends Controller
 
         return Excel::download(new MoviesExport, 'movies.xlsx');
     }
+
 }
+
