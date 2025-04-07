@@ -325,7 +325,11 @@
     const deleteCallback = (item) => {
         visitModal(route('dashboard.movies.delete', {
             movie: item.id,
-        }));
+        }), {
+            config: {
+                slideover: false
+            }
+        });
     };
 
     /**
@@ -334,7 +338,12 @@
      * @return void
      */
     const importCallback = () => {
-        visitModal(route('dashboard.movies.import.show'));
+        visitModal(route('dashboard.movies.import.show'), {
+            config: {
+                slideover: false,
+                closeExplicitly: true,
+            }
+        });
     };
 
     /**
@@ -425,11 +434,8 @@
 
 <style scoped>
     .movie-list-container {
-        width: 100%;
-        padding: 24px;
-        background-color: white;
         border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-radius: 20px;
     }
 
     .filter-section {
