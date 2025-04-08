@@ -41,7 +41,7 @@
 </script>
 
 <style scoped>
-    .form-content {
+    /* .form-content {
         padding: 0 24px;
         max-height: 70vh;
         overflow-y: auto;
@@ -55,7 +55,7 @@
     .form-content::-webkit-scrollbar-thumb {
         background-color: rgba(0, 0, 0, 0.2);
         border-radius: 3px;
-    }
+    } */
 
     .form-section {
         padding-top: 10px;

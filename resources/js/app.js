@@ -55,24 +55,25 @@ const vuetify = createVuetify({
 })
 
 putConfig({
-    type: 'slideover',
+    type: "slideover",
     navigate: true,
     modal: {
         closeButton: false,
         closeExplicitly: false,
-        maxWidth: 'xl',
-        panelClasses: 'bg-white rounded',
-        position: 'center',
+        maxWidth: "xl",
+        panelClasses: "bg-white rounded-lg",
+        paddingClasses: "p-2",
+        position: "center",
     },
     slideover: {
         closeButton: false,
         closeExplicitly: true,
-        maxWidth: 'xl',
-        paddingClasses: 'p-4 sm:p-6',
-        panelClasses: 'bg-white min-h-screen',
-        position: 'right',
+        maxWidth: "xl",
+        paddingClasses: "p-0",
+        panelClasses: "bg-white",
+        position: "right",
     },
-})
+});
 
 
 createInertiaApp({
