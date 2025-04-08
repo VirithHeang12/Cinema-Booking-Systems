@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Languages\SaveRequest;
 use App\Http\Requests\Languages\UpdateRequest;
+use App\Imports\LanguagesImport;
 use App\Models\Language;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use InertiaUI\Modal\Modal;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class LanguageController extends Controller
 {
@@ -25,6 +29,7 @@ class LanguageController extends Controller
         $perPage = request()->query('itemsPerPage', 5);
 
         $languages = Language::paginate($perPage)->appends(request()->query());
+
 
         return Inertia::render('Dashboard/Languages/Index', [
             'languages'     => $languages
@@ -181,6 +186,40 @@ class LanguageController extends Controller
             DB::rollBack();
 
             return redirect()->route('dashboard.languages.index')->with('error', __('Language not deleted.'));
+        }
+    }
+    /**
+     * Show the form for importing languages.
+     *
+     * @return \Inertia\Response
+     */
+  public function showImport():Modal{
+    
+
+    Gate::authorize('import', Language::class);
+
+    return Inertia::modal('Dashboard/Languages/Import')->baseRoute('dashboard.languages.index');
+  }
+
+    /**
+     * Import languages from an Excel file.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function import(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        Gate::authorize('import', Language::class);
+
+        DB::beginTransaction();
+
+        try {
+            Excel::import(new LanguagesImport, $request->file('file'));
+            DB::commit();
+
+            return redirect()->route('dashboard.languages.index')->with('success', 'Language imported.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('dashboard.languages.index')->with('error', $e->getMessage());
         }
     }
 }

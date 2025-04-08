@@ -1,9 +1,50 @@
-<template>
+<!-- <template>
     <data-table-server :showNo="true" :title="__('Languages')" :serverItems="serverItems" :items-length="totalItems"
         :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
         @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true" @view="viewCallback"
         @delete="deleteCallback" @edit="editCallback" @create="createCallback" @import="importCallback"
         @export="exportCallback" />
+</template> -->
+
+<template>
+    <div class="Language-list-container">
+        <!-- Main table component -->
+        <data-table-server
+            :showNo="true"
+            title="Languages"
+            createButtonText="New Language"
+            :serverItems="serverItems"
+            :items-length="totalItems"
+            :headers="headers"
+            :loading="loading"
+            :itemsPerPage="itemsPerPage"
+            item-value="id"
+            @update:options="loadItems"
+            @view="viewCallback"
+            @edit="editCallback"
+            @delete="deleteCallback"
+            @create="createCallback"
+            @import="importCallback"
+            @export="exportCallback"
+            emptyStateText="No Language found in the database"
+            :emptyStateAction="true"
+            emptyStateActionText="Add First Language"
+            @empty-action="createCallback"
+            buttonVariant="outlined"
+            viewTooltip="View Language Details"
+            editTooltip="Edit Language Information"
+            deleteTooltip="Delete this Language"
+            titleClass="text-2xl font-bold text-primary mb-4"
+            @filter-apply="applyFilters"
+            @filter-clear="clearFilters"
+            tableClasses="languge-data-table elevation-2 rounded-lg"
+            iconSize="small"
+            deleteConfirmText="Are you sure you want to delete this language? This action cannot be undone."
+            toolbarColor="white"
+            :showSelect="false"
+        >
+        </data-table-server>
+    </div>
 </template>
 
 <script setup>
@@ -74,6 +115,29 @@
         });
     }
 
+    function applyFilters() {
+        loadItems({
+            page: 1,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
+        });
+    }
+
+    /**
+     * Clear all filters
+     *
+     * @return void
+     */
+    function clearFilters() {
+        filterCountry.value = null;
+        filterClassification.value = null;
+        filterYear.value = null;
+        loadItems({
+            page: 1,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
+        });
+    }
     const viewCallback = (item) => {
         visitModal(
             route("dashboard.languages.show", {
@@ -94,7 +158,16 @@
         visitModal(
             route("dashboard.languages.delete", {
                 language: item.id,
-            })
+            }),{
+                config: {
+                    slideover: false,
+                    position: 'center',
+                    closeExplicitly: true,
+                    maxWidth: 'xl',
+                    paddingClasses: 'p-4 sm:p-6',
+                    panelClasses: 'bg-white rounded-[12px]',
+                },
+            }
         );
     };
 
@@ -103,7 +176,16 @@
     };
 
     const importCallback = () => {
-        visitModal(route("dashboard.languages.import.show"));
+        visitModal(route("dashboard.languages.import.show"),{
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: 'xl',
+                paddingClasses: 'p-4 sm:p-6',
+                panelClasses: 'bg-white rounded-[12px]',
+            },
+        });
     };
 
     const exportCallback = () => {
