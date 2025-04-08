@@ -1,68 +1,77 @@
 <template>
     <Modal v-slot="{ close }">
-        <div class="container mt-5 d-flex flex-column align-items-center">
-            <h1 class="fw-semibold mb-5 text-zinc-800">{{ __('Create HallType') }}</h1>
-            <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
-                class="col-12">
-                <v-row dense>
-                    <v-col :cols="12">
-                        <vee-field name="name" v-slot="{ field, errors }">
-                            <v-text-field v-bind="field" v-model="form.name" :label="__('Name')" variant="outlined"
-                                :error-messages="errors"></v-text-field>
-                        </vee-field>
-                    </v-col>
-                    <v-col :cols="12">
-                        <vee-field name="description" v-slot="{ field, errors }">
-                            <v-textarea v-bind="field" v-model="form.description" :label="__('Description')" variant="outlined"
-                                :error-messages="errors"></v-textarea>
-                        </vee-field>
-                    </v-col>
-                </v-row>
+        <div class="hall-type-form-center">
+            <div class="form-header">
+                <h2 class="form-title">Create HallType</h2>
+                <v-btn icon class="close-btn" @click="close">
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </div>
 
-                <v-row dense>
-                    <v-col :cols="12">
-                        <v-btn color="primary" class="mt-4 d-inline-flex justify-content-start "
-                            :disabled="!meta.valid || form.processing" @click.prevent="submitForm(setErrors, close)">
-                            <span v-if="form.processing" class="spinner-border spinner-border-sm me-2" role="status"
-                                aria-hidden="true"></span>
-                                {{ __("Submit") }}
-                        </v-btn>
-                    </v-col>
-                </v-row>
+            <vee-form
+                :validation-schema="schema"
+                @submit.prevent="submitForm"
+                v-slot="{ meta, setErrors }"
+            >
+                <hall-type-form :form="form" />
+                <div class="form-actions">
+                    <v-btn
+                        color="primary"
+                        :disabled="!meta.valid || form.processing"
+                        :loading="form.processing"
+                        @click.prevent="submitForm(setErrors, close)"
+                        size="large"
+                        block
+                    >
+                        <v-icon class="me-2">mdi-check</v-icon>
+                        Submit
+                    </v-btn>
+                </div>
             </vee-form>
         </div>
     </Modal>
 </template>
 
 <script setup>
-    import { useForm} from "@inertiajs/vue3";
-    import { markRaw} from "vue";
-    import * as yup from "yup";
+    import { useForm } from "@inertiajs/vue3";
     import { __ } from "matice";
+    import * as yup from "yup";
+    import HallTypeForm from "../../../Forms/HallTypeForm.vue";
 
-    const schema = markRaw(
-        yup.object({
-            name: yup
-                .string()
-                .required(__("HallType name is required."))
-                .max(50, __("HallType name must not exceed 50 characters."))
-        })
-    );
-
-    const form = useForm({
-        name: '',
-        description: '',
+    const schema = yup.object().shape({
+        name: yup
+            .string()
+            .required(__('HallType name is required.'))
+            .max(50, __('HallType name must not exceed 50 characters.')),
+        description: yup.string().nullable(),
     });
 
+    const form = useForm({
+        name: "",
+        description: "",
+    });
+
+    /**
+     * Submit the form
+     *
+     * @param setErrors
+     * @param close
+     *
+     * @returns void
+     */
     const submitForm = (setErrors, close) => {
-        form.post(route('dashboard.hall_types.store'), {
+        // Always use FormData since we may have a file
+        form.post(route("dashboard.hall_types.store"), {
             preserveState: true,
+            preserveScroll: true,
+            forceFormData: true,
+            onSuccess: () => {
+                form.reset();
+                close();
+            },
             onError: (errors) => {
                 setErrors(errors);
             },
-            onSuccess: () => {
-                close();
-            },
         });
-    }
+    };
 </script>
