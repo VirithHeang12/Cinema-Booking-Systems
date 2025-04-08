@@ -1,11 +1,9 @@
 <template>
     <Modal v-slot="{ close }">
-        <div class="movie-form-container">
-            <div class="form-header">
+        <div class="form-container">
+            <div class="form-header !mb-3">
                 <h2 class="form-title">Edit Movie</h2>
-                <v-btn icon class="close-btn" @click="close">
-                    <v-icon>mdi-close</v-icon>
-                </v-btn>
+                <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close" @click="close"></button>
             </div>
 
             <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
@@ -137,99 +135,3 @@
         );
     };
 </script>
-
-<style>
-
-    /* Modal Styling */
-    .movie-form-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 0;
-        background-color: #fff;
-        border-radius: 8px;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .form-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 24px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-        flex-shrink: 0;
-        /* Prevent header from shrinking */
-    }
-
-    .form-title {
-        font-size: 24px;
-        font-weight: 500;
-        color: #1867c0;
-        margin: 0;
-    }
-
-    .close-btn {
-        margin-right: -8px;
-    }
-
-    .form-wrapper {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        height: 100%;
-    }
-
-    .form-body {
-        padding: 16px 24px;
-        flex: 1;
-        /* Fill available space */
-        overflow-y: auto;
-        scrollbar-width: thin;
-    }
-
-    .form-body::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .form-body::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.2);
-        border-radius: 3px;
-    }
-
-    .form-actions {
-        padding: 16px 24px;
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-        flex-shrink: 0;
-        /* Prevent footer from shrinking */
-    }
-
-    /* InertiaModal Overrides */
-    .im-modal-content {
-        max-width: 800px !important;
-        padding: 0 !important;
-        border-radius: 8px !important;
-        overflow: hidden !important;
-        max-height: 95vh !important;
-        /* Limit height to 95% of viewport */
-        display: flex !important;
-        flex-direction: column !important;
-    }
-
-    .im-slideover-content {
-        border-radius: 8px !important;
-        padding: 0 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        max-height: 100vh !important;
-        height: auto !important;
-        /* Set height to auto */
-    }
-
-    /* Mobile Responsiveness */
-    @media (max-width: 768px) {
-        .movie-form-container {
-            max-width: 100%;
-        }
-    }
-</style>
