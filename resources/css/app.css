@@ -203,7 +203,7 @@
 }
 .form-content {
     flex-grow: 1;
-    max-height: 79vh;
+    max-height: 75vh;
     padding: 10px 24px 10px 24px!important;
     overflow-y: auto;
 }
