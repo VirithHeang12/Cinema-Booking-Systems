@@ -1,11 +1,3 @@
-<!-- <template>
-    <data-table-server :showNo="true" :title="__('Languages')" :serverItems="serverItems" :items-length="totalItems"
-        :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
-        @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true" @view="viewCallback"
-        @delete="deleteCallback" @edit="editCallback" @create="createCallback" @import="importCallback"
-        @export="exportCallback" />
-</template> -->
-
 <template>
     <div class="Language-list-container">
         <!-- Main table component -->
@@ -55,6 +47,8 @@
     import { __ } from 'matice';
     import { toast } from 'vue3-toastify';
 
+    const sortBy = ref([])
+const lastUpdated = ref(new Date().toLocaleString());
     const props = defineProps({
         languages: {
             type: Object,
@@ -106,14 +100,37 @@
      *
      * @return {void}
      */
-    function loadItems({ page, itemsPerPage }) {
-        router.reload({
-            data: {
-                page,
-                itemsPerPage,
-            },
-        });
+
+function loadItems(options) {
+    loading.value = true;
+    page.value = options.page;
+    sortBy.value = options.sortBy;
+
+    let sortKeyWithDirection = options.sortBy.length > 0 ? options.sortBy[0].key : null;
+
+    if (sortKeyWithDirection) {
+        sortKeyWithDirection = options.sortBy[0].order === 'asc' ? sortKeyWithDirection : '-' + sortKeyWithDirection;
     }
+
+    router.reload({
+        data: {
+            page: options.page,
+            itemsPerPage: options.itemsPerPage,
+            sort: sortKeyWithDirection,
+            'filter[search]': options.search,
+        },
+        preserveState: true,
+        only: ['languages'],
+        onSuccess: () => {
+            loading.value = false;
+            lastUpdated.value = new Date().toLocaleString();
+        },
+        onError: () => {
+            loading.value = false;
+            notify('Failed to load data', 'error');
+        }
+    });
+}
 
     function applyFilters() {
         loadItems({

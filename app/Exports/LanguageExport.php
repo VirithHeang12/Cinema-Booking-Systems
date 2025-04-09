@@ -2,27 +2,25 @@
 
 namespace App\Exports;
 
-use App\Models\Movie;
-use App\Models\ScreenType;
+use App\Models\Language;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ScreenTypesExport implements FromView, WithStyles, ShouldAutoSize, WithTitle
+class LanguageExport implements FromView, WithStyles, ShouldAutoSize, WithTitle
 {
     private $data;
 
     public function __construct()
     {
-       $screenTypes = ScreenType::all();
+        $languages = Language::all();
 
         $this->data = [
-            'screenTypes'        => $screenTypes,
+            'languages' => $languages,
         ];
     }
 
@@ -33,8 +31,8 @@ class ScreenTypesExport implements FromView, WithStyles, ShouldAutoSize, WithTit
      */
     public function view(): View
     {
-        return view('exports.screen_type', [
-            'screenTypes'        => $this->data['screenTypes'],
+        return view('exports.language', [
+            'languages'        => $this->data['languages'],
         ]);
     }
 
@@ -45,7 +43,7 @@ class ScreenTypesExport implements FromView, WithStyles, ShouldAutoSize, WithTit
      */
     public function title(): string
     {
-        return 'ប្រភេទអេក្រង់';
+        return 'ភាសា';
     }
 
 
@@ -62,12 +60,10 @@ class ScreenTypesExport implements FromView, WithStyles, ShouldAutoSize, WithTit
         $fontSecondary      = 'Khmer OS Muol';
         $fontTertiary       = 'Khmer OS Siemreap';
 
-
-
         $lastColumn         = $sheet->getHighestColumn();
 
         /// last row
-        $lastRow            = count($this->data['screenTypes']) + 4;
+        $lastRow            = count($this->data['languages']) + 4;
 
         // Define the array to store cell styles
         $styles = [
@@ -142,4 +138,3 @@ class ScreenTypesExport implements FromView, WithStyles, ShouldAutoSize, WithTit
         }
     }
 }
-
