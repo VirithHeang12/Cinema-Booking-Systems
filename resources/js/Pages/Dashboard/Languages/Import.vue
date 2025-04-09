@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="form-container">
             <div class="form-header">
-               <h2 class="form-title">Import HallType</h2>
+               <h2 class="form-title">Import Movies</h2>
                <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close" @click="close"></button>
            </div>
 
@@ -38,7 +38,7 @@
 
 <script setup>
     import { useForm } from '@inertiajs/vue3';
-    import { watch } from 'vue';
+    import { ref, computed, watch } from 'vue';
     import { __ } from 'matice';
     import * as yup from 'yup';
 
@@ -89,7 +89,7 @@
     const submitForm = (close) => {
         // Set the file from the file input
         if (form.file) {
-            form.post(route('dashboard.hall_types.import'), {
+            form.post(route('dashboard.languages.import'), {
                 preserveState: true,
                 preserveScroll: true,
                 forceFormData: true,
