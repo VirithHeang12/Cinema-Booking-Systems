@@ -24,7 +24,7 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
 
     Route::get('languages/import', [LanguageController::class, 'showImport'])->name('languages.import.show');
     Route::post('languages/import', [LanguageController::class, 'import'])->name('languages.import');
-    Route::get('languages/export', [LanguageController::class, 'export'])->name('languages.export')->withoutMiddleware(['web']);
+    Route::get('languages/export', [LanguageController::class, 'export'])->name('languages.export');
 
     Route::get('genres/import', [GenreController::class, 'showImport'])->name('genres.import.show');
     Route::post('genres/import', [GenreController::class, 'import'])->name('genres.import');
