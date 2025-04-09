@@ -9,6 +9,7 @@ use App\Http\Requests\ScreenType\UpdateRequest;
 use App\Http\Resources\Api\ScreenTypeResource;
 use App\Imports\ScreenTypeImport;
 use App\Models\ScreenType;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -28,6 +29,8 @@ class ScreenTypeController extends Controller
      */
     public function index(): \Inertia\Response
     {
+
+        Gate::authorize('viewAny', ScreenType::class);
 
         $perPage = request()->query('itemsPerPage', 10);
 
@@ -54,6 +57,8 @@ class ScreenTypeController extends Controller
 
     public function create(): Modal
     {
+        Gate::authorize('create', ScreenType::class);
+
         return Inertia::modal('Dashboard/ScreenTypes/Create')->baseRoute('dashboard.screen_types.index');
     }
 
@@ -66,6 +71,8 @@ class ScreenTypeController extends Controller
 
     public function store(SaveRequest $request)
     {
+        Gate::authorize('create', ScreenType::class);
+
         DB::beginTransaction();
 
         $request->validated();
@@ -95,6 +102,8 @@ class ScreenTypeController extends Controller
 
     public function show(ScreenType $screen_type): Modal
     {
+        Gate::authorize('view', $screen_type);
+
         return Inertia::modal('Dashboard/ScreenTypes/Show', [
             'screen_type'      => $screen_type,
         ]);
@@ -109,6 +118,9 @@ class ScreenTypeController extends Controller
 
     public function edit(ScreenType $screen_type): Modal
     {
+
+        Gate::authorize('update', $screen_type);
+
         return Inertia::modal('Dashboard/ScreenTypes/Edit', [
             'screen_type'      => $screen_type,
         ])->baseRoute('dashboard.screen_types.index');
@@ -116,6 +128,9 @@ class ScreenTypeController extends Controller
 
     public function update(UpdateRequest $request, ScreenType $screen_type): \Illuminate\Http\RedirectResponse
     {
+
+        Gate::authorize('update', $screen_type);
+
         DB::beginTransaction();
 
         $request->validated();
@@ -140,6 +155,8 @@ class ScreenTypeController extends Controller
     public function delete(ScreenType $screen_type): Modal
     {
 
+        Gate::authorize('delete', $screen_type);
+
         return Inertia::modal('Dashboard/ScreenTypes/Delete', [
             'screen_type' => $screen_type,
         ])->baseRoute('dashboard.screen_types.index');
@@ -147,6 +164,9 @@ class ScreenTypeController extends Controller
 
     public function destroy(ScreenType $screen_type): \Illuminate\Http\RedirectResponse
     {
+
+        Gate::authorize('delete', $screen_type);
+
         DB::beginTransaction();
 
         try {
@@ -168,7 +188,10 @@ class ScreenTypeController extends Controller
      * @return \Inertia\Response
      */
     public function showImport(){
-        return Inertia::render('Dashboard/ScreenTypes/Import');
+
+        Gate::authorize('import', ScreenType::class);
+
+        return Inertia::modal('Dashboard/ScreenTypes/Import')->baseRoute('dashboard.screen_types.index');
     }
 
      /**
@@ -180,6 +203,8 @@ class ScreenTypeController extends Controller
      */
     public function import(Request $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('import', ScreenType::class);
+
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
@@ -197,9 +222,15 @@ class ScreenTypeController extends Controller
         }
     }
 
+    /**
+     * Export ScreenTypes to excel file.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function export()
     {
-        return Excel::download(new ScreenTypesExport, 'screen_type.xlsx');
+        Gate::authorize('export', ScreenType::class);
+        return Excel::download(new ScreenTypesExport, 'screen_types.xlsx');
     }
 
 }
