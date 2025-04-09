@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Exports\ScreenTypesExport;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ScreenType\SaveRequest;
+use App\Http\Requests\ScreenType\StoreRequest;
 use App\Http\Requests\ScreenType\UpdateRequest;
 use App\Http\Resources\Api\ScreenTypeResource;
 use App\Imports\ScreenTypeImport;
@@ -60,11 +60,11 @@ class ScreenTypeController extends Controller
     /**
      * Store a newly created screen type in storage.
      *
-     * @param  \App\Http\Requests\ScreenType\SaveRequest  $request
+     * @param  \App\Http\Requests\ScreenType\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
 
-    public function store(SaveRequest $request)
+    public function store(StoreRequest $request)
     {
         DB::beginTransaction();
 

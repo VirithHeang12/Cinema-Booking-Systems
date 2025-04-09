@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Movie;
+use App\Models\SeatType;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -11,16 +11,16 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class MoviesExport implements FromView, WithStyles, ShouldAutoSize, WithTitle
+class SeatTypesExport implements FromView, WithStyles, ShouldAutoSize, WithTitle
 {
     private $data;
 
     public function __construct()
     {
-        $movies = Movie::all();
+        $seatTypes = SeatType::all();
 
         $this->data = [
-            'movies' => $movies,
+            'seat_types' => $seatTypes,
         ];
     }
 
@@ -31,8 +31,8 @@ class MoviesExport implements FromView, WithStyles, ShouldAutoSize, WithTitle
      */
     public function view(): View
     {
-        return view('exports.movies', [
-            'movies'        => $this->data['movies'],
+        return view('exports.seat_types', [
+            'seat_types'        => $this->data['seat_types'],
         ]);
     }
 
@@ -43,7 +43,7 @@ class MoviesExport implements FromView, WithStyles, ShouldAutoSize, WithTitle
      */
     public function title(): string
     {
-        return 'ភាពយន្ត';
+        return 'ប្រភេទកៅអី';
     }
 
 
@@ -63,7 +63,7 @@ class MoviesExport implements FromView, WithStyles, ShouldAutoSize, WithTitle
         $lastColumn         = $sheet->getHighestColumn();
 
         /// last row
-        $lastRow            = count($this->data['movies']) + 4;
+        $lastRow            = count($this->data['seat_types']) + 4;
 
         // Define the array to store cell styles
         $styles = [

@@ -1,25 +1,17 @@
 <template>
-    <div class="hall-list-container">
+    <div class="seat-type-list-container">
         <!-- Main table component -->
-        <data-table-server :showNo="true" title="Halls" createButtonText="New Hall" :serverItems="serverItems"
+        <data-table-server :showNo="true" title="Seat Types" createButtonText="New Seat Type" :serverItems="serverItems"
             :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
             item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
             @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
-            emptyStateText="No halls found in the database" :emptyStateAction="true"
-            emptyStateActionText="Add First Hall" @empty-action="createCallback" buttonVariant="outlined"
-            viewTooltip="View Hall Details" editTooltip="Edit Hall Information" deleteTooltip="Delete this Hall"
-            titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="true" @filter-apply="applyFilters"
-            @filter-clear="clearFilters" tableClasses="hall-data-table elevation-2 rounded-lg" iconSize="small"
-            deleteConfirmText="Are you sure you want to delete this hall? This action cannot be undone."
+            emptyStateText="No seat types found in the database" :emptyStateAction="true"
+            emptyStateActionText="Add First Seat Type" @empty-action="createCallback" buttonVariant="outlined"
+            viewTooltip="View Seat Type Details" editTooltip="Edit Seat Type Information"
+            deleteTooltip="Delete this Seat Type" titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="false"
+            tableClasses="seat-type-data-table elevation-2 rounded-lg" iconSize="small"
+            deleteConfirmText="Are you sure you want to delete this seat type? This action cannot be undone."
             toolbarColor="white" :showSelect="false">
-
-            <!-- Filter Content -->
-            <template #filter>
-                <div class="filter-section">
-                    <v-select v-model="filterHallType" :items="hallTypeOptions" label="Hall Type" clearable
-                        variant="outlined" density="compact" class="mb-3" hide-details></v-select>
-                </div>
-            </template>
         </data-table-server>
     </div>
 </template>
@@ -33,7 +25,7 @@
     import { visitModal } from "@inertiaui/modal-vue";
 
     const props = defineProps({
-        halls: {
+        seat_types: {
             type: Object,
             required: true,
         }
@@ -44,26 +36,17 @@
     const page = ref(1);
     const sortBy = ref([]);
 
-    // Filter states
-    const filterHallType = ref(null);
-
     // Computed properties
     const serverItems = computed(() => {
-        return props.halls.data;
+        return props.seat_types.data;
     });
 
     const totalItems = computed(() => {
-        return props.halls.meta.total;
+        return props.seat_types.meta.total;
     });
 
     const itemsPerPage = computed(() => {
-        return props.halls.per_page;
-    });
-
-    // Compute countries to only show unique values
-    const hallTypeOptions = computed(() => {
-        const hallTypes = [...new Set(props.halls.data.map(hall => hall.hall_type))];
-        return hallTypes.map(hallType => ({ title: hallType, value: hallType }));
+        return props.seat_types.per_page;
     });
 
     // Table headers definition
@@ -76,16 +59,16 @@
         },
         {
             title: 'Description',
-            align: 'center',
+            align: 'start',
             sortable: false,
             key: 'description',
             width: '200px',
         },
         {
-            title: 'Hall Type',
+            title: 'Price',
             align: 'center',
-            sortable: false,
-            key: 'hall_type',
+            sortable: true,
+            key: 'price',
         },
         {
             title: 'Seats',
@@ -119,10 +102,9 @@
                 itemsPerPage: options.itemsPerPage,
                 sort: sortKeyWithDirection,
                 'filter[search]': options.search,
-                'filter[hall_type]': filterHallType.value,
             },
             preserveState: true,
-            only: ['halls'],
+            only: ['seat_types'],
             onSuccess: () => {
                 loading.value = false;
             },
@@ -133,79 +115,52 @@
         });
     }
 
-    /**
-     * Apply filters to the table
-     *
-     * @return void
-     */
-    function applyFilters() {
-        loadItems({
-            page: 1,
-            itemsPerPage: itemsPerPage.value,
-            sortBy: sortBy.value,
-        });
-    }
 
     /**
-     * Clear all filters
-     *
-     * @return void
-     */
-    function clearFilters() {
-        filterHallType.value = null;
-
-        loadItems({
-            page: 1,
-            itemsPerPage: itemsPerPage.value,
-            sortBy: sortBy.value,
-        });
-    }
-
-    /**
-     * Open the create hall slideover
+     * Open the create seat type slideover
      *
      * @return void
      */
     const createCallback = () => {
-        visitModal(route('dashboard.halls.create'));
+        visitModal(route('dashboard.seat_types.create'));
     };
 
     /**
-     * Open the view hall slideover
+     * Open the view seat type slideover
      *
      * @param item
      *
      * @return void
      */
     const viewCallback = (item) => {
-        visitModal(route('dashboard.halls.show', {
-            hall: item.id,
+        visitModal(route('dashboard.seat_types.show', {
+            seat_type: item.id,
         }));
     };
 
     /**
-     * Open the edit hall slideover
+     * Open the edit seat type slideover
      *
      * @param item
      *
      * @return void
      */
     const editCallback = (item) => {
-        visitModal(route('dashboard.halls.edit', {
-            hall: item.id,
+        visitModal(route('dashboard.seat_types.edit', {
+            seat_type: item.id,
         }));
     };
 
     /**
-     * Show the delete confirmation dialog
+     * Show the delete confirmation modal
      *
      * @param item
      *
      * @return void
      */
     const deleteCallback = (item) => {
-        visitModal(route('dashboard.halls.delete', {
-            hall: item.id,
+        visitModal(route('dashboard.seat_types.delete', {
+            seat_type: item.id,
         }), {
             config: {
                 slideover: false
@@ -214,12 +169,12 @@
     };
 
     /**
-     * Open the import hall slideover
+     * Open the import seat type slideover
      *
      * @return void
      */
     const importCallback = () => {
-        visitModal(route('dashboard.halls.import.show'), {
+        visitModal(route('dashboard.seat_types.import.show'), {
             config: {
                 slideover: false,
                 closeExplicitly: true,
@@ -228,12 +183,12 @@
     };
 
     /**
-     * Export halls
+     * Export movies
      *
      * @return void
      */
     const exportCallback = () => {
-        window.location.href = route("dashboard.halls.export");
+        window.location.href = route("dashboard.seat_types.export");
     };
 
     /**
@@ -275,7 +230,7 @@
 </script>
 
 <style scoped>
-    .hall-list-container {
+    .seat-type-list-container {
         border-radius: 12px;
         border-radius: 20px;
     }
@@ -287,7 +242,7 @@
         border-radius: 8px;
     }
 
-    .hall-data-table :deep(.v-data-table__td) {
+    .seat-type-data-table :deep(.v-data-table__td) {
         padding-top: 14px !important;
         padding-bottom: 14px !important;
         font-size: 14px !important;

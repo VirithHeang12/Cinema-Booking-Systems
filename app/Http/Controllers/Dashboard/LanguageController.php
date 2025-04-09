@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Languages\SaveRequest;
+use App\Http\Requests\Languages\StoreRequest;
 use App\Http\Requests\Languages\UpdateRequest;
 use App\Imports\LanguagesImport;
 use App\Models\Language;
@@ -53,11 +53,11 @@ class LanguageController extends Controller
     /**
      * Store a newly created language in storage.
      *
-     * @param  \App\Http\Requests\Languages\SaveRequest  $request
+     * @param  \App\Http\Requests\Languages\StoreRequest  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
     {
         Gate::authorize('create', Language::class);
 
@@ -194,7 +194,7 @@ class LanguageController extends Controller
      * @return \Inertia\Response
      */
   public function showImport():Modal{
-    
+
 
     Gate::authorize('import', Language::class);
 

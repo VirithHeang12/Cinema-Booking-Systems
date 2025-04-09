@@ -4,7 +4,7 @@ namespace App\Http\Requests\Languages;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SaveRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
