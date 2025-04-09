@@ -1,6 +1,6 @@
 <template>
     <Modal v-slot="{ close }">
-        <div class="hall-type-form-center">
+        <div class="form-center">
             <div class="form-header">
                 <h2 class="form-title">Create HallType</h2>
                 <v-btn icon class="close-btn" @click="close">

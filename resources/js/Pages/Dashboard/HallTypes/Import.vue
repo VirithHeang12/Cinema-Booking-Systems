@@ -1,21 +1,19 @@
 <template>
     <Modal v-slot="{ close }">
-        <div class="hall-type-form-container">
+        <div class="form-container">
             <div class="form-header">
-                <h2 class="form-title text-h4">Import Halltype</h2>
-                <v-btn icon class="close-btn" @click="close">
-                    <v-icon>mdi-close</v-icon>
-                </v-btn>
-            </div>
+               <h2 class="form-title">Import HallType</h2>
+               <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close" @click="close"></button>
+           </div>
 
-            <vee-form :validation-schema="schema" @submit="submitForm" v-slot="{ errors }">
+
+            <vee-form :validation-schema="schema" @submit="submitForm" >
                 <div class="form-content">
-                    <div class="file-upload-section">
-                        <h3 class="upload-title mb-6">Select File to Import</h3>
+                    <h3 class="!text-[16px] text-zinc-700 mb-3">Browse Excel file to import</h3>
 
                         <v-file-input v-model="form.file" :error-messages="form.errors.file" accept=".xlsx"
                             label="Please select Excel file" prepend-icon="mdi-file-excel" show-size
-                            truncate-length="30" variant="outlined" class="mb-2" density="comfortable" persistent-hint
+                            truncate-length="30" variant="outlined" class="my-5" density="comfortable" persistent-hint
                             hint="Supported format: .xlsx">
                             <template v-slot:selection="{ fileNames }">
                                 <v-chip color="primary" label size="small" class="me-2">
@@ -23,33 +21,12 @@
                                 </v-chip>
                             </template>
                         </v-file-input>
-
-                        <div class="supported-formats mt-6 mb-8 text-center">
-                            <div class="divider-text">
-                                <span class="text-body-2 text-grey">Supported format: .xlsx</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="file-info mt-4" v-if="form.file">
-                        <v-card variant="outlined" class="pa-4">
-                            <div class="d-flex align-center">
-                                <v-icon size="large" color="primary" class="me-4">mdi-information-outline</v-icon>
-                                <div>
-                                    <p class="text-h6 mb-1">{{ form.file.name }}</p>
-                                    <p class="text-body-2 text-grey-darken-1">{{ formatFileSize(form.file.size) }}</p>
-                                </div>
-                            </div>
-                        </v-card>
-                    </div>
-
-                    <div class="flex-grow-1"></div>
                 </div>
 
                 <div class="form-actions">
                     <v-btn color="primary" :disabled="!form.file || form.processing" :loading="form.processing"
                         @click="submitForm(close)" type="button" size="large" block height="56"
-                        class="upload-button text-h6">
+                        class="!text-lg">
                         <v-icon size="24" class="me-2">mdi-upload</v-icon>
                         UPLOAD
                     </v-btn>
@@ -135,99 +112,3 @@
         }
     });
 </script>
-
-<style scoped>
-
-    /* Styled container with increased size */
-    .hall-type-form-container {
-        max-width: 800px;
-        width: 100%;
-        margin: 0 auto;
-        padding: 0;
-        background-color: #fff;
-        border-radius: 8px;
-        min-height: 400px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .form-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 24px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-        margin-bottom: 0;
-    }
-
-    .form-title {
-        font-size: 24px;
-        font-weight: 500;
-        color: #1867c0;
-        margin: 0;
-    }
-
-    .close-btn {
-        margin-right: -8px;
-    }
-
-    .form-content {
-        padding: 32px;
-        flex: 1;
-        min-height: 250px;
-        overflow-y: auto;
-        scrollbar-width: thin;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .form-content::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .form-content::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.2);
-        border-radius: 3px;
-    }
-
-    .form-actions {
-        padding: 24px 32px;
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-    }
-
-    .upload-button {
-        letter-spacing: 1.5px;
-        font-weight: 500;
-    }
-
-    .upload-title {
-        font-size: 18px;
-        color: #424242;
-        font-weight: 500;
-    }
-
-    .divider-text {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .divider-text:before,
-    .divider-text:after {
-        content: "";
-        height: 1px;
-        background-color: rgba(0, 0, 0, 0.12);
-        flex-grow: 1;
-    }
-
-    .divider-text span {
-        padding: 0 16px;
-    }
-
-    .file-upload-section {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-    }
-</style>
