@@ -7,12 +7,8 @@
                     <v-col cols="4" class="flex justify-content-start pa-0">
                         <!-- Desktop Search -->
                         <div class="w-[250px] d-none d-sm-flex">
-                            <v-text-field
-                                :append-inner-icon="'mdi-magnify'"
-                                density="compact"
-                                hide-details single-line
-                                :placeholder="__('Search Movies') + ' ...'"
-                                @focus="dialog = true">
+                            <v-text-field :append-inner-icon="'mdi-magnify'" density="compact" hide-details single-line
+                                variant="outlined" :placeholder="__('Search Movies') + ' ...'" @focus="dialog = true">
                             </v-text-field>
                         </div>
                         <!-- Mobile Buttons -->
@@ -40,7 +36,8 @@
                                     </template>
                                     <span>{{ __('Tickets') }}</span>
                                 </v-btn>
-                                <v-btn icon="mdi-ticket" color="white" class="opacity-65 hover:opacity-100 d-sm-none"></v-btn>
+                                <v-btn icon="mdi-ticket" color="white"
+                                    class="opacity-65 hover:opacity-100 d-sm-none"></v-btn>
                                 <v-btn icon="mdi-bell" color="white" class="opacity-65 hover:opacity-100"></v-btn>
                             </div>
 
@@ -48,8 +45,9 @@
                             <v-menu>
                                 <template v-slot:activator="{ props }">
                                     <v-btn color="white" dark v-bind="props" class="opacity-65 hover:opacity-100">
-                                        <flag :iso="getLocale().toLowerCase() === 'en' ? 'gb' : getLocale().toLowerCase()" />
-                                        <span class="ml-1 d-none d-md-block">{{ currentLocale }}</span> 
+                                        <flag
+                                            :iso="getLocale().toLowerCase() === 'en' ? 'gb' : getLocale().toLowerCase()" />
+                                        <span class="ml-1 d-none d-md-block">{{ currentLocale }}</span>
                                         <v-icon class="ml-1 md:ml-0">mdi-chevron-down</v-icon>
                                     </v-btn>
                                 </template>
@@ -58,7 +56,8 @@
                                         <v-list-item-title>
                                             <v-btn @click="switchLocale(key)" :elevation="0" width="100%">
                                                 <template #prepend>
-                                                    <flag :iso="key.toLowerCase() === 'en' ? 'gb' : key.toLowerCase()" />
+                                                    <flag
+                                                        :iso="key.toLowerCase() === 'en' ? 'gb' : key.toLowerCase()" />
                                                 </template>
                                                 {{ value.native }}
                                             </v-btn>
@@ -68,32 +67,30 @@
                             </v-menu>
 
                             <!-- Account Icon -->
-                            <v-btn icon="mdi-account" color="white" class="opacity-65 hover:opacity-100 d-none d-md-flex"></v-btn>
+                            <v-btn icon="mdi-account" color="white"
+                                class="opacity-65 hover:opacity-100 d-none d-md-flex"></v-btn>
 
                             <!-- Mobile Search Icon -->
-                            <v-btn v-if="!dialog" icon="mdi-magnify" color="white" class="opacity-65 hover:opacity-100 d-sm-none" @click="dialog = true"></v-btn>
+                            <v-btn v-if="!dialog" icon="mdi-magnify" color="white"
+                                class="opacity-65 hover:opacity-100 d-sm-none" @click="dialog = true"></v-btn>
                         </div>
                     </v-col>
                 </v-row>
             </v-container>
         </v-app-bar>
         <!-- Desktop Toolbar: Sticky Below Navbar -->
-        <v-toolbar
-            dense
-            elevation="2"
-            class="bg-transparent text-white z-40 mt-[90px] d-none d-sm-flex">
-            <NavLinks v-model="selectedTab" justify="start"  :showProfile="false" />
+        <v-toolbar dense elevation="2" class="bg-transparent text-white z-40 mt-[90px] d-none d-sm-flex">
+            <NavLinks v-model="selectedTab" justify="start" :showProfile="false" />
         </v-toolbar>
         <!-- Mobile Bottom Navigation -->
-        <v-bottom-navigation
-            app
-            class="text-white d-sm-none custom-blur-nav">
-            <NavLinks v-model="selectedTab" justify="between"  :showProfile="true" />
+        <v-bottom-navigation app class="text-white d-sm-none custom-blur-nav">
+            <NavLinks v-model="selectedTab" justify="between" :showProfile="true" />
         </v-bottom-navigation>
     </header>
 
     <!-- Search Modal -->
-    <v-dialog v-model="dialog" persistent hide-overlay transition="scale-transition" max-width="600" color="#242424" class="search-dialog">
+    <v-dialog v-model="dialog" persistent hide-overlay transition="scale-transition" max-width="600" color="#242424"
+        class="search-dialog">
         <v-card rounded="lg" class="dialog-card">
             <v-card-title class="d-flex justify-space-between align-center bg-transparent">
                 <div class="text-medium-emphasis ps-2k"><span class="text-white">{{ __('Search') }}</span></div>
@@ -104,27 +101,22 @@
 
             <v-card-text class="bg-transparent">
                 <!-- Search Input -->
-                <v-text-field
-                    v-model="searchQuery"
-                    :placeholder="__('Search Movies') + ' ...'"
-                    prepend-inner-icon="mdi-magnify"
-                    clearable
-                    solo
+                <v-text-field v-model="searchQuery" hide-details variant="outlined"
+                    :placeholder="__('Search Movies') + ' ...'" prepend-inner-icon="mdi-magnify" clearable solo
                     autofocus>
                 </v-text-field>
 
                 <!-- Search Results -->
                 <v-list v-if="searchQuery" class="bg-transparent">
-                    <v-list-item v-if="loading">
+                    <v-list-item v-if="loading" class="d-flex justify-center align-center">
                         <v-progress-circular indeterminate color="primary"></v-progress-circular>
                     </v-list-item>
 
                     <v-list-item v-for="movie in filteredMovies" :key="movie.id" @click="selectMovie(movie)">
                         <div class="d-flex col-12">
                             <div class="col-auto d-flex align-center rounded-md">
-                                <v-img :src="movie.thumbnail_url"
-                                    width="80" height="150"
-                                    contain class="thumbnail-image">
+                                <v-img :src="movie.thumbnail_url" width="80" height="150" contain
+                                    class="thumbnail-image">
                                     <template #error>
                                         <div class="thumbnail-placeholder h-[100%] d-flex justify-center align-center">
                                             <v-icon size="100" class="text-white">mdi-image-off</v-icon>
@@ -134,7 +126,8 @@
                             </div>
                             <div class="col-auto ml-5 pt-5">
                                 <v-list-item-title>{{ movie.title }}</v-list-item-title>
-                                <v-list-item-subtitle class="mt-2">{{ formatDate(movie.release_date) }}</v-list-item-subtitle>
+                                <v-list-item-subtitle class="mt-2">{{ formatDate(movie.release_date)
+                                }}</v-list-item-subtitle>
                             </div>
                         </div>
                         <v-divider class="my-0 col-12"></v-divider>
@@ -142,8 +135,8 @@
 
                     <v-list-item v-if="!filteredMovies.length && !loading" class="bg-transparent">
                         <v-container class="text-center bg-transparent">
-                                <v-icon size="100">mdi-file-search</v-icon>
-                                <p>{{ __('No movies found') }}</p>
+                            <v-icon size="100">mdi-file-search</v-icon>
+                            <p>{{ __('No movies found') }}</p>
                         </v-container>
                     </v-list-item>
                 </v-list>
@@ -189,7 +182,7 @@
                     itemsPerPage: 5,
                 },
             });
-            filteredMovies.value = res.data.data;
+            filteredMovies.value = res.data.items;
             loading.value = false;
         } catch (error) {
             console.error('Search failed:', error)
@@ -207,7 +200,7 @@
         // router.push({ name: 'movie-detail', params: { id: movie.id } });
         router.visit(route('movie-detail', { id: movie.id }));
     };
-    
+
     // Format release date
     const formatDate = (dateString) => {
         if (!dateString) return '';
@@ -246,43 +239,52 @@
         border-radius: 100%;
         z-index: -1;
     }
+
     .app-bar {
-    position: relative;
-    overflow: hidden; /* Ensure the gradient doesn't spill out */
+        position: relative;
+        overflow: hidden;
+        /* Ensure the gradient doesn't spill out */
     }
 
     .app-bar::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px; /* Thickness of the border */
-    background: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0), /* Lighter left */
-        rgba(255, 255, 255, 0.4), /* Darker center */
-        rgba(255, 255, 255, 0) /* Lighter right */
-    );
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        /* Thickness of the border */
+        background: linear-gradient(to right,
+                rgba(255, 255, 255, 0),
+                /* Lighter left */
+                rgba(255, 255, 255, 0.4),
+                /* Darker center */
+                rgba(255, 255, 255, 0)
+                /* Lighter right */
+            );
     }
+
     .search-dialog .v-card {
         background-color: #242424;
         color: white;
         max-height: 80vh;
         overflow-y: auto;
     }
-    .search-dialog >>> .v-overlay__content {
+
+    .search-dialog>>>.v-overlay__content {
         top: 10% !important;
     }
 
     @media (max-width: 600px) {
-    .search-dialog .v-card {
-        max-height: 90vh;
-        margin: 0 10px;
+        .search-dialog .v-card {
+            max-height: 90vh;
+            margin: 0 10px;
+        }
     }
-    }
+
     .custom-blur-nav {
-        background-color: rgba(55, 45, 35, .7); /* semi-transparent black */
+        background-color: rgba(55, 45, 35, .7);
+        /* semi-transparent black */
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
     }

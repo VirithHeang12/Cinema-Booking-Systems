@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api\V1\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Movies\SaveRequest;
+use App\Http\Requests\Movies\StoreRequest;
 use App\Http\Requests\Movies\UpdateRequest;
 use App\Http\Resources\MovieResource;
 use App\Models\Movie;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -21,7 +22,6 @@ class MovieController extends Controller
      */
     public function index()
     {
-
         $perPage = request()->query('itemsPerPage', 10);
 
         $movies = QueryBuilder::for(Movie::class)
@@ -49,17 +49,20 @@ class MovieController extends Controller
             return $movie;
         });
 
-        return MovieResource::collection($movies);
+        return response()->json([
+            'items' => MovieResource::collection($movies),
+            'total' => $movies->total(),
+        ]);
     }
 
     /**
      * Store a newly created hallType in storage.
      *
-     * @param SaveRequest $request
+     * @param StoreRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(SaveRequest $request)
+    public function store(StoreRequest $request)
     {
         DB::beginTransaction();
 

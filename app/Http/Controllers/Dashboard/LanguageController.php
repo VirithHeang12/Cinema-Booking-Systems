@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exports\LanguageExport;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Languages\SaveRequest;
+use App\Http\Requests\Languages\StoreRequest;
 use App\Http\Requests\Languages\UpdateRequest;
 use App\Imports\LanguagesImport;
 use App\Models\Language;
@@ -13,7 +14,8 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use InertiaUI\Modal\Modal;
 use Maatwebsite\Excel\Facades\Excel;
-
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class LanguageController extends Controller
 {
@@ -27,8 +29,17 @@ class LanguageController extends Controller
         Gate::authorize('viewAny', Language::class);
 
         $perPage = request()->query('itemsPerPage', 5);
+        $languages = QueryBuilder::for(Language::query())
+        ->allowedFilters([
+            AllowedFilter::callback('search', function ($query, $value) {
+                $query->where('name', 'like', "%{$value}%")
+                    ->orWhere('code', 'like', "%{$value}%");
+            }),
+        ])
+        ->allowedSorts(['name', 'code', 'created_at', 'updated_at'])
+            ->paginate($perPage);
 
-        $languages = Language::paginate($perPage)->appends(request()->query());
+        // $languages = Language::paginate($perPage)->appends(request()->query());
 
 
         return Inertia::render('Dashboard/Languages/Index', [
@@ -53,11 +64,11 @@ class LanguageController extends Controller
     /**
      * Store a newly created language in storage.
      *
-     * @param  \App\Http\Requests\Languages\SaveRequest  $request
+     * @param  \App\Http\Requests\Languages\StoreRequest  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
     {
         Gate::authorize('create', Language::class);
 
@@ -194,7 +205,7 @@ class LanguageController extends Controller
      * @return \Inertia\Response
      */
   public function showImport():Modal{
-    
+
 
     Gate::authorize('import', Language::class);
 
@@ -221,5 +232,16 @@ class LanguageController extends Controller
             DB::rollBack();
             return redirect()->route('dashboard.languages.index')->with('error', $e->getMessage());
         }
+    }
+    /**
+     * Export languages to an Excel file.
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function export(): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        Gate::authorize('export', Language::class);
+
+        return Excel::download(new LanguageExport(), 'languages.xlsx');
     }
 }
