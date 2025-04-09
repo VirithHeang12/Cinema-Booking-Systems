@@ -36,7 +36,7 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
 
     Route::get('screen_types/import', [ScreenTypeController::class, 'showImport'])->name('screen_types.import.show');
     Route::post('screen_types/import', [ScreenTypeController::class, 'import'])->name('screen_types.import');
-    Route::get('screen_types/export', [ScreenTypeController::class, 'export'])->name('screen_types.export')->withoutMiddleware(['web']);
+    Route::get('screen_types/export', [ScreenTypeController::class, 'export'])->name('screen_types.export');
 
     Route::get('movies/import', [MovieController::class, 'showImport'])->name('movies.import.show');
     Route::post('movies/import', [MovieController::class, 'import'])->name('movies.import');
