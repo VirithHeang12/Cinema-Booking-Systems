@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+    import { Link } from '@inertiajs/vue3';
 
 </script>
 
@@ -30,9 +30,6 @@ import { Link } from '@inertiajs/vue3';
                     <Link href="/contact"
                         class="font-medium text-white transition text-decoration-none opacity-65 hover:opacity-100">
                     Contact us</Link>
-                    <Link href="/locations"
-                        class="font-medium text-white transition text-decoration-none opacity-65 hover:opacity-100">
-                    Locations</Link>
                 </div>
             </div>
 
@@ -62,17 +59,17 @@ import { Link } from '@inertiajs/vue3';
 </template>
 
 <style scoped>
-.bg-blur::before {
-    content: '';
-    width: 65%;
-    height: 100%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, 100%);
-    background-color: red;
-    filter: blur(200px);
-    border-radius: 100%;
-    z-index: -1;
-}
+    .bg-blur::before {
+        content: '';
+        width: 65%;
+        height: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 100%);
+        background-color: red;
+        filter: blur(200px);
+        border-radius: 100%;
+        z-index: -1;
+    }
 </style>
