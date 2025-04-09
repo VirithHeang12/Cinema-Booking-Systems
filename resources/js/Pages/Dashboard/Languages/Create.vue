@@ -1,65 +1,82 @@
 <template>
     <Modal v-slot="{ close }">
-        <div class="p-2">
-            <h3 class="font-semibold text-neutral-800 mb-5">{{ __('Create Language') }}</h3>
-            <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
-                <v-row dense>
-                    <v-col :cols="12" :md="6">
-                        <vee-field name="name" v-slot="{ field, errors }">
-                            <v-text-field v-bind="field" v-model="form.name" label="Name" variant="outlined"
-                                :error-messages="errors"></v-text-field>
-                        </vee-field>
-                    </v-col>
-                    <v-col :cols="12" :md="6">
-                        <vee-field name="code" v-slot="{ field, errors }">
-                            <v-text-field v-bind="field" v-model="form.code" label="Code" variant="outlined"
-                                :error-messages="errors"></v-text-field>
-                        </vee-field>
-                    </v-col>
-                </v-row>
+        <div class="language-form-center">
+            <div class="form-header">
+                <h2 class="form-title">Create Language</h2>
+                <v-btn icon class="close-btn" @click="close">
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </div>
 
-                <v-row dense>
-                    <v-col :cols="12">
-                        <v-btn color="primary" class="mt-4 d-inline-flex justify-content-start "
-                            :disabled="!meta.valid || form.processing" @click.prevent="submitForm(setErrors, close)">
-                            <span v-if="form.processing" class="spinner-border spinner-border-sm me-2" role="status"
-                                aria-hidden="true"></span>
-                            Submit
-                        </v-btn>
-                    </v-col>
-                </v-row>
-
+            <vee-form
+                :validation-schema="schema"
+                @submit.prevent="submitForm"
+                v-slot="{ meta, setErrors }"
+            >
+                <language-form :form="form" />
+                <div class="form-actions">
+                    <v-btn
+                        color="primary"
+                        :disabled="!meta.valid || form.processing"
+                        :loading="form.processing"
+                        @click.prevent="submitForm(setErrors, close)"
+                        size="large"
+                        block
+                    >
+                        <v-icon class="me-2">mdi-check</v-icon>
+                        Submit
+                    </v-btn>
+                </div>
             </vee-form>
         </div>
     </Modal>
 </template>
 
 <script setup>
-    import { markRaw } from 'vue';
-    import { useForm } from '@inertiajs/vue3';
-    import * as yup from 'yup';
-    import { __ } from 'matice';
+    import { useForm } from "@inertiajs/vue3";
+    import { __ } from "matice";
+    import * as yup from "yup";
+    import languageForm from "../../../Forms/LanguageForm.vue";
 
-    const schema = markRaw(yup.object({
-        name: yup.string().required(__('Language name is required')),
-        code: yup.string().required(__('Language code is required')),
-    }));
-
-    const form = useForm({
-        name: '',
-        code: '',
+    const schema = yup.object().shape({
+        name: yup.string().required(__("Language name is required")),
+        code: yup.string().required(__("Language code is required")),
     });
 
+    const form = useForm({
+        name: "",
+        code: "",
+    });
+
+    /**
+     * Submit the form
+     *
+     * @param setErrors
+     * @param close
+     *
+     * @returns void
+     */
     const submitForm = (setErrors, close) => {
-        form.post(route('dashboard.languages.store'), {
+        // Always use FormData since we may have a file
+        form.post(route("dashboard.languages.store"), {
             preserveState: true,
+            preserveScroll: true,
+            forceFormData: true,
+            onSuccess: () => {
+                form.reset();
+                close();
+            },
             onError: (errors) => {
                 setErrors(errors);
             },
-            onSuccess: () => {
-                close();
-            },
         });
-    }
-
+    };
 </script>
+<style scoped>
+.form-actions{
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+</style>

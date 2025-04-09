@@ -21,18 +21,6 @@
                                 </v-chip>
                             </template>
                         </v-file-input>
-
-                    <!-- <div class="my-4" v-if="form.file">
-                        <v-card variant="outlined" class="p-3 border border-gray-500 rounded-lg !bg-gray-50">
-                            <div class="d-flex align-center">
-                                <v-icon size="large" color="primary" class="me-4">mdi-information-outline</v-icon>
-                                <div>
-                                    <p class="text-h6 mb-1">{{ form.file.name }}</p>
-                                    <p class="text-body-2 text-grey-darken-1">{{ formatFileSize(form.file.size) }}</p>
-                                </div>
-                            </div>
-                        </v-card>
-                    </div> -->
                 </div>
 
                 <div class="form-actions">
@@ -101,7 +89,7 @@
     const submitForm = (close) => {
         // Set the file from the file input
         if (form.file) {
-            form.post(route('dashboard.movies.import'), {
+            form.post(route('dashboard.languages.import'), {
                 preserveState: true,
                 preserveScroll: true,
                 forceFormData: true,

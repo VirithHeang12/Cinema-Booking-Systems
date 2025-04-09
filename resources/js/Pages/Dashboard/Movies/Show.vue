@@ -1,14 +1,12 @@
 <template>
     <Modal v-slot="{ close }">
-        <div class="movie-details-container">
-            <div class="details-header">
-                <h2 class="details-title">{{ movie.title }}</h2>
-                <button class="close-button" @click="close">
-                    <v-icon>mdi-close</v-icon>
-                </button>
+        <div class="form-container">
+             <div class="form-header !mb-0">
+                <h2 class="form-title">{{ movie.title }}</h2>
+                <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close" @click="close"></button>
             </div>
 
-            <div class="details-body">
+            <div class="form-content !font-medium">
                 <!-- Basic Information -->
                 <div class="details-section">
                     <div class="field-row">
@@ -334,7 +332,6 @@
     }
 
     .details-section {
-        padding: 16px 24px;
         border-bottom: 1px solid #e0e0e0;
     }
 
@@ -344,9 +341,9 @@
 
     .section-title {
         font-size: 16px;
-        font-weight: 500;
+        font-weight: 600;
         color: #1976d2;
-        margin: 0 0 16px 0;
+        margin-top: 16px;
         display: flex;
         align-items: center;
     }
@@ -355,25 +352,7 @@
         margin-right: 8px;
     }
 
-    /* Field Rows and Values */
-    .field-row {
-        margin-bottom: 16px;
-    }
 
-    .field-row:last-child {
-        margin-bottom: 0;
-    }
-
-    .field-label {
-        font-size: 14px;
-        color: #757575;
-        margin-bottom: 4px;
-    }
-
-    .field-value {
-        font-size: 16px;
-        color: #212121;
-    }
 
     /* Two column layout */
     .two-columns {

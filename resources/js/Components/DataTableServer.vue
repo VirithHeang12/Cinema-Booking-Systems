@@ -6,8 +6,8 @@
             :class="tableClasses" :footer-props="footerProps" :item-class="itemClass" v-model:page="page"
             v-model:sort-by="sortBy" :show-select="showSelect" :single-select="singleSelect">
             <template v-slot:top>
-                <v-toolbar style="border-radius: 20px;" flat :color="toolbarColor" class="data-table-toolbar">
-                    <v-toolbar-title :class="['fw-semibold', titleClass]">{{ title }}</v-toolbar-title>
+                <v-toolbar style="border-radius: 20px; padding: 8px 15px;" flat :color="toolbarColor" class="data-table-toolbar flex !items-center">
+                    <v-toolbar-title :class="['fw-semibold','!text-2xl', '!m-2', titleClass]">{{ title }}</v-toolbar-title>
 
                     <v-spacer></v-spacer>
 
@@ -80,7 +80,7 @@
             </template>
 
             <!-- Default slot for each column customization -->
-            <template v-for="(_, name) in $slots" :key="name" v-slot:[name]="slotData">
+            <template v-for="(_, name,) in $slots" :key="name" v-slot:[name]="slotData">
                 <slot :name="name" v-bind="slotData"></slot>
             </template>
 
