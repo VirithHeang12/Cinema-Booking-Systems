@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\HallType;
 use Illuminate\Http\Request;
+use App\Http\Requests\HallTypes\ImportHallTypesRequest;
+use App\Http\Resources\Api\HallTypeResource;
 use App\Http\Requests\HallTypes\SaveRequest;
 use App\Http\Requests\HallTypes\UpdateRequest;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +15,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\HallTypesImport;
 use App\Exports\HallTypesExport;
 use InertiaUI\Modal\Modal;
+use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Support\Facades\Gate;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class HallTypeController extends Controller
 {
@@ -26,8 +30,21 @@ class HallTypeController extends Controller
     {
         Gate::authorize('viewAny', HallType::class);
 
-        $perPage = request()->query('itemsPerPage', 5);
-        $hall_types = HallType::paginate($perPage)->appends(request()->query());
+        $perPage = request()->query('itemsPerPage', 10);
+
+        $hall_types = QueryBuilder::for(HallType::class)
+            ->allowedFilters([
+                AllowedFilter::callback('search', function ($query, $value) {
+                    $query->where('name', 'like', "%{$value}%");
+                }),
+            ])
+            ->allowedSorts(
+                'name',
+            )
+            ->paginate($perPage)
+            ->appends(request()->query());
+
+        $hall_types = HallTypeResource::collection($hall_types)->response()->getData(true);
 
         return Inertia::render('Dashboard/HallTypes/Index', [
             'hall_types'     => $hall_types,
@@ -124,11 +141,11 @@ class HallTypeController extends Controller
     {
         Gate::authorize('update', $hall_type);
 
+        $data = $request->validated();
+
         DB::beginTransaction();
 
         try {
-
-            $data = $request->validated();
 
             $hall_type->update([
                 'name'          => $data['name'],
@@ -189,30 +206,27 @@ class HallTypeController extends Controller
     }
 
     /**
-     * Show Import hallType form.
-     * @return \Inertia\Response
-     */
-    public function showImport(){
-        Gate::authorize('import', HallType::class);
-
-        return Inertia::render('Dashboard/HallTypes/Import')
-            ->baseRoute('dashboard.hall_types.index');
-    }
-
-    /**
-     * Import hallType from excel file.
+     * Show import halltype form.
      *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return Modal
      */
-    public function import(Request $request): \Illuminate\Http\RedirectResponse
+    public function showImport(): Modal
     {
         Gate::authorize('import', HallType::class);
 
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls',
-        ]);
+        return Inertia::modal('Dashboard/HallTypes/Import')->baseRoute('dashboard.hall_types.index');
+    }
+
+    /**
+     * Import halltype from excel file.
+     *
+     * @param  ImportHallTypesRequest  $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function import(ImportHallTypesRequest $request): \Illuminate\Http\RedirectResponse
+    {
+        Gate::authorize('import', HallType::class);
 
         DB::beginTransaction();
 

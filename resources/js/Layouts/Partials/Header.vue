@@ -118,15 +118,23 @@
                     <v-list-item v-if="loading">
                         <v-progress-circular indeterminate color="primary"></v-progress-circular>
                     </v-list-item>
-                    
+
                     <v-list-item v-for="movie in filteredMovies" :key="movie.id" @click="selectMovie(movie)">
                         <div class="d-flex col-12">
-                            <div class="col-auto">
-                                <v-img :src="movie.poster" alt="Movie Poster" width="80" height="150" rounded-md contain></v-img>
+                            <div class="col-auto d-flex align-center rounded-md">
+                                <v-img :src="movie.thumbnail_url"
+                                    width="80" height="150"
+                                    contain class="thumbnail-image">
+                                    <template #error>
+                                        <div class="thumbnail-placeholder h-[100%] d-flex justify-center align-center">
+                                            <v-icon size="100" class="text-white">mdi-image-off</v-icon>
+                                        </div>
+                                    </template>
+                                </v-img>
                             </div>
                             <div class="col-auto ml-5 pt-5">
                                 <v-list-item-title>{{ movie.title }}</v-list-item-title>
-                                <v-list-item-subtitle>{{ movie.release_date }}</v-list-item-subtitle>
+                                <v-list-item-subtitle class="mt-2">{{ formatDate(movie.release_date) }}</v-list-item-subtitle>
                             </div>
                         </div>
                         <v-divider class="my-0 col-12"></v-divider>
@@ -149,26 +157,15 @@
     import { router, usePage } from '@inertiajs/vue3';
     import { __, getLocale, setLocale } from 'matice';
     import NavLinks from './NavLink.vue';
+    import axios from 'axios';
 
     const selectedTab = ref('/'); // Set default tab as home
 
-    // Static movie data for testing search functionality
-    const movies = ref([
-        { id: 1, title: "Serpent Beauty", release_date: "04 Apr 2025", poster: "https://tickets.legend.com.kh/CDN/media/entity/get/Movies/HO00001875" },
-        { id: 2, title: "A Minecraft Movie", release_date: "3 Apr 2025", poster: "https://tickets.legend.com.kh/CDN/media/entity/get/Movies/HO00001845" },
-        { id: 3, title: "Ne Zha 2", release_date: "25 May 2025", poster: "https://tickets.legend.com.kh/CDN/media/entity/get/Movies/HO00001864" },
-    ]);
-
-    const dialog = ref(false);
-    const searchQuery = ref("");
+    // Search functionality
     const loading = ref(false);
-
-    // Filter movies based on search query
-    const filteredMovies = computed(() => {
-        return movies.value.filter(movie => 
-            movie.title.toLowerCase().includes(searchQuery.value.toLowerCase())
-        );
-    });
+    const filteredMovies = ref([]);
+    const searchQuery = ref('')
+    const dialog = ref(false)
 
     // Reset search query when dialog is closed
     watch(dialog, (val) => {
@@ -177,9 +174,50 @@
         }
     });
 
+    // Trigger movie search when the search query is updated
+    watch(searchQuery, async (val) => {
+        if (!searchQuery.value.trim()) {
+            filteredMovies.value = [];
+            return;
+        }
+        loading.value = true;
+
+        try {
+            const res = await axios.get('/api/v1/dashboard/movies', {
+                params: {
+                    'filter[search]': searchQuery.value,
+                    itemsPerPage: 5,
+                },
+            });
+            filteredMovies.value = res.data.data;
+            loading.value = false;
+        } catch (error) {
+            console.error('Search failed:', error)
+            filteredMovies.value = []
+        } finally {
+            loading.value = false
+        }
+    });
+
+    // Select a movie from the search results
     const selectMovie = (movie) => {
         dialog.value = false;
         searchQuery.value = "";
+        // Redirect to movie detail page (you can modify the route as needed)
+        // router.push({ name: 'movie-detail', params: { id: movie.id } });
+        router.visit(route('movie-detail', { id: movie.id }));
+    };
+    
+    // Format release date
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = date.toLocaleString('en-US', { month: 'short' });
+        const year = date.getFullYear();
+
+        return `${day} ${month} ${year}`;
     };
 
     // Localization
