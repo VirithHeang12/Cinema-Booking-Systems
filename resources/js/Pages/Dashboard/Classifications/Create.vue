@@ -1,69 +1,84 @@
 <template>
-    <Modal v-slot="{ close }">
-        <div class="container mt-5 d-flex flex-column align-items-center justify-center">
-            <h1 class="fw-semibold mb-3 text-zinc-800">Create Classification</h1>
-            <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
-                class="col-12">
-                <vee-field name="name" v-slot="{ field, errors }">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">{{ __("Name") }}</label>
-                        <input type="text" class="form-control" v-bind="field" v-model="form.name" id="name" name="name"
-                            placeholder="Enter name" :aria-describedby="'nameError'" />
-                        <span v-if="errors.length" id="nameError" class="text-danger">{{
-                            errors[0]
-                        }}</span>
-                    </div>
-                </vee-field>
+  <Modal v-slot="{ close }">
+    <div class="form-container">
+      <div class="form-header !mb-3">
+        <h2 class="form-title">Create Classification</h2>
+        <button
+          type="button"
+          class="btn btn-sm btn-close shadow-none"
+          aria-label="Close"
+          @click="close"
+        ></button>
+      </div>
 
-                <vee-field name="description" v-slot="{ field, errors }">
-                    <div class="mb-3">
-                        <label for="description" class="form-label">{{
-                            __("Description")
-                        }}</label>
-                        <textarea class="form-control" v-bind="field" v-model="form.description" id="description"
-                            name="description" rows="3" placeholder="Enter description"
-                            :aria-describedby="'descError'"></textarea>
-                        <span v-if="errors.length" id="descError" class="text-danger">{{
-                            errors[0]
-                        }}</span>
-                    </div>
-                </vee-field>
+      <vee-form
+        class="form-content-container"
+        :validation-schema="schema"
+        @submit.prevent="submitForm"
+        v-slot="{ meta, setErrors }"
+      >
+        <classification-form :form="form"></classification-form>
 
-                <button type="submit" @click="close" class="btn btn-primary !font-medium !text-zinc-50"
-                    :disabled="!meta.valid || form.processing" @click.prevent="submitForm(setErrors)">
-                    <span v-if="form.processing" class="spinner-border spinner-border-sm me-2" role="status"
-                        aria-hidden="true"></span>
-                    {{ __("Submit") }}
-                </button>
-
-            </vee-form>
+        <div class="form-actions">
+          <v-btn
+            color="primary"
+            :disabled="!meta.valid || form.processing"
+            :loading="form.processing"
+            @click.prevent="submitForm(setErrors, close)"
+            size="large"
+            block
+          >
+            <v-icon class="me-2">mdi-check</v-icon>
+            {{ __("Submit") }}
+          </v-btn>
         </div>
-    </Modal>
+      </vee-form>
+    </div>
+  </Modal>
 </template>
 
 <script setup>
-    import { useForm } from "@inertiajs/vue3";
-    import { markRaw } from "vue";
-    import * as yup from "yup";
-    import { __ } from "matice";
+  import { useForm } from "@inertiajs/vue3";
+  import { markRaw } from "vue";
+  import * as yup from "yup";
+  import { __ } from "matice";
+  import ClassificationForm from "../../../Forms/ClassificationForm.vue";
 
-    const schema = markRaw(
-        yup.object({
-            name: yup
-                .string()
-                .required(__("Classification name is required."))
-                .max(50, __("Classification name must not exceed 50 characters.")),
-            description: yup
-                .string()
-                .required(__("Classification description is required.")),
-        })
-    );
+  const schema = yup.object().shape({
+    name: yup
+      .string()
+      .required(__("Classification name is required."))
+      .max(50, __("Classification name must not exceed 50 characters.")),
+    description: yup
+      .string()
+      .required(__("Classification description is required.")),
+  });
 
-    const form = useForm({
-        name: "",
-        description: "",
+  const form = useForm({
+    name: "",
+    description: "",
+  });
+
+  /**
+   * Submit the form
+   *
+   * @param setErrors
+   * @param close
+   *
+   * @returns void
+   */
+  const submitForm = (setErrors, close) => {
+    form.post(route("dashboard.classifications.store"), {
+      preserveState: true,
+      preserveScroll: true,
+      forceFormData: true,
+      onSuccess: () => {
+        form.reset();
+        close();
+      },
+      onError: (errors) => {
+        setErrors(errors);
+      },
     });
-    const submitForm = () => {
-        form.post(route("dashboard.classifications.store"));
-    };
+  };
 </script>

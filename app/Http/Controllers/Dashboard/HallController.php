@@ -3,46 +3,81 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\HallTypeResource;
+use App\Http\Resources\HallResource;
 use App\Models\Hall;
+use App\Models\HallType;
 use App\Models\Movie;
 use App\Models\MovieGenre;
 use App\Models\MovieSubtitle;
 use App\Models\SeatType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
+use InertiaUI\Modal\Modal;
 
 class HallController extends Controller
 {
     /**
-     * Display a listing of Movies.
+     * Display a listing of Halls.
      *
      * @return \Inertia\Response
      */
     public function index(): \Inertia\Response
     {
-        $perPage = request()->query('itemsPerPage', 5);
+        Gate::authorize('viewAny', Hall::class);
+
+        $perPage = request()->query('itemsPerPage', 10);
 
         $halls = QueryBuilder::for(Hall::class)
+            ->allowedFilters([
+                AllowedFilter::callback('search', function ($query, $value) {
+                    $query->where('name', 'like', "%{$value}%")
+                        ->orWhere('description', 'like', "%{$value}%");
+                }),
+                AllowedFilter::callback('hall_type', function ($query, $value) {
+                    $query->whereHas('hallType', function ($q) use ($value) {
+                        $q->where('name', $value);
+                    });
+                }),
+            ])
+            ->allowedSorts(
+                AllowedSort::callback('seats_count', function ($query, $descending) {
+                    $direction = $descending ? 'desc' : 'asc';
+                    $query->withCount('seats')->orderBy('seats_count', $direction);
+                }),
+                AllowedSort::field('name'),
+            )
+            ->with(['hallType', 'seats', 'hallSeatTypes'])
+            ->withCount('seats')
             ->paginate($perPage)
             ->appends(request()->query());
 
+        $halls = HallResource::collection($halls)->response()->getData(true);
+
         return Inertia::render('Dashboard/Halls/Index', [
-            'halls'     => $halls,
+            'halls'         => $halls,
         ]);
     }
 
     /**
      * Show the form for creating a new Movie.
      *
-     * @return \Inertia\Response
-     *
+     * @return Modal
      */
-    public function create(): \Inertia\Response
+    public function create(): Modal
     {
-        return Inertia::render('Dashboard/Halls/Create', [
-            'seatTypes' => SeatType::all(),
+        Gate::authorize('create', Movie::class);
+
+        $hallTypes = HallTypeResource::collection(HallType::all())->response()->getData(true);
+        $seatTypes = SeatTypeResource::collection(SeatType::all())->response()->getData(true);
+
+        return Inertia::modal('Dashboard/Halls/Create', [
+
         ]);
     }
 

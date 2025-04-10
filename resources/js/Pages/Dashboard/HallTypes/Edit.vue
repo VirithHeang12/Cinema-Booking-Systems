@@ -1,34 +1,23 @@
 <template>
     <Modal v-slot="{ close }">
-        <div class="container mt-5 d-flex flex-column align-items-center">
-            <h1 class="fw-semibold mb-5 text-zinc-800">{{ __('Update HallType') }}</h1>
-            <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
-                class="col-12">
-                <v-row dense>
-                    <v-col :cols="12">
-                        <vee-field name="name" v-slot="{ field, errors }" :modelValue="form.name">
-                            <v-text-field v-bind="field" v-model="form.name" :label="__('Name')" variant="outlined"
-                                :error-messages="errors"></v-text-field>
-                        </vee-field>
-                    </v-col>
-                    <v-col :cols="12">
-                        <vee-field name="description" v-slot="{ field, errors }" :modelValue="form.description">
-                            <v-textarea v-bind="field" v-model="form.description" :label="__('Description')" variant="outlined"
-                                :error-messages="errors"></v-textarea>
-                        </vee-field>
-                    </v-col>
-                </v-row>
+        <div class="container">
+            <div class="form-header">
+                <h2 class="form-title">Edit Halltype</h2>
+                <v-btn icon class="close-btn" @click="close">
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </div>
 
-                <v-row dense>
-                    <v-col :cols="12">
-                        <v-btn color="primary" class="mt-4 d-inline-flex justify-content-start "
-                            :disabled="!meta.valid || form.processing" @click.prevent="submitForm(setErrors, close)">
-                            <span v-if="form.processing" class="spinner-border spinner-border-sm me-2" role="status"
-                                aria-hidden="true"></span>
-                                {{ __("Submit") }}
-                        </v-btn>
-                    </v-col>
-                </v-row>
+            <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
+                :initialValues="form">
+                <HallTypeForm :form="form"/>
+                <div class="form-actions">
+                    <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
+                        @click.prevent="submitForm(setErrors, close)" size="large" block>
+                        <v-icon class="me-2">mdi-check</v-icon>
+                        Submit
+                    </v-btn>
+                </div>
             </vee-form>
         </div>
     </Modal>
@@ -36,10 +25,10 @@
 
 <script setup>
     import { useForm } from "@inertiajs/vue3";
-    import { markRaw } from "vue";
     import * as yup from "yup";
     import { __ } from "matice";
-    import { defineProps } from "vue";
+    import { onMounted } from 'vue';
+    import HallTypeForm from '../../../Forms/HallTypeForm.vue';
 
     const props = defineProps({
         hall_type: {
@@ -48,32 +37,75 @@
         }
     });
 
-    const schema = markRaw(
-        yup.object({
-            name: yup
-                .string()
-                .required(__("HallType name is required."))
-                .max(50, __("HallType name must not exceed 50 characters.")),
-            description: yup.string().nullable(),
-        })
-    );
-
-    const form = useForm({
-        name: props.hall_type.name,
-        description: props.hall_type.description,
-        id: props.hall_type.id,
+    const schema = yup.object().shape({
+        name: yup
+            .string()
+            .required(__('HallType name is required.'))
+            .max(50, __('HallType name must not exceed 50 characters.')),
+        description: yup.string().nullable(),
     });
 
-    const submitForm = (setErrors, close) => {
-        form.put(route('dashboard.hall_types.update', props.hall_type.id), {
-            preserveState: true,
-            onError: (errors) => {
-                setErrors(errors);
-            },
-            onSuccess: () => {
-                close();
-            },
-        });
-    }
-</script>
+    const form = useForm({
+        name: "",
+        description: "",
+        _method: 'PUT'
+    });
 
+    /**
+     * Pre-fill the form with existing movie data
+     *
+     * @returns void
+     */
+     onMounted(() => {
+        form.name = props.hall_type.name;
+        form.description = props.hall_type.description;
+    });
+
+    /**
+     * Submit the form data to the server
+     *
+     * @param setErrors
+     * @param close
+     *
+     * @returns void
+     */
+    const submitForm = (setErrors, close) => {
+        form.transform((data) => ({
+            ...data,
+            _method: "PUT",
+        })).post(
+            route("dashboard.hall_types.update", {
+                hall_type: props.hall_type.id,
+            }),
+            {
+                preserveScroll: true,
+                preserveState: true,
+                onError: (errors) => {
+                    setErrors(errors.errors);
+                },
+                onSuccess: () => {
+                    form.reset();
+                    close();
+                },
+            }
+        );
+    };
+</script>
+<style>
+    .close-btn {
+        margin-right: -8px;
+        box-shadow: none !important;
+        opacity: 0.7 !important;
+    }
+    .close-btn:hover {
+        background-color: #f5f5f5;
+        opacity: 1;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .halltype-form-container {
+            max-width: 100%;
+        }
+    }
+</style>

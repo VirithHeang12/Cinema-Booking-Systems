@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Exports\MoviesExport;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Movies\ImportMoviesRequest;
-use App\Http\Requests\Movies\SaveRequest;
+use App\Http\Requests\Movies\ImportRequest;
+use App\Http\Requests\Movies\StoreRequest;
 use App\Http\Requests\Movies\UpdateRequest;
 use App\Http\Resources\Api\ClassificationResource;
 use App\Http\Resources\Api\CountryResource;
@@ -82,7 +82,6 @@ class MovieController extends Controller
      * Show the form for creating a new Movie.
      *
      * @return Modal
-     *
      */
     public function create(): Modal
     {
@@ -104,11 +103,11 @@ class MovieController extends Controller
     /**
      * Store a newly created Movie in storage.
      *
-     * @param  SaveRequest  $request
+     * @param  StoreRequest  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
     {
         Gate::authorize('create', Movie::class);
 
@@ -376,11 +375,11 @@ class MovieController extends Controller
     /**
      * Import movies from excel file.
      *
-     * @param  ImportMoviesRequest  $request
+     * @param  ImportRequest  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function import(ImportMoviesRequest $request): \Illuminate\Http\RedirectResponse
+    public function import(ImportRequest $request): \Illuminate\Http\RedirectResponse
     {
         Gate::authorize('import', Movie::class);
 
@@ -398,11 +397,11 @@ class MovieController extends Controller
     }
 
     /**
-     * Show export movies form.
+     * Export movies to excel file.
      *
-     * @return Modal
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function export()
+    public function export(): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         Gate::authorize('export', Movie::class);
 

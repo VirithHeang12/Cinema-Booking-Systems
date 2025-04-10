@@ -3,6 +3,7 @@
     <Head title="About" />
     <TheMovieDetailCard />
     <TheExpansionPanel />
+    <SlideBanner />
   </div>
 
 
@@ -47,6 +48,7 @@ import {Head} from '@inertiajs/vue3';
 import { __ } from 'matice';
 import TheMovieDetailCard from '../Components/TheMovieDetailCard.vue';
 import TheExpansionPanel from '../Components/TheExpansionPanel.vue';
+import SlideBanner from '../Components/SlideBanner.vue';
 
 const items = [
     {

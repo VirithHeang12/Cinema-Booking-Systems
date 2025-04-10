@@ -12,7 +12,7 @@ use App\Imports\GenresImport;
 use App\Exports\GenresExport;
 use InertiaUI\Modal\Modal;
 use Illuminate\Support\Facades\Gate;
-use App\Http\Requests\Genres\SaveRequest;
+use App\Http\Requests\Genres\StoreRequest;
 use App\Http\Requests\Genres\UpdateRequest;
 
 class GenreController extends Controller
@@ -47,15 +47,15 @@ class GenreController extends Controller
         return Inertia::modal('Dashboard/Genres/Create')
             ->baseRoute('dashboard.genres.index');
     }
-    
+
     /**
      * Store a newly created genre in storage.
      *
-     * @param  \Illuminate\Http\SaveRequest  $request
+     * @param  \Illuminate\Http\StoreRequest  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
     {
         Gate::authorize('create', Genre::class);
         DB::beginTransaction();
@@ -67,9 +67,9 @@ class GenreController extends Controller
                 'name' => $data['name'],
                 'description' => $data['description'],
             ]);
-            
+
             DB::commit();
-          
+
             return redirect()->route('dashboard.genres.index')->with('success', __('Genre created.'));
         } catch (\Exception $e) {
             DB::rollBack();

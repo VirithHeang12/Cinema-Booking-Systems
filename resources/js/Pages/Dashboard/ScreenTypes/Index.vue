@@ -478,7 +478,16 @@ const createCallback = () => {
         visitModal(
             route("dashboard.screen_types.delete", {
                 screen_type: item.id,
-            })
+            }),{
+                config: {
+                    slideover: false,
+                    position: 'center',
+                    closeExplicitly: true,
+                    maxWidth: 'xl',
+                    paddingClasses: 'p-4 sm:p-6',
+                    panelClasses: 'bg-white rounded-[12px]',
+                },
+            }
         );
     };
 
@@ -488,7 +497,16 @@ const createCallback = () => {
      * @return void
      */
     const importCallback = () => {
-        visitModal(route("dashboard.screen_types.import.show"));
+        visitModal(route("dashboard.screen_types.import.show"),{
+                config: {
+                    slideover: false,
+                    position: 'center',
+                    closeExplicitly: true,
+                    maxWidth: 'xl',
+                    paddingClasses: 'p-4 sm:p-6',
+                    panelClasses: 'bg-white rounded-[12px]',
+                },
+            });
     };
 
     /**

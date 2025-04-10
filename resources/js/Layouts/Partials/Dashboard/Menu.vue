@@ -53,6 +53,12 @@
                 :class="{ 'active-item': isActive('dashboard.hall_types.index') }"
                 @click="navigateCallback('dashboard.hall_types.index')">
             </v-list-item>
+
+            <!-- Seat Types -->
+            <v-list-item prepend-icon="mdi-seat-outline" title="Seat Types" class="sidebar-item"
+                :class="{ 'active-item': isActive('dashboard.seat_types.index') }"
+                @click="navigateCallback('dashboard.seat_types.index')">
+            </v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>

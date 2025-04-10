@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\ScreenType;
+namespace App\Http\Requests\Movies;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SaveRequest extends FormRequest
+class ImportRequest extends FormRequest
 {
-     /**
+    /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -22,24 +22,22 @@ class SaveRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'              => 'required|string|max:50|unique:hall_types',
-            'description'       => 'string:hall_types',
+            'file'          => 'required|file|mimes:xlsx,xls,csv,txt|max:2048',
         ];
     }
 
     /**
      * Get the error messages for the defined validation rules.
      *
-     * @return array<string, string>
+     * @return array
      */
     public function messages(): array
     {
         return [
-            'name.required' => 'Name is required',
-            'name.string' => 'Name must be a string',
-            'name.max' => 'Name must not be greater than 50 characters',
-            'name.unique' => 'Name must be unique',
-            'description.string' => 'Description must be a string',
+            'file.required' => __('The file is required.'),
+            'file.file'     => __('The file must be a file.'),
+            'file.mimes'    => __('The file must be a file of type: xlsx, xls, csv, txt.'),
+            'file.max'      => __('The file may not be greater than 2MB.'),
         ];
     }
 }

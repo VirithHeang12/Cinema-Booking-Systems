@@ -73,7 +73,7 @@
     };
 </script>
 
-<style>
+<style scoped>
     /* Modal Styling */
     .screen-type-form-center {
         max-width: 800px;
@@ -102,7 +102,7 @@
     .close-btn {
         margin-right: -8px;
     }
-
+/*
     .form-content {
         padding: 0 24px;
         max-height: 70vh;
@@ -117,7 +117,7 @@
     .form-content::-webkit-scrollbar-thumb {
         background-color: rgba(0, 0, 0, 0.2);
         border-radius: 3px;
-    }
+    } */
 
     .form-section {
         margin-bottom: 24px;
@@ -225,28 +225,6 @@
         border-top: none;
         border-radius: 0 0 4px 4px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    /* InertiaModal Overrides */
-    .im-modal-content {
-        max-width: 800px !important;
-        padding: 0 !important;
-        border-radius: 8px !important;
-        overflow: hidden !important;
-        max-height: 95vh !important;
-        /* Limit height to 95% of viewport */
-        display: flex !important;
-        flex-direction: column !important;
-    }
-
-    .im-slideover-content {
-        border-radius: 8px !important;
-        padding: 0 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        max-height: 100vh !important;
-        height: auto !important;
-        /* Set height to auto */
     }
 
     /* Multiselect Styling */

@@ -8,7 +8,6 @@ use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
@@ -32,7 +31,7 @@ class MoviesExport implements FromView, WithStyles, ShouldAutoSize, WithTitle
      */
     public function view(): View
     {
-        return view('exports.movie', [
+        return view('exports.movies', [
             'movies'        => $this->data['movies'],
         ]);
     }

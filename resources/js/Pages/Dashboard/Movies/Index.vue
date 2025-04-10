@@ -450,36 +450,4 @@
         padding-bottom: 14px !important;
         font-size: 14px !important;
     }
-
-    /* Custom styling for the data table */
-    :deep(.v-data-table-server .v-data-table) {
-        box-shadow: none;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    :deep(.v-data-table__tbody tr:hover) {
-        background-color: rgba(66, 133, 244, 0.05);
-    }
-
-    :deep(.v-data-table__thead th) {
-        background-color: #f5f5f5;
-        font-weight: 600 !important;
-        color: #333 !important;
-        text-transform: none !important;
-        letter-spacing: 0 !important;
-    }
-
-    :deep(.v-data-table__thead tr th:first-child) {
-        border-top-left-radius: 8px;
-    }
-
-    :deep(.v-data-table__thead tr th:last-child) {
-        border-top-right-radius: 8px;
-    }
-
-    :deep(.v-btn) {
-        text-transform: none;
-        letter-spacing: 0;
-    }
 </style>

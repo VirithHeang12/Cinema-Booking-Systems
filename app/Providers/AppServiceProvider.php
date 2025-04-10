@@ -126,7 +126,7 @@ class AppServiceProvider extends ServiceProvider
     private function configureRateLimiting(): void
     {
         RateLimiter::for('global', function (Request $request) {
-            return $request->user()->hasRole(RoleEnum::ADMIN)
+            return $request->user()?->hasRole(RoleEnum::ADMIN)
                 ? Limit::none()
                 : Limit::perMinute(100)->by($request->ip());
         });

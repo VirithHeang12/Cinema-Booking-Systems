@@ -10,7 +10,7 @@ use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CountriesImport;
 use App\Exports\CountriesExport;
-use App\Http\Requests\Countries\SaveRequest;
+use App\Http\Requests\Countries\StoreRequest;
 use App\Http\Requests\Countries\UpdateRequest;
 use InertiaUI\Modal\Modal;
 use Illuminate\Support\Facades\Gate;
@@ -69,7 +69,7 @@ class CountryController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
     {
         Gate::authorize('create', Country::class);
 

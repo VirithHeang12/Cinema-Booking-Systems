@@ -1,9 +1,42 @@
 <template>
-    <data-table-server :showNo="true" :title="__('Languages')" :serverItems="serverItems" :items-length="totalItems"
-        :headers="headers" :loading="loading" :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id"
-        @update:options="loadItems" :has-create="true" :has-import="true" :has-export="true" @view="viewCallback"
-        @delete="deleteCallback" @edit="editCallback" @create="createCallback" @import="importCallback"
-        @export="exportCallback" />
+    <div class="Language-list-container">
+        <!-- Main table component -->
+        <data-table-server
+            :showNo="true"
+            title="Languages"
+            createButtonText="New Language"
+            :serverItems="serverItems"
+            :items-length="totalItems"
+            :headers="headers"
+            :loading="loading"
+            :itemsPerPage="itemsPerPage"
+            item-value="id"
+            @update:options="loadItems"
+            @view="viewCallback"
+            @edit="editCallback"
+            @delete="deleteCallback"
+            @create="createCallback"
+            @import="importCallback"
+            @export="exportCallback"
+            emptyStateText="No Language found in the database"
+            :emptyStateAction="true"
+            emptyStateActionText="Add First Language"
+            @empty-action="createCallback"
+            buttonVariant="outlined"
+            viewTooltip="View Language Details"
+            editTooltip="Edit Language Information"
+            deleteTooltip="Delete this Language"
+            titleClass="text-2xl font-bold text-primary mb-4"
+            @filter-apply="applyFilters"
+            @filter-clear="clearFilters"
+            tableClasses="languge-data-table elevation-2 rounded-lg"
+            iconSize="small"
+            deleteConfirmText="Are you sure you want to delete this language? This action cannot be undone."
+            toolbarColor="white"
+            :showSelect="false"
+        >
+        </data-table-server>
+    </div>
 </template>
 
 <script setup>
@@ -14,6 +47,8 @@
     import { __ } from 'matice';
     import { toast } from 'vue3-toastify';
 
+    const sortBy = ref([])
+const lastUpdated = ref(new Date().toLocaleString());
     const props = defineProps({
         languages: {
             type: Object,
@@ -65,15 +100,61 @@
      *
      * @return {void}
      */
-    function loadItems({ page, itemsPerPage }) {
-        router.reload({
-            data: {
-                page,
-                itemsPerPage,
-            },
+
+function loadItems(options) {
+    loading.value = true;
+    page.value = options.page;
+    sortBy.value = options.sortBy;
+
+    let sortKeyWithDirection = options.sortBy.length > 0 ? options.sortBy[0].key : null;
+
+    if (sortKeyWithDirection) {
+        sortKeyWithDirection = options.sortBy[0].order === 'asc' ? sortKeyWithDirection : '-' + sortKeyWithDirection;
+    }
+
+    router.reload({
+        data: {
+            page: options.page,
+            itemsPerPage: options.itemsPerPage,
+            sort: sortKeyWithDirection,
+            'filter[search]': options.search,
+        },
+        preserveState: true,
+        only: ['languages'],
+        onSuccess: () => {
+            loading.value = false;
+            lastUpdated.value = new Date().toLocaleString();
+        },
+        onError: () => {
+            loading.value = false;
+            notify('Failed to load data', 'error');
+        }
+    });
+}
+
+    function applyFilters() {
+        loadItems({
+            page: 1,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
         });
     }
 
+    /**
+     * Clear all filters
+     *
+     * @return void
+     */
+    function clearFilters() {
+        filterCountry.value = null;
+        filterClassification.value = null;
+        filterYear.value = null;
+        loadItems({
+            page: 1,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
+        });
+    }
     const viewCallback = (item) => {
         visitModal(
             route("dashboard.languages.show", {
@@ -94,7 +175,16 @@
         visitModal(
             route("dashboard.languages.delete", {
                 language: item.id,
-            })
+            }),{
+                config: {
+                    slideover: false,
+                    position: 'center',
+                    closeExplicitly: true,
+                    maxWidth: 'xl',
+                    paddingClasses: 'p-4 sm:p-6',
+                    panelClasses: 'bg-white rounded-[12px]',
+                },
+            }
         );
     };
 
@@ -103,7 +193,16 @@
     };
 
     const importCallback = () => {
-        visitModal(route("dashboard.languages.import.show"));
+        visitModal(route("dashboard.languages.import.show"),{
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: 'xl',
+                paddingClasses: 'p-4 sm:p-6',
+                panelClasses: 'bg-white rounded-[12px]',
+            },
+        });
     };
 
     const exportCallback = () => {
