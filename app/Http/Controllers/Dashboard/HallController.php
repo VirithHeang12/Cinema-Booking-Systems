@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Halls\StoreRequest;
 use App\Http\Resources\Api\HallTypeResource;
 use App\Http\Resources\HallResource;
+use App\Http\Resources\SeatTypeResource;
 use App\Models\Hall;
 use App\Models\HallType;
-use App\Models\Movie;
-use App\Models\MovieGenre;
-use App\Models\MovieSubtitle;
+use App\Models\HallSeatType;
+use App\Models\Seat;
 use App\Models\SeatType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ use InertiaUI\Modal\Modal;
 class HallController extends Controller
 {
     /**
-     * Display a listing of Halls.
+     * Display a listing of halls.
      *
      * @return \Inertia\Response
      */
@@ -60,172 +61,209 @@ class HallController extends Controller
         $halls = HallResource::collection($halls)->response()->getData(true);
 
         return Inertia::render('Dashboard/Halls/Index', [
-            'halls'         => $halls,
+            'halls' => $halls,
         ]);
     }
 
     /**
-     * Show the form for creating a new Movie.
+     * Show the form for creating a new hall.
      *
      * @return Modal
      */
     public function create(): Modal
     {
-        Gate::authorize('create', Movie::class);
+        Gate::authorize('create', Hall::class);
 
-        $hallTypes = HallTypeResource::collection(HallType::all())->response()->getData(true);
-        $seatTypes = SeatTypeResource::collection(SeatType::all())->response()->getData(true);
+        $hallTypes = HallTypeResource::collection(HallType::all())->toArray(request());
+        $seatTypes = SeatTypeResource::collection(SeatType::all())->toArray(request());
 
         return Inertia::modal('Dashboard/Halls/Create', [
-
-        ]);
+            'hall_types' => $hallTypes,
+            'seat_types' => $seatTypes,
+        ])->baseRoute('dashboard.halls.index');
     }
 
     /**
-     * Store a newly created Movie in storage.
+     * Store a newly created Hall in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreRequest  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('create', Hall::class);
+
+        $data = $request->validated();
+
         DB::beginTransaction();
 
         try {
-
-            $movie = Movie::create([
-                'title'                     => $request->title,
-                'description'               => $request->description,
-                'release_date'              => $request->release_date,
-                'duration'                  => $request->duration,
-                'rating'                    => $request->rating,
-                'trailer_url'               => $request->trailer_url,
-                'thumbnail_url'             => $request->thumbnail_url,
-                'production_company_id'     => $request->production_company_id,
-                'country_id'                => $request->country_id,
-                'classification_id'         => $request->classification_id,
-                'language_id'               => $request->language_id,
+            $hall = Hall::create([
+                'name'              => $request->name,
+                'description'       => $request->description,
+                'hall_type_id'      => $request->hall_type_id,
             ]);
 
-            foreach ($request->movieGenres as $genre) {
-                MovieGenre::create([
-                    'movie_id' => $movie->id,
-                    'genre_id' => $genre,
-                ]);
-            }
+            foreach ($request->hallSeatTypes as $hallSeatTypeData) {
+                $maxCapacity = (int) $hallSeatTypeData['maximum_capacity'];
 
-            foreach ($request->movieSubtitles as $subtitle) {
-                MovieSubtitle::create([
-                    'movie_id' => $movie->id,
-                    'language_id' => $subtitle,
+                HallSeatType::create([
+                    'hall_id'               => $hall->id,
+                    'seat_type_id'          => $hallSeatTypeData['seat_type_id'],
+                    'maximum_capacity'      => $maxCapacity,
                 ]);
+
+                $rows = $hallSeatTypeData['rows'];
+
+                foreach ($rows as $row) {
+                    for ($seatNum = 1; $seatNum <= $maxCapacity; $seatNum++) {
+                        Seat::create([
+                            'hall_id'           => $hall->id,
+                            'seat_type_id'      => $hallSeatTypeData['seat_type_id'],
+                            'row'               => $row,
+                            'number'            => $seatNum,
+                        ]);
+                    }
+                }
             }
 
             DB::commit();
 
-            return redirect()->route('dashboard.movies.index')->with('success', 'Movie created.');
+            return redirect()->route('dashboard.halls.index')->with('success', 'Hall created successfully.');
         } catch (\Exception $e) {
-            dd($e);
             DB::rollBack();
-
-            return redirect()->route('dashboard.movies.index')->with('error', 'Movie not created.');
+            return redirect()->route('dashboard.halls.index')->with('error', 'Hall creation failed: ' . $e->getMessage());
         }
     }
 
     /**
-     * Display the specified Movie.
+     * Display the specified Hall.
      *
-     * @param  \App\Models\Movie  $Movie
+     * @param  \App\Models\Hall  $hall
      *
      * @return \Inertia\Response
      */
-    public function show(Movie $hall_type): \Inertia\Response
+    public function show(Hall $hall): \Inertia\Response
     {
-        return Inertia::render('Dashboard/Movies/Show', [
-            'hall_type'      => $hall_type,
+        Gate::authorize('view', $hall);
+
+        $hall->load(['hallType', 'seats', 'hallSeatTypes.seatType']);
+
+        return Inertia::render('Dashboard/Halls/Show', [
+            'hall' => new HallResource($hall),
         ]);
     }
 
     /**
-     * Show the form for editing the specified Movie.
+     * Show the form for editing the specified Hall.
      *
-     * @param  \App\Models\Movie  $Movie
+     * @param  \App\Models\Hall  $hall
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function edit(Movie $hall_type): \Inertia\Response
+    public function edit(Hall $hall): Modal
     {
-        return Inertia::render('Dashboard/Movies/Edit', [
-            'hall_type'      => $hall_type,
-        ]);
+        Gate::authorize('update', $hall);
+
+        $hallTypes = HallTypeResource::collection(HallType::all())->toArray(request());
+        $seatTypes = SeatTypeResource::collection(SeatType::all())->toArray(request());
+
+        $hall->load(['hallType', 'hallSeatTypes', 'hallSeatTypes.seatType', 'hallSeatTypes.seatType.seats']);
+
+        $hall->hallSeatTypes = $hall->hallSeatTypes->map(function ($hallSeatType) {
+            return [
+                'id'                    => $hallSeatType->id,
+                'seat_type_id'          => $hallSeatType->seat_type_id,
+                'maximum_capacity'      => $hallSeatType->maximum_capacity,
+                'rows'                  => $hallSeatType->seatType->seats->groupBy('row')->keys()->all()
+            ];
+        });
+
+        return Inertia::modal('Dashboard/Halls/Edit', [
+            'hall'                      => $hall,
+            'hall_types'                => $hallTypes,
+            'seat_types'                => $seatTypes,
+        ])->baseRoute('dashboard.halls.index');
     }
 
     /**
-     * Update the specified Movie in storage.
+     * Update the specified Hall in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Movie  $Movie
+     * @param  \App\Models\Hall  $hall
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Movie $hall_type): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, Hall $hall): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('update', $hall);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'hall_type_id' => 'required|exists:hall_types,id',
+        ]);
+
         DB::beginTransaction();
 
         try {
-
-            $hall_type->update([
+            $hall->update([
                 'name' => $request->name,
                 'description' => $request->description,
+                'hall_type_id' => $request->hall_type_id,
             ]);
 
             DB::commit();
 
-            return redirect()->route('dashboard.hall_types.index')->with('success', 'Movie updated.');
+            return redirect()->route('dashboard.halls.index')->with('success', 'Hall updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.hall_types.index')->with('error', 'Movie not updated.');
+            return redirect()->route('dashboard.halls.index')->with('error', 'Hall update failed.');
         }
     }
 
     /**
-     * Show the form for deleting the specified Movie.
+     * Show the form for deleting the specified Hall.
      *
-     * @param  \App\Models\Movie  $Movie
+     * @param  \App\Models\Hall  $hall
      *
      * @return \Inertia\Response
      */
-    public function delete(Movie $hall_type): \Inertia\Response
+    public function delete(Hall $hall): \Inertia\Response
     {
-        return Inertia::render('Dashboard/Movies/Delete', [
-            'hall_type'      => $hall_type,
+        Gate::authorize('delete', $hall);
+
+        return Inertia::render('Dashboard/Halls/Delete', [
+            'hall' => new HallResource($hall),
         ]);
     }
 
     /**
-     * Remove the specified Movie from storage.
+     * Remove the specified Hall from storage.
      *
-     * @param  \App\Models\Movie  $Movie
+     * @param  \App\Models\Hall  $hall
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Movie $hall_type): \Illuminate\Http\RedirectResponse
+    public function destroy(Hall $hall): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('delete', $hall);
+
         DB::beginTransaction();
 
         try {
-
-            $hall_type->delete();
+            // This will cascade delete related records due to foreign key constraints
+            $hall->delete();
 
             DB::commit();
 
-            return redirect()->route('dashboard.hall_types.index')->with('success', 'Movie deleted.');
+            return redirect()->route('dashboard.halls.index')->with('success', 'Hall deleted successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.hall_types.index')->with('error', 'Movie not deleted.');
+            return redirect()->route('dashboard.halls.index')->with('error', 'Hall deletion failed.');
         }
     }
 }

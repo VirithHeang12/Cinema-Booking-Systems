@@ -19,7 +19,7 @@ class SeatTypeResource extends JsonResource
             'name'        => $this->name,
             'description' => $this->description,
             'price'       => $this->price,
-            'seats_count' => $this->seats_count,
+            'seats_count' => $this->whenCounted('seats'),
         ];
     }
 }

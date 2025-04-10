@@ -241,7 +241,7 @@ class MovieController extends Controller
         );
 
         return Inertia::modal('Dashboard/Movies/Edit', [
-            'movie'                 => $movie->load(['movieGenres', 'movieSubtitles']),
+            'movie'                 => $movie,
             'genres'                => $genres,
             'countries'             => $countries,
             'classifications'       => $classifications,
