@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Countries;
+namespace App\Http\Requests\Genres;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SaveRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,8 @@ class SaveRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:50|unique:countries',
+            'name'                 => 'required|string|max:50|unique:genres',
+            'description'          => 'required|string|max:250',
         ];
     }
 
@@ -38,6 +39,9 @@ class SaveRequest extends FormRequest
             'name.string' => 'Name must be a string',
             'name.max' => 'Name must not be greater than 50 characters',
             'name.unique' => 'Name must be unique',
+            'description.required' => 'Description is required',
+            'description.string' => 'Code must be a string',
+            'description.max' => 'Code must not be greater than 250 characters',
         ];
     }
 }

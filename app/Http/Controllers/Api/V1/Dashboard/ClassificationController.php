@@ -7,7 +7,7 @@ use App\Models\Classification;
 use App\Http\Resources\Api\ClassificationResource;
 use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\Classifications\SaveRequest;
+use App\Http\Requests\Classifications\StoreRequest;
 use App\Http\Requests\Classifications\UpdateRequest;
 
 class ClassificationController extends Controller
@@ -35,7 +35,7 @@ class ClassificationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SaveRequest $request)
+    public function store(StoreRequest $request)
     {
         DB::beginTransaction();
         try{

@@ -1,119 +1,85 @@
 <template>
-    <div>
-        <h4 class="text-gray-600">Create Movie</h4>
-        <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
+    <Modal v-slot="{ close }">
+        <div class="form-container">
+            <div class="form-header !mb-3">
+                <h2 class="form-title">Create Hall</h2>
+                <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
+                    @click="close"></button>
+            </div>
 
-            <vee-field name="name" v-slot="{ field, errors }">
-                <v-text-field v-bind="field" :error-messages="errors" v-model="form.name" :label="__('Name')"
-                    variant="outlined"></v-text-field>
-            </vee-field>
+            <vee-form class="form-content-container" :validation-schema="schema" @submit.prevent="submitForm"
+                v-slot="{ meta, setErrors }">
+                <hall-form :form="form" :seat_types="seat_types" :hall_types="hall_types"></hall-form>
 
-            <vee-field name="description" v-slot="{ field, errors }">
-                <v-textarea v-bind="field" :error-messages="errors" v-model="form.description"
-                    :label="__('Description')" variant="outlined"></v-textarea>
-            </vee-field>
-
-            <vee-field name="hall_type_id" v-slot="{ errors }">
-                <v-autocomplete :error-messages="errors" v-model="form.hall_type_id" :label="__('Hall Type')"
-                    variant="outlined" :items="hallTypes" item-title="name" item-value="id"></v-autocomplete>
-            </vee-field>
-
-
-            <vee-field name="hall_seat_types" v-slot="{ field, errors }">
-                <v-select v-bind="field" :error-messages="errors" v-model="form.hall_seat_types"
-                    :label="__('Seat Types')" variant="outlined" :items="seatTypes" item-title="name" item-value="id"
-                    multiple></v-select>
-            </vee-field>
-
-            <template v-for="seatType in form.hall_seat_types" :key="seatType.id">
-                <v-card :elevation="10">
-                    <p>{{ seatType }}</p>
-                    <vee-field name="name" v-slot="{ field, errors }">
-                        <v-text-field v-bind="field" :error-messages="errors" v-model="form.name"
-                            :label="__('Maximal Seat')" variant="outlined"></v-text-field>
-                    </vee-field>
-
-                    <vee-field name="a" v-slot="{ field, errors }">
-                        <v-text-field v-bind="field" :error-messages="errors" v-model="form.name" :label="__('Name')"
-                            variant="outlined"></v-text-field>
-                    </vee-field>
-                </v-card>
-            </template>
-
-            <v-btn @click="close" color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
-                @click.prevent="submitForm(setErrors)" block>Submit</v-btn>
-        </vee-form>
-    </div>
+                <div class="form-actions">
+                    <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
+                        @click.prevent="submitForm(setErrors, close)" size="large" block>
+                        <v-icon class="me-2">mdi-check</v-icon>
+                        {{ __("Submit") }}
+                    </v-btn>
+                </div>
+            </vee-form>
+        </div>
+    </Modal>
 </template>
 
 <script setup>
     import { useForm } from '@inertiajs/vue3';
-    import axios from 'axios';
     import { __ } from 'matice';
-    import { onMounted, ref } from 'vue';
     import * as yup from 'yup';
-
-    const schema = yup.object().shape({
-        // title: yup.string().required(__('title is required')),
-        // release_date: yup.date()
-        //     .required(__('release date is required'))
-        //     .max(new Date(), __('release date cannot be in the future')),
-        // duration: yup.number().required(__('duration is required')),
-        // rating: yup.number().min(1, __('rating must be at least 1')).max(10, __('rating must be at most 10')).required(__('rating is required')).typeError(__('rating must be a number')),
-        // country_id: yup.number().required(__('country is required')),
-        // movieGenres: yup.array().of(yup.number()).min(1, __('at least one genre is required')).required(__('genre is required')),
-        // movieLanguages: yup.array().of(yup.number()).min(1, __('at least one language is required')).required(__('language is required')),
-    });
+    import HallForm from '../../../Forms/HallForm.vue';
 
     const props = defineProps({
-        seatTypes: Array,
+        seat_types: {
+            type: Array,
+            required: true,
+        },
+        hall_types: {
+            type: Array,
+            required: true,
+        },
+    });
+
+    const schema = yup.object().shape({
+        name: yup.string().required(__('Name is required')),
+        description: yup.string().nullable(),
+        hall_type_id: yup.number().required(__('Hall type is required')),
     });
 
     const form = useForm({
+        name: null,
+        description: null,
         hall_type_id: null,
-        name: '',
-        description: '',
-        hall_seat_types: [],
-        hall_seats: [],
+        hallSeatTypes: [],
+        seats: [],
     });
 
-    const hallTypes = ref([]);
-
-    const submitForm = () => {
-        form.post(route('dashboard.halls.store'));
-    }
-
     /**
-     * Load Hall Types
+     * Submit the form
      *
-     * @returns {Promise<void>}
+     * @param setErrors
+     * @param close
+     *
+     * @returns void
      */
-    const loadHallTypes = async () => {
-        try {
-            const response = await axios.get('http://cinema-booking-systems.test/api/v1/dashboard/hall_types', {
-                headers: {
-                    'Accept': 'application/json',
-                }
-            });
-
-            if (response.data) {
-                hallTypes.value = response.data;
-            }
-        } catch (error) {
-            console.error(error);
+    const submitForm = (setErrors, close) => {
+        // Validate that at least one seat type is added
+        if (!form.hallSeatTypes || form.hallSeatTypes.length === 0) {
+            // Replace with a better notification system
+            alert(__('Please add at least one seat type'));
+            return;
         }
+
+        form.post(route('dashboard.halls.store'), {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                form.reset();
+                close();
+            },
+            onError: (errors) => {
+                setErrors(errors);
+            },
+        });
     }
-
-
-    /**
-     * on mounted
-     *
-     * @returns {Promise<void>}
-     */
-    onMounted(async () => {
-        await Promise.all([
-            loadHallTypes(),
-        ]);
-    });
-
 </script>

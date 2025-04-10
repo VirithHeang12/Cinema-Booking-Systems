@@ -6,7 +6,7 @@
                 <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close" @click="close"></button>
             </div>
 
-            <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
+            <vee-form class="form-content-container" :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
                 :initialValues="form">
                 <movie-form :form="form" :countries="countries" :genres="genres" :languages="languages"
                     :classifications="classifications"></movie-form>
@@ -14,7 +14,7 @@
                     <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
                         @click.prevent="submitForm(setErrors, close)" size="large" block>
                         <v-icon class="me-2">mdi-check</v-icon>
-                        Submit
+                        {{ __("Submit") }}
                     </v-btn>
                 </div>
             </vee-form>

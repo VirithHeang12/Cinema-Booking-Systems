@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Languages\SaveRequest;
+use App\Http\Requests\Languages\StoreRequest;
 use App\Http\Requests\Languages\UpdateRequest;
 use App\Http\Resources\Api\LanguageResource;
 use App\Models\Language;
@@ -38,11 +38,11 @@ class LanguageController extends Controller
     /**
      * Store a newly created language in storage.
      *
-     * @param SaveRequest $request
+     * @param StoreRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(SaveRequest $request)
+    public function store(StoreRequest $request)
     {
         DB::beginTransaction();
 

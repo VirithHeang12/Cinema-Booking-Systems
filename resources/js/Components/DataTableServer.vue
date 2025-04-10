@@ -121,7 +121,7 @@
 
             <!-- Empty State Customization -->
             <template v-slot:no-data>
-                <div class="empty-state-wrapper">
+                <div class="empty-state-wrapper py-5">
                     <v-icon v-if="emptyStateIcon" :size="emptyStateIconSize" :color="emptyStateIconColor" class="mb-4">
                         {{ emptyStateIcon }}
                     </v-icon>

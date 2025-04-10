@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Language;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -15,12 +13,7 @@ Route::middleware(['throttle:global'])->group(function () {
         require_once __DIR__.'/information.php';
 
         Route::get('/', function () {
-            $perPage = request()->query('itemsPerPage', 5);
-            $languages = Language::paginate($perPage)->appends(request()->query());
-
-            return Inertia::render('Index', [
-                'languages' => $languages
-            ]);
+            return Inertia::render('Index');
         })->name('index');
     });
 });

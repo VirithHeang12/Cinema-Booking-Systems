@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Countries\SaveRequest;
+use App\Http\Requests\Countries\StoreRequest;
 use App\Http\Requests\Countries\UpdateRequest;
 use App\Http\Resources\Api\CountryResource;
 use App\Models\Country;
@@ -35,11 +35,11 @@ class CountryController extends Controller
      /**
      * Store a newly created country in storage.
      *
-     * @param SaveRequest $request
+     * @param StoreRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(SaveRequest $request)
+    public function store(StoreRequest $request)
     {
         DB::beginTransaction();
 
