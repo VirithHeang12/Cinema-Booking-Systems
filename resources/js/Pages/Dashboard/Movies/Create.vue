@@ -13,7 +13,7 @@
                     <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
                         @click.prevent="submitForm(setErrors, close)" size="large" block>
                         <v-icon class="me-2">mdi-check</v-icon>
-                        Submit
+                        {{ __("Submit") }}
                     </v-btn>
                 </div>
             </vee-form>

@@ -437,30 +437,6 @@
         color: #757575;
     }
 
-    /* Footer styling */
-    .details-footer {
-        padding: 16px 24px;
-        border-top: 1px solid #e0e0e0;
-    }
-
-    .close-button-large {
-        width: 100%;
-        padding: 10px;
-        border: none;
-        background-color: #1976d2;
-        color: white;
-        border-radius: 4px;
-        font-weight: 500;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .close-icon {
-        margin-right: 8px;
-    }
-
     /* Mobile Responsiveness */
     @media (max-width: 768px) {
         .two-columns {
