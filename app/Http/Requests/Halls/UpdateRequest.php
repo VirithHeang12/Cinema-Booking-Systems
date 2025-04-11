@@ -3,8 +3,9 @@
 namespace App\Http\Requests\Halls;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +23,12 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'                              => 'required|string|max:255',
+            'name'                              => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('halls', 'name')->ignore($this->route('hall')),
+            ],
             'description'                       => 'nullable|string',
             'hall_type_id'                      => 'required|exists:hall_types,id',
             'hallSeatTypes'                     => 'required|array|min:1',
@@ -46,7 +52,7 @@ class StoreRequest extends FormRequest
             'name.unique'                               => 'The hall name has already been taken.',
             'description.string'                        => 'The hall description must be a string.',
             'hall_type_id.required'                     => 'The hall type ID is required.',
-            'hall_type_id.exists'                       => 'The selected hall type ID is invalid.',
+            'hall_type_id.exists'                      => 'The selected hall type ID is invalid.',
             'hallSeatTypes.required'                    => 'At least one hall seat type is required.',
             'hallSeatTypes.array'                       => 'The hall seat types must be an array.',
             'hallSeatTypes.*.seat_type_id.required'     => 'The seat type ID is required for each hall seat type.',

@@ -135,7 +135,11 @@
     const viewCallback = (item) => {
         visitModal(route('dashboard.seat_types.show', {
             seat_type: item.id,
-        }));
+        }), {
+            config: {
+                slideover: false
+            }
+        });
     };
 
     /**

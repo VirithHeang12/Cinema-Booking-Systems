@@ -9,7 +9,7 @@
 
             <vee-form class="form-content-container" :validation-schema="schema" @submit.prevent="submitForm"
                 v-slot="{ meta, setErrors }" :initialValues="form">
-                <hall-form :form="form" :seat_types="seat_types" :hall_types="hall_types"></hall-form>
+                <hall-form v-model:form="form" :seat_types="seat_types" :hall_types="hall_types"></hall-form>
                 <div class="form-actions">
                     <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
                         @click.prevent="submitForm(setErrors, close)" size="large" block>
