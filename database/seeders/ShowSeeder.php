@@ -104,6 +104,13 @@ class ShowSeeder extends Seeder
                 'show_time'         => '2021-01-03 16:00:00',
                 'status'            => 'Scheduled',
             ],
+            // [
+            //     'movie_subtitle_id' => 1,
+            //     'hall_id'           => 4,
+            //     'screen_type_id'    => 1,
+            //     'show_time'         => '2025-06-27 10:00:00',
+            //     'status'            => 'Scheduled',
+            // ],
         ];
 
         foreach ($shows as $show) {

@@ -106,6 +106,10 @@
     "Cinemas": "Cinema",
     "Promotions": "Promotions",
     "F&B": "F&B",
-    "Profile": "Profile"
+    "Profile": "Profile",
+    "booking": {
+        "title": "Booking Ticket",
+        "subtitle": "Please select your seats and proceed with payment to confirm your booking."
+    }
 
 }
