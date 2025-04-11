@@ -11,7 +11,7 @@
       </v-row>
 
       <div class="row">
-        <div class="col-12 col-md-9 mb-3">
+        <div class="col-12 col-md-8 mb-3">
           <div class="card rounded-4">
             <div class="card-body">
               <div
@@ -38,7 +38,7 @@
           </div>
         </div>
 
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-4">
           <div class="card rounded-4">
             <div class="card-body">
               <img
@@ -63,7 +63,7 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, reactive, computed } from "vue";
+  import { ref, onMounted } from "vue";
   import { __ } from "matice";
   import axios from "axios";
   import Seat from "../Components/Seat.vue";
