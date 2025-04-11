@@ -36,7 +36,7 @@
     import { useForm } from "@inertiajs/vue3";
     import { __ } from "matice";
     import * as yup from "yup";
-    import languageForm from "../../../Forms/LanguageForm.vue";
+    import LanguageForm from "../../../Forms/LanguageForm.vue";
 
     const schema = yup.object().shape({
         name: yup.string().required(__("Language name is required")),

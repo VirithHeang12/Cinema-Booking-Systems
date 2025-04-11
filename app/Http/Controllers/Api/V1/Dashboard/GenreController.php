@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Genres\SaveRequest;
+use App\Http\Requests\Genres\StoreRequest;
 use App\Http\Requests\Genres\UpdateRequest;
 use App\Http\Resources\Api\GenreResource;
 use App\Models\Genre;
@@ -30,7 +30,7 @@ class GenreController extends Controller
                 'description'
             ])
             ->get();
-      
+
         $genres = GenreResource::collection($genres);
 
         return response()->json($genres);
@@ -39,11 +39,11 @@ class GenreController extends Controller
     /**
      * Store a newly created genre in storage.
      *
-     * @param SaveRequest $request
+     * @param StoreRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(SaveRequest $request)
+    public function store(StoreRequest $request)
     {
         DB::beginTransaction();
 

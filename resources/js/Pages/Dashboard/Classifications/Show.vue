@@ -1,28 +1,48 @@
 <template>
-    <Modal>
-        <div>
-            <h4 class="text-gray-600 mb-4">Show Classification</h4>
-            <ul class="list-group">
-                <li class="list-group-item text-gray-600">
-                    <span class="fw-semibold text-gray-600">Name: </span>
-                    {{ props.classification.name }}
-                </li>
-                <li class="list-group-item text-gray-600">
-                    <span class="fw-semibold text-gray-600">Description: </span>
-                    {{ props.classification.description }}
-                </li>
-            </ul>
+  <Modal v-slot="{ close }">
+    <div class="form-container">
+      <div class="form-header !mb-0">
+        <h2 class="form-title">{{ classification.name }}</h2>
+        <button
+          type="button"
+          class="btn btn-sm btn-close shadow-none"
+          aria-label="Close"
+          @click="close"
+        ></button>
+      </div>
+
+      <div class="form-content h-full !font-medium">
+        <div class="details-section">
+          <div class="field-row">
+            <div class="field-label">Name</div>
+            <div class="field-value">{{ classification.name }}</div>
+          </div>
+
+          <div class="field-row">
+            <div class="field-label">Classification</div>
+            <div class="field-value">{{ classification.description }}</div>
+          </div>
         </div>
-    </Modal>
+      </div>
+
+      <div class="details-footer">
+        <button class="close-button-large" @click="close">
+          <v-icon class="close-icon" size="small">mdi-close</v-icon>
+          CLOSE
+        </button>
+      </div>
+    </div>
+  </Modal>
 </template>
 
 <script setup>
-    import { defineProps } from "vue";
+  import { __ } from "matice";
+  import { defineProps } from "vue";
 
-    const props = defineProps({
-        classification: {
-            type: Object,
-            required: true,
-        },
-    });
+  const props = defineProps({
+    classification: {
+      type: Object,
+      required: true,
+    },
+  });
 </script>

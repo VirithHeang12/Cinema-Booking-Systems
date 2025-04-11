@@ -47,6 +47,12 @@ class PermissionSeeder extends Seeder
             PermissionEnum::CREATE_GENRE,
             PermissionEnum::VIEW_ANY_GENRES,
             PermissionEnum::VIEW_GENRE,
+            PermissionEnum::CREATE_MOVIE,
+            PermissionEnum::VIEW_ANY_MOVIES,
+            PermissionEnum::VIEW_MOVIE,
+            PermissionEnum::CREATE_HALL,
+            PermissionEnum::VIEW_ANY_HALLS,
+            PermissionEnum::VIEW_HALL,
         ]);
 
         $user               = User::create([

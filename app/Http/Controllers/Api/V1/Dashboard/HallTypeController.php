@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\HallTypes\SaveRequest;
+use App\Http\Requests\HallTypes\StoreRequest;
 use App\Http\Requests\HallTypes\UpdateRequest;
 use App\Http\Resources\Api\HallTypeResource;
 use App\Models\HallType;
@@ -40,11 +40,11 @@ class HallTypeController extends Controller
     /**
      * Store a newly created hallType in storage.
      *
-     * @param SaveRequest $request
+     * @param StoreRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(SaveRequest $request)
+    public function store(StoreRequest $request)
     {
         DB::beginTransaction();
 

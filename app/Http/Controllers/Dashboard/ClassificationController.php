@@ -10,8 +10,12 @@ use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ClassificationsImport;
 use App\Exports\ClassificationsExport;
+use App\Http\Resources\Api\ClassificationResource;
 use InertiaUI\Modal\Modal;
 use Illuminate\Support\Facades\Gate;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
+
 
 
 
@@ -26,8 +30,21 @@ class ClassificationController extends Controller
     {
         Gate::authorize('viewAny', Classification::class);
 
-        $perPage = request()->query('itemsPerPage', 5);
-        $classifications = Classification::paginate($perPage)->appends(request()->query());
+        $perPage = request()->query('itemsPerPage', 10);
+
+        $classifications = QueryBuilder::for(Classification::class)
+        ->allowedFilters([
+            AllowedFilter::callback('search', function ($query, $value) {
+                $query->where('name', 'like', "%{$value}%")
+                    ->orWhere('description', 'like', "%{$value}%");
+            }),
+        ])
+        ->allowedSorts('name', 'description')
+        ->paginate($perPage)
+        ->appends(request()->query());
+
+        $classifications = ClassificationResource::collection($classifications)->response()->getData(true);
+
         return Inertia::render('Dashboard/Classifications/Index', [
             'classifications' => $classifications
         ]);

@@ -1,29 +1,47 @@
 <template>
-    <Modal>
-        <div>
-            <h1 class="text-lg font-semibold mb-4 text-primary-900 text-center">{{ __('Genres') }}</h1>
-            <hr class="my-2" />
-            <div class="flex justify-between text-primary-900">
-                <span>{{ __('Name') }} : </span>
-                <span>{{ props.genre.name }}</span>
+    <Modal v-slot="{ close }">
+        <div class="form-container">
+            <div class="form-header !mb-0">
+                <h2 class="form-title">{{ genre.name }}</h2>
+                <button
+                    type="button"
+                    class="btn btn-sm btn-close shadow-none"
+                    aria-label="Close"
+                    @click="close"
+                ></button>
             </div>
-            <div class="flex justify-between text-primary-900">
-                <span>{{ __('Description') }} : </span>
-                <span>{{ props.genre.description }}</span>
+
+            <div class="form-content h-full !font-medium">
+                <div class="details-section">
+                    <div class="field-row">
+                        <div class="field-label">Name</div>
+                        <div class="field-value">{{ genre.name }}</div>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field-label">Genre</div>
+                        <div class="field-value">{{ genre.description }}</div>
+                    </div>
+                </div>
             </div>
-            <!-- <h1>Name: {{ props.genre.name }}</h1> -->
-            <!-- <h1>Description: {{ props.genre.description }}</h1> -->
+
+            <div class="details-footer">
+                <button class="close-button-large" @click="close">
+                    <v-icon class="close-icon" size="small">mdi-close</v-icon>
+                    CLOSE
+                </button>
+            </div>
         </div>
     </Modal>
 </template>
-
 <script setup>
-    import { defineProps } from 'vue';
+import { defineProps } from "vue";
+import { __ } from "matice";
 
-    const props = defineProps({
-        genre: {
-            type: Object,
-            required: true,
-        }
-    });
+const props = defineProps({
+    genre: {
+        type: Object,
+        required: true,
+    },
+});
 </script>
