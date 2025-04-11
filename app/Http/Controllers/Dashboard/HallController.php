@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Halls\StoreRequest;
+use App\Http\Requests\Halls\UpdateRequest;
 use App\Http\Resources\Api\HallTypeResource;
 use App\Http\Resources\HallResource;
 use App\Http\Resources\SeatTypeResource;
@@ -12,7 +13,6 @@ use App\Models\HallType;
 use App\Models\HallSeatType;
 use App\Models\Seat;
 use App\Models\SeatType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -188,31 +188,59 @@ class HallController extends Controller
     }
 
     /**
-     * Update the specified Hall in storage.
+     * Update the specified hall in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateRequest  $request
      * @param  \App\Models\Hall  $hall
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Hall $hall): \Illuminate\Http\RedirectResponse
+    public function update(UpdateRequest $request, Hall $hall): \Illuminate\Http\RedirectResponse
     {
         Gate::authorize('update', $hall);
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'hall_type_id' => 'required|exists:hall_types,id',
-        ]);
+        $data = $request->validated();
 
         DB::beginTransaction();
 
         try {
             $hall->update([
-                'name' => $request->name,
-                'description' => $request->description,
-                'hall_type_id' => $request->hall_type_id,
+                'name'              => $data['name'],
+                'description'       => $data['description'],
+                'hall_type_id'      => $data['hall_type_id'],
             ]);
+
+            $hall->load(['hallType', 'hallSeatTypes', 'hallSeatTypes.seatType', 'hallSeatTypes.seatType.seats']);
+
+            // Delete existing hall seat types and their associated seats
+            foreach ($hall->hallSeatTypes as $hallSeatType) {
+                $hallSeatType->seatType->seats()->delete();
+                $hallSeatType->delete();
+            }
+
+            // Create new hall seat types and their associated seats
+            foreach ($data['hallSeatTypes'] as $hallSeatTypeData) {
+                $maxCapacity = (int) $hallSeatTypeData['maximum_capacity'];
+
+                HallSeatType::create([
+                    'hall_id'               => $hall->id,
+                    'seat_type_id'          => $hallSeatTypeData['seat_type_id'],
+                    'maximum_capacity'      => $maxCapacity,
+                ]);
+
+                $rows = $hallSeatTypeData['rows'];
+
+                foreach ($rows as $row) {
+                    for ($seatNum = 1; $seatNum <= $maxCapacity; $seatNum++) {
+                        Seat::create([
+                            'hall_id'           => $hall->id,
+                            'seat_type_id'      => $hallSeatTypeData['seat_type_id'],
+                            'row'               => $row,
+                            'number'            => $seatNum,
+                        ]);
+                    }
+                }
+            }
 
             DB::commit();
 
@@ -225,23 +253,23 @@ class HallController extends Controller
     }
 
     /**
-     * Show the form for deleting the specified Hall.
+     * Show the form for deleting the specified hall.
      *
      * @param  \App\Models\Hall  $hall
      *
-     * @return \Inertia\Response
+     * @return Modal
      */
-    public function delete(Hall $hall): \Inertia\Response
+    public function delete(Hall $hall): Modal
     {
         Gate::authorize('delete', $hall);
 
-        return Inertia::render('Dashboard/Halls/Delete', [
-            'hall' => new HallResource($hall),
-        ]);
+        return Inertia::modal('Dashboard/Halls/Delete', [
+            'hall'      => $hall,
+        ])->baseRoute('dashboard.halls.index');
     }
 
     /**
-     * Remove the specified Hall from storage.
+     * Remove the specified hall from storage.
      *
      * @param  \App\Models\Hall  $hall
      *
@@ -254,7 +282,6 @@ class HallController extends Controller
         DB::beginTransaction();
 
         try {
-            // This will cascade delete related records due to foreign key constraints
             $hall->delete();
 
             DB::commit();

@@ -49,7 +49,7 @@
                 <v-card v-if="showSeatTypeForm" class="mb-6 rounded-lg border">
                     <v-card-title class="bg-primary text-white py-3 px-4 d-flex align-center">
                         <v-icon color="white" class="mr-2">{{ editedIndex === -1 ? 'mdi-plus-circle' : 'mdi-pencil'
-                        }}</v-icon>
+                            }}</v-icon>
                         {{ editedIndex === -1 ? __('Add Seat Type') : __('Edit Seat Type') }}
                     </v-card-title>
 
@@ -117,7 +117,7 @@
                                     <div class="d-flex align-center">
                                         <v-icon color="primary" class="mr-2">mdi-seat-outline</v-icon>
                                         <span class="font-weight-medium">{{ getSeatTypeName(hallSeatType.seat_type_id)
-                                        }}</span>
+                                            }}</span>
                                     </div>
                                 </td>
                                 <td class="py-3">
@@ -158,13 +158,9 @@
 
 <script setup>
     import { __ } from 'matice';
-    import { ref, computed, onMounted } from 'vue';
+    import { ref, computed } from 'vue';
 
     const props = defineProps({
-        form: {
-            type: Object,
-            required: true
-        },
         seat_types: {
             type: Array,
             required: true
@@ -175,10 +171,10 @@
         }
     });
 
-    onMounted(() => {
-        if (!props.form.hallSeatTypes) {
-            props.form.hallSeatTypes = [];
-        }
+    // Use defineModel for form data with proper typing
+    const form = defineModel('form', {
+        type: Object,
+        required: true,
     });
 
     // Replace dialog with inline form control
@@ -197,13 +193,13 @@
 
     // Filter out seat types that have already been added to the hall
     const availableSeatTypes = computed(() => {
-        if (!props.form.hallSeatTypes || !props.seat_types) {
+        if (!form.value.hallSeatTypes || !props.seat_types) {
             return props.seat_types || [];
         }
 
         // If we're editing an existing seat type, we need to include it in the available options
         if (editedIndex.value > -1) {
-            const currentSeatTypeId = props.form.hallSeatTypes[editedIndex.value]?.seat_type_id;
+            const currentSeatTypeId = form.value.hallSeatTypes[editedIndex.value]?.seat_type_id;
 
             // Filter out seat types that are already used except the one being edited
             return props.seat_types.filter(seatType => {
@@ -213,7 +209,7 @@
                 }
 
                 // Exclude seat types that are already in use
-                return !props.form.hallSeatTypes.some(
+                return !form.value.hallSeatTypes.some(
                     hallSeatType => hallSeatType.seat_type_id === seatType.id
                 );
             });
@@ -221,7 +217,7 @@
 
         // For new seat types, exclude all that are already in use
         return props.seat_types.filter(seatType => {
-            return !props.form.hallSeatTypes.some(
+            return !form.value.hallSeatTypes.some(
                 hallSeatType => hallSeatType.seat_type_id === seatType.id
             );
         });
@@ -244,33 +240,26 @@
         showSeatTypeForm.value = true;
     };
 
-    // Ensure form data is correctly initialized
-    if (!props.form.hallSeatTypes) {
-        props.form.hallSeatTypes = [];
-    }
-
     // Edit seat type
     const editSeatType = (index) => {
         // When editing, we need to show the form and populate it
         editedIndex.value = index;
-        editedSeatType.value = { ...props.form.hallSeatTypes[index] };
+        editedSeatType.value = { ...form.value.hallSeatTypes[index] };
         showSeatTypeForm.value = true;
     };
 
     // Remove seat type
     const removeSeatType = (index) => {
-        props.form.hallSeatTypes.splice(index, 1);
+        form.value.hallSeatTypes = form.value.hallSeatTypes.filter((_, i) => i !== index);
     };
 
     // Close seat type form
     const closeSeatTypeForm = () => {
         showSeatTypeForm.value = false;
-        // We don't reset the form here, as we want to preserve data if the user
-        // accidentally closes and reopens the form
     };
 
     // Save seat type
-    const saveSeatType = async () => {
+    const saveSeatType = () => {
         // Check if seat type is selected
         if (!editedSeatType.value.seat_type_id) {
             // Use Vuetify snackbar or alert instead of browser alert
@@ -280,6 +269,10 @@
 
         // Ensure maximum_capacity is a number and greater than 0
         const maxCapacity = parseInt(editedSeatType.value.maximum_capacity);
+        if (isNaN(maxCapacity) || maxCapacity <= 0) {
+            alert(__('Maximum capacity must be a positive number'));
+            return;
+        }
 
         // Create a new object to ensure value changes are detected
         const seatTypeData = {
@@ -290,10 +283,12 @@
 
         if (editedIndex.value > -1) {
             // Update existing
-            props.form.hallSeatTypes[editedIndex.value] = seatTypeData;
+            form.value.hallSeatTypes = form.value.hallSeatTypes.map((item, i) =>
+                i === editedIndex.value ? seatTypeData : item
+            );
         } else {
             // Add new
-            props.form.hallSeatTypes.push(seatTypeData);
+            form.value.hallSeatTypes = [...form.value.hallSeatTypes, seatTypeData];
         }
 
         // Reset the form completely
