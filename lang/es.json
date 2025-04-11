@@ -88,6 +88,9 @@
     "Cinemas": "Cines",
     "Promotions": "Promociones",
     "F&B": "F&B",
-    "Profile": "Perfil"
-
+    "Profile": "Perfil",
+    "booking": {
+        "title": "Reserva de Entradas",
+        "subtitle": "Por favor, selecciona tus asientos y procede con el pago para confirmar tu reserva."
+    }
 }

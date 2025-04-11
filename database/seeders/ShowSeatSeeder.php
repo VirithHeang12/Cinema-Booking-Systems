@@ -87,6 +87,15 @@ class ShowSeatSeeder extends Seeder
             ],
         ];
 
+        // for ($seatId = 11; $seatId <= 90; $seatId++) {
+        //     $showSeats[] = [
+        //         'show_id'    => 14,
+        //         'seat_id'    => $seatId,
+        //         'status'     => 'Available',
+        //         'booking_id' => null,
+        //     ];
+        // }
+
         foreach ($showSeats as $showSeat) {
             \App\Models\ShowSeat::create($showSeat);
         }

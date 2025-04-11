@@ -15,5 +15,9 @@ Route::middleware(['throttle:global'])->group(function () {
         Route::get('/', function () {
             return Inertia::render('Index');
         })->name('index');
+
+        Route::get('/booking-ticket', function () {
+            return Inertia::render('BookingTicket', ['title' => 'Booking Ticket']);
+        })->name('bookingTicket');
     });
 });

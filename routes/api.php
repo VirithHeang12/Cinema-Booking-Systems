@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\Dashboard\ClassificationController;
 use App\Http\Controllers\Api\V1\Dashboard\ScreenTypeController;
 use App\Http\Controllers\Api\V1\Dashboard\MovieController;
 use App\Http\Controllers\Api\V1\Dashboard\BannerController;
+use App\Http\Controllers\Api\V1\ShowSeatController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +28,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('movies', MovieController::class);
         Route::apiResource('banners', BannerController::class);
     });
+
+    Route::get('/shows/{show}', [ShowSeatController::class, 'index']);
 })->middleware('auth:sanctum');
 
