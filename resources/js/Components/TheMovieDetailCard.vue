@@ -1,8 +1,12 @@
 <template>
+     <div class="w-screen relative overflow-hidden flex justify-center align-center" style="height: 650px;">
+        <div class="absolute inset-0 bg-image" style="background-Image: url(/image/seventeen.jpg) "></div>
+        <div class="absolute inset-0 bg-overlay"></div>
+        <div class="relative z-10 w-full">
     <v-container class="my-[30px] font-cus">
         <div class="row justify-content-center ">
             <div class="col-12">
-                <div class="card !rounded-[25px] min-h-[480px] md:!h-[480px] relative overflow-hidden">
+                <div class="card !rounded-[25px] min-h-[480px] md:!h-[480px] relative overflow-hidden border-0">
                     <div class="gradient-bg"></div>
                     <div class="row g-0">
                         <div class="col-12 col-md-6 p-5 rounded-tl-[25px] rounded-bl-[25px] min-h-[480px] md:!h-[480px] !text-white"
@@ -80,6 +84,8 @@
             </div>
         </div>
     </v-container>
+</div>
+</div>
 </template>
 
 <style scoped>
@@ -93,6 +99,23 @@
     z-index: 1;
 }
 
+.bg-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: scale(1.1);
+    filter: blur(15px);
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.bg-overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+}
 @media (max-width: 768px) {
     .gradient-bg {
         width: 100%;

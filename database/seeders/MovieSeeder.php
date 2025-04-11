@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Movie;
 
 class MovieSeeder extends Seeder
 {
@@ -22,7 +24,7 @@ class MovieSeeder extends Seeder
                 'spoken_language_id'=> 1,
                 'rating'            => 9.3,
                 'trailer_url'       => 'https://www.youtube.com/watch?v=6hB3S9bIaco',
-                'thumbnail_url'     => 'https://www.imdb.com/title/tt0111161/mediaviewer/rm10105600/',
+                'thumbnail_url'     => Storage::url('images/movie-1.png'),
                 'classification_id' => 1
             ],
             [
@@ -34,7 +36,7 @@ class MovieSeeder extends Seeder
                 'spoken_language_id'=> 1,
                 'rating'            => 9.2,
                 'trailer_url'       => 'https://www.youtube.com/watch?v=sY1S34973zA',
-                'thumbnail_url'     => 'https://www.imdb.com/title/tt0068646/mediaviewer/rm10105600/',
+                'thumbnail_url'     => Storage::url('images/movie-2.png'),
                 'classification_id' => 1
             ],
             [
@@ -46,7 +48,7 @@ class MovieSeeder extends Seeder
                 'spoken_language_id'=> 1,
                 'rating'            => 9.0,
                 'trailer_url'       => 'https://www.youtube.com/watch?v=EXeTwQWrcwY',
-                'thumbnail_url'     => 'https://www.imdb.com/title/tt0468569/mediaviewer/rm10105600/',
+                'thumbnail_url'     => Storage::url('images/movie-3.png'),
                 'classification_id' => 2
             ],
             [
@@ -58,7 +60,7 @@ class MovieSeeder extends Seeder
                 'spoken_language_id'=> 1,
                 'rating'            => 8.9,
                 'trailer_url'       => 'https://www.youtube.com/watch?v=r5X-hFf6Bwo',
-                'thumbnail_url'     => 'https://www.imdb.com/title/tt0167260/mediaviewer/rm10105600/',
+                'thumbnail_url'     => Storage::url('images/movie-4.png'),
                 'classification_id' => 2
             ],
             [
@@ -70,7 +72,7 @@ class MovieSeeder extends Seeder
                 'spoken_language_id'=> 1,
                 'rating'            => 8.8,
                 'trailer_url'       => 'https://www.youtube.com/watch?v=YoHD9XEInc0',
-                'thumbnail_url'     => 'https://www.imdb.com/title/tt1375666/mediaviewer/rm10105600/',
+                'thumbnail_url'     => Storage::url('images/movie-5.png'),
                 'classification_id' => 2
             ],
             [
@@ -82,7 +84,7 @@ class MovieSeeder extends Seeder
                 'spoken_language_id'=> 1,
                 'rating'            => 8.8,
                 'trailer_url'       => 'https://www.youtube.com/watch?v=SUXWAEX2jlg',
-                'thumbnail_url'     => 'https://www.imdb.com/title/tt0137523/mediaviewer/rm10105600/',
+                'thumbnail_url'     => Storage::url('images/movie-6.png'),
                 'classification_id' => 2
             ],
             [
@@ -94,13 +96,12 @@ class MovieSeeder extends Seeder
                 'spoken_language_id'=> 1,
                 'rating'            => 8.8,
                 'trailer_url'       => 'https://www.youtube.com/watch?v=bLvqoHBptjg',
-                'thumbnail_url'     => 'https://www.imdb.com/title/tt0109830/mediaviewer/rm10105600/',
+                'thumbnail_url'     => Storage::url('images/movie-7.png'),
                 'classification_id' => 2
             ],
         ];
-
         foreach ($movies as $movie) {
-            \App\Models\Movie::create($movie);
+            Movie::create($movie);
         }
     }
 }
