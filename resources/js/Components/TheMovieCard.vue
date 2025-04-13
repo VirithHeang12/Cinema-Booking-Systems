@@ -1,21 +1,22 @@
 <template>
-    <v-col cols="12" sm="6" md="3">
+    <v-col cols="12" sm="6" md="3" v-for="(movie, index) in movies" :key="index">
         <Link href="/" class="relative">
         <div class="flex flex-col items-center justify-center">
-            <img src="https://i0.wp.com/teaser-trailer.com/wp-content/uploads/2025/01/How-to-Train-Your-Dragon-Movie-2025-Poster.jpg?ssl=1" alt="" class="img-fluid object-cover !w-[250px] !h-[370px] rounded-[15px]" />
+            <img :src="movie.thumbnail_url" alt="" class="img-fluid object-cover !w-[250px] !h-[370px] rounded-[15px]" />
             <div class="absolute top-3 right-6">
                 <span class="classification inline-flex items-center me-1 px-3 py-1 text-xs font-medium text-gray-200 ring-1 ring-gray-500/10 ring-inset">
-                    NC15
+                    {{movie.classification}}
                 </span>
             </div>
             <div class="mt-2">
                 <div class="d-flex align-center my-1">
-                    <p class="text-md font-medium mb-0 text-gray-600">03 Jun 2025</p>
+                    <p class="text-md font-medium mb-0 text-gray-600">{{ formatDate(movie.release_date)
+                                }}</p>
 
                 </div>
                 <div class="w-[250px] text-wrap overflow-hidden">
                     <h5 class="title font-medium text-zinc-700 hover:text-zinc-800 duration-200 ease-in-out line-clamp-2">
-                        How to Train Your Dragon
+                        {{movie.title}}
                     </h5>
                 </div>
 
@@ -27,6 +28,32 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
+
+const movies = ref([]);
+
+onMounted(async () => {
+    try {
+        const res = await axios.get('/api/v1/dashboard/movies');
+        movies.value = res.data.items;
+        console.log(movies.value[0].thumbnail_url);
+    }
+    catch (err) {
+        console.error('Failed to fetch images url:', err);
+    }
+});
+
+const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = date.toLocaleString('en-US', { month: 'short' });
+        const year = date.getFullYear();
+
+        return `${day} ${month} ${year}`;
+    };
 </script>
 <style scoped>
 a {

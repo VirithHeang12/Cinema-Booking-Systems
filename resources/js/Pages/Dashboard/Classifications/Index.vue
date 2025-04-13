@@ -1,9 +1,15 @@
 <template>
-    <data-table-server :showNo="true" :title="__('Classifications')" :serverItems="serverItems"
-        :items-length="totalItems" :headers="headers" :loading="loading" :server-items="serverItems"
-        :items-per-page="itemsPerPage" item-value="id" @update:options="loadItems" :has-create="true" :has-import="true"
-        :has-export="true" @view="viewCallback" @delete="deleteCallback" @edit="editCallback" @create="createCallback"
-        @import="importCallback" @export="exportCallback" />
+    <data-table-server :showNo="true" title="Classifications" createButtonText="New Classification" :serverItems="serverItems"
+        :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
+        item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
+        @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
+        emptyStateText="No classifications found in the database" :emptyStateAction="true"
+        emptyStateActionText="Add First Classification" @empty-action="createCallback" buttonVariant="outlined"
+        viewTooltip="View Classification Details" editTooltip="Edit Classification Information" deleteTooltip="Delete this Classification"
+        titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="false" tableClasses="elevation-2 rounded-lg" iconSize="small"
+        deleteConfirmText="Are you sure you want to delete this classification? This action cannot be undone."
+        toolbarColor="white" :showSelect="false">
+    </data-table-server>
 </template>
 
 <script setup>
@@ -21,18 +27,23 @@
         },
     });
 
+    // State variables
+    const loading = ref(false);
+    const lastUpdated = ref(new Date().toLocaleString());
+    const page = ref(1);
+    const sortBy = ref([]);
+
+    // Computed properties
     const serverItems = computed(() => {
         return props.classifications.data;
     });
     const totalItems = computed(() => {
-        return props.classifications.total;
+        return props.classifications.meta.total;
     });
 
     const itemsPerPage = computed(() => {
         return props.classifications.per_page;
     });
-
-    const loading = ref(false);
 
     const headers = [
         {
@@ -40,21 +51,16 @@
             align: "start",
             sortable: true,
             key: "name",
-        },
-        {
-            title: __('Created At'),
-            align: "start",
-            sortable: true,
-            key: "created_at",
-        },
-        {
-            title: __('Updated At'),
-            align: "start",
-            sortable: true,
-            key: "updated_at",
-        },
-    ];
+            width: '250px',
 
+        },
+        {
+            title: 'Description',
+            align: 'start',
+            sortable: true,
+            key: 'description'
+        }
+    ];
     /**
      * Load items from the server
      *
@@ -65,88 +71,75 @@
      *
      * @return {void}
      */
-    function loadItems({ page, itemsPerPage }) {
+    function loadItems(options) {
+        loading.value = true;
+        page.value = options.page;
+        sortBy.value = options.sortBy;
+
+        let sortKeyWithDirection = options.sortBy.length > 0 ? options.sortBy[0].key : null;
+        if (sortKeyWithDirection) {
+            sortKeyWithDirection = options.sortBy[0].order === 'asc' ? sortKeyWithDirection : '-' + sortKeyWithDirection;
+        }
+
         router.reload({
             data: {
-                page,
-                itemsPerPage,
+                page: options.page,
+                itemsPerPage: options.itemsPerPage,
+                sort: sortKeyWithDirection,
+                'filter[search]': options.search,
             },
+            preserveState: true,
+            only: ['classifications'],
+            onSuccess: () => {
+                loading.value = false;
+                lastUpdated.value = new Date().toLocaleString();
+            },
+            onError: () => {
+                loading.value = false;
+                notify('Failed to load data', 'error');
+            }
         });
     }
 
+
+    const createCallback = () => {
+        visitModal(route("dashboard.classifications.create"));
+    };
+
     const viewCallback = (item) => {
-        visitModal(
-            route("dashboard.classifications.show", {
-                classification: item.id,
-            }),
-            {
-                method: "get",
-                config: {
-                    slideover: false,
-                    position: "center",
-                    maxWidth: "xl",
-                },
-            }
-        );
+        visitModal(route("dashboard.classifications.show", {
+            classification: item.id,
+        }));
     };
 
     const editCallback = (item) => {
-        visitModal(
-            route("dashboard.classifications.edit", {
-                classification: item.id,
-            }),
-            {
-                method: "get",
-                config: {
-                    slideover: true,
-                    position: "right",
-                    closeExplicitly: true,
-                    maxWidth: "xl",
-                },
-            }
-        );
+        visitModal(route("dashboard.classifications.edit", {
+            classification: item.id,
+        }));
     };
 
     const deleteCallback = (item) => {
-        visitModal(
-            route("dashboard.classifications.delete", {
+        visitModal(route("dashboard.classifications.delete", {
                 classification: item.id,
-            }),
-            {
+            }), {
                 config: {
-                    slideover: false,
-                    position: "center",
-                    maxWidth: "lg",
+                    slideover: false
                 },
             }
         );
-    };
-
-    const createCallback = () => {
-        visitModal(route("dashboard.classifications.create"), {
-            config: {
-                slideover: true,
-                position: "right",
-                closeExplicitly: true,
-                maxWidth: "xl",
-            },
-        });
     };
 
     const importCallback = () => {
         visitModal(route("dashboard.classifications.import.show"), {
             config: {
                 slideover: false,
-                position: "center",
                 closeExplicitly: true,
-                maxWidth: "xl",
             },
         });
     };
 
     const exportCallback = () => {
         window.location.href = route("dashboard.classifications.export");
-        console.log('exporting...');
     };
 
     /**
@@ -165,16 +158,16 @@
         });
     }
 
-    const page = usePage();
 
+    const p = usePage();
     /**
      * Watch for flash messages
      *
      * @return void
      */
-    watch(() => page.props.flash, (flash) => {
-        const success = page.props.flash.success;
-        const error = page.props.flash.error;
+    watch(() => p.props.flash, (flash) => {
+        const success = p.props.flash.success;
+        const error = p.props.flash.error;
 
         if (success) {
             notify(success);

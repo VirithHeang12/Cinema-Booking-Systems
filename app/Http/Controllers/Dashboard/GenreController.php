@@ -9,11 +9,13 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\GenresImport;
-use App\Exports\GenresExport;
+use App\Exports\GenresExport; 
 use InertiaUI\Modal\Modal;
 use Illuminate\Support\Facades\Gate;
-use App\Http\Requests\Genres\SaveRequest;
-use App\Http\Requests\Genres\UpdateRequest;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Resources\Api\GenreResource;
+use PhpParser\Node\Expr\AssignOp\Mod;
 
 class GenreController extends Controller
 {
@@ -26,11 +28,23 @@ class GenreController extends Controller
     {
         Gate::authorize('viewAny', Genre::class);
 
-        $perPage = request()->query('itemsPerPage', 5);
-        $genres = Genre::paginate($perPage)->appends(request()->query());
+        $perPage = request()->query('itemsPerPage', 10);
+        
+        $genres = QueryBuilder::for(Genre::class)
+        ->allowedFilters([
+            AllowedFilter::callback('search', function ($query, $value) {
+                $query->where('name', 'like', "%{$value}%")
+                    ->orWhere('description', 'like', "%{$value}%");
+            }),
+        ])
+        ->allowedSorts('name', 'description')
+        ->paginate($perPage)
+        ->appends(request()->query());
+
+        $genres = GenreResource::collection($genres)->response()->getData(true);
 
         return Inertia::render('Dashboard/Genres/Index', [
-            'genres'     => $genres,
+            'genres' => $genres
         ]);
     }
 
@@ -47,29 +61,29 @@ class GenreController extends Controller
         return Inertia::modal('Dashboard/Genres/Create')
             ->baseRoute('dashboard.genres.index');
     }
-    
+
     /**
      * Store a newly created genre in storage.
      *
-     * @param  \Illuminate\Http\SaveRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         Gate::authorize('create', Genre::class);
         DB::beginTransaction();
 
         try {
 
-            $data = $request->validated();
+            // $data = $request->validated();
             Genre::create([
-                'name' => $data['name'],
-                'description' => $data['description'],
+                'name' => $request->name,
+                'description' => $request->description,
             ]);
-            
+
             DB::commit();
-          
+
             return redirect()->route('dashboard.genres.index')->with('success', __('Genre created.'));
         } catch (\Exception $e) {
             DB::rollBack();
@@ -112,17 +126,17 @@ class GenreController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Genre $genre): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, Genre $genre): \Illuminate\Http\RedirectResponse
     {
         Gate::authorize('update', $genre);
         DB::beginTransaction();
 
         try {
 
-            $data = $request->validated();
+            // $data = $request->validated();
             $genre->update([
-                'name' => $data['name'],
-                'description' => $data['description'],
+                'name' => $request->name,
+                'description' => $request->description,
             ]);
 
             DB::commit();
@@ -176,11 +190,12 @@ class GenreController extends Controller
 
        /**
      * Show Import Genres form.
-     * @return \Inertia\Response
+     * @return Model
      */
-    public function showImport(){
+    public function showImport():Modal{
         Gate::authorize('import', Genre::class);
-        return Inertia::render('Dashboard/Genres/Import');
+        return Inertia::modal('Dashboard/Genres/Import')
+            ->baseRoute('dashboard.genres.index');
     }
 
     /**

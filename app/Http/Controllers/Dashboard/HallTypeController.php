@@ -7,7 +7,7 @@ use App\Models\HallType;
 use Illuminate\Http\Request;
 use App\Http\Requests\HallTypes\ImportHallTypesRequest;
 use App\Http\Resources\Api\HallTypeResource;
-use App\Http\Requests\HallTypes\SaveRequest;
+use App\Http\Requests\HallTypes\StoreRequest;
 use App\Http\Requests\HallTypes\UpdateRequest;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -68,11 +68,11 @@ class HallTypeController extends Controller
     /**
      * Store a newly created HallType in storage.
      *
-     * @param  \Illuminate\Http\SaveRequest  $request
+     * @param  \Illuminate\Http\StoreRequest  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(SaveRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
     {
         Gate::authorize('create', HallType::class);
 
