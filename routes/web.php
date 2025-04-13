@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\LandingPageController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -12,9 +13,7 @@ Route::middleware(['throttle:global'])->group(function () {
         require_once __DIR__.'/auth.php';
         require_once __DIR__.'/information.php';
 
-        Route::get('/', function () {
-            return Inertia::render('Index');
-        })->name('index');
+        Route::get('/', LandingPageController::class)->name('index');
 
         Route::get('/booking-ticket', function () {
             return Inertia::render('BookingTicket', ['title' => 'Booking Ticket']);

@@ -189,10 +189,7 @@ class MovieController extends Controller
             ];
         });
 
-        $movie->thumbnail_url = Storage::temporaryUrl(
-            $movie->thumbnail_url,
-            now()->addMinutes(5),
-        );
+        $movie->thumbnail_url = Storage::url($movie->thumbnail_url);
 
         return Inertia::modal('Dashboard/Movies/Show', [
             'movie'                 => $movie->load(['movieGenres', 'movieSubtitles']),
@@ -235,11 +232,6 @@ class MovieController extends Controller
             ];
         });
 
-        $movie->thumbnail_url = Storage::temporaryUrl(
-            $movie->thumbnail_url,
-            now()->addMinutes(5),
-        );
-
         return Inertia::modal('Dashboard/Movies/Edit', [
             'movie'                 => $movie,
             'genres'                => $genres,
@@ -267,7 +259,7 @@ class MovieController extends Controller
 
         try {
             if ($request->hasFile('thumbnail_file')) {
-                $data['thumbnail_url'] = $request->file('thumbnail_file')->store('movies');
+                $data['thumbnail_url'] = $request->file('thumbnail_file')->store('movies', 'public');
             }
 
             if ($movie->thumbnail_url && $request->hasFile('thumbnail_file')) {

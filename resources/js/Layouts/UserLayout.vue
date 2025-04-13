@@ -3,9 +3,9 @@
     <Head :title="title" />
     <v-app>
         <Header />
-        <v-main class="d-flex align-start justify-center bg-neutral-50" style="min-height: 300px;">
+        <v-main class="d-flex align-start justify-center bg-neutral-50 py-0" style="min-height: 300px;">
             <slot>
-                Main content
+                <!-- Main content goes here -->
             </slot>
         </v-main>
         <Footer />

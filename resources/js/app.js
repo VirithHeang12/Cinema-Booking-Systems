@@ -3,7 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import "vue-multiselect/dist/vue-multiselect.css";
 
 
-import DefaultLayout from './Layouts/DefaultLayout.vue';
+import UserLayout from './Layouts/UserLayout.vue';
 
 // Inertia
 import { createApp } from 'vue'
@@ -89,7 +89,7 @@ createInertiaApp({
         } else if (name.includes('Auth')) {
             page.default.layout = null
         } else {
-            page.default.layout = page.default.layout || DefaultLayout
+            page.default.layout = page.default.layout || UserLayout
         }
         return page;
     },
