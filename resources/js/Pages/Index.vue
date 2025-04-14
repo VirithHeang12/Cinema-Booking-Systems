@@ -41,7 +41,7 @@
         }
     });
 
-    const selected = ref(new Date());
+    const selected = ref(new Date(props.days[0].date));
 
 
     const dateRange = computed(() => {
@@ -84,6 +84,8 @@
      */
     watch(selected, (newDate) => {
         fetchMovies(newDate);
+    }, {
+        immediate: true,
     });
 
 </script>

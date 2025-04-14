@@ -21,7 +21,6 @@ class GetAllMoviesHavingShows
      */
     public function handle(): \Illuminate\Support\Collection
     {
-        // Fetch all movies having shows
         $movies = QueryBuilder::for(Movie::class)
             ->whereHas('movieSubtitles', function ($query) {
                 $query->whereHas('shows', function ($query) {
