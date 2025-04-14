@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid class="d-flex align-center justify-center px-0 py-0 bg-[#242424]">
+    <v-container fluid class="d-flex align-center justify-center px-0 py-0">
         <v-row class="row my-0 mx-0">
             <v-container class="py-0 px-0">
                 <SlideBanner :image-urls="banners" />

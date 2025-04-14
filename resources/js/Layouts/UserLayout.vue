@@ -3,7 +3,7 @@
     <Head :title="title" />
     <v-app>
         <Header />
-        <v-main class="d-flex align-start justify-center bg-neutral-50 py-0" style="min-height: 300px;">
+        <v-main class="d-flex align-start justify-center bg-neutral-50 py-0 user-content" style="min-height: 300px;">
             <slot>
                 <!-- Main content goes here -->
             </slot>
@@ -26,4 +26,27 @@
     });
 </script>
 
-<style scoped></style>
+<style scoped>
+
+    .user-content {
+        position: relative;
+        background-color: #242424;
+        min-height: 100vh;
+    }
+
+    .user-content::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center,
+                rgba(255, 0, 0, 0.2) 0%,
+                rgba(128, 0, 0, 0.1) 30%,
+                rgba(0, 0, 0, 0) 50%);
+        z-index: 1;
+        filter: blur(150px);
+        pointer-events: none;
+    }
+</style>
