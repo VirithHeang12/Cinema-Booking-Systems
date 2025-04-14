@@ -7,17 +7,17 @@
             <div class="absolute top-3 right-6">
                 <span
                     class="classification inline-flex items-center me-1 px-3 py-1 text-xs font-medium text-gray-200 ring-1 ring-gray-500/10 ring-inset">
-                    {{ movie.classification }}
+                    {{ movie.classification?.name }}
                 </span>
             </div>
             <div class="mt-2">
                 <div class="d-flex align-center my-1">
                     <p class="text-md font-medium mb-0 text-zinc-100">{{ formatDate(movie.release_date)
-                    }}</p>
+                        }}</p>
                 </div>
                 <div class="w-[250px] text-wrap overflow-hidden">
                     <h5
-                        class="title font-medium text-zinc-100 hover:text-zinc-800 duration-200 ease-in-out line-clamp-2">
+                        class="title font-medium text-zinc-100 hover:text-zinc-300 duration-200 ease-in-out line-clamp-2">
                         {{ movie.title }}
                     </h5>
                 </div>

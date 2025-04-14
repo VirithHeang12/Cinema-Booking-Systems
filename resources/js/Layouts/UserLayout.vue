@@ -43,8 +43,8 @@
         height: 100%;
         background: radial-gradient(circle at center,
                 rgba(255, 0, 0, 0.2) 0%,
-                rgba(128, 0, 0, 0.1) 30%,
-                rgba(0, 0, 0, 0) 50%);
+                rgba(128, 0, 0, 0.1) 50%,
+                rgba(0, 0, 0, 0) 60%);
         z-index: 1;
         filter: blur(150px);
         pointer-events: none;

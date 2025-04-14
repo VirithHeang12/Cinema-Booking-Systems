@@ -31,6 +31,7 @@ class GetAllMoviesHavingShows
             ->allowedFilters([
                 AllowedFilter::custom('date', new DateFilter),
             ])
+            ->with(['classification'])
             ->get();
 
         $movies = collect($movies);
