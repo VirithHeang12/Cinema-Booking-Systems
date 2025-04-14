@@ -203,55 +203,26 @@
                 { month: 4, name: 'April', total_bookings: 0 }
             ]
         },
+        moviesCountByGenre: {
+            type: Array,
+            default: () => [
+                { genre: 'Action', count: 120 },
+                { genre: 'Adventure', count: 95 },
+                { genre: 'Drama', count: 160 },
+                { genre: 'Fantasy', count: 80 },
+                { genre: 'Horror', count: 60 },
+                { genre: 'Mystery', count: 70 },
+                { genre: 'Romance', count: 110 },
+                { genre: 'Sci-Fi', count: 90 },
+                { genre: 'Thriller', count: 100 }
+            ]
+        }
     });
 
     // Animated values for counters
     const animatedRevenue = ref(0);
     const animatedTicket = ref(0);
     const animatedMovies = ref(0);
-
-    // Sample recent movies data
-    const recentMovies = ref([
-        {
-            id: 1,
-            title: 'The Last Adventure',
-            genre: 'Adventure',
-            releaseDate: 'Apr 2, 2025',
-            revenue: '$1,200,000',
-        },
-        {
-            id: 2,
-            title: 'Moonfall Empire',
-            genre: 'Sci-Fi',
-            releaseDate: 'Mar 27, 2025',
-            revenue: '$950,000',
-        },
-        {
-            id: 3,
-            title: 'Eternal Shadows',
-            genre: 'Horror',
-            releaseDate: 'Mar 15, 2025',
-            revenue: '$875,000',
-        },
-    ]);
-
-    // Function to get appropriate badge color class based on genre
-    const getGenreClass = (genre) => {
-        const classes = {
-            'Action': 'bg-red-100 text-red-800',
-            'Adventure': 'bg-blue-100 text-blue-800',
-            'Drama': 'bg-gray-100 text-gray-800',
-            'Fantasy': 'bg-yellow-100 text-yellow-800',
-            'Horror': 'bg-purple-100 text-purple-800',
-            'Mystery': 'bg-gray-100 text-gray-800',
-            'Romance': 'bg-pink-100 text-pink-800',
-            'Sci-Fi': 'bg-indigo-100 text-indigo-800',
-            'Thriller': 'bg-orange-100 text-orange-800',
-            'Comedy': 'bg-green-100 text-green-800',
-        };
-
-        return classes[genre] || 'bg-gray-100 text-gray-800';
-    };
 
     const animateValue = (target, animatedValue) => {
         const duration = 2000;
@@ -428,10 +399,7 @@
             show: false
         },
         xaxis: {
-            categories: [
-                'Action', 'Adventure', 'Drama', 'Fantasy',
-                'Horror', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller'
-            ],
+            categories: props.moviesCountByGenre.map(item => item.genre),
             labels: {
                 style: {
                     fontSize: '12px'
@@ -457,7 +425,7 @@
     const columnChartSeries = ref([
         {
             name: 'Movies',
-            data: [120, 95, 160, 80, 60, 70, 110, 90, 100]
+            data: props.moviesCountByGenre.map(item => item.count)
         }
     ]);
 </script>

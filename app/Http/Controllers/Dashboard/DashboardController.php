@@ -28,6 +28,7 @@ class DashboardController extends Controller
         $totalBookingTicket  = $this->totalBookingTicket();
         $totalMovies         = $this->totalMovies();
         $bookingTrends       = $this->getBookingTrends();
+        $moviesCountByGenre  = $this->getMoviesCountByGenre();
 
         return Inertia::render('Dashboard/Index', [
             'moviesByYear'              => $moviesByYear,
@@ -36,6 +37,7 @@ class DashboardController extends Controller
             'totalBookingTicket'        => $totalBookingTicket,
             'totalMovies'               => $totalMovies,
             'bookingTrends'             => $bookingTrends,
+            'moviesCountByGenre'        => $moviesCountByGenre,
         ]);
     }
 
@@ -178,5 +180,26 @@ class DashboardController extends Controller
                 'total_bookings' => $booking ? $booking->total_bookings : 0,
             ];
         })->toArray();
+    }
+
+    /**
+     * Get movies by genre
+     *
+     * @return array
+     */
+    public function getMoviesCountByGenre(): array
+    {
+        $genres = Genre::all();
+
+        $moviesCountByGenre = [];
+
+        foreach ($genres as $genre) {
+            $moviesCountByGenre[] = [
+                'genre' => $genre->name,
+                'count' => $genre->movieGenres()->count(),
+            ];
+        }
+
+        return $moviesCountByGenre;
     }
 }
