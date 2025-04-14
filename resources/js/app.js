@@ -48,6 +48,7 @@ import DashboardLayout from './Layouts/DashboardLayout.vue';
 import { Field, Form } from 'vee-validate';
 import DataTableServer from './Components/DataTableServer.vue';
 import ImageUpload from './Components/ImageUpload.vue';
+import DateButton from './Components/DateButton.vue';
 
 const vuetify = createVuetify({
     components,
@@ -124,6 +125,7 @@ createInertiaApp({
             },
         });
 
+        app.component('DateButton', DateButton);
         app.component('Link', Link);
         app.component('ModalLink', ModalLink);
         app.component('Modal', Modal);

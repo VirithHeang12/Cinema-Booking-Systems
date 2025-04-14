@@ -12,12 +12,12 @@
             </div>
             <div class="mt-2">
                 <div class="d-flex align-center my-1">
-                    <p class="text-md font-medium mb-0 text-gray-600">{{ formatDate(movie.release_date)
+                    <p class="text-md font-medium mb-0 text-zinc-100">{{ formatDate(movie.release_date)
                     }}</p>
                 </div>
                 <div class="w-[250px] text-wrap overflow-hidden">
                     <h5
-                        class="title font-medium text-zinc-700 hover:text-zinc-800 duration-200 ease-in-out line-clamp-2">
+                        class="title font-medium text-zinc-100 hover:text-zinc-800 duration-200 ease-in-out line-clamp-2">
                         {{ movie.title }}
                     </h5>
                 </div>
