@@ -127,7 +127,7 @@
                             <div class="col-auto ml-5 pt-5">
                                 <v-list-item-title>{{ movie.title }}</v-list-item-title>
                                 <v-list-item-subtitle class="mt-2">{{ formatDate(movie.release_date)
-                                }}</v-list-item-subtitle>
+                                    }}</v-list-item-subtitle>
                             </div>
                         </div>
                         <v-divider class="my-0 col-12"></v-divider>
@@ -271,7 +271,7 @@
         overflow-y: auto;
     }
 
-    .search-dialog>>>.v-overlay__content {
+    .search-dialog :deep(.v-overlay__content) {
         top: 10% !important;
     }
 
