@@ -23,7 +23,8 @@
 <script setup>
     import TheMovieCard from '@/Components/TheMovieCard.vue'
     import SlideBanner from '@/Components/SlideBanner.vue';
-    import { computed, ref } from 'vue';
+    import { computed, ref, watch } from 'vue';
+    import { router } from '@inertiajs/vue3';
 
     const props = defineProps({
         banners: {
@@ -34,22 +35,17 @@
             type: Array,
             default: () => [],
         },
+        days: {
+            type: Array,
+            default: () => [],
+        }
     });
 
     const selected = ref(new Date());
 
-    // Generate 4 consecutive days starting from today
+
     const dateRange = computed(() => {
-        const result = [];
-        const today = new Date();
-
-        for (let i = 0; i < 4; i++) {
-            const date = new Date(today);
-            date.setDate(today.getDate() + i);
-            result.push(date);
-        }
-
-        return result;
+        return props.days.map(day => new Date(day.date));
     });
 
     const selectDate = (date) => {
@@ -61,6 +57,35 @@
             date.getMonth() === selected.value.getMonth() &&
             date.getFullYear() === selected.value.getFullYear();
     };
+
+    /**
+     * Fetch movies for a specific date
+     *
+     * @param date
+     *
+     * @returns {Promise<void>}
+     */
+    const fetchMovies = async (date) => {
+        router.reload({
+            data: {
+                filter: {
+                    date: date.toISOString(),
+                }
+            },
+            preserveState: true,
+            only: ['movies'],
+        });
+    };
+
+    /**
+     * Watch for changes in the selected date and refetch movies for that date
+     *
+     * @returns {void}
+     */
+    watch(selected, (newDate) => {
+        fetchMovies(newDate);
+    });
+
 </script>
 
 <style scoped>

@@ -9,6 +9,10 @@ class DateFilter implements Filter
 {
     public function __invoke(Builder $query, $value, string $property)
     {
-        $query->where('show_time', '=', $value);
+        $query->whereHas('movieSubtitles', function ($query) use ($value) {
+            $query->whereHas('shows', function ($query) use ($value) {
+                $query->whereDate('show_time', $value);
+            });
+        });
     }
 }

@@ -23,11 +23,12 @@ class GetAllMoviesHavingShows
     {
         // Fetch all movies having shows
         $movies = QueryBuilder::for(Movie::class)
-            // ->whereHas('movieSubtitles', function ($query) {
-            //     $query->whereHas('shows', function ($query) {
-            //         $query->where('status', ShowStatus::SHOWING);
-            //     });
-            // })
+            ->whereHas('movieSubtitles', function ($query) {
+                $query->whereHas('shows', function ($query) {
+                    $query->where('status', ShowStatus::SCHEDULED)
+                        ->orWhere('status', ShowStatus::SHOWING);
+                });
+            })
             ->allowedFilters([
                 AllowedFilter::custom('date', new DateFilter),
             ])
