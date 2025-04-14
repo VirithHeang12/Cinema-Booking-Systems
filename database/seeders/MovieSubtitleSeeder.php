@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Language;
+use App\Models\Movie;
+use App\Models\MovieSubtitle;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,27 +15,20 @@ class MovieSubtitleSeeder extends Seeder
      */
     public function run(): void
     {
-        $movieSubtitles = [
-            [
-                'movie_id'          => 1,
-                'language_id'       => 1,
-            ],
-            [
-                'movie_id'          => 2,
-                'language_id'       => 1,
-            ],
-            [
-                'movie_id'          => 3,
-                'language_id'       => 1,
-            ],
-            [
-                'movie_id'          => 4,
-                'language_id'       => 1,
-            ],
+        $languages = [
+            Language::where('name', 'English')->first(),
+            Language::where('name', 'Khmer')->first(),
         ];
 
-        foreach ($movieSubtitles as $movieSubtitle) {
-            \App\Models\MovieSubtitle::create($movieSubtitle);
+        $movies    = Movie::all();
+
+        foreach ($movies as $movie) {
+            foreach ($languages as $language) {
+                MovieSubtitle::create([
+                    'movie_id'          => $movie->id,
+                    'language_id'       => $language->id,
+                ]);
+            }
         }
     }
 }

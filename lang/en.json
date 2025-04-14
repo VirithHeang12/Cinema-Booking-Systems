@@ -26,21 +26,20 @@
         "title": "Cinema Privacy & Policy",
         "subtitle": "Cinema Privacy and Policy: Ensuring Audience Confidentiality and Responsible Content Management"
     },
-
-"terms": {
-    "title": "Terms & Conditions",
-    "subtitle": "Ticket Purchased Rule and Regulation",
-    "firstParagraph": "1. Every movie tickets purchased via the Sale Channels are strictly non-refundable and are not available for exchange under whatever circumstances.",
-    "secondParagraph": "2. Purchased tickets are not exchangeable for tickets at a different price, for another movie, or for another screening or day.",
-    "thirdParagraph": "3. Movie tickets purchased via the Sales Channels will be available for collection at the relevant cinema from the ticket counter or at our KIOSK machine (where available) by producing the booking numbers/reservation sent by email or as available under the purchased history feature in Legend Mobile application or any other means that shall be introduced by Legend Cinema from time to time.",
-    "fourthParagraph": "4. In case of any malfunctions of the reservation or purchase form placed on the website or mobile application, please contact us immediately at the following e-mail address hotline@neak.com.kh or contact our hotline 081300400 at least 30 minutes before the movie start. We would also like to inform you that it is the basis and condition for an effective complaint about the impossibility or difficulties in purchasing tickets online.",
-    "fifthParagraph": "5. If the User fails to purchase a ticket for the screening for which he or she has reserved a seat in the Neak Cinema within the time limit specified in clause 4 above, the reservation of such a seat cannot be guaranteed.",
-    "sixthParagraph": "6. Movie tickets are made available subject to the classification of relevant film given by the Film Censorship Board of Cambodia. Neak Cinema has a legal obligation to refuse admission to a person, who in the opinion of its duty manager, is under the minimum age required for NC15 and R18 classified films (including children in arms). Proof of age may be required in certain instances.",
-    "changed": {
-        "first": "Neak Cinema reserved the rights to have term and condition changed.",
-        "second": "All rights reserved by Neak Cinema Co., Ltd."
-    }
-},
+    "terms": {
+        "title": "Terms & Conditions",
+        "subtitle": "Ticket Purchased Rule and Regulation",
+        "firstParagraph": "1. Every movie tickets purchased via the Sale Channels are strictly non-refundable and are not available for exchange under whatever circumstances.",
+        "secondParagraph": "2. Purchased tickets are not exchangeable for tickets at a different price, for another movie, or for another screening or day.",
+        "thirdParagraph": "3. Movie tickets purchased via the Sales Channels will be available for collection at the relevant cinema from the ticket counter or at our KIOSK machine (where available) by producing the booking numbers/reservation sent by email or as available under the purchased history feature in Legend Mobile application or any other means that shall be introduced by Legend Cinema from time to time.",
+        "fourthParagraph": "4. In case of any malfunctions of the reservation or purchase form placed on the website or mobile application, please contact us immediately at the following e-mail address hotline@neak.com.kh or contact our hotline 081300400 at least 30 minutes before the movie start. We would also like to inform you that it is the basis and condition for an effective complaint about the impossibility or difficulties in purchasing tickets online.",
+        "fifthParagraph": "5. If the User fails to purchase a ticket for the screening for which he or she has reserved a seat in the Neak Cinema within the time limit specified in clause 4 above, the reservation of such a seat cannot be guaranteed.",
+        "sixthParagraph": "6. Movie tickets are made available subject to the classification of relevant film given by the Film Censorship Board of Cambodia. Neak Cinema has a legal obligation to refuse admission to a person, who in the opinion of its duty manager, is under the minimum age required for NC15 and R18 classified films (including children in arms). Proof of age may be required in certain instances.",
+        "changed": {
+            "first": "Neak Cinema reserved the rights to have term and condition changed.",
+            "second": "All rights reserved by Neak Cinema Co., Ltd."
+        }
+    },
     "Setting": "Setting",
     "Countries": "Countries",
     "Languages": "Languages",
@@ -110,6 +109,19 @@
     "booking": {
         "title": "Booking Ticket",
         "subtitle": "Please select your seats and proceed with payment to confirm your booking."
-    }
-
+    },
+    "Movies": "Movies",
+    "Title": "Title",
+    "Duration": "Duration",
+    "Release Date": "Release Date",
+    "Country": "Country",
+    "Filter": "Filter",
+    "Filter Options": "Filter Options",
+    "Classification": "Classification",
+    "Release Year": "Release Year",
+    "Search...": "Search...",
+    "Clear": "Clear",
+    "Apply": "Apply",
+    "New Movie": "New Movie",
+    "Items Per Page": "Items per page"
 }

@@ -92,5 +92,19 @@
     "booking": {
         "title": "Reserva de Entradas",
         "subtitle": "Por favor, selecciona tus asientos y procede con el pago para confirmar tu reserva."
-    }
+    },
+    "Movies": "Películas",
+    "Title": "Título",
+    "Duration": "Duración",
+    "Release Date": "Fecha de Estreno",
+    "Country": "País",
+    "Filter": "Filtrar",
+    "Filter Options": "Opciones de Filtro",
+    "Classification": "Clasificación",
+    "Release Year": "Año de Estreno",
+    "Search...": "Buscar...",
+    "Clear": "Limpiar",
+    "Apply": "Aplicar",
+    "New Movie": "Nueva Película",
+    "Items per page": "Elementos por página"
 }
