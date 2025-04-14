@@ -1,8 +1,8 @@
 <template>
     <data-table-server
         :showNo="true"
-        title="Genres"
-        createButtonText="New Genre"
+        :title="__('Genres')"
+        :createButtonText="__('New Genre')"
         :serverItems="serverItems"
         :items-length="totalItems"
         :headers="headers"
