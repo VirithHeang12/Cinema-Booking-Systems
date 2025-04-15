@@ -32,7 +32,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class MovieController extends Controller
 {
-   
+
     /**
      * Display a listing of Movies.
      *
@@ -193,14 +193,13 @@ class MovieController extends Controller
             ];
         });
 
-        $movie->thumbnail_url = Storage::url($movie->thumbnail_url);
-
-        $shows = Show::with(['movieSubtitle.movie', 'movieSubtitle.language', 'hall', 'screenType'])
-         ->whereHas('movieSubtitle', function ($query) use ($movie) {
-             $query->where('movie_id', $movie->id);
-         })
-         ->orderBy('show_time')
-         ->paginate(10);
+        $shows = QueryBuilder::for(Show::class)
+            ->with(['movieSubtitle.movie', 'movieSubtitle.language', 'hall', 'screenType'])
+            ->whereHas('movieSubtitle', function ($query) use ($movie) {
+                $query->where('movie_id', $movie->id);
+            })
+            ->orderBy('show_time')
+            ->paginate(5);
 
         return Inertia::render('Dashboard/Movies/Show', [
             'movie'                 => $movie,

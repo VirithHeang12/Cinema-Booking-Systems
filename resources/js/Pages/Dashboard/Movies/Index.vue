@@ -110,7 +110,6 @@
     const loading = ref(false);
     const trailerDialog = ref(false);
     const selectedMovie = ref(null);
-    const lastUpdated = ref(new Date().toLocaleString());
     const page = ref(1);
     const sortBy = ref([]);
 
@@ -221,7 +220,6 @@
             only: ['movies'],
             onSuccess: () => {
                 loading.value = false;
-                lastUpdated.value = new Date().toLocaleString();
             },
             onError: () => {
                 loading.value = false;
@@ -299,9 +297,12 @@
      * @return void
      */
     const viewCallback = (item) => {
-        visitModal(route('dashboard.movies.show', {
+        router.get(route('dashboard.movies.show', {
             movie: item.id,
-        }));
+        }), {
+            preserveState: true,
+            preserveScroll: true,
+        });
     };
 
     /**
