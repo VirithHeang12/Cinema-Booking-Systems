@@ -3,9 +3,8 @@
         <!-- Hall Name -->
         <vee-field name="name" v-slot="{ field, errors }">
             <div class="mb-6">
-                <label class="text-subtitle-2 font-weight-medium mb-1 block">{{ __('Name') }}</label>
                 <v-text-field v-bind="field" :error-messages="errors" v-model="form.name" variant="outlined"
-                    density="comfortable" placeholder="Enter hall name" class="rounded-lg" bg-color="surface"
+                    density="comfortable" :placeholder="__('Enter hall name')" class="rounded-lg" bg-color="surface"
                     hide-details="auto" prepend-inner-icon="mdi-chair-rolling"></v-text-field>
             </div>
         </vee-field>
@@ -13,9 +12,8 @@
         <!-- Description -->
         <vee-field name="description" v-slot="{ field, errors }">
             <div class="mb-6">
-                <label class="text-subtitle-2 font-weight-medium mb-1 block">{{ __('Description') }}</label>
                 <v-textarea v-bind="field" :error-messages="errors" v-model="form.description" variant="outlined"
-                    rows="3" auto-grow placeholder="Enter hall description" class="rounded-lg" bg-color="surface"
+                    rows="3" auto-grow :placeholder="__('Enter hall description')" class="rounded-lg" bg-color="surface"
                     hide-details="auto" prepend-inner-icon="mdi-text-box-outline"></v-textarea>
             </div>
         </vee-field>
@@ -23,10 +21,9 @@
         <!-- Hall Type -->
         <vee-field name="hall_type_id" v-slot="{ errors, field: { value, ...field } }">
             <div class="mb-6">
-                <label class="text-subtitle-2 font-weight-medium mb-1 block">{{ __('Hall Type') }}</label>
                 <v-autocomplete v-bind="field" :error-messages="errors" v-model="form.hall_type_id" variant="outlined"
                     :items="hall_types" item-title="name" item-value="id" density="comfortable"
-                    prepend-inner-icon="mdi-theater" placeholder="Select hall type" class="rounded-lg"
+                    prepend-inner-icon="mdi-theater" :placeholder="__('Select hall type')" class="rounded-lg"
                     bg-color="surface" hide-details="auto"></v-autocomplete>
             </div>
         </vee-field>

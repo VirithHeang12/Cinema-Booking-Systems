@@ -28,12 +28,12 @@ class UpdateRequest extends FormRequest
             'classification_id'         => 'required|exists:classifications,id',
             'rating'                    => 'nullable|numeric|min:1|max:10',
             'duration'                  => 'required|integer|min:1',
-            'thumbnail_url'             => 'nullable|url|max:255',
             'trailer_url'               => 'nullable|url|max:255',
             'country_id'                => 'required|exists:countries,id',
             'spoken_language_id'        => 'required|exists:languages,id',
             'movieGenres'               => 'array',
             'movieSubtitles'            => 'array',
+            'thumbnail_file'            => 'nullable|image|max:2048|mimes:jpeg,png,jpg',
         ];
     }
 
@@ -53,10 +53,12 @@ class UpdateRequest extends FormRequest
             'rating.min'                    => 'The rating must be at least 1.',
             'rating.max'                    => 'The rating may not be greater than 10.',
             'duration.required'             => 'The duration is required.',
-            'thumbnail_url.url'             => 'The thumbnail URL must be a valid URL.',
             'trailer_url.url'               => 'The trailer URL must be a valid URL.',
             'country_id.required'           => 'The country is required.',
             'spoken_language_id.required'   => 'The spoken language is required.',
+            'thumbnail_file.image'          => 'The thumbnail must be an image.',
+            'thumbnail_file.max'            => 'The thumbnail may not be greater than 2MB.',
+            'thumbnail_file.mimes'          => 'The thumbnail must be a file of type: jpeg, png, jpg.',
         ];
     }
 }
