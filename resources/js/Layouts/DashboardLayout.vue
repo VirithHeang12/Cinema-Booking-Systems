@@ -36,7 +36,7 @@
 
     .main-content-wrapper {
         max-width: 1600px;
-        margin: 0 auto;
+        margin: 0 0 0 32px !important;
         padding: 0 16px;
     }
 

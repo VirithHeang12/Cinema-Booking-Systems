@@ -19,12 +19,12 @@ use Illuminate\Support\Facades\Log;
 
 class ShowController extends Controller
 {
-   
+
 public function create(): Modal
 {
-    Gate::authorize('create', Show::class); 
+    Gate::authorize('create', Show::class);
 
-    $movieSubtitleId = request()->input('movieSubtitleId'); 
+    $movieSubtitleId = request()->input('movieSubtitleId');
 
     if (!$movieSubtitleId) {
         // If movieSubtitleId is not provided, return an error response.
@@ -40,11 +40,11 @@ public function create(): Modal
         $languageName = $ms->language ? $ms->language->name : 'Original';
         return [
             'id' => $ms->id,
-            'label' =>  $languageName, 
+            'label' =>  $languageName,
         ];
     });
 
-        // dd($movieSubtitles); 
+        // dd($movieSubtitles);
 
     $halls = Hall::all()->map(fn ($hall) => ['id' => $hall->id, 'label' => $hall->name]);
     $screenTypes = ScreenType::all()->map(fn ($st) => ['id' => $st->id, 'label' => $st->name]);
@@ -53,7 +53,7 @@ public function create(): Modal
         'movieSubtitles' => $movieSubtitles,
         'halls' => $halls,
         'screenTypes' => $screenTypes,
-        'movieId' => $movie->id, 
+        'movieId' => $movie->id,
     ])->baseRoute('dashboard.movies.show', ['movie' => $movie->id]);
 }
 
@@ -81,7 +81,7 @@ public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
 
         DB::commit();
 
-        $movieSubtitle = MovieSubtitle::find($data['movie_subtitle_id']); 
+        $movieSubtitle = MovieSubtitle::find($data['movie_subtitle_id']);
         $movieId = $movieSubtitle->movie_id;
 
         return redirect()->route('dashboard.movies.show', ['movie' => $movieId])
@@ -90,7 +90,7 @@ public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
     } catch (\Exception $e) {
         DB::rollBack();
         Log::error('Error creating show: ' . $e->getMessage());
-        $movieId = $movieSubtitle->movie_id ?? null; 
+        $movieId = $movieSubtitle->movie_id ?? null;
         return redirect()->route('dashboard.movies.show', ['movie' => $movieId])
             ->with('error', __('Failed to create show. Please try again.'));
     }
