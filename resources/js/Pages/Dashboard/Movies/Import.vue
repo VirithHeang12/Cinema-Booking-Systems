@@ -2,45 +2,33 @@
     <Modal v-slot="{ close }">
         <div class="form-container">
             <div class="form-header">
-               <h2 class="form-title">Import Movies</h2>
-               <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close" @click="close"></button>
-           </div>
+                <h2 class="form-title">{{ __('Import Movies') }}</h2>
+                <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
+                    @click="close"></button>
+            </div>
 
 
-            <vee-form :validation-schema="schema" @submit="submitForm" >
+            <vee-form :validation-schema="schema" @submit="submitForm">
                 <div class="form-content">
-                    <h3 class="!text-[16px] text-zinc-700 my-2">Browse Excel file to import</h3>
+                    <h3 class="!text-[16px] text-zinc-700 my-2">{{ __('Browse Excel file to import') }}</h3>
 
-                        <v-file-input v-model="form.file" :error-messages="form.errors.file" accept=".xlsx"
-                            label="Please select Excel file" prepend-icon="" prepend-inner-icon="mdi-file-excel" show-size
-                            truncate-length="30" variant="outlined" class="my-5" density="comfortable" persistent-hint
-                            hint="Supported format: .xlsx">
-                            <template v-slot:selection="{ fileNames }">
-                                <v-chip color="primary" label size="small" class="me-2">
-                                    {{ fileNames[0] }}
-                                </v-chip>
-                            </template>
-                        </v-file-input>
-
-                    <!-- <div class="my-4" v-if="form.file">
-                        <v-card variant="outlined" class="p-3 border border-gray-500 rounded-lg !bg-gray-50">
-                            <div class="d-flex align-center">
-                                <v-icon size="large" color="primary" class="me-4">mdi-information-outline</v-icon>
-                                <div>
-                                    <p class="text-h6 mb-1">{{ form.file.name }}</p>
-                                    <p class="text-body-2 text-grey-darken-1">{{ formatFileSize(form.file.size) }}</p>
-                                </div>
-                            </div>
-                        </v-card>
-                    </div> -->
+                    <v-file-input v-model="form.file" :error-messages="form.errors.file" accept=".xlsx"
+                        :label="__('Please select Excel file')" prepend-icon="" prepend-inner-icon="mdi-file-excel"
+                        show-size truncate-length="30" variant="outlined" class="my-5" density="comfortable"
+                        persistent-hint hint="Supported format: .xlsx">
+                        <template v-slot:selection="{ fileNames }">
+                            <v-chip color="primary" label size="small" class="me-2">
+                                {{ fileNames[0] }}
+                            </v-chip>
+                        </template>
+                    </v-file-input>
                 </div>
 
                 <div class="form-actions">
                     <v-btn color="primary" :disabled="!form.file || form.processing" :loading="form.processing"
-                        @click="submitForm(close)" type="button" size="large" block height="56"
-                        class="!text-lg">
+                        @click="submitForm(close)" type="button" size="large" block height="56" class="!text-lg">
                         <v-icon size="24" class="me-2">mdi-upload</v-icon>
-                        UPLOAD
+                        {{ __('UPLOAD') }}
                     </v-btn>
                 </div>
             </vee-form>
@@ -50,7 +38,7 @@
 
 <script setup>
     import { useForm } from '@inertiajs/vue3';
-    import { ref, computed, watch } from 'vue';
+    import { watch } from 'vue';
     import { __ } from 'matice';
     import * as yup from 'yup';
 

@@ -137,5 +137,21 @@
     "All Time": "Todo el Tiempo",
     "Logout": "Cerrar sesión",
     "Login": "Iniciar sesión",
-    "Edit Country": "Editar País"
+    "Edit Country": "Editar País",
+    "Create Movie": "Crear Película",
+    "Duration (minutes)": "Duración (minutos)",
+    "Rating (1-10)": "Calificación (1-10)",
+    "Media Links": "Enlaces de Medios",
+    "Trailer URL": "URL del Tráiler",
+    "Thumbnail": "Miniatura",
+    "Upload Image": "Subir Imagen",
+    "Spoken Language": "Idioma Hablado",
+    "Subtitles": "Subtítulos",
+    "Select movie genres": "Seleccionar géneros de películas",
+    "Select subtitle languages": "Seleccionar idiomas de subtítulos",
+    "Import Movies": "Importar Películas",
+    "Browse Excel file to import": "Navegar archivo de Excel para importar",
+    "Please select Excel file": "Por favor seleccione el archivo de Excel",
+    "UPLOAD": "SUBIR",
+    "Edit Movie": "Editar Película"
 }

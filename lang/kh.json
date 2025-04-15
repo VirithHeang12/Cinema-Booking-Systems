@@ -151,5 +151,21 @@
     "All Time": "គ្រប់ពេលវេលា",
     "Logout": "ចាកចេញ",
     "Login": "ចូល",
-    "Edit Country": "កែប្រែប្រទេស"
+    "Edit Country": "កែប្រែប្រទេស",
+    "Create Movie": "បង្កើតភាពយន្ដ",
+    "Duration (minutes)": "រយៈពេល (នាទី)",
+    "Rating (1-10)": "ការវាយតម្លៃ (១-១០)",
+    "Media Links": "តំណភ្ជាប់មេឌៀ",
+    "Trailer URL": "URL របស់ត្រេឡែរ",
+    "Thumbnail": "រូបតំណាង",
+    "Upload Image": "បញ្ចូលរូបភាព",
+    "Spoken Language": "ភាសា",
+    "Subtitles": "អក្សរគំរូ",
+    "Select movie genres": "ជ្រើសរើសប្រភេទភាពយន្ដ",
+    "Select subtitle languages": "ជ្រើសរើសភាសាអក្សរគំរូ",
+    "Import Movies": "នាំចូលភាពយន្ដ",
+    "Browse Excel file to import": "ស្វែងរកឯកសារ Excel ដើម្បីនាំចូល",
+    "Please select Excel file": "សូមជ្រើសរើសឯកសារ Excel",
+    "UPLOAD": "បញ្ចូល",
+    "Edit Movie": "កែប្រែភាពយន្ដ"
 }
