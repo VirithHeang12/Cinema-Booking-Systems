@@ -2,7 +2,7 @@
     <v-footer name="footer" app color="#242424" class="flex justify-center z-1">
         <v-container class="flex justify-between items-center">
             <div class="basis-[33.33%] text-sm">
-                <span>© 2025 Eternal Cineplex. All rights reserved.</span>
+                <span>{{ __('© 2025 Eternal Cineplex. All rights reserved.') }}</span>
             </div>
             <div class="basis-[33.33%] flex justify-center">
                 <img src="/public/logo/sample_logo.png" alt="" class="h-[40px]">
@@ -24,3 +24,7 @@
         </v-container>
     </v-footer>
 </template>
+
+<script setup>
+    import { __ } from 'matice';
+</script>
