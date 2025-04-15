@@ -154,5 +154,21 @@
     "All Time": "All Time",
     "Logout": "Logout",
     "Login": "Login",
-    "Edit Country": "Edit Country"
+    "Edit Country": "Edit Country",
+    "Create Movie": "Create Movie",
+    "Duration (minutes)": "Duration (minutes)",
+    "Rating (1-10)": "Rating (1-10)",
+    "Media Links": "Media Links",
+    "Trailer URL": "Trailer URL",
+    "Thumbnail": "Thumbnail",
+    "Upload Image": "Upload Image",
+    "Spoken Language": "Spoken Language",
+    "Subtitles": "Subtitles",
+    "Select movie genres": "Select movie genres",
+    "Select subtitle languages": "Select subtitle languages",
+    "Import Movies": "Import Movies",
+    "Browse Excel file to import": "Browse Excel file to import",
+    "Please select Excel file": "Please select Excel file",
+    "UPLOAD": "UPLOAD",
+    "Edit Movie": "Edit Movie"
 }
