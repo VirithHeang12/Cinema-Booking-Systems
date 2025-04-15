@@ -151,10 +151,38 @@
     "This Month": "This Month",
     "Last 4 Months": "Last 4 Months",
     "Movies per Genre": "Movies per Genre",
-    "All Time": "All Time"
-
-
-
-
-
+    "All Time": "All Time",
+    "Logout": "Logout",
+    "Login": "Login",
+    "Edit Country": "Edit Country",
+    "Create Movie": "Create Movie",
+    "Duration (minutes)": "Duration (minutes)",
+    "Rating (1-10)": "Rating (1-10)",
+    "Media Links": "Media Links",
+    "Trailer URL": "Trailer URL",
+    "Thumbnail": "Thumbnail",
+    "Upload Image": "Upload Image",
+    "Spoken Language": "Spoken Language",
+    "Subtitles": "Subtitles",
+    "Select movie genres": "Select movie genres",
+    "Select subtitle languages": "Select subtitle languages",
+    "Import Movies": "Import Movies",
+    "Browse Excel file to import": "Browse Excel file to import",
+    "Please select Excel file": "Please select Excel file",
+    "UPLOAD": "UPLOAD",
+    "Edit Movie": "Edit Movie",
+    "No seat types found in the database": "No seat types found in the database",
+    "Add First Seat Type": "Add First Seat Type",
+    "View Seat Type Details": "View Seat Type Details",
+    "Edit Seat Type Information": "Edit Seat Type Information",
+    "Delete this Seat Type": "Delete this Seat Type",
+    "Are you sure you want to delete this seat type? This action cannot be undone.": "Are you sure you want to delete this seat type? This action cannot be undone.",
+    "CLOSE": "CLOSE",
+    "Create Seat Type": "Create Seat Type",
+    "Delete Seat Type": "Delete Seat Type",
+    "Are you sure you want to delete": "Are you sure you want to delete",
+    "this seat type": "this seat type",
+    "This action cannot be undone.": "This action cannot be undone.",
+    "Edit Seat Type": "Edit Seat Type",
+    "Import Seat Types": "Import Seat Types"
 }

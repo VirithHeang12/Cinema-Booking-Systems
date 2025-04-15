@@ -92,7 +92,7 @@
                                     <v-list-item @click="logoutCallback" v-if="isLogin">
                                         <v-list-item-title>
                                             <v-icon start class="mr-2">mdi-logout</v-icon>
-                                            Logout
+                                            {{ __('Logout') }}
                                         </v-list-item-title>
                                     </v-list-item>
                                 </v-list>
@@ -158,7 +158,7 @@
                             <div class="col-auto ml-5 pt-5">
                                 <v-list-item-title>{{ movie.title }}</v-list-item-title>
                                 <v-list-item-subtitle class="mt-2">{{ formatDate(movie.release_date)
-                                    }}</v-list-item-subtitle>
+                                }}</v-list-item-subtitle>
                             </div>
                         </div>
                         <v-divider class="my-0 col-12"></v-divider>

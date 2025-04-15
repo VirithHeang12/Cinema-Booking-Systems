@@ -1,49 +1,92 @@
 <template>
     <Modal v-slot="{ close }">
-        <div>
-            <div class="d-flex justify-between align-items-start">
-                <h4 class="text-gray-700 mb-5">{{ __('Update Country') }}</h4>
-                <button type="button" class="btn-close shadow-none " aria-label="Close" @click="close"></button>
+        <div class="form-container">
+            <div class="form-header !mb-3">
+                <h2 class="form-title">{{ __('Edit Country') }}</h2>
+                <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
+                    @click="close"></button>
             </div>
-            <form @submit.prevent="submitForm">
-                <div class="form-group">
-                    <label for="name" class="text-gray-600">{{ __('Name') }}</label>
-                    <input type="text" v-model="form.name" class="form-control mt-2" id="name" name="name">
+
+            <vee-form class="form-content-container" :validation-schema="schema" @submit.prevent="submitForm"
+                v-slot="{ meta, setErrors }" :initialValues="form">
+                <country-form :form="form"></country-form>
+
+                <div class="form-actions">
+                    <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
+                        @click.prevent="submitForm(setErrors, close)" size="large" block>
+                        <v-icon class="me-2">mdi-check</v-icon>
+                        {{ __("Submit") }}
+                    </v-btn>
                 </div>
-                <button type="submit" @click="close" class="btn btn-primary text-white mt-5">{{ __('Update') }}</button>
-            </form>
+            </vee-form>
         </div>
     </Modal>
 </template>
 
 <script setup>
-    import { defineProps } from 'vue';
-    import { useForm } from '@inertiajs/vue3';
+    import { useForm } from "@inertiajs/vue3";
+    import { __ } from "matice";
+    import * as yup from "yup";
+    import { onMounted } from "vue";
+    import CountryForm from "../../../Forms/CountryForm.vue";
 
     const props = defineProps({
         country: {
             type: Object,
             required: true,
-        }
+        },
+    });
+
+    const schema = yup.object().shape({
+        name: yup
+            .string()
+            .required(__("Country name is required."))
+            .max(50, __("Country name must not exceed 50 characters.")),
     });
 
     const form = useForm({
-        name: props.country.name,
+        name: "",
+        _method: "PUT",
     });
 
-    const submitForm = () => {
-        form.put(route('dashboard.countries.update', props.country.id));
-    }
+    /**
+     * Pre-fill the form with existing country data
+     *
+     * @returns void
+     */
+    onMounted(() => {
+        form.name = props.country.name;
+    });
+
+    /**
+     * Submit the form data to the server
+     *
+     * @param setErrors
+     * @param close
+     *
+     * @returns void
+     */
+    const submitForm = (setErrors, close) => {
+        form
+            .transform((data) => ({
+                ...data,
+                _method: "PUT",
+            }))
+            .post(
+                route("dashboard.countries.update", {
+                    country: props.country.id,
+                }),
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    onError: (errors) => {
+                        setErrors(errors.errors);
+                    },
+                    onSuccess: () => {
+                        form.reset();
+                        close();
+                    },
+                }
+            );
+    };
 </script>
-
-
-
-
-
-
-
-
-
-
-
-

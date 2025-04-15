@@ -10,7 +10,7 @@
                 <v-toolbar style="border-radius: 20px; padding: 8px 15px;" flat :color="toolbarColor"
                     class="data-table-toolbar flex !items-center">
                     <v-toolbar-title :class="['fw-semibold', '!text-2xl', '!m-2', titleClass]">{{ title
-                        }}</v-toolbar-title>
+                    }}</v-toolbar-title>
 
                     <v-spacer></v-spacer>
 
@@ -437,6 +437,8 @@
     const filterMenu = ref(false);
     const activeFilters = ref(0);
 
+    let mounted = false;
+
     const items = computed(() => {
         if (props.showNo) {
             return props.serverItems.map((item, index) => {
@@ -515,7 +517,12 @@
         page.value = options.page;
         sortBy.value = options.sortBy;
 
-        emits('update:options', options);
+        // Do mot cause emit on first mount
+        if (mounted) {
+            emits('update:options', options);
+        } else {
+            mounted = true;
+        }
     };
 
     const viewItem = (item) => {

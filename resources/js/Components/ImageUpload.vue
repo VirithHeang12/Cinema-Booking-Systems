@@ -33,6 +33,7 @@
 
 <script setup>
     import { ref, watch } from 'vue';
+    import { __ } from 'matice';
 
     const props = defineProps({
         modelValue: {
@@ -41,7 +42,7 @@
         },
         label: {
             type: String,
-            default: 'Image'
+            default: __('Image')
         },
         icon: {
             type: String,
@@ -49,7 +50,7 @@
         },
         uploadButtonText: {
             type: String,
-            default: 'Upload Image'
+            default: __('Upload Image')
         },
         showLabel: {
             type: Boolean,

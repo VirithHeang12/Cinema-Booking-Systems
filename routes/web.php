@@ -22,5 +22,11 @@ Route::middleware(['throttle:global'])->group(function () {
                 return Inertia::render('BookingTicket', ['title' => 'Booking Ticket']);
             })->name('bookingTicket');
         });
+        
+        Route::get('/movies/{id}', function ($id) {
+            return Inertia::render('Detail', [
+                'id' => $id,
+            ]);
+        })->name('movie-detail');
     });
 });

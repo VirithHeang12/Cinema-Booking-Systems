@@ -1,70 +1,64 @@
 <template>
     <Modal v-slot="{ close }">
-        <div>
-            <div class="d-flex justify-between align-items-start">
-                <h4 class="text-gray-700 mb-5">{{ __('Create Country') }}</h4>
-                <button type="button" class="btn-close shadow-none " aria-label="Close" @click="close"></button>
+        <div class="form-container">
+            <div class="form-header !mb-3">
+                <h2 class="form-title">{{ __('Create Country') }}</h2>
+                <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
+                    @click="close"></button>
             </div>
 
-            <vee-form :validation-schema="schema" @submit="submitForm" v-slot="{ meta, setErrors }">
-                <vee-field name="name" v-slot="{ field, errors }">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">{{ __('Name') }}</label>
-                        <input type="text" id="name" class="form-control" v-bind="field" v-model="form.name"
-                            :aria-describedby="'nameError'" />
-                        <span v-if="errors.length" id="nameError" class="text-danger">{{ errors[0] }}</span>
-                    </div>
-                </vee-field>
+            <vee-form class="form-content-container" :validation-schema="schema" @submit.prevent="submitForm"
+                v-slot="{ meta, setErrors }">
+                <country-form :form="form"></country-form>
 
-                <!-- <v-btn color="primary" class="mt-4 d-inline-flex justify-content-start"
-                    :disabled="!meta.valid || form.processing" @click.prevent="submitForm(setErrors, close)">
-                    <span v-if="form.processing" class="spinner-border spinner-border-sm me-2" role="status"
-                        aria-hidden="true"></span>
-                    {{ __('Submit') }}
-                </v-btn> -->
-
-                <button type="submit" @click="close" class="btn btn-primary !font-medium !text-zinc-50"
-                    :disabled="!meta.valid || form.processing" @click.prevent="submitForm(setErrors)">
-                    <span v-if="form.processing" class="spinner-border spinner-border-sm me-2" role="status"
-                        aria-hidden="true"></span>
-                    {{ __("Submit") }}
-                </button>
+                <div class="form-actions">
+                    <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
+                        @click.prevent="submitForm(setErrors, close)" size="large" block>
+                        <v-icon class="me-2">mdi-check</v-icon>
+                        {{ __("Submit") }}
+                    </v-btn>
+                </div>
             </vee-form>
         </div>
     </Modal>
 </template>
 
 <script setup>
-import { markRaw } from 'vue';
-import { useForm } from '@inertiajs/vue3';
-import * as yup from 'yup';
-import { __ } from 'matice';
+    import { useForm } from "@inertiajs/vue3";
+    import * as yup from "yup";
+    import { __ } from "matice";
+    import CountryForm from "../../../Forms/CountryForm.vue";
 
-const schema = markRaw(yup.object({
-    name: yup.string()
-        .required(__('Country name is required'))
-        .max(50, __("Country name must not be greater than 50 characters.")),
-}));
-
-const form = useForm({
-    name: '',
-});
-
-const submitForm = (setErrors, close) => {
-    form.post(route('dashboard.countries.store'), {
-        preserveState: true,
-        onError: (errors) => {
-            setErrors(errors);
-        },
-        onSuccess: () => {
-            close();
-        },
+    const schema = yup.object().shape({
+        name: yup
+            .string()
+            .required(__("Country name is required."))
+            .max(50, __("Country name must not exceed 50 characters.")),
     });
-};
-</script>
 
-<style>
-.im-close-button {
-    background-color: transparent !important;
-}
-</style>
+    const form = useForm({
+        name: "",
+    });
+
+    /**
+     * Submit the form
+     *
+     * @param setErrors
+     * @param close
+     *
+     * @returns void
+     */
+    const submitForm = (setErrors, close) => {
+        form.post(route("dashboard.countries.store"), {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                form.reset();
+                close();
+            },
+            onError: (errors) => {
+                setErrors(errors);
+            },
+        });
+    };
+</script>

@@ -3,12 +3,13 @@
         <div class="form-section">
             <vee-field name="name" v-slot="{ field, errors }">
                 <v-text-field v-bind="field" :error-messages="errors" v-model="form.name" :label="__('Name')"
-                    variant="outlined" density="comfortable"></v-text-field>
+                    variant="outlined" density="comfortable" prepend-inner-icon="mdi-seat-outline"></v-text-field>
             </vee-field>
 
             <vee-field name="description" v-slot="{ field, errors }">
                 <v-textarea v-bind="field" :error-messages="errors" v-model="form.description"
-                    :label="__('Description')" variant="outlined" rows="3" auto-grow></v-textarea>
+                    :label="__('Description')" variant="outlined" rows="3" auto-grow
+                    prepend-inner-icon="mdi-text-box-outline"></v-textarea>
             </vee-field>
 
             <vee-field name="price" v-slot="{ field, errors }">

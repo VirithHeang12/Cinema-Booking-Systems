@@ -52,7 +52,7 @@
                                 <v-list-item @click="logout">
                                     <v-list-item-title>
                                         <v-icon start class="mr-2">mdi-logout</v-icon>
-                                        Logout
+                                        {{ __('Logout') }}
                                     </v-list-item-title>
                                 </v-list-item>
                             </v-list>

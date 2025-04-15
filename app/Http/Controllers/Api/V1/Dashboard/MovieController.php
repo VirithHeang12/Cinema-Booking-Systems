@@ -77,6 +77,7 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function show(Movie $movie)
     {
         $movie->load(['movieGenres', 'movieSubtitles', 'movieGenres.genre', 'movieSubtitles.language']);
