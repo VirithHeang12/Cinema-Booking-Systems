@@ -1,7 +1,7 @@
 <template>
     <div class="seat-type-list-container">
         <!-- Main table component -->
-        <data-table-server :showNo="true" title="Seat Types" createButtonText="New Seat Type" :serverItems="serverItems"
+        <data-table-server :showNo="true" :title="__('Seat Types')" :createButtonText="__('New SeatType')" :serverItems="serverItems"
             :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
             item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
             @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
@@ -52,26 +52,26 @@
     // Table headers definition
     const headers = [
         {
-            title: 'Name',
+            title: __('Name'),
             align: 'start',
             sortable: true,
             key: 'name',
         },
         {
-            title: 'Description',
+            title: __('Description'),
             align: 'start',
             sortable: false,
             key: 'description',
             width: '200px',
         },
         {
-            title: 'Price',
+            title: __('Price'),
             align: 'center',
             sortable: true,
             key: 'price',
         },
         {
-            title: 'Seats',
+            title: __('Seat'),
             align: 'center',
             sortable: true,
             key: 'seats_count',

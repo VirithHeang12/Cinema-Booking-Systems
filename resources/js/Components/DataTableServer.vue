@@ -4,10 +4,13 @@
             :items="items" :items-length="itemsLength" v-model:items-per-page="itemsPerPage" :headers="computedHeaders"
             :loading="loading" :items-per-page-options="itemsPerPageOptions" :hover="hover" :search="searchValue"
             :class="tableClasses" :footer-props="footerProps" :item-class="itemClass" v-model:page="page"
-            v-model:sort-by="sortBy" :show-select="showSelect" :single-select="singleSelect">
+            v-model:sort-by="sortBy" :show-select="showSelect" :single-select="singleSelect"
+            :items-per-page-text="__('Items per page')">
             <template v-slot:top>
-                <v-toolbar style="border-radius: 20px; padding: 8px 15px;" flat :color="toolbarColor" class="data-table-toolbar flex !items-center">
-                    <v-toolbar-title :class="['fw-semibold','!text-2xl', '!m-2', titleClass]">{{ title }}</v-toolbar-title>
+                <v-toolbar style="border-radius: 20px; padding: 8px 15px;" flat :color="toolbarColor"
+                    class="data-table-toolbar flex !items-center">
+                    <v-toolbar-title :class="['fw-semibold', '!text-2xl', '!m-2', titleClass]">{{ title
+                    }}</v-toolbar-title>
 
                     <v-spacer></v-spacer>
 
@@ -392,7 +395,7 @@
         searchPlaceholder: {
             type: String,
             required: false,
-            default: 'Search...',
+            default: __('Search...'),
         },
         itemClass: {
             type: [String, Function],
@@ -433,6 +436,8 @@
     const searchValue = ref('');
     const filterMenu = ref(false);
     const activeFilters = ref(0);
+
+    let mounted = false;
 
     const items = computed(() => {
         if (props.showNo) {
@@ -512,7 +517,12 @@
         page.value = options.page;
         sortBy.value = options.sortBy;
 
-        emits('update:options', options);
+        // Do mot cause emit on first mount
+        if (mounted) {
+            emits('update:options', options);
+        } else {
+            mounted = true;
+        }
     };
 
     const viewItem = (item) => {

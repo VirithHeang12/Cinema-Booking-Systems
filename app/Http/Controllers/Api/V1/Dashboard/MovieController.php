@@ -39,15 +39,6 @@ class MovieController extends Controller
             ->paginate($perPage)
             ->appends(request()->query());
 
-        // Loop through each movie and set the temporary URL for the thumbnail image
-        $movies->getCollection()->transform(function ($movie) {
-            if ($movie->thumbnail_url) {
-                $movie->thumbnail_url = Storage::temporaryUrl($movie->thumbnail_url, now()->addMinutes(5));
-            } else {
-                $movie->thumbnail_url = null; // or skip setting anything
-            }
-            return $movie;
-        });
 
         return response()->json([
             'items' => MovieResource::collection($movies),
@@ -104,12 +95,6 @@ class MovieController extends Controller
                 'name'          => $subtitle->language->name,
             ];
         });
-
-        if ($movie->thumbnail_url && Storage::exists($movie->thumbnail_url)) {
-            $movie->thumbnail_url = Storage::temporaryUrl($movie->thumbnail_url, now()->addMinutes(5));
-        } else {
-            $movie->thumbnail_url = "https://i.pinimg.com/736x/c9/22/68/c92268d92cf2dbf96e3195683d9e14fb.jpg";
-        }        
 
         return new MovieResource($movie);
     }

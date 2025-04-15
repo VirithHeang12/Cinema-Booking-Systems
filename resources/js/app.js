@@ -3,7 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import "vue-multiselect/dist/vue-multiselect.css";
 
 
-import DefaultLayout from './Layouts/DefaultLayout.vue';
+import UserLayout from './Layouts/UserLayout.vue';
 
 // Inertia
 import { createApp } from 'vue'
@@ -48,6 +48,7 @@ import DashboardLayout from './Layouts/DashboardLayout.vue';
 import { Field, Form } from 'vee-validate';
 import DataTableServer from './Components/DataTableServer.vue';
 import ImageUpload from './Components/ImageUpload.vue';
+import DateButton from './Components/DateButton.vue';
 
 const vuetify = createVuetify({
     components,
@@ -89,7 +90,7 @@ createInertiaApp({
         } else if (name.includes('Auth')) {
             page.default.layout = null
         } else {
-            page.default.layout = page.default.layout || DefaultLayout
+            page.default.layout = page.default.layout || UserLayout
         }
         return page;
     },
@@ -124,6 +125,7 @@ createInertiaApp({
             },
         });
 
+        app.component('DateButton', DateButton);
         app.component('Link', Link);
         app.component('ModalLink', ModalLink);
         app.component('Modal', Modal);

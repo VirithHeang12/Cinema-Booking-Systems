@@ -1,5 +1,5 @@
 <template>
-    <data-table-server :showNo="true" :title="__('Hall Types')" createButtonText="New Halltype" :serverItems="serverItems"
+    <data-table-server :showNo="true" :title="__('Hall Types')" :createButtonText="__('New HallType')" :serverItems="serverItems"
         :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
         item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
         @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
@@ -9,7 +9,7 @@
         titleClass="text-2xl font-bold text-primary mb-4" tableClasses="halltype-data-table elevation-2 rounded-lg" iconSize="small"
         deleteConfirmText="Are you sure you want to delete this halltype? This action cannot be undone."
         toolbarColor="white" :showSelect="false">
-    </data-table-server>  
+    </data-table-server>
 </template>
 
 <script setup>

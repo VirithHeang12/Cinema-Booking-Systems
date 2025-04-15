@@ -1,28 +1,30 @@
 <template>
     <div class="movie-list-container">
         <!-- Main table component -->
-        <data-table-server :showNo="true" title="Movies" createButtonText="New Movie" :serverItems="serverItems"
-            :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
-            item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
-            @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
-            emptyStateText="No movies found in the database" :emptyStateAction="true"
-            emptyStateActionText="Add First Movie" @empty-action="createCallback" buttonVariant="outlined"
-            viewTooltip="View Movie Details" editTooltip="Edit Movie Information" deleteTooltip="Delete this Movie"
-            titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="true" @filter-apply="applyFilters"
-            @filter-clear="clearFilters" tableClasses="movie-data-table elevation-2 rounded-lg" iconSize="small"
-            deleteConfirmText="Are you sure you want to delete this movie? This action cannot be undone."
+        <data-table-server :showNo="true" :title="__('Movies')" :createButtonText="__('New Movie')"
+            :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
+            :itemsPerPage="itemsPerPage" item-value="id" @update:options="loadItems" @view="viewCallback"
+            @edit="editCallback" @delete="deleteCallback" @create="createCallback" @import="importCallback"
+            @export="exportCallback" :emptyStateText="__('No movies found in the database')" :emptyStateAction="true"
+            :emptyStateActionText="__('Add First Movie')" @empty-action="createCallback" buttonVariant="outlined"
+            :viewTooltip="__('View Movie Details')" :editTooltip="__('Edit Movie Information')"
+            :deleteTooltip="__('Delete this Movie')" titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="true"
+            @filter-apply="applyFilters" @filter-clear="clearFilters"
+            tableClasses="movie-data-table elevation-2 rounded-lg" iconSize="small"
+            :deleteConfirmText="__('Are you sure you want to delete this movie? This action cannot be undone.')"
             toolbarColor="white" :showSelect="false">
 
             <!-- Filter Content -->
             <template #filter>
                 <div class="filter-section">
-                    <v-select v-model="filterCountry" :items="countryOptions" label="Country" clearable
+                    <v-select v-model="filterCountry" :items="countryOptions" :label="__('Country')" clearable
                         variant="outlined" density="compact" class="mb-3" hide-details></v-select>
 
-                    <v-select v-model="filterClassification" :items="classificationOptions" label="Classification"
-                        clearable variant="outlined" density="compact" class="mb-3" hide-details></v-select>
+                    <v-select v-model="filterClassification" :items="classificationOptions"
+                        :label="__('Classification')" clearable variant="outlined" density="compact" class="mb-3"
+                        hide-details></v-select>
 
-                    <v-select v-model="filterYear" :items="yearOptions" label="Release Year" clearable
+                    <v-select v-model="filterYear" :items="yearOptions" :label="__('Release Year')" clearable
                         variant="outlined" density="compact" class="mb-3" hide-details></v-select>
                 </div>
             </template>
@@ -46,7 +48,7 @@
 
             <!-- Custom actions -->
             <template #item-actions="{ item }">
-                <v-tooltip text="Preview Trailer" location="top">
+                <v-tooltip :text="__('Preview Trailer')" location="top">
                     <template v-slot:activator="{ props }">
                         <v-icon v-bind="props" color="amber-darken-2" size="small" class="ms-2"
                             @click="openTrailer(item)">
@@ -76,13 +78,13 @@
                         style="height: 400px;">
                         <div class="text-center">
                             <v-icon size="64" color="grey">mdi-video-off</v-icon>
-                            <p class="mt-4 text-grey">No trailer available for this movie</p>
+                            <p class="mt-4 text-grey">{{ __('No trailer available for this movie') }}</p>
                         </div>
                     </div>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" variant="text" @click="trailerDialog = false">Close</v-btn>
+                    <v-btn color="primary" variant="text" @click="trailerDialog = false">{{ __('Close') }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -154,33 +156,33 @@
     // Table headers definition
     const headers = [
         {
-            title: 'Title',
+            title: __('Title'),
             align: 'start',
             sortable: true,
             key: 'title',
         },
         {
-            title: 'Duration',
+            title: __('Duration'),
             align: 'center',
             sortable: true,
             key: 'duration',
             width: '150px',
         },
         {
-            title: 'Release Date',
+            title: __('Release Date'),
             align: 'center',
             sortable: true,
             key: 'release_date',
             width: '180px',
         },
         {
-            title: 'Country',
+            title: __('Country'),
             align: 'start',
             sortable: false,
             key: 'country',
         },
         {
-            title: 'Classification',
+            title: __('Classification'),
             align: 'start',
             sortable: false,
             key: 'classification',

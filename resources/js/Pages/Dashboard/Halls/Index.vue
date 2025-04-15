@@ -1,7 +1,7 @@
 <template>
     <div class="hall-list-container">
         <!-- Main table component -->
-        <data-table-server :showNo="true" title="Halls" createButtonText="New Hall" :serverItems="serverItems"
+        <data-table-server :showNo="true" :title="__('Halls')" :createButtonText="__('New Hall')" :serverItems="serverItems"
             :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
             item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
             @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
@@ -69,26 +69,26 @@
     // Table headers definition
     const headers = [
         {
-            title: 'Name',
+            title: __('Name'),
             align: 'start',
             sortable: true,
             key: 'name',
         },
         {
-            title: 'Description',
+            title: __('Description'),
             align: 'center',
             sortable: false,
             key: 'description',
             width: '200px',
         },
         {
-            title: 'Hall Type',
+            title: __('Hall Type'),
             align: 'center',
             sortable: false,
             key: 'hall_type',
         },
         {
-            title: 'Seats',
+            title: __('Seat'),
             align: 'center',
             sortable: true,
             key: 'seats_count',

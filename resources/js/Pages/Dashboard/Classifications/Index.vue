@@ -1,5 +1,5 @@
 <template>
-    <data-table-server :showNo="true" title="Classifications" createButtonText="New Classification" :serverItems="serverItems"
+    <data-table-server :showNo="true" :title="__('Classifications')" :createButtonText="__('New Classification')" :serverItems="serverItems"
         :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
         item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
         @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
@@ -55,7 +55,7 @@
 
         },
         {
-            title: 'Description',
+            title: __('Description'),
             align: 'start',
             sortable: true,
             key: 'description'

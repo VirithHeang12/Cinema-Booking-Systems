@@ -2,7 +2,7 @@
     <v-container>
         <div class="row">
             <div class="col-12">
-                <v-breadcrumbs :items="items" class="px-0 mb-0 text-[17px]">
+                <v-breadcrumbs :items="items" class="px-0 mb-0 text-[17px] text-white">
                     <template v-slot:divider>
                         <BreadcrumbIcon />
                     </template>
@@ -13,10 +13,10 @@
         <section>
             <v-row class="mb-3">
                 <v-col cols="12" md="6" lg="8">
-                    <h1 class="font-bold text-gray-800">
+                    <h1 class="font-bold text-white">
                         {{ __("terms.title") }}
                     </h1>
-                    <p class="m-0 text-gray-700 text-md">
+                    <p class="m-0 text-grey text-md ">
                         {{ __("terms.subtitle") }}
                     </p>
                 </v-col>
@@ -25,13 +25,13 @@
 
         <section>
             <div v-for="term in terms" :key="term.id">
-                <p class="mb-0 text-gray-700 text-md">{{ term.description }}</p>
+                <p class="mb-0 text-grey text-md">{{ term.description }}</p>
             </div>
         </section>
 
         <section class="mt-4">
             <div v-for="change in changes" :key="change.id">
-                <p class="mb-0 text-gray-700 text-md">
+                <p class="mb-0 text-grey text-md">
                     {{ change.description }}
                 </p>
             </div>

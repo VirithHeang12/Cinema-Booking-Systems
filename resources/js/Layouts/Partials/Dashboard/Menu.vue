@@ -7,55 +7,55 @@
 
         <v-list density="compact" nav class="mt-2">
             <!-- Movies -->
-            <v-list-item prepend-icon="mdi-movie" title="Movies" class="sidebar-item"
+            <v-list-item prepend-icon="mdi-movie" :title="__('Movies')" class="sidebar-item"
                 :class="{ 'active-item': isActive('dashboard.movies.index') }"
                 @click="navigateCallback('dashboard.movies.index')">
             </v-list-item>
 
             <!-- Halls -->
-            <v-list-item prepend-icon="mdi-monitor" title="Halls" class="sidebar-item"
+            <v-list-item prepend-icon="mdi-monitor" :title="__('Halls')" class="sidebar-item"
                 :class="{ 'active-item': isActive('dashboard.halls.index') }"
                 @click="navigateCallback('dashboard.halls.index')">
             </v-list-item>
 
             <!-- Countries -->
-            <v-list-item prepend-icon="mdi-flag" title="Countries" class="sidebar-item"
+            <v-list-item prepend-icon="mdi-flag" :title="__('Countries')" class="sidebar-item"
                 :class="{ 'active-item': isActive('dashboard.countries.index') }"
                 @click="navigateCallback('dashboard.countries.index')">
             </v-list-item>
 
             <!-- Languages -->
-            <v-list-item prepend-icon="mdi-translate" title="Languages" class="sidebar-item"
+            <v-list-item prepend-icon="mdi-translate" :title="__('Languages')" class="sidebar-item"
                 :class="{ 'active-item': isActive('dashboard.languages.index') }"
                 @click="navigateCallback('dashboard.languages.index')">
             </v-list-item>
 
             <!-- Classifications -->
-            <v-list-item prepend-icon="mdi-tag" title="Classifications" class="sidebar-item"
+            <v-list-item prepend-icon="mdi-tag" :title="__('Classifications')" class="sidebar-item"
                 :class="{ 'active-item': isActive('dashboard.classifications.index') }"
                 @click="navigateCallback('dashboard.classifications.index')">
             </v-list-item>
 
             <!-- Genres -->
-            <v-list-item prepend-icon="mdi-tag-multiple" title="Genres" class="sidebar-item"
+            <v-list-item prepend-icon="mdi-tag-multiple" :title="__('Genres')" class="sidebar-item"
                 :class="{ 'active-item': isActive('dashboard.genres.index') }"
                 @click="navigateCallback('dashboard.genres.index')">
             </v-list-item>
 
             <!-- Screen Types -->
-            <v-list-item prepend-icon="mdi-monitor-screenshot" title="Screen Types" class="sidebar-item"
+            <v-list-item prepend-icon="mdi-monitor-screenshot" :title="__('Screen Types')" class="sidebar-item"
                 :class="{ 'active-item': isActive('dashboard.screen_types.index') }"
                 @click="navigateCallback('dashboard.screen_types.index')">
             </v-list-item>
 
             <!-- Hall Types -->
-            <v-list-item prepend-icon="mdi-seat" title="Hall Types" class="sidebar-item"
+            <v-list-item prepend-icon="mdi-seat" :title="__('Hall Types')" class="sidebar-item"
                 :class="{ 'active-item': isActive('dashboard.hall_types.index') }"
                 @click="navigateCallback('dashboard.hall_types.index')">
             </v-list-item>
 
             <!-- Seat Types -->
-            <v-list-item prepend-icon="mdi-seat-outline" title="Seat Types" class="sidebar-item"
+            <v-list-item prepend-icon="mdi-seat-outline" :title="__('Seat Types')" class="sidebar-item"
                 :class="{ 'active-item': isActive('dashboard.seat_types.index') }"
                 @click="navigateCallback('dashboard.seat_types.index')">
             </v-list-item>
@@ -67,6 +67,7 @@
     import { onMounted, onUnmounted, ref } from 'vue';
     import { router } from '@inertiajs/vue3';
     import { route } from 'ziggy-js';
+    import { __ } from 'matice';
 
     const modalExists = ref(false);
     const expanded = ref(false);
