@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\HallType;
-use Illuminate\Http\Request;
 use App\Http\Requests\HallTypes\ImportHallTypesRequest;
 use App\Http\Resources\Api\HallTypeResource;
 use App\Http\Requests\HallTypes\StoreRequest;

@@ -1,13 +1,14 @@
 <template>
-    <data-table-server :showNo="true" :title="__('Hall Types')" :createButtonText="__('New HallType')" :serverItems="serverItems"
-        :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
-        item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
-        @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
-        emptyStateText="No halltype found in the database" :emptyStateAction="true"
-        emptyStateActionText="Add First Halltype" @empty-action="createCallback" buttonVariant="outlined"
-        viewTooltip="View Halltype Details" editTooltip="Edit Halltype Information" deleteTooltip="Delete this Halltype"
-        titleClass="text-2xl font-bold text-primary mb-4" tableClasses="halltype-data-table elevation-2 rounded-lg" iconSize="small"
-        deleteConfirmText="Are you sure you want to delete this halltype? This action cannot be undone."
+    <data-table-server :showNo="true" :title="__('Hall Types')" :createButtonText="__('New Hall Type')"
+        :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
+        :itemsPerPage="itemsPerPage" item-value="id" @update:options="loadItems" @view="viewCallback"
+        @edit="editCallback" @delete="deleteCallback" @create="createCallback" @import="importCallback"
+        @export="exportCallback" :emptyStateText="__('No hall type found in the database')" :emptyStateAction="true"
+        :emptyStateActionText="__('Add First Hall Type')" @empty-action="createCallback" buttonVariant="outlined"
+        :viewTooltip="('View Hall Type Details')" :editTooltip="__('Edit Hall Type Information')"
+        :deleteTooltip="__('Delete this Hall Type')" titleClass="text-2xl font-bold text-primary mb-4"
+        tableClasses="hall-type-data-table elevation-2 rounded-lg" iconSize="small"
+        :deleteConfirmText="__('Are you sure you want to delete this hall type? This action cannot be undone.')"
         toolbarColor="white" :showSelect="false">
     </data-table-server>
 </template>
@@ -29,7 +30,6 @@
 
     // State variables
     const loading = ref(false);
-    const lastUpdated = ref(new Date().toLocaleString());
     const page = ref(1);
     const sortBy = ref([]);
 
@@ -70,7 +70,7 @@
      *
      * @return {void}
      */
-     function loadItems(options) {
+    function loadItems(options) {
         loading.value = true;
         page.value = options.page;
         sortBy.value = options.sortBy;
@@ -92,7 +92,6 @@
             only: ['hall_types'],
             onSuccess: () => {
                 loading.value = false;
-                lastUpdated.value = new Date().toLocaleString();
             },
             onError: () => {
                 loading.value = false;
@@ -101,33 +100,64 @@
         });
     }
 
+    /**
+     * Callback function for viewing an hall type.
+     *
+     * @param item
+     *
+     * @return {void}
+     */
     const viewCallback = (item) => {
         visitModal(route('dashboard.hall_types.show', {
             hall_type: item.id,
         }));
     };
 
+    /**
+     * Callback function for editing an hall type.
+     *
+     * @param item
+     *
+     * @return {void}
+     */
     const editCallback = (item) => {
         visitModal(route('dashboard.hall_types.edit', {
             hall_type: item.id,
         }));
     };
 
+    /**
+     * Callback function for deleting an hall type.
+     *
+     * @param item
+     *
+     * @return {void}
+     */
     const deleteCallback = (item) => {
         visitModal(route('dashboard.hall_types.delete', {
             hall_type: item.id,
         }), {
             config: {
                 slideover: false,
+                closeExplicitly: true,
             },
-
         });
     };
 
+    /**
+     * Callback function for creating a new hall type.
+     *
+     * @return {void}
+     */
     const createCallback = () => {
         visitModal(route('dashboard.hall_types.create'))
     };
 
+    /**
+     * Callback function for importing hall types.
+     *
+     * @return {void}
+     */
     const importCallback = () => {
         visitModal(route("dashboard.hall_types.import.show"), {
             config: {
@@ -137,6 +167,11 @@
         });
     };
 
+    /**
+     * Callback function for exporting hall types.
+     *
+     * @return {void}
+     */
     const exportCallback = () => {
         window.location.href = route("dashboard.hall_types.export");
     };
@@ -144,12 +179,12 @@
     /**
      * Notify the user
      *
-    * @param {string} message
+     * @param {string} message
      * @param {string} type
      *
      * @return void
      */
-     const notify = (message, type = 'success') => {
+    const notify = (message, type = 'success') => {
         toast(message, {
             autoClose: 1500,
             position: toast.POSITION.BOTTOM_RIGHT,
@@ -165,7 +200,7 @@
      *
      * @return void
      */
-     watch(() => p.props.flash, (flash) => {
+    watch(() => p.props.flash, (flash) => {
         const success = p.props.flash.success;
         const error = p.props.flash.error;
 
@@ -178,8 +213,9 @@
         deep: true,
     });
 </script>
+
 <style scoped>
-    .halltype-data-table :deep(.v-data-table__td) {
+    .hall-type-data-table :deep(.v-data-table__td) {
         padding-top: 14px !important;
         padding-bottom: 14px !important;
         font-size: 14px !important;
