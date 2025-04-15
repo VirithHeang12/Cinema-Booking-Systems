@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="screen-type-form-center">
             <div class="form-header">
-                <h2 class="form-title">Create Screen Type</h2>
+                <h2 class="form-title">{{__('Create ScreenType')}}</h2>
                 <v-btn icon class="close-btn" @click="close">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
@@ -24,7 +24,7 @@
                         block
                     >
                         <v-icon class="me-2">mdi-check</v-icon>
-                        Submit
+                        {{__('Submit')}}
                     </v-btn>
                 </div>
             </vee-form>

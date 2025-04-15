@@ -13,9 +13,9 @@
                     <h3 class="!text-[16px] text-zinc-700 mb-3">{{ __('Browse Excel file to import') }}</h3>
 
                     <v-file-input v-model="form.file" :error-messages="form.errors.file" accept=".xlsx"
-                        label="Please select Excel file" prepend-icon="mdi-file-excel" show-size truncate-length="30"
+                        :label="__('Please select Excel file')" prepend-icon="mdi-file-excel" show-size truncate-length="30"
                         variant="outlined" class="my-5" density="comfortable" persistent-hint
-                        hint="Supported format: .xlsx">
+                        :hint="__('Supported format: .xlsx')">
                         <template v-slot:selection="{ fileNames }">
                             <v-chip color="primary" label size="small" class="me-2">
                                 {{ fileNames[0] }}

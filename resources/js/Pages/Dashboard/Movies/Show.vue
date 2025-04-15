@@ -9,18 +9,18 @@
                 <!-- Basic Information -->
                 <div class="details-section">
                     <div class="field-row">
-                        <div class="field-label">Title</div>
+                        <div class="field-label">{{__('Title')}}</div>
                         <div class="field-value">{{ movie.title }}</div>
                     </div>
 
                     <div class="field-row">
-                        <div class="field-label">Description</div>
+                        <div class="field-label">{{__('Description')}}</div>
                         <div class="field-value">{{ movie.description }}</div>
                     </div>
 
                     <div class="two-columns">
                         <div class="field-column">
-                            <div class="field-label">Release Date</div>
+                            <div class="field-label">{{__('Release Date')}}</div>
                             <div class="field-value date-value">
                                 <v-icon size="small" class="icon-calendar"
                                     >mdi-calendar</v-icon
@@ -30,7 +30,7 @@
                         </div>
 
                         <div class="field-column">
-                            <div class="field-label">Duration (minutes)</div>
+                            <div class="field-label">{{__('Duration (minutes)')}}</div>
                             <div class="field-value duration-value">
                                 <v-icon size="small" class="icon-clock"
                                     >mdi-clock-outline</v-icon
@@ -42,7 +42,7 @@
 
                     <div class="two-columns">
                         <div class="field-column">
-                            <div class="field-label">Rating (1-10)</div>
+                            <div class="field-label">{{__('Rating (1-10)')}}</div>
                             <div class="field-value rating-value">
                                 <v-icon size="small" class="icon-star"
                                     >mdi-star</v-icon
@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="field-column">
-                            <div class="field-label">Country</div>
+                            <div class="field-label">{{__('Country')}}</div>
                             <div class="field-value country-value">
                                 <v-icon size="small" class="icon-earth"
                                     >mdi-earth</v-icon
@@ -69,7 +69,7 @@
                         <v-icon size="small" class="section-icon"
                             >mdi-link-variant</v-icon
                         >
-                        Media Links
+                       {{__(' Media Links')}}
                     </h3>
 
                     <div class="field-row">
@@ -100,7 +100,7 @@
                     </div>
 
                     <div class="field-row">
-                        <div class="field-label">Thumbnail</div>
+                        <div class="field-label">{{__('Thumbnail')}}</div>
                         <div class="field-value">
                             <img
                                 v-if="movie.thumbnail_url"
@@ -121,18 +121,18 @@
                         <v-icon size="small" class="section-icon"
                             >mdi-translate</v-icon
                         >
-                        Languages
+                        {{__('Languages')}}
                     </h3>
 
                     <div class="field-row">
-                        <div class="field-label">Spoken Language</div>
+                        <div class="field-label">{{__('Spoken Language')}}</div>
                         <div class="field-value">
                             {{ getLanguageName(movie.spoken_language_id) }}
                         </div>
                     </div>
 
                     <div class="field-row">
-                        <div class="field-label">Subtitles</div>
+                        <div class="field-label">{{__('Subtitles')}}</div>
                         <div class="field-value">
                             <div
                                 v-if="
@@ -160,7 +160,7 @@
                         <v-icon size="small" class="section-icon"
                             >mdi-tag-multiple</v-icon
                         >
-                        Genres
+                        {{__('Genres')}}
                     </h3>
 
                     <div class="field-row">
@@ -187,7 +187,7 @@
                 <!-- Classification -->
                 <div class="details-section">
                     <div class="field-row">
-                        <div class="field-label">Classification</div>
+                        <div class="field-label">{{__('Classification')}}</div>
                         <div class="field-value">
                             {{ getClassificationName(movie.classification_id) }}
                         </div>
@@ -199,8 +199,8 @@
             <div class="show-list-container">
                 <data-table-server
                     :showNo="true"
-                    title="Shows"
-                    createButtonText="Add Show"
+                    :title="__('Shows')"
+                    :createButtonText="__('Add Show')"
                     :serverItems="serverItems"
                     :items-length="totalItems"
                     :headers="headers"
@@ -329,28 +329,28 @@ const itemsPerPage = computed(() => {
 // Table headers definition
 const headers = [
     {
-        title: "Show Time",
+        title: __("Show Time"),
         align: "start",
         sortable: true,
         key: "show_time",
         width: "180px",
     },
     {
-        title: "Hall",
+        title: __("Halls"),
         align: "center",
         sortable: false,
         key: "hall",
         width: "120px",
     },
     {
-        title: "Screen",
+        title: __("Screen"),
         align: "center",
         sortable: false,
         key: "screen_type",
         width: "150px",
     },
     {
-        title: "Status",
+        title: __("Status"),
         align: "center",
         sortable: true,
         key: "status",

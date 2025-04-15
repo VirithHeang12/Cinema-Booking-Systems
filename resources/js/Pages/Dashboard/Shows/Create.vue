@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="form-container">
             <div class="form-header !mb-3">
-                <h2 class="form-title">Create Show</h2>
+                <h2 class="form-title">{{__('Create Show')}}</h2>
                 <button
                     type="button"
                     class="btn btn-sm btn-close shadow-none"

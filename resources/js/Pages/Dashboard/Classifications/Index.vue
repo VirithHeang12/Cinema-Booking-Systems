@@ -109,7 +109,13 @@
     const viewCallback = (item) => {
         visitModal(route("dashboard.classifications.show", {
             classification: item.id,
-        }));
+        }),
+            {
+                config: {
+                    slideover: false,
+                },
+            }
+        );
     };
 
     const editCallback = (item) => {

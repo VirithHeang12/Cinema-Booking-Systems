@@ -7,7 +7,7 @@
             </vee-field>
 
             <vee-field name="code" v-slot="{ field, errors }">
-                <v-text-field v-bind="field" :error-messages="errors" v-model="form.code" :label="__('code')"
+                <v-text-field v-bind="field" :error-messages="errors" v-model="form.code" :label="__('Code')"
                     variant="outlined" class="mb-3" rows="3" auto-grow></v-text-field>
             </vee-field>
         </div>

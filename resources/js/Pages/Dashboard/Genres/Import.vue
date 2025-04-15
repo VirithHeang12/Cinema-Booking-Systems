@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="form-container">
             <div class="form-header">
-                <h2 class="form-title">Import Genres</h2>
+                <h2 class="form-title">{{__('Import Genres')}}</h2>
                 <button
                     type="button"
                     class="btn btn-sm btn-close shadow-none"
@@ -14,14 +14,14 @@
             <vee-form :validation-schema="schema" @submit="submitForm">
                 <div class="form-content">
                     <h3 class="!text-[16px] text-zinc-700 my-2">
-                        Browse Excel file to import
+                        {{__('Browse Excel file to import')}}
                     </h3>
 
                     <v-file-input
                         v-model="form.file"
                         :error-messages="form.errors.file"
                         accept=".xlsx"
-                        label="Please select Excel file"
+                        :label="__('Please select Excel file')"
                         prepend-icon=""
                         prepend-inner-icon="mdi-file-excel"
                         show-size
@@ -58,7 +58,7 @@
                         class="!text-lg"
                     >
                         <v-icon size="24" class="me-2">mdi-upload</v-icon>
-                        UPLOAD
+                        {{__('UPLOAD')}}
                     </v-btn>
                 </div>
             </vee-form>
