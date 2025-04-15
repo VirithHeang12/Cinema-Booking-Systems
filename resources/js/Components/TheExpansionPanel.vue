@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container class="px-0">
       <v-expansion-panels v-model="panelOpen" class="overflow-hidden rounded-[20px]">
         <v-expansion-panel class="overflow-hidden">
           <v-expansion-panel-title class="bg-black font-bold rounded-[20px] overflow-hidden">

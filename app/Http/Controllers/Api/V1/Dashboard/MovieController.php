@@ -86,6 +86,7 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function show(Movie $movie)
     {
         $movie->load(['movieGenres', 'movieSubtitles', 'movieGenres.genre', 'movieSubtitles.language']);
@@ -104,10 +105,12 @@ class MovieController extends Controller
             ];
         });
 
-        $movie->thumbnail_url = Storage::temporaryUrl(
-            $movie->thumbnail_url,
-            now()->addMinutes(5),
-        );
+        if ($movie->thumbnail_url && Storage::exists($movie->thumbnail_url)) {
+            $movie->thumbnail_url = Storage::temporaryUrl($movie->thumbnail_url, now()->addMinutes(5));
+        } else {
+            $movie->thumbnail_url = "https://i.pinimg.com/736x/c9/22/68/c92268d92cf2dbf96e3195683d9e14fb.jpg";
+        }        
+
         return new MovieResource($movie);
     }
 
