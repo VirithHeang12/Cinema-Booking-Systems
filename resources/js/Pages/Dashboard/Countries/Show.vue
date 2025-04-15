@@ -1,25 +1,39 @@
 <template>
     <Modal v-slot="{ close }">
-        <div>
-            <div class="d-flex justify-between align-items-start">
-                <h4 class="text-gray-700 mb-3 fw-medium text-center">{{ __('Show Country') }}</h4>
-                <button type="button" class="btn-close shadow-none " aria-label="Close" @click="close"></button>
+        <div class="form-container">
+            <div class="form-header !mb-0">
+                <h2 class="form-title">{{ country.name }}</h2>
+                <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
+                    @click="close"></button>
             </div>
-            <ul class="list-group">
-                <li class="list-group-item text-gray-600"><span class="fw-semibold text-gray-600">{{ __('Name') }}:
-                    </span> {{ props.country.name }}</li>
-            </ul>
+
+            <div class="form-content !font-medium">
+                <!-- Basic Information -->
+                <div class="details-section">
+                    <div class="field-row">
+                        <div class="field-label">Name</div>
+                        <div class="field-value">{{ country.name }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-footer">
+                <button class="close-button-large" @click="close">
+                    <v-icon class="close-icon" size="small">mdi-close</v-icon>
+                    {{ __('CLOSE') }}
+                </button>
+            </div>
         </div>
     </Modal>
 </template>
 
 <script setup>
-    import { defineProps } from 'vue';
+    import { __ } from 'matice';
 
     const props = defineProps({
         country: {
             type: Object,
             required: true,
-        }
+        },
     });
 </script>
