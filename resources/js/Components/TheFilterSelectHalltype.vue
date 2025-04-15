@@ -14,7 +14,7 @@
                 width="100%"
                 v-bind="props"
                 variant="outlined"
-                color="#242424"
+                color="white"
                 class="w-100 d-flex justify-space-between py-7 my-5"
                 >
                 {{ selectedHalltype?.name || 'All Halltypes' }}

@@ -1,7 +1,7 @@
 <template>
     <v-container class="px-0">
       <v-expansion-panels v-model="panelOpen" class="overflow-hidden rounded-[20px]">
-        <v-expansion-panel class="overflow-hidden">
+        <v-expansion-panel class="overflow-hidden border-none">
           <v-expansion-panel-title class="bg-black font-bold rounded-[20px] overflow-hidden">
             <div class="flex items-center justify-between w-full">
               <div class="text-[20px] font-bold">Legend Eden Garden</div>
