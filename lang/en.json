@@ -2,7 +2,7 @@
     "welcome": "welcome",
     "hello": "hello",
     "world": "world",
-    "contact": "contact",
+    "contact": "Contact",
     "home": "Home",
     "aboutPage": {
         "title": "About Eternal Cineplex",
@@ -125,5 +125,36 @@
     "New Movie": "New Movie",
     "Items Per Page": "Items per page",
     "Seat Types": "Seat Types",
-    "Halls": "Halls"
+    "Halls": "Halls",
+    "New Hall": "New Hall",
+    "New Country": "New Country",
+    "New Classification": "New Classification",
+    "New Genre": "New Genre",
+    "New ScreenType": "New ScreenType",
+    "New SeatType": "New SeatType",
+    "New HallType": "New HallType",
+    "New Language": "New Language",
+    "Hall Type": "Hall Type",
+    "Seat": "Seat",
+    "Screen Type": "Screen Type",
+    "Price": "Price",
+    "© 2025 Eternal Cineplex. All rights reserved.": "© 2025 Eternal Cineplex. All rights reserved.",
+    "Movie Booking Analytics": "Movie Booking Analytics",
+    "Overview of your cinema performance": "Overview of your cinema performance",
+    "April 14, 2025": "April 14, 2025",
+    "Total Revenue": "Total Revenue",
+    "from last month": "from last month",
+    "Total Tickets": "Total Tickets",
+    "Total Movies": "Total Movies",
+    "Ticket Sales by Genre": "Ticket Sales by Genre",
+    "Booking Trends Per Month": "Booking Trends Per Month",
+    "This Month": "This Month",
+    "Last 4 Months": "Last 4 Months",
+    "Movies per Genre": "Movies per Genre",
+    "All Time": "All Time"
+
+
+
+
+
 }

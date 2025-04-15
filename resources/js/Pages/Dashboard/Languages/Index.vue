@@ -3,8 +3,8 @@
         <!-- Main table component -->
         <data-table-server
             :showNo="true"
-            title="Languages"
-            createButtonText="New Language"
+            :title="__('Languages')"
+            :createButtonText="__('New Language')"
             :serverItems="serverItems"
             :items-length="totalItems"
             :headers="headers"
@@ -75,18 +75,7 @@ const lastUpdated = ref(new Date().toLocaleString());
             align: "start",
             sortable: true,
             key: "name",
-        },
-        {
-            title: __('Created At'),
-            align: "start",
-            sortable: true,
-            key: "created_at",
-        },
-        {
-            title: __('Updated At'),
-            align: "start",
-            sortable: true,
-            key: "updated_at",
+            width: '250px',
         },
     ];
 

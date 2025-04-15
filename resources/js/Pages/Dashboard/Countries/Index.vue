@@ -1,6 +1,6 @@
 <template>
     <div class="movie-list-container">
-        <data-table-server :showNo="true" :title="__('Countries')" :createButtonText="__('Create Country')"
+        <data-table-server :showNo="true" :title="__('Countries')" :createButtonText="__('New Country')"
             :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
             :server-items="serverItems" :items-per-page="itemsPerPage" item-value="id" @update:options="loadItems"
             :has-create="true" :has-import="true" :has-export="true" @view="viewCallback" @edit="editCallback"
@@ -48,6 +48,7 @@ const headers = [
         align: 'start',
         sortable: true,
         key: 'name',
+        width: '250px',
     },
 ];
 
@@ -215,13 +216,3 @@ watch(() => page.props.flash, (flash) => {
 </script>
 
 
-
-<style scoped>
-.movie-list-container {
-    width: 100%;
-    padding: 24px;
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(21, 21, 21, 0.05);
-}
-</style>
