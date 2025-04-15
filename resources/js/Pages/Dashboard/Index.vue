@@ -5,8 +5,8 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div class="flex justify-between items-center">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900">{{__('Movie Booking Analytics')}}</h1>
-                        <p class="text-gray-500">{{__('Overview of your cinema performance')}}</p>
+                        <h1 class="text-2xl font-bold text-gray-900">{{ __('Movie Booking Analytics') }}</h1>
+                        <p class="text-gray-500">{{ __('Overview of your cinema performance') }}</p>
                     </div>
                     <div class="flex items-center space-x-2 bg-blue-50 px-4 py-2 rounded-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" viewBox="0 0 24 24"
@@ -17,7 +17,7 @@
                             <line x1="8" y1="2" x2="8" y2="6"></line>
                             <line x1="3" y1="10" x2="21" y2="10"></line>
                         </svg>
-                        <span class="text-sm font-medium text-blue-600">{{__('April 14, 2025')}}</span>
+                        <span class="text-sm font-medium text-blue-600">{{ __('April 14, 2025') }}</span>
                     </div>
                 </div>
             </div>
@@ -39,19 +39,11 @@
                             </svg>
                         </div>
                         <div class="mt-3">
-                            <p class="text-sm font-medium text-gray-500">{{__('Total Revenue')}}</p>
+                            <p class="text-sm font-medium text-gray-500">{{ __('Total Revenue') }}</p>
                             <div class="flex items-baseline">
                                 <p class="text-2xl font-bold text-gray-900">${{ animatedRevenue.toLocaleString() }}</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="mt-4 flex items-center text-sm text-green-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                            <polyline points="17 6 23 6 23 12"></polyline>
-                        </svg>
-                        <span>+12.5% {{__('from last month')}}</span>
                     </div>
                 </div>
 
@@ -69,19 +61,11 @@
                             </svg>
                         </div>
                         <div class="mt-3">
-                            <p class="text-sm font-medium text-gray-500">{{__('Total Tickets')}}</p>
+                            <p class="text-sm font-medium text-gray-500">{{ __('Total Tickets') }}</p>
                             <div class="flex items-baseline mt-1">
                                 <p class="text-2xl font-bold text-gray-900">{{ animatedTicket.toLocaleString() }}</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="mt-4 flex items-center text-sm text-green-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                            <polyline points="17 6 23 6 23 12"></polyline>
-                        </svg>
-                        <span>+8.2% {{__('from last month')}}</span>
                     </div>
                 </div>
 
@@ -104,19 +88,11 @@
                             </svg>
                         </div>
                         <div class="mt-3">
-                            <p class="text-sm font-medium text-gray-500">{{__('Total Movies')}}</p>
+                            <p class="text-sm font-medium text-gray-500">{{ __('Total Movies') }}</p>
                             <div class="flex items-baseline mt-1">
                                 <p class="text-2xl font-bold text-gray-900">{{ animatedMovies.toLocaleString() }}</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="mt-4 flex items-center text-sm text-green-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                            <polyline points="17 6 23 6 23 12"></polyline>
-                        </svg>
-                        <span>+5.3% {{__('from last month')}}</span>
                     </div>
                 </div>
             </div>
@@ -126,9 +102,9 @@
                 <!-- Pie Chart -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-lg font-semibold text-gray-900">{{__('Ticket Sales by Genre')}}</h2>
+                        <h2 class="text-lg font-semibold text-gray-900">{{ __('Ticket Sales by Genre') }}</h2>
                         <div class="bg-blue-50 px-3 py-1 rounded-full text-xs font-medium text-blue-600">
-                            {{__('This Month')}}
+                            {{ __('This Month') }}
                         </div>
                     </div>
                     <div class="h-64">
@@ -140,9 +116,9 @@
                 <!-- Area Chart -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-lg font-semibold text-gray-900">{{__('Booking Trends Per Month')}}</h2>
+                        <h2 class="text-lg font-semibold text-gray-900">{{ __('Booking Trends Per Month') }}</h2>
                         <div class="bg-blue-50 px-3 py-1 rounded-full text-xs font-medium text-blue-600">
-                            {{__('Last 4 Months')}}
+                            {{ __('Last 4 Months') }}
                         </div>
                     </div>
                     <div class="h-64">
@@ -155,9 +131,9 @@
             <!-- Movies per Genre Chart -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-semibold text-gray-900">{{__('Movies per Genre')}}</h2>
+                    <h2 class="text-lg font-semibold text-gray-900">{{ __('Movies per Genre') }}</h2>
                     <div class="bg-blue-50 px-3 py-1 rounded-full text-xs font-medium text-blue-600">
-                        {{__('All Time')}}
+                        {{ __('All Time') }}
                     </div>
                 </div>
                 <div class="h-80">
