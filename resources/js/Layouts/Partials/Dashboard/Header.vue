@@ -81,7 +81,12 @@
         setLocale(key);
         localizations.value = Object.entries(usePage().props.localizations);
         const [, { path }] = localizations.value.find(([key]) => key === getLocale());
-        router.visit(path, { method: "get" });
+        router.visit(path, {
+            method: "get",
+            onSuccess: () => {
+                window.location.reload();
+            },
+        });
     };
 
     const logout = () => {
