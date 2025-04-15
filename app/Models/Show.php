@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Show extends Model
 {
@@ -29,6 +30,7 @@ class Show extends Model
         'screen_type_id',
         'show_time',
         'status',
+        'movie_id',
     ];
 
     /**
@@ -70,4 +72,15 @@ class Show extends Model
     {
         return $this->hasMany(ShowSeat::class);
     }
+
+/**
+ * Get the movie associated with the show through the movie subtitle.
+ *
+ * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+ */
+public function movie(): HasOneThrough
+{
+    return $this->hasOneThrough(Movie::class, MovieSubtitle::class, 'id', 'id', 'movie_subtitle_id', 'movie_id');
 }
+}
+

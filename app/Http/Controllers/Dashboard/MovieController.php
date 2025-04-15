@@ -20,6 +20,7 @@ use App\Models\Language;
 use App\Models\Movie;
 use App\Models\MovieGenre;
 use App\Models\MovieSubtitle;
+use App\Models\Show;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
@@ -31,6 +32,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class MovieController extends Controller
 {
+   
     /**
      * Display a listing of Movies.
      *
@@ -166,7 +168,7 @@ class MovieController extends Controller
      *
      * @return Modal
      */
-    public function show(Movie $movie): Modal
+    public function show(Movie $movie): \Inertia\Response
     {
         Gate::authorize('view', $movie);
 
@@ -193,13 +195,21 @@ class MovieController extends Controller
 
         $movie->thumbnail_url = Storage::url($movie->thumbnail_url);
 
-        return Inertia::modal('Dashboard/Movies/Show', [
-            'movie'                 => $movie->load(['movieGenres', 'movieSubtitles']),
+        $shows = Show::with(['movieSubtitle.movie', 'movieSubtitle.language', 'hall', 'screenType'])
+         ->whereHas('movieSubtitle', function ($query) use ($movie) {
+             $query->where('movie_id', $movie->id);
+         })
+         ->orderBy('show_time')
+         ->paginate(10);
+
+        return Inertia::render('Dashboard/Movies/Show', [
+            'movie'                 => $movie,
             'genres'                => $genres,
             'countries'             => $countries,
             'classifications'       => $classifications,
             'languages'             => $languages,
-        ])->baseRoute('dashboard.movies.index');
+            'shows'                 => $shows,
+        ]);
     }
 
     /**
