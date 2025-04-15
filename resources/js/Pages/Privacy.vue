@@ -1,15 +1,15 @@
 <template>
-    <v-container class="my-[20px]">
+    <v-container class="my-[30px]">
         <div class="row">
             <div class="col-12">
                 <img src="/public/image/privacy_banner.jpg" alt=""
-                    class="img-fluid object-cover w-100 !h-[400px] rounded-[15px]" />
+                    class="img-fluid object-cover w-100 !h-[500px] rounded-[15px]" />
             </div>
         </div>
 
         <div class="row">
             <div class="col-12">
-                <v-breadcrumbs :items="items" class="px-0 mb-0 text-[17px]">
+                <v-breadcrumbs :items="items" class="px-0 mb-0 text-[17px] text-white">
                     <template v-slot:divider>
                         <BreadcrumbIcon />
                     </template>
@@ -20,11 +20,11 @@
         <section>
             <v-row class="mb-3">
                 <v-col cols="12" md="6" lg="8">
-                    <h1 class="font-bold text-gray-800">{{ __('privacy.title') }}</h1>
-                    <p class="m-0 text-gray-700 text-md">{{ __('privacy.subtitle') }}</p>
+                    <h1 class="font-bold text-white">{{ __('privacy.title') }}</h1>
+                    <p class="m-0 text-grey text-md">{{ __('privacy.subtitle') }}</p>
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row class="text-grey">
                 <ThePrivacyCard v-for="policy in policies" :key="policy.id" :title="policy.title"
                     :description="policy.description" />
             </v-row>

@@ -120,7 +120,9 @@ class MovieController extends Controller
             $data = $request->validated();
 
             if ($request->hasFile('thumbnail_file')) {
-                $data['thumbnail_url'] = $request->file('thumbnail_file')->store('movies');
+                $data['thumbnail_url'] = Storage::url($request->file('thumbnail_file')->store('images', [
+                    'disk'  => 'public',
+                ]));
             }
 
             $movie = Movie::create([
@@ -191,10 +193,7 @@ class MovieController extends Controller
             ];
         });
 
-        $movie->thumbnail_url = Storage::temporaryUrl(
-            $movie->thumbnail_url,
-            now()->addMinutes(5),
-        );
+        $movie->thumbnail_url = Storage::url($movie->thumbnail_url);
 
         $shows = Show::with(['movieSubtitle.movie', 'movieSubtitle.language', 'hall', 'screenType'])
          ->whereHas('movieSubtitle', function ($query) use ($movie) {
@@ -245,11 +244,6 @@ class MovieController extends Controller
             ];
         });
 
-        $movie->thumbnail_url = Storage::temporaryUrl(
-            $movie->thumbnail_url,
-            now()->addMinutes(5),
-        );
-
         return Inertia::modal('Dashboard/Movies/Edit', [
             'movie'                 => $movie,
             'genres'                => $genres,
@@ -277,7 +271,9 @@ class MovieController extends Controller
 
         try {
             if ($request->hasFile('thumbnail_file')) {
-                $data['thumbnail_url'] = $request->file('thumbnail_file')->store('movies');
+                $data['thumbnail_url'] = Storage::url($request->file('thumbnail_file')->store('images', [
+                    'disk'  => 'public',
+                ]));
             }
 
             if ($movie->thumbnail_url && $request->hasFile('thumbnail_file')) {

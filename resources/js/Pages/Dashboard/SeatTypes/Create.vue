@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="form-container">
             <div class="form-header !mb-3">
-                <h2 class="form-title">Create Seat Type</h2>
+                <h2 class="form-title">{{ __('Create Seat Type') }}</h2>
                 <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
                     @click="close"></button>
             </div>
@@ -14,7 +14,7 @@
                     <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
                         @click.prevent="submitForm(setErrors, close)" size="large" block>
                         <v-icon class="me-2">mdi-check</v-icon>
-                        Submit
+                        {{ __('Submit') }}
                     </v-btn>
                 </div>
             </vee-form>

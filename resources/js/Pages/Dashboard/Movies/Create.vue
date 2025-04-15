@@ -2,11 +2,13 @@
     <Modal v-slot="{ close }">
         <div class="form-container">
             <div class="form-header !mb-3">
-                <h2 class="form-title">Create Movie</h2>
-                <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close" @click="close"></button>
+                <h2 class="form-title">{{ __('Create Movie') }}</h2>
+                <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
+                    @click="close"></button>
             </div>
 
-            <vee-form class="form-content-container" :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
+            <vee-form class="form-content-container" :validation-schema="schema" @submit.prevent="submitForm"
+                v-slot="{ meta, setErrors }">
                 <movie-form :form="form" :countries="countries" :genres="genres" :languages="languages"
                     :classifications="classifications"></movie-form>
                 <div class="form-actions">

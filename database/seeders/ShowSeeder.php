@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Hall;
+use App\Models\MovieSubtitle;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,99 +14,19 @@ class ShowSeeder extends Seeder
      */
     public function run(): void
     {
-        $shows = [
-            [
-                'movie_subtitle_id' => 1,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-01 10:00:00',
+        $movieSubtitles = MovieSubtitle::all();
+        $screenTypeId   = [1, 2, 3, 4];
+        $halls          = [1, 2, 3];
+
+        foreach ($movieSubtitles as $movieSubtitle) {
+            $shows[] = [
+                'movie_subtitle_id' => $movieSubtitle->id,
+                'hall_id'           => $halls[array_rand($halls)],
+                'screen_type_id'    => $screenTypeId[array_rand($screenTypeId)],
+                'show_time'         => now()->addDays(rand(0, 30))->format('Y-m-d H:i:s'),
                 'status'            => 'Scheduled',
-            ],
-            [
-                'movie_subtitle_id' => 1,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-01 13:00:00',
-                'status'            => 'Scheduled',
-            ],
-            [
-                'movie_subtitle_id' => 1,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-01 16:00:00',
-                'status'            => 'Scheduled',
-            ],
-            [
-                'movie_subtitle_id' => 1,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-01 19:00:00',
-                'status'            => 'Scheduled',
-            ],
-            [
-                'movie_subtitle_id' => 1,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-01 22:00:00',
-                'status'            => 'Scheduled',
-            ],
-            [
-                'movie_subtitle_id' => 2,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-02 10:00:00',
-                'status'            => 'Scheduled',
-            ],
-            [
-                'movie_subtitle_id' => 2,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-02 13:00:00',
-                'status'            => 'Scheduled',
-            ],
-            [
-                'movie_subtitle_id' => 2,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-02 16:00:00',
-                'status'            => 'Scheduled',
-            ],
-            [
-                'movie_subtitle_id' => 2,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-02 19:00:00',
-                'status'            => 'Scheduled',
-            ],
-            [
-                'movie_subtitle_id' => 2,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-02 22:00:00',
-                'status'            => 'Scheduled',
-            ],
-            [
-                'movie_subtitle_id' => 3,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-03 10:00:00',
-                'status'            => 'Scheduled',
-            ],
-            [
-                'movie_subtitle_id' => 3,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-03 13:00:00',
-                'status'            => 'Scheduled',
-            ],
-            [
-                'movie_subtitle_id' => 3,
-                'hall_id'           => 1,
-                'screen_type_id'    => 1,
-                'show_time'         => '2021-01-03 16:00:00',
-                'status'            => 'Scheduled',
-            ],
-        ];
+            ];
+        }
 
         foreach ($shows as $show) {
             \App\Models\Show::create($show);

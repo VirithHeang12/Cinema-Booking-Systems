@@ -12,12 +12,12 @@
                 <!-- Basic Information -->
                 <div class="details-section">
                     <div class="field-row">
-                        <div class="field-label">Title</div>
+                        <div class="field-label">{{ __('Title') }}</div>
                         <div class="field-value">{{ hall_type.name }}</div>
                     </div>
 
                     <div class="field-row">
-                        <div class="field-label">Description</div>
+                        <div class="field-label">{{ __('Description') }}</div>
                         <div class="field-value">{{ hall_type.description }}</div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
             <div class="details-footer">
                 <button class="close-button-large" @click="close">
                     <v-icon class="close-icon" size="small">mdi-close</v-icon>
-                    CLOSE
+                    {{ __('CLOSE') }}
                 </button>
             </div>
         </div>
@@ -87,6 +87,7 @@
         justify-content: center;
         cursor: pointer;
     }
+
     .close-button:hover {
         background-color: #f5f5f5;
         opacity: 1;
@@ -121,8 +122,8 @@
         margin-right: 8px;
     }
 
-        /* Footer styling */
-        .details-footer {
+    /* Footer styling */
+    .details-footer {
         padding: 16px 24px;
         border-top: 1px solid #e0e0e0;
     }
@@ -144,7 +145,7 @@
     .close-icon {
         margin-right: 8px;
     }
-    
+
     /* Mobile Responsiveness */
     @media (max-width: 768px) {
         .two-columns {

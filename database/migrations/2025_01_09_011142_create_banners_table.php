@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('image_url')
                 ->nullable(false)
                 ->comment('URL of the banner image');
+                
+            $table->string('description')
+                ->nullable()
+                ->comment('Description of the banner');
 
             $table->timestamp('display_start_date')
                 ->comment('Date and time when the banner should start displaying');

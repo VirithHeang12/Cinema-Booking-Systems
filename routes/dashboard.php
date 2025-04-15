@@ -12,8 +12,10 @@ use App\Http\Controllers\Dashboard\ScreenTypeController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\SeatTypeController;
 use App\Http\Controllers\Dashboard\ShowController;
+use App\Http\Middleware\RedirectIfUser;
 
-Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(function () {
+
+Route::middleware(['auth', RedirectIfUser::class])->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
 
     Route::get('classifications/import', [ClassificationController::class, 'showImport'])->name('classifications.import.show');
@@ -74,9 +76,6 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::prefix('movies/{movie}')->name('movies.')->group(function () {
         Route::resource('shows', ShowController::class);
     });
-    
-    
-    
 });
 
 
