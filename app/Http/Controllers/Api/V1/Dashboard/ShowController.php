@@ -9,20 +9,18 @@ use Illuminate\Http\Request;
 
 class ShowController extends Controller
 {
-
     public function index(Movie $movie)
     {
         $subtitles = $movie->movieSubtitles;
-
-        if ($subtitles->isEmpty()) {
-            return response()->json(['error' => 'No subtitles found for this movie'], 404);
-        }
-        $subtitle = $subtitles->first();
-        $showTimes = Show::where('movie_subtitle_id', $subtitle->id)
+        $subtitleIds = $subtitles->pluck('id');
+        $showTimes = Show::with(['movieSubtitle.language', 'hall', 'screenType', 'showSeats'])
+            ->whereIn('movie_subtitle_id', $subtitleIds)
             ->orderBy('show_time')
-            ->get(['show_time', 'status']);
+            ->get();
+
         return response()->json($showTimes);
     }
+
     public function recent()
     {
         $shows = Show::with('movieSubtitle.movie')

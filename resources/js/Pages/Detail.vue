@@ -26,8 +26,9 @@
                                         <DateButton v-for="(date, index) in showDates" :key="index" :date="date"
                                             :isActive="selectedIndex === index" @click="selectedIndex = index" class="!w-[170px]" />
                                     </div>
-                                    <TheExpansionPanel />
-                                    <TheExpansionPanel />
+                                    <!-- <TheExpansionPanel :movieId="movie?.id" /> -->
+                                    <TheExpansionPanel :movieId="movie?.id" :selectedDate="showDates[selectedIndex]" />
+
                                 </div>
 
                                 <div v-else-if="item.value === 'tab-detail'" class="pa-4 text-white">
@@ -56,9 +57,14 @@ import DateButton from '../Components/DateButton.vue'
 const page = usePage()
 const movieId = page.props.id
 
+const props = defineProps({
+  movie: Object,
+  showDates: Array,
+})
 const movie = ref(null)
 const showDates = ref([])
 const selectedIndex = ref(0)
+
 
 const tab = shallowRef('tab-show')
 const tabs = [
@@ -96,6 +102,7 @@ const fetchShowDates = async () => {
         console.error('Failed to fetch show dates:', err)
     }
 }
+
 </script>
 
 <style scoped>
