@@ -27,7 +27,6 @@
     import { __ } from "matice";
     import * as yup from "yup";
     import ShowForm from "../../../../Forms/ShowForm.vue";
-    import { computed } from "vue";
 
     const props = defineProps({
         languages: {

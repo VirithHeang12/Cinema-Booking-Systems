@@ -37,7 +37,7 @@ class Show extends Model
      * @var array
      */
     protected $casts = [
-        'show_time' => 'date',
+        'show_time' => 'datetime',
         'status'    => 'string',
     ];
 

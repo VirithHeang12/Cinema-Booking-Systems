@@ -62,18 +62,19 @@ class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'movie_subtitle_id.required' => __('Movie & Subtitle is required'),
-            'movie_subtitle_id.integer' => __('Invalid Movie & Subtitle format.'),
-            'movie_subtitle_id.exists' => __('Selected Movie & Subtitle does not exist.'),
-            'hall_id.required' => __('Hall is required'),
-            'hall_id.integer' => __('Invalid Hall format.'),
-            'hall_id.exists' => __('Selected Hall does not exist.'),
-            'screen_type_id.required' => __('Screen Type is required'),
-            'screen_type_id.integer' => __('Invalid Screen Type format.'),
-            'screen_type_id.exists' => __('Selected Screen Type does not exist.'),
-            'show_time.required' => __('Show Time is required'),
-            'show_time.date' => __('Invalid Show Time format.'),
-            'status.in' => __('Invalid Show Status.'),
+            'language_id.required'      => __('Language is required'),
+            'language_id.integer'       => __('Language must be an integer'),
+            'language_id.exists'        => __('Language does not exist'),
+            'hall_id.required'          => __('Hall is required'),
+            'hall_id.integer'           => __('Hall must be an integer'),
+            'hall_id.exists'            => __('Hall does not exist'),
+            'screen_type_id.required'   => __('Screen type is required'),
+            'screen_type_id.integer'    => __('Screen type must be an integer'),
+            'screen_type_id.exists'     => __('Screen type does not exist'),
+            'show_time.required'        => __('Show time is required'),
+            'show_time.date'            => __('Show time must be a valid date'),
+            'status.in'                 => __('Invalid show status'),
+            'status.string'             => __('Show status must be a string'),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Shows;
 
+use App\Enums\ShowStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -12,22 +13,44 @@ class UpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return true; // Or your authorization logic
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'show_time' => 'required|date',
-            'status' => ['nullable', 'string', Rule::in(['Scheduled', 'Showing', 'Already'])],
-            'movie_subtitle_id' => 'nullable|exists:movie_subtitles,id',
-            'hall_id' => 'nullable|exists:halls,id',
-            'screen_type_id' => 'nullable|exists:screen_types,id',
+            'language_id'           => [
+                'required',
+                'integer',
+                'exists:languages,id',
+            ],
+            'hall_id'               => [
+                'required',
+                'integer',
+                'exists:halls,id',
+            ],
+            'screen_type_id'        => [
+                'required',
+                'integer',
+                'exists:screen_types,id',
+            ],
+            'show_time'             => [
+                'required',
+                'date',
+            ],
+            'status'                => [
+                'nullable',
+                Rule::in([
+                    ShowStatus::SCHEDULED,
+                    ShowStatus::SHOWING,
+                    ShowStatus::ALREADY
+                ]),
+            ],
         ];
     }
 
@@ -39,12 +62,19 @@ class UpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'show_time.required' => 'The show time is required.',
-            'show_time.date' => 'The show time must be a valid date and time.',
-            'status.in' => 'The status must be one of the following: Scheduled, Showing, Already.',
-            'movie_subtitle_id.exists' => 'The selected movie subtitle is invalid.',
-            'hall_id.exists' => 'The selected hall is invalid.',
-            'screen_type_id.exists' => 'The selected screen type is invalid.',
+            'language_id.required'      => __('Language is required'),
+            'language_id.integer'       => __('Language must be an integer'),
+            'language_id.exists'        => __('Language does not exist'),
+            'hall_id.required'          => __('Hall is required'),
+            'hall_id.integer'           => __('Hall must be an integer'),
+            'hall_id.exists'            => __('Hall does not exist'),
+            'screen_type_id.required'   => __('Screen type is required'),
+            'screen_type_id.integer'    => __('Screen type must be an integer'),
+            'screen_type_id.exists'     => __('Screen type does not exist'),
+            'show_time.required'        => __('Show time is required'),
+            'show_time.date'            => __('Show time must be a valid date'),
+            'status.in'                 => __('Invalid show status'),
+            'status.string'             => __('Show status must be a string'),
         ];
     }
 }

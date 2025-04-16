@@ -128,7 +128,7 @@
                         <data-table-server :showNo="true" :title="__('Shows')" :createButtonText="__('Add Show')"
                             :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
                             :itemsPerPage="itemsPerPage" item-value="id" @update:options="loadItems"
-                            @view="viewCallback" @edit="editCallback" @delete="deleteCallback" @create="createCallback"
+                            @edit="editCallback" @delete="deleteCallback" @create="createCallback"
                             :emptyStateText="__('No shows found in the database')" :emptyStateAction="true"
                             :emptyStateActionText="__('Add First Show')" @empty-action="createCallback"
                             buttonVariant="outlined" :viewTooltip="__('View Show Details')"
@@ -136,10 +136,15 @@
                             titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="false"
                             tableClasses="show-data-table rounded-lg" iconSize="small"
                             :deleteConfirmText="__('Are you sure you want to delete this show? This action cannot be undone.')"
-                            toolbarColor="white" :showSelect="false" :hasImport="false" :hasExport="false">
+                            toolbarColor="white" :showSelect="false" :hasView="false" :hasImport="false"
+                            :hasExport="false">
 
                             <template v-slot:[`item.show_time`]="{ item }">
                                 {{ formatDate(item.show_time) }}
+                            </template>
+
+                            <template v-slot:[`item.language`]="{ item }">
+                                {{ item?.movie_subtitle?.language?.name || "N/A" }}
                             </template>
 
                             <template v-slot:[`item.movie_subtitle`]="{ item }">
@@ -268,28 +273,35 @@
         {
             title: __("Show Time"),
             align: "start",
-            sortable: true,
+            sortable: false,
             key: "show_time",
-            width: "180px",
+            width: "250px",
         },
         {
-            title: __("Halls"),
+            title: __("Language"),
+            align: "center",
+            sortable: false,
+            key: "language",
+            width: "100px",
+        },
+        {
+            title: __("Hall"),
             align: "center",
             sortable: false,
             key: "hall",
-            width: "120px",
+            width: "100px",
         },
         {
             title: __("Screen"),
             align: "center",
             sortable: false,
             key: "screen_type",
-            width: "150px",
+            width: "100px",
         },
         {
             title: __("Status"),
             align: "center",
-            sortable: true,
+            sortable: false,
             key: "status",
             width: "120px",
         },
@@ -366,25 +378,6 @@
     };
 
     /**
-     * Open the view show slideover
-     *
-     * @param item
-     *
-     * @return void
-     */
-    const viewCallback = (item) => {
-        visitModal(route('dashboard.movies.shows.show', {
-            movie: item.id,
-            show: item.id,
-        }), {
-            config: {
-                slideover: false,
-                closeExplicitly: true,
-            },
-        });
-    };
-
-    /**
      * Open the edit show slideover
      *
      * @param item
@@ -393,7 +386,7 @@
      */
     const editCallback = (item) => {
         visitModal(route('dashboard.movies.shows.edit', {
-            movie: item.id,
+            movie: props.movie.id,
             show: item.id,
         }));
     };
@@ -407,7 +400,7 @@
      */
     const deleteCallback = (item) => {
         visitModal(route('dashboard.movies.shows.delete', {
-            movie: item.id,
+            movie: props.movie.id,
             show: item.id,
         }), {
             config: {
@@ -463,18 +456,25 @@
      * Format date to a readable format
      *
      * @param {string} dateString - The date string to format
+     *
      * @returns {string} - The formatted date
      */
     const formatDate = (dateString) => {
         if (!dateString) return "";
+
+        // Create date object - force UTC interpretation to avoid timezone shifts
         const date = new Date(dateString);
-        return date.toLocaleDateString("en-US", {
+
+        // Format with explicit timezone handling
+        return new Intl.DateTimeFormat('en-US', {
             year: "numeric",
             month: "2-digit",
             day: "2-digit",
             hour: "2-digit",
             minute: "2-digit",
-        });
+            hour12: true,
+            timeZone: 'UTC' // Use the server's timezone or your application's timezone
+        }).format(date);
     };
 
     /**
@@ -499,16 +499,6 @@
         return language ? language.name : "";
     };
 
-    /**
-     * Get genre name by id
-     *
-     * @param {number} id - The genre id
-     * @returns {string} - The genre name
-     */
-    const getGenreName = (id) => {
-        const genre = props.genres.find((item) => item.id === id);
-        return genre ? genre.name : "";
-    };
 
     /**
      * Get classification name by id
