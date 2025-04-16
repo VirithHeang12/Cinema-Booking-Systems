@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Enums\ShowStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HallSeatTypes\StoreRequest;
+use App\Http\Requests\HallSeatTypes\UpdateRequest;
 use App\Http\Resources\Api\LanguageResource;
 use App\Http\Resources\Api\ScreenTypeResource;
 use App\Http\Resources\HallResource;
@@ -114,131 +115,157 @@ class HallSeatTypeController extends Controller
     }
 
     /**
-     * Display form for editing the specified show.
+     * Display form for editing the specified seat type.
      *
-     * @param \App\Models\Movie $movie
-     * @param \App\Models\Show $show
+     * @param \App\Models\Hall $hall
+     * @param \App\Models\HallSeatType $seatType
      *
      * @return Modal
      */
-    public function edit(Movie $movie, Show $show): Modal
+    public function edit(Hall $hall, HallSeatType $seatType): Modal
     {
-        Gate::authorize('update', $show);
+        Gate::authorize('update', $seatType);
 
-        $halls          = HallResource::collection(Hall::all())->toArray(request());
-        $screenTypes    = ScreenTypeResource::collection(ScreenType::all())->toArray(request());
-        $languages      = collect(MovieSubtitle::where('movie_id', $movie->id)->with('language')->get())->map(
-            function ($subtitle) {
-                return LanguageResource::make($subtitle->language)->toArray(request());
-            }
-        );
+        $seatType['rows'] = Seat::where('hall_id', $hall->id)
+            ->where('seat_type_id', $seatType->seat_type_id)
+            ->pluck('row')
+            ->unique()
+            ->map(function ($row) {
+                return [
+                    'id'        => $row,
+                    'name'      => $row,
+                ];
+            })->values()->toArray();
 
-        $show['language_id'] = $show->movieSubtitle->language?->id;
-        $show['show_time']   = Carbon::parse($show->show_time)->format('Y-m-d\TH:i:s');
+        $seatTypes      = SeatType::all();
 
-        return Inertia::modal('Dashboard/Movies/Shows/Edit', [
-            'halls'         => $halls,
-            'screen_types'  => $screenTypes,
-            'languages'     => $languages,
-            'movie'         => $movie,
-            'show'          => $show,
-        ])->baseRoute('dashboard.movies.show', [
-            'movie'         => $movie,
+        $seatTypes      = SeatTypeResource::collection($seatTypes)->toArray(request());
+        $takenRows      = $hall->seats()->pluck('row')->unique();
+
+        $availableRows  = collect(self::ROWS)->diff($takenRows);
+
+        $availableRows = $availableRows->map(function ($row) {
+            return [
+                'id'        => $row,
+                'name'      => $row,
+            ];
+        })->values()->toArray();
+
+        return Inertia::modal('Dashboard/Halls/SeatTypes/Edit', [
+            'seat_types'                => $seatTypes,
+            'hall'                      => $hall,
+            'available_rows'            => $availableRows,
+            'seat_type'                  => $seatType,
+        ])->baseRoute('dashboard.halls.show', [
+            'hall'          => $hall,
         ]);
     }
 
     /**
-     * Update the specified show in storage.
+     * Update the specified seat type in storage.
      *
-     * @param \App\Http\Requests\Shows\UpdateRequest $request
-     * @param \App\Models\Movie $movie
-     * @param \App\Models\Show $show
+     * @param \App\Http\Requests\HallSeatTypes\UpdateRequest $request
+     * @param \App\Models\Hall $hall
+     * @param \App\Models\HallSeatType $seatType
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Movie $movie, Show $show): \Illuminate\Http\RedirectResponse
+    public function update(UpdateRequest $request, Hall $hall, HallSeatType $seatType): \Illuminate\Http\RedirectResponse
     {
-        Gate::authorize('update', $show);
+        Gate::authorize('update', $seatType);
 
         DB::beginTransaction();
 
         try {
             $data = $request->validated();
 
-            $movieSubtitle = MovieSubtitle::where('movie_id', $movie->id)
-                ->where('language_id', $data['language_id'])
-                ->first();
-
-            $show->update([
-                'movie_subtitle_id' => $movieSubtitle?->id,
-                'hall_id'           => $data['hall_id'],
-                'screen_type_id'    => $data['screen_type_id'],
-                'show_time'         => $data['show_time'],
-                'status'            => $data['status'] ?? ShowStatus::SCHEDULED,
+            $seatType->update([
+                'maximum_capacity'  => $data['maximum_capacity'],
             ]);
+
+            // Delete existing seats
+            Seat::where('hall_id', $hall->id)
+                ->where('seat_type_id', $seatType->seat_type_id)
+                ->delete();
+
+            // Create new seats
+            foreach ($data['rows'] as $row) {
+                for ($seatNum = 1; $seatNum <= $data['maximum_capacity']; $seatNum++) {
+                    Seat::create([
+                        'hall_id'           => $hall->id,
+                        'seat_type_id'      => $seatType->seat_type_id,
+                        'row'               => $row['id'],
+                        'number'            => $seatNum,
+                    ]);
+                }
+            }
 
             DB::commit();
 
-            return redirect()->route('dashboard.movies.show', [
-                'movie'         => $movie
-            ])->with('success', __('Show updated successfully.'));
+            return redirect()->route('dashboard.halls.show', [
+                'hall'          => $hall
+            ])->with('success', __('Seat type updated successfully.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.movies.show', [
-                'movie'         => $movie
-            ])->with('error', __('Failed to update show. Please try again.'));
+            return redirect()->route('dashboard.halls.show', [
+                'hall'          => $hall
+            ])->with('error', __('Failed to update seat type. Please try again.'));
         }
     }
 
     /**
-     * Show the form for deleting the specified show.
+     * Show the form for deleting the specified seat type.
      *
-     * @param \App\Models\Movie $movie
-     * @param \App\Models\Show $show
+     * @param \App\Models\Hall $hall
+     * @param \App\Models\HallSeatType $seatType
      *
      * @return Modal
      */
-    public function delete(Movie $movie, Show $show): Modal
+    public function delete(Hall $hall, HallSeatType $seatType): Modal
     {
-        Gate::authorize('delete', $show);
+        Gate::authorize('delete', $seatType);
 
-        return Inertia::modal('Dashboard/Movies/Shows/Delete', [
-            'movie' => $movie,
-            'show'  => $show,
-        ])->baseRoute('dashboard.movies.show', [
-            'movie' => $movie,
+        return Inertia::modal('Dashboard/Halls/SeatTypes/Delete', [
+            'hall'          => $hall,
+            'seat_type'     => $seatType,
+        ])->baseRoute('dashboard.halls.show', [
+            'hall'          => $hall,
         ]);
     }
 
     /**
-     * Remove the specified show from storage.
+     * Remove the specified seat type from storage.
      *
-     * @param \App\Models\Movie $movie
-     * @param \App\Models\Show $show
+     * @param \App\Models\Hall $hall
+     * @param \App\Models\HallSeatType $seatType
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Movie $movie, Show $show): \Illuminate\Http\RedirectResponse
+    public function destroy(Hall $hall, HallSeatType $seatType): \Illuminate\Http\RedirectResponse
     {
-        Gate::authorize('delete', $show);
+        Gate::authorize('delete', $seatType);
 
         DB::beginTransaction();
 
         try {
-            $show->delete();
+            $seatType->delete();
+
+            Seat::where('hall_id', $hall->id)
+                ->where('seat_type_id', $seatType->seat_type_id)
+                ->delete();
 
             DB::commit();
 
-            return redirect()->route('dashboard.movies.show', [
-                'movie' => $movie
-            ])->with('success', __('Show deleted successfully.'));
+            return redirect()->route('dashboard.halls.show', [
+                'hall'          => $hall
+            ])->with('success', __('Seat type deleted successfully.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.movies.show', [
-                'movie' => $movie
-            ])->with('error', __('Failed to delete show. Please try again.'));
+            return redirect()->route('dashboard.halls.show', [
+                'hall'          => $hall
+            ])->with('error', __('Failed to delete seat type. Please try again.'));
         }
     }
 }

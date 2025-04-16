@@ -29,6 +29,8 @@
                                     <!-- <TheExpansionPanel :movieId="movie?.id" /> -->
                                     <TheExpansionPanel :movieId="movie?.id" :selectedDate="showDates[selectedIndex]" />
 
+                                    <TheExpansionPanel />
+                                    <TheExpansionPanel />
                                 </div>
 
                                 <div v-else-if="item.value === 'tab-detail'" class="pa-4 text-white">
@@ -57,14 +59,9 @@ import DateButton from '../Components/DateButton.vue'
 const page = usePage()
 const movieId = page.props.id
 
-const props = defineProps({
-  movie: Object,
-  showDates: Array,
-})
 const movie = ref(null)
 const showDates = ref([])
 const selectedIndex = ref(0)
-
 
 const tab = shallowRef('tab-show')
 const tabs = [
@@ -102,7 +99,6 @@ const fetchShowDates = async () => {
         console.error('Failed to fetch show dates:', err)
     }
 }
-
 </script>
 
 <style scoped>
