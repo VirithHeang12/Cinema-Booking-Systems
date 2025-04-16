@@ -4,23 +4,39 @@
             <v-container class="py-0 px-0">
                 <SlideBanner :image-urls="banners" />
             </v-container>
-            <v-container :max-width="1200" class="px-5">
+            <!-- <v-container :max-width="1200" class="px-5">
+                <v-row dense class="gap-4">
+                    <v-col cols="2" v-for="(date, index) in dateRange" :key="index" @click="selectDate(date)">
+                        <date-button :date="date.toISOString()" :is-active="isSelectedDate(date)" />
+                    </v-col>
+                </v-row>
+            </v-container> -->
+            <!-- <v-container :max-width="1200" class="px-0">
+                <v-row dense>
+                    <TheMovieCard :movies="movies" />
+                </v-row>
+            </v-container> -->
+
+            <v-container :max-width="1200" class="px-5 !mt-[50px]">
                 <v-row dense class="gap-4">
                     <v-col cols="2" v-for="(date, index) in dateRange" :key="index" @click="selectDate(date)">
                         <date-button :date="date.toISOString()" :is-active="isSelectedDate(date)" />
                     </v-col>
                 </v-row>
             </v-container>
-            <v-container :max-width="1200" class="px-0">
+
+
+            <v-container :max-width="1200" class="px-5 mt-10">
                 <v-row dense>
-                    <TheMovieCard :movies="movies" />
+                    <TheMovieCard :movies="recentShows" />
                 </v-row>
             </v-container>
+
         </v-row>
     </v-container>
 </template>
 
-<script setup>
+<!-- <script setup>
     import TheMovieCard from '@/Components/TheMovieCard.vue'
     import SlideBanner from '@/Components/SlideBanner.vue';
     import { computed, ref, watch } from 'vue';
@@ -88,45 +104,138 @@
         immediate: true,
     });
 
+</script> -->
+
+
+<script setup>
+import { ref, onMounted, watch } from 'vue';
+import { router } from '@inertiajs/vue3';
+import axios from 'axios';
+
+import SlideBanner from '@/Components/SlideBanner.vue';
+import TheMovieCard from '@/Components/TheMovieCard.vue';
+
+const props = defineProps({
+    banners: {
+        type: Array,
+        default: () => [],
+    },
+    movies: {
+        type: Array,
+        default: () => [],
+    }
+});
+
+const dateRange = ref([]);
+const selected = ref(null);
+const recentShows = ref([]);
+
+const fetchRecentShows = async () => {
+    try {
+        const res = await axios.get('/api/v1/dashboard/shows/recent');
+        if (Array.isArray(res.data)) {
+            const uniqueDates = [...new Set(res.data.map(item => item.show_time.split('T')[0]))];
+            dateRange.value = uniqueDates.map(dateStr => new Date(dateStr));
+            selected.value = dateRange.value[0];
+            await selectDate(dateRange.value[0]);
+        }
+    } catch (err) {
+        console.error('Failed to fetch recent shows:', err);
+    }
+};
+
+const selectDate = async (date) => {
+    selected.value = date;
+    const dateStr = date.toISOString().split('T')[0];
+
+    try {
+        const response = await axios.get(`/api/v1/dashboard/shows/movieShow`, {
+            params: { date: dateStr }
+        });
+
+        recentShows.value = response.data.map(show => {
+            const movie = show.movie_subtitle?.movie;
+    console.log('Classification:', movie?.classification);
+            return {
+                id: movie?.id ?? null,
+                title: movie?.title ?? 'Unknown',
+                thumbnail_url: movie?.thumbnail_url ?? '',
+                classification: movie?.classification?? null,
+                release_date: movie?.release_date,
+            };
+        });
+    } catch (err) {
+        console.error('Error fetching shows by date:', err);
+    }
+};
+
+const isSelectedDate = (date) => {
+    return date.getDate() === selected.value?.getDate() &&
+        date.getMonth() === selected.value?.getMonth() &&
+        date.getFullYear() === selected.value?.getFullYear();
+};
+
+const fetchMovies = async (date) => {
+    router.reload({
+        data: {
+            filter: {
+                date: date.toISOString(),
+            }
+        },
+        preserveState: true,
+        only: ['movies'],
+    });
+};
+
+watch(selected, (newDate) => {
+    if (newDate) {
+        fetchMovies(newDate);
+    }
+});
+
+onMounted(() => {
+    fetchRecentShows();
+});
 </script>
 
+
+
 <style scoped>
-    .bg-blur::before {
-        content: '';
-        width: 65%;
-        height: 100%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, 100%);
-        background-color: red;
-        filter: blur(200px);
-        border-radius: 100%;
-        z-index: -1;
-    }
+.bg-blur::before {
+    content: '';
+    width: 65%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    background-color: red;
+    filter: blur(200px);
+    border-radius: 100%;
+    z-index: -1;
+}
 
-    .app-bar {
-        position: relative;
-        overflow: hidden;
-        /* Ensure the gradient doesn't spill out */
-    }
+.app-bar {
+    position: relative;
+    overflow: hidden;
+    /* Ensure the gradient doesn't spill out */
+}
 
-    .app-bar::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        /* Thickness of the border */
-        background: linear-gradient(to right,
-                rgba(255, 255, 255, 0),
-                /* Lighter left */
-                rgba(255, 255, 255, 0.4),
-                /* Darker center */
-                rgba(255, 255, 255, 0)
-                /* Lighter right */
-            );
-    }
-
+.app-bar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    /* Thickness of the border */
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0),
+            /* Lighter left */
+            rgba(255, 255, 255, 0.4),
+            /* Darker center */
+            rgba(255, 255, 255, 0)
+            /* Lighter right */
+        );
+}
 </style>
