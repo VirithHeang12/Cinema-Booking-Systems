@@ -103,4 +103,15 @@ enum PermissionEnum: string
     case EXPORT_SEAT_TYPE = 'EXPORT SEAT TYPE';
     case RESTORE_SEAT_TYPE = 'RESTORE SEAT TYPE';
     case FORCE_DELETE_SEAT_TYPE = 'FORCE DELETE SEAT TYPE';
+
+    // Show Permissions
+    case VIEW_ANY_SHOWS = 'VIEW ANY SHOWS';
+    case VIEW_SHOW = 'VIEW SHOW';
+    case CREATE_SHOW = 'CREATE SHOW';
+    case UPDATE_SHOW = 'UPDATE SHOW';
+    case DELETE_SHOW = 'DELETE SHOW';
+    case IMPORT_SHOW = 'IMPORT SHOW';
+    case EXPORT_SHOW = 'EXPORT SHOW';
+    case RESTORE_SHOW = 'RESTORE SHOW';
+    case FORCE_DELETE_SHOW = 'FORCE DELETE SHOW';
 }

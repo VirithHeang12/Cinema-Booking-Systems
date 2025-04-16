@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\ShowStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shows\StoreRequest;
 use App\Http\Requests\Shows\UpdateRequest;
+use App\Http\Resources\Api\LanguageResource;
+use App\Http\Resources\Api\ScreenTypeResource;
+use App\Http\Resources\HallResource;
 use App\Models\Hall;
 use App\Models\Movie;
 use App\Models\MovieSubtitle;
@@ -14,87 +18,77 @@ use Inertia\Inertia;
 use InertiaUI\Modal\Modal;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-
-
 class ShowController extends Controller
 {
+    /**
+     * Display form for creating a new show.
+     *
+     * @param \App\Models\Movie $movie
+     *
+     * @return Modal
+     */
+    public function create(Movie $movie): Modal
+    {
+        Gate::authorize('create', Show::class);
 
-public function create(): Modal
-{
-    Gate::authorize('create', Show::class);
+        $halls          = HallResource::collection(Hall::all())->toArray(request());
+        $screenTypes    = ScreenTypeResource::collection(ScreenType::all())->toArray(request());
+        $languages      = collect(MovieSubtitle::where('movie_id', $movie->id)->with('language')->get())->map(
+            function ($subtitle) {
+                return LanguageResource::make($subtitle->language)->toArray(request());
+            }
+        );
 
-    $movieSubtitleId = request()->input('movieSubtitleId');
-
-    if (!$movieSubtitleId) {
-        // If movieSubtitleId is not provided, return an error response.
-        abort(400, 'Movie ID is required to create a show.');
+        return Inertia::modal('Dashboard/Movies/Shows/Create', [
+            'halls'         => $halls,
+            'screen_types'  => $screenTypes,
+            'languages'     => $languages,
+            'movie'         => $movie,
+        ])->baseRoute('dashboard.movies.show', [
+            'movie'         => $movie,
+        ]);
     }
-
-    $movieSubtitle = MovieSubtitle::findOrFail($movieSubtitleId);
-    $movie = Movie::findOrFail($movieSubtitle->movie_id);
-    $movieSubtitles = MovieSubtitle::with('movie', 'language')
-    ->where('movie_id', $movie->id)
-    ->get()
-    ->map(function ($ms) {
-        $languageName = $ms->language ? $ms->language->name : 'Original';
-        return [
-            'id' => $ms->id,
-            'label' =>  $languageName,
-        ];
-    });
-
-        // dd($movieSubtitles);
-
-    $halls = Hall::all()->map(fn ($hall) => ['id' => $hall->id, 'label' => $hall->name]);
-    $screenTypes = ScreenType::all()->map(fn ($st) => ['id' => $st->id, 'label' => $st->name]);
-
-    return Inertia::modal('Dashboard/Shows/Create', [
-        'movieSubtitles' => $movieSubtitles,
-        'halls' => $halls,
-        'screenTypes' => $screenTypes,
-        'movieId' => $movie->id,
-    ])->baseRoute('dashboard.movies.show', ['movie' => $movie->id]);
-}
-
-
 
     /**
-     * Store a newly created resource in storage.
-    **/
-public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
-{
-    Gate::authorize('create', Show::class);
+     * Store a newly created show in storage.
+     *
+     * @param \App\Http\Requests\Shows\StoreRequest $request
+     * @param \App\Models\Movie $movie
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(StoreRequest $request, Movie $movie): \Illuminate\Http\RedirectResponse
+    {
+        Gate::authorize('create', Show::class);
 
-    DB::beginTransaction();
+        DB::beginTransaction();
 
-    try {
-        $data = $request->validated();
+        try {
+            $data = $request->validated();
 
-        $show = Show::create([
-            'movie_subtitle_id' => $data['movie_subtitle_id'] ?? null,
-            'hall_id' => $data['hall_id'],
-            'screen_type_id' => $data['screen_type_id'],
-            'show_time' => $data['show_time'],
-            'status' => $data['status'] ?? 'scheduled',
-        ]);
+            $movieSubtitle = MovieSubtitle::where('movie_id', $movie->id)
+                ->where('language_id', $data['language_id'])
+                ->first();
 
-        DB::commit();
+            Show::create([
+                'movie_subtitle_id' => $movieSubtitle?->id,
+                'hall_id'           => $data['hall_id'],
+                'screen_type_id'    => $data['screen_type_id'],
+                'show_time'         => $data['show_time'],
+                'status'            => $data['status'] ?? ShowStatus::SCHEDULED,
+            ]);
 
-        $movieSubtitle = MovieSubtitle::find($data['movie_subtitle_id']);
-        $movieId = $movieSubtitle->movie_id;
+            DB::commit();
 
-        return redirect()->route('dashboard.movies.show', ['movie' => $movieId])
-            ->with('success', __('Show created successfully.'));
+            return redirect()->route('dashboard.movies.show', [
+                'movie'         => $movie
+            ])->with('success', __('Show created successfully.'));
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-    } catch (\Exception $e) {
-        DB::rollBack();
-        Log::error('Error creating show: ' . $e->getMessage());
-        $movieId = $movieSubtitle->movie_id ?? null;
-        return redirect()->route('dashboard.movies.show', ['movie' => $movieId])
-            ->with('error', __('Failed to create show. Please try again.'));
+            return redirect()->route('dashboard.movies.show', [
+                'movie'         => $movie
+            ])->with('error', __('Failed to create show. Please try again.'));
+        }
     }
-}
-
-
 }

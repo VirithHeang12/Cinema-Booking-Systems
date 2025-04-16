@@ -20,19 +20,17 @@
                                 </v-btn>
                             </template>
                             <v-list>
-                                <v-list-item v-for="([key, value], index) in localizations" :key="index">
-                                    <v-list-item-title>
-                                        <v-btn @click="switchLocale(key)" :elevation="0" width="100%">
-                                            <template #prepend>
-                                                <flag :iso="key.toLowerCase() === 'en' ? 'gb' : key.toLowerCase()" />
-                                            </template>
-                                            {{ value.native }}
-                                        </v-btn>
-                                    </v-list-item-title>
+                                <v-list-item v-for="([key, value], index) in localizations" :key="index" class="px-2">
+                                    <v-btn @click="switchLocale(key)" :elevation="0" width="100%" class="justify-start">
+                                        <template #prepend>
+                                            <flag :iso="key.toLowerCase() === 'en' ? 'gb' : key.toLowerCase()" />
+                                        </template>
+                                        {{ value.native }}
+                                    </v-btn>
                                 </v-list-item>
                             </v-list>
-                        </v-menu>
 
+                        </v-menu>
                         <!-- Account Dropdown -->
                         <v-menu offset-y>
                             <template v-slot:activator="{ props }">
@@ -66,30 +64,30 @@
 </template>
 
 <script setup>
-    import PasswordChangeDialog from '@/Components/PasswordChangeDialog.vue';
-    import { ref, computed } from 'vue';
-    import { router, usePage } from '@inertiajs/vue3';
-    import { __, getLocale, setLocale } from 'matice';
-    import { route } from 'ziggy-js';
+import PasswordChangeDialog from '@/Components/PasswordChangeDialog.vue';
+import { ref, computed } from 'vue';
+import { router, usePage } from '@inertiajs/vue3';
+import { __, getLocale, setLocale } from 'matice';
+import { route } from 'ziggy-js';
 
-    const dialog = ref(false);
+const dialog = ref(false);
 
-    const localizations = ref(Object.entries(usePage().props.localizations));
-    const currentLocale = computed(() => localizations.value.find(([key]) => key === getLocale())?.[1]?.code);
+const localizations = ref(Object.entries(usePage().props.localizations));
+const currentLocale = computed(() => localizations.value.find(([key]) => key === getLocale())?.[1]?.code);
 
-    const switchLocale = (key) => {
-        setLocale(key);
-        localizations.value = Object.entries(usePage().props.localizations);
-        const [, { path }] = localizations.value.find(([key]) => key === getLocale());
-        router.visit(path, {
-            method: "get",
-            onSuccess: () => {
-                window.location.reload();
-            },
-        });
-    };
+const switchLocale = (key) => {
+    setLocale(key);
+    localizations.value = Object.entries(usePage().props.localizations);
+    const [, { path }] = localizations.value.find(([key]) => key === getLocale());
+    router.visit(path, {
+        method: "get",
+        onSuccess: () => {
+            window.location.reload();
+        },
+    });
+};
 
-    const logout = () => {
-        router.post(route('logout'));
-    }
+const logout = () => {
+    router.post(route('logout'));
+}
 </script>

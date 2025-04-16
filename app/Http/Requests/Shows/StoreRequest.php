@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Shows;
 
+use App\Enums\ShowStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,25 +24,32 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'movie_subtitle_id' => [
+            'language_id'           => [
                 'required',
                 'integer',
-                'exists:movie_subtitles,id', 
+                'exists:languages,id',
             ],
-            'hall_id' => [
+            'hall_id'               => [
                 'required',
                 'integer',
                 'exists:halls,id',
             ],
-            'screen_type_id' => [
+            'screen_type_id'        => [
                 'required',
                 'integer',
                 'exists:screen_types,id',
             ],
-            'show_time' => 'required|date',
-            'status' => [
+            'show_time'             => [
+                'required',
+                'date',
+            ],
+            'status'                => [
                 'nullable',
-                Rule::in(['Scheduled', 'Showing', 'Already']),
+                Rule::in([
+                    ShowStatus::SCHEDULED,
+                    ShowStatus::SHOWING,
+                    ShowStatus::ALREADY
+                ]),
             ],
         ];
     }

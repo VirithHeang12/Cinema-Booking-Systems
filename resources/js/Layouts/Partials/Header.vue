@@ -54,7 +54,7 @@
                                 <v-list>
                                     <v-list-item v-for="([key, value], index) in localizations" :key="index">
                                         <v-list-item-title>
-                                            <v-btn @click="switchLocale(key)" :elevation="0" width="100%">
+                                            <v-btn @click="switchLocale(key)" :elevation="0" width="100%" class="justify-start">
                                                 <template #prepend>
                                                     <flag
                                                         :iso="key.toLowerCase() === 'en' ? 'gb' : key.toLowerCase()" />
