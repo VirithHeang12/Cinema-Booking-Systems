@@ -1,40 +1,18 @@
 <template>
     <div class="screen-type-list-container">
         <!-- Main table component -->
-        <data-table-server
-            :showNo="true"
-            :title="__('Screen Type')"
-            :createButtonText="__('New ScreenType')"
-            :serverItems="serverItems"
-            :items-length="totalItems"
-            :headers="headers"
-            :loading="loading"
-            :itemsPerPage="itemsPerPage"
-            item-value="id"
-            @update:options="loadItems"
-            @view="viewCallback"
-            @edit="editCallback"
-            @delete="deleteCallback"
-            @create="createCallback"
-            @import="importCallback"
-            @export="exportCallback"
-            emptyStateText="No screen type found in the database"
-            :emptyStateAction="true"
-            emptyStateActionText="Add First Screen Type"
-            @empty-action="createCallback"
-            buttonVariant="outlined"
-            viewTooltip="View Screen Type Details"
-            editTooltip="Edit Screen Type Information"
-            deleteTooltip="Delete this Screen Type"
-            titleClass="text-2xl font-bold text-primary mb-4"
-            @filter-apply="applyFilters"
-            @filter-clear="clearFilters"
-            tableClasses="movie-data-table elevation-2 rounded-lg"
-            iconSize="small"
+        <data-table-server :showNo="true" :title="__('Screen Type')" :createButtonText="__('New ScreenType')"
+            :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
+            :itemsPerPage="itemsPerPage" item-value="id" @update:options="loadItems" @view="viewCallback"
+            @edit="editCallback" @delete="deleteCallback" @create="createCallback" @import="importCallback"
+            @export="exportCallback" emptyStateText="No screen type found in the database" :emptyStateAction="true"
+            emptyStateActionText="Add First Screen Type" @empty-action="createCallback" buttonVariant="outlined"
+            viewTooltip="View Screen Type Details" editTooltip="Edit Screen Type Information"
+            deleteTooltip="Delete this Screen Type" titleClass="text-2xl font-bold text-primary mb-4"
+            @filter-apply="applyFilters" @filter-clear="clearFilters"
+            tableClasses="movie-data-table elevation-2 rounded-lg" iconSize="small"
             deleteConfirmText="Are you sure you want to delete this movie? This action cannot be undone."
-            toolbarColor="white"
-            :showSelect="false"
-        >
+            toolbarColor="white" :showSelect="false">
         </data-table-server>
     </div>
 </template>
@@ -56,7 +34,6 @@
 
     // State variables
     const loading = ref(false);
-    const lastUpdated = ref(new Date().toLocaleString());
     const page = ref(1);
     const sortBy = ref([]);
 
@@ -77,17 +54,15 @@
     const headers = [
         {
             title: __("Name"),
-            align: "center",
+            align: "start",
             sortable: true,
             key: "name",
-            width: "150px",
         },
         {
             title: __("Description"),
-            align: "center",
+            align: "start",
             sortable: false,
             key: "description",
-            width: "180px",
         },
     ];
 
@@ -124,7 +99,6 @@
             only: ["screen_types"],
             onSuccess: () => {
                 loading.value = false;
-                lastUpdated.value = new Date().toLocaleString();
             },
             onError: () => {
                 loading.value = false;
@@ -213,16 +187,16 @@
         visitModal(
             route("dashboard.screen_types.delete", {
                 screen_type: item.id,
-            }),{
-                config: {
-                    slideover: false,
-                    position: 'center',
-                    closeExplicitly: true,
-                    maxWidth: 'xl',
-                    paddingClasses: 'p-4 sm:p-6',
-                    panelClasses: 'bg-white rounded-[12px]',
-                },
-            }
+            }), {
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: 'xl',
+                paddingClasses: 'p-4 sm:p-6',
+                panelClasses: 'bg-white rounded-[12px]',
+            },
+        }
         );
     };
 
@@ -232,16 +206,16 @@
      * @return void
      */
     const importCallback = () => {
-        visitModal(route("dashboard.screen_types.import.show"),{
-                config: {
-                    slideover: false,
-                    position: 'center',
-                    closeExplicitly: true,
-                    maxWidth: 'xl',
-                    paddingClasses: 'p-4 sm:p-6',
-                    panelClasses: 'bg-white rounded-[12px]',
-                },
-            });
+        visitModal(route("dashboard.screen_types.import.show"), {
+            config: {
+                slideover: false,
+                position: 'center',
+                closeExplicitly: true,
+                maxWidth: 'xl',
+                paddingClasses: 'p-4 sm:p-6',
+                panelClasses: 'bg-white rounded-[12px]',
+            },
+        });
     };
 
     /**
@@ -294,5 +268,3 @@
         }
     );
 </script>
-
-
