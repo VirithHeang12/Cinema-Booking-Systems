@@ -72,8 +72,10 @@ Route::middleware(['auth', RedirectIfUser::class])->prefix('dashboard')->name('d
     Route::resource('halls', HallController::class);
     Route::resource('seat_types', SeatTypeController::class);
     Route::resource('shows', ShowController::class);
-   
+
     Route::prefix('movies/{movie}')->name('movies.')->group(function () {
+        Route::get('shows/{show}/delete', [ShowController::class, 'delete'])->name('shows.delete');
+
         Route::resource('shows', ShowController::class);
     });
 });
