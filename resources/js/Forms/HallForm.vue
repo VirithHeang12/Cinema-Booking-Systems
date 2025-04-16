@@ -4,7 +4,7 @@
         <vee-field name="name" v-slot="{ field, errors }">
             <div class="mb-6">
                 <v-text-field v-bind="field" :error-messages="errors" v-model="form.name" variant="outlined"
-                    density="comfortable" :placeholder="__('Enter hall name')" class="rounded-lg" bg-color="surface"
+                    density="comfortable" :placeholder="__('Enter Hall Name')" class="rounded-lg" bg-color="surface"
                     hide-details="auto" prepend-inner-icon="mdi-chair-rolling"></v-text-field>
             </div>
         </vee-field>
@@ -13,7 +13,7 @@
         <vee-field name="description" v-slot="{ field, errors }">
             <div class="mb-6">
                 <v-textarea v-bind="field" :error-messages="errors" v-model="form.description" variant="outlined"
-                    rows="3" auto-grow :placeholder="__('Enter hall description')" class="rounded-lg" bg-color="surface"
+                    rows="3" auto-grow :placeholder="__('Enter Hall Description')" class="rounded-lg" bg-color="surface"
                     hide-details="auto" prepend-inner-icon="mdi-text-box-outline"></v-textarea>
             </div>
         </vee-field>
@@ -23,7 +23,7 @@
             <div class="mb-6">
                 <v-autocomplete v-bind="field" :error-messages="errors" v-model="form.hall_type_id" variant="outlined"
                     :items="hall_types" item-title="name" item-value="id" density="comfortable"
-                    prepend-inner-icon="mdi-theater" :placeholder="__('Select hall type')" class="rounded-lg"
+                    prepend-inner-icon="mdi-theater" :placeholder="__('Select Hall Type')" class="rounded-lg"
                     bg-color="surface" hide-details="auto"></v-autocomplete>
             </div>
         </vee-field>
@@ -31,13 +31,13 @@
         <!-- Seat Types Section -->
         <div class="mt-6 pt-2 border-t border-gray-200">
             <div class="d-flex justify-space-between align-center mb-4">
-                <h3 class="text-h6 font-weight-medium d-flex align-center">
+                <h3 class="text-h6 font-weight-medium d-flex align-center" style="font-family: Kantumruy Pro;">
                     <v-icon color="primary" class="mr-2">mdi-seat</v-icon>
                     {{ __('Seat Types') }}
                 </h3>
                 <v-btn color="primary" size="small" @click="showSeatTypeForm ? saveSeatType() : openSeatTypeForm()"
                     prepend-icon="mdi-plus" variant="tonal" class="rounded-lg text-none px-4 py-2">
-                    {{ showSeatTypeForm ? __('ADD ANOTHER') : __('ADD SEAT TYPE') }}
+                    {{ showSeatTypeForm ? __('ADD ANOTHER') : __('Add Seat Types') }}
                 </v-btn>
             </div>
 
@@ -47,7 +47,7 @@
                     <v-card-title class="bg-primary text-white py-3 px-4 d-flex align-center">
                         <v-icon color="white" class="mr-2">{{ editedIndex === -1 ? 'mdi-plus-circle' : 'mdi-pencil'
                             }}</v-icon>
-                        {{ editedIndex === -1 ? __('Add Seat Type') : __('Edit Seat Type') }}
+                        {{ editedIndex === -1 ? __('Add Seat Types') : __('Edit Seat Type') }}
                     </v-card-title>
 
                     <v-card-text class="pt-4 px-4">

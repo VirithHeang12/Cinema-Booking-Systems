@@ -177,7 +177,13 @@
         visitModal(
             route("dashboard.screen_types.show", {
                 screen_type: item.id,
-            })
+            }),
+            {
+                config: {
+                    slideover: false,
+                    closeExplicitly: true,
+                },
+            }
         );
     };
 

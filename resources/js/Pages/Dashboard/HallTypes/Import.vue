@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="form-container">
             <div class="form-header">
-                <h2 class="form-title">{{ __('Import Hall Type') }}</h2>
+                <h2 class="form-title">{{ __('Import HallType') }}</h2>
                 <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
                     @click="close"></button>
             </div>

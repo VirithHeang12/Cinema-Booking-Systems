@@ -20,7 +20,7 @@
                         </svg>
                     </div>
                     <div class="grid text-left">
-                        <h3 class="font-semibold !text-zinc-800">{{ __('Delete Hall Type') }}</h3>
+                        <h3 class="font-semibold !text-zinc-800">{{ __('Delete HallType') }}</h3>
                         <p class="text-dm text-neutral-600 font-medium mb-1">
                             {{ __('Are you sure you want to delete') }}
                             <span class="!text-zinc-700 font-semibold">{{ hall_type.name || __('this hall type')

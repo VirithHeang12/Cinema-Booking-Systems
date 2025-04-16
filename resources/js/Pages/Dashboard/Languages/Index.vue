@@ -148,7 +148,12 @@ function loadItems(options) {
         visitModal(
             route("dashboard.languages.show", {
                 language: item.id,
-            })
+            }),
+            {
+                config: {
+                    slideover: false,
+                },
+            }
         );
     };
 

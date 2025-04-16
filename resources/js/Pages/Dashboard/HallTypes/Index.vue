@@ -1,5 +1,5 @@
 <template>
-    <data-table-server :showNo="true" :title="__('Hall Types')" :createButtonText="__('New Hall Type')"
+    <data-table-server :showNo="true" :title="__('Hall Types')" :createButtonText="__('New HallType')"
         :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
         :itemsPerPage="itemsPerPage" item-value="id" @update:options="loadItems" @view="viewCallback"
         @edit="editCallback" @delete="deleteCallback" @create="createCallback" @import="importCallback"
@@ -14,103 +14,108 @@
 </template>
 
 <script setup>
-    import { computed, ref, watch } from 'vue'
-    import { visitModal } from '@inertiaui/modal-vue';
-    import { router, usePage } from '@inertiajs/vue3';
-    import { route } from 'ziggy-js';
-    import { __ } from 'matice';
-    import { toast } from 'vue3-toastify';
+import { computed, ref, watch } from 'vue'
+import { visitModal } from '@inertiaui/modal-vue';
+import { router, usePage } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
+import { __ } from 'matice';
+import { toast } from 'vue3-toastify';
 
-    const props = defineProps({
-        hall_types: {
-            type: Object,
-            required: true,
-        }
-    });
+const props = defineProps({
+    hall_types: {
+        type: Object,
+        required: true,
+    }
+});
 
-    // State variables
-    const loading = ref(false);
-    const page = ref(1);
-    const sortBy = ref([]);
+// State variables
+const loading = ref(false);
+const page = ref(1);
+const sortBy = ref([]);
 
-    const serverItems = computed(() => {
-        return props.hall_types.data;
-    });
-    const totalItems = computed(() => {
-        return props.hall_types.meta.total;
-    });
+const serverItems = computed(() => {
+    return props.hall_types.data;
+});
+const totalItems = computed(() => {
+    return props.hall_types.meta.total;
+});
 
-    const itemsPerPage = computed(() => {
-        return props.hall_types.per_page;
-    });
+const itemsPerPage = computed(() => {
+    return props.hall_types.per_page;
+});
 
-    const headers = [
-        {
-            title: __('Name'),
-            align: 'start',
-            sortable: true,
-            key: 'name',
-        },
-        {
-            title: __('Description'),
-            align: 'start',
-            sortable: false,
-            key: 'description',
-        },
-    ];
+const headers = [
+    {
+        title: __('Name'),
+        align: 'start',
+        sortable: true,
+        key: 'name',
+    },
+    {
+        title: __('Description'),
+        align: 'start',
+        sortable: false,
+        key: 'description',
+    },
+];
 
 
-    /**
-     * Load items from the server
-     *
-     * @param {Object} options
-     * @param {Number} options.page
-     * @param {Number} options.itemsPerPage
-     * @param {Array} options.sortBy
-     *
-     * @return {void}
-     */
-    function loadItems(options) {
-        loading.value = true;
-        page.value = options.page;
-        sortBy.value = options.sortBy;
+/**
+ * Load items from the server
+ *
+ * @param {Object} options
+ * @param {Number} options.page
+ * @param {Number} options.itemsPerPage
+ * @param {Array} options.sortBy
+ *
+ * @return {void}
+ */
+function loadItems(options) {
+    loading.value = true;
+    page.value = options.page;
+    sortBy.value = options.sortBy;
 
-        let sortKeyWithDirection = options.sortBy.length > 0 ? options.sortBy[0].key : null;
+    let sortKeyWithDirection = options.sortBy.length > 0 ? options.sortBy[0].key : null;
 
-        if (sortKeyWithDirection) {
-            sortKeyWithDirection = options.sortBy[0].order === 'asc' ? sortKeyWithDirection : '-' + sortKeyWithDirection;
-        }
-
-        router.reload({
-            data: {
-                page: options.page,
-                itemsPerPage: options.itemsPerPage,
-                sort: sortKeyWithDirection,
-                'filter[search]': options.search,
-            },
-            preserveState: true,
-            only: ['hall_types'],
-            onSuccess: () => {
-                loading.value = false;
-            },
-            onError: () => {
-                loading.value = false;
-                notify('Failed to load data', 'error');
-            }
-        });
+    if (sortKeyWithDirection) {
+        sortKeyWithDirection = options.sortBy[0].order === 'asc' ? sortKeyWithDirection : '-' + sortKeyWithDirection;
     }
 
-    /**
-     * Callback function for viewing an hall type.
-     *
-     * @param item
-     *
-     * @return {void}
-     */
-    const viewCallback = (item) => {
-        visitModal(route('dashboard.hall_types.show', {
-            hall_type: item.id,
-        }));
+    router.reload({
+        data: {
+            page: options.page,
+            itemsPerPage: options.itemsPerPage,
+            sort: sortKeyWithDirection,
+            'filter[search]': options.search,
+        },
+        preserveState: true,
+        only: ['hall_types'],
+        onSuccess: () => {
+            loading.value = false;
+        },
+        onError: () => {
+            loading.value = false;
+            notify('Failed to load data', 'error');
+        }
+    });
+}
+
+/**
+ * Callback function for viewing an hall type.
+ *
+ * @param item
+ *
+ * @return {void}
+ */
+const viewCallback = (item) => {
+    visitModal(route('dashboard.hall_types.show', {
+        hall_type: item.id,
+    }), {
+            config: {
+                slideover: false,
+                closeExplicitly: true,
+            }
+        });
     };
 
     /**
@@ -215,41 +220,41 @@
 </script>
 
 <style scoped>
-    .hall-type-data-table :deep(.v-data-table__td) {
-        padding-top: 14px !important;
-        padding-bottom: 14px !important;
-        font-size: 14px !important;
-    }
+.hall-type-data-table :deep(.v-data-table__td) {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+    font-size: 14px !important;
+}
 
-    /* Custom styling for the data table */
-    :deep(.v-data-table-server .v-data-table) {
-        box-shadow: none;
-        border-radius: 8px;
-        overflow: hidden;
-    }
+/* Custom styling for the data table */
+:deep(.v-data-table-server .v-data-table) {
+    box-shadow: none;
+    border-radius: 8px;
+    overflow: hidden;
+}
 
-    :deep(.v-data-table__tbody tr:hover) {
-        background-color: rgba(66, 133, 244, 0.05);
-    }
+:deep(.v-data-table__tbody tr:hover) {
+    background-color: rgba(66, 133, 244, 0.05);
+}
 
-    :deep(.v-data-table__thead th) {
-        background-color: #f5f5f5;
-        font-weight: 600 !important;
-        color: #333 !important;
-        text-transform: none !important;
-        letter-spacing: 0 !important;
-    }
+:deep(.v-data-table__thead th) {
+    background-color: #f5f5f5;
+    font-weight: 600 !important;
+    color: #333 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
 
-    :deep(.v-data-table__thead tr th:first-child) {
-        border-top-left-radius: 8px;
-    }
+:deep(.v-data-table__thead tr th:first-child) {
+    border-top-left-radius: 8px;
+}
 
-    :deep(.v-data-table__thead tr th:last-child) {
-        border-top-right-radius: 8px;
-    }
+:deep(.v-data-table__thead tr th:last-child) {
+    border-top-right-radius: 8px;
+}
 
-    :deep(.v-btn) {
-        text-transform: none;
-        letter-spacing: 0;
-    }
+:deep(.v-btn) {
+    text-transform: none;
+    letter-spacing: 0;
+}
 </style>

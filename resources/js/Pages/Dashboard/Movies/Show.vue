@@ -10,13 +10,13 @@
                         <div class="form-content !font-medium">
                             <div class="details-section">
                                 <div class="field-row">
-                                    <div class="field-label">Description</div>
+                                    <div class="field-label">{{__('Description')}}</div>
                                     <div>{{ movie.description }}</div>
                                 </div>
 
                                 <div class="columns">
                                     <div class="field-column">
-                                        <div class="field-label">Release Date</div>
+                                        <div class="field-label">{{__('Release Date')}}</div>
                                         <div class="field-value date-value">
                                             <v-icon size="small" class="icon-calendar">mdi-calendar</v-icon>
                                             {{ formatDate(movie.release_date) }}
@@ -26,7 +26,7 @@
                                     <v-spacer></v-spacer>
 
                                     <div class="field-column">
-                                        <div class="field-label">Duration (minutes)</div>
+                                        <div class="field-label">{{__('Duration (minutes)')}}</div>
                                         <div class="field-value duration-value">
                                             <v-icon size="small" class="icon-clock">mdi-clock-outline</v-icon>
                                             {{ movie.duration }}
@@ -37,7 +37,7 @@
                                 <div class="columns">
 
                                     <div class="field-column">
-                                        <div class="field-label">Classification</div>
+                                        <div class="field-label">{{__('Classification')}}</div>
                                         <div class="field-value country-value">
                                             <v-icon size="small" class="icon-earth">mdi-tag-outline</v-icon>
                                             {{ getClassificationName(movie.classification_id) }}
@@ -45,7 +45,7 @@
                                     </div>
 
                                     <div class="field-column">
-                                        <div class="field-label">Country</div>
+                                        <div class="field-label">{{__('Country')}}</div>
                                         <div class="field-value country-value">
                                             <v-icon size="small" class="icon-earth">mdi-earth</v-icon>
                                             {{ getCountryName(movie.country_id) }}
@@ -53,7 +53,7 @@
                                     </div>
 
                                     <div class="field-column">
-                                        <div class="field-label">Language</div>
+                                        <div class="field-label">{{__('Languages')}}</div>
                                         <div class="field-value country-value">
                                             <v-icon size="small" class="icon-earth">mdi-translate</v-icon>
                                             {{ getLanguageName(movie.spoken_language_id) }}
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="columns">
                                     <div class="field-column">
-                                        <div class="field-label">Thumbnail</div>
+                                        <div class="field-label">{{__('Thumbnail')}}</div>
                                         <div class="field-value rating-value">
                                             <v-icon size="24" class="icon-launch"
                                                 @click="showThumbnailCallback">mdi-launch</v-icon>
@@ -70,7 +70,7 @@
                                     </div>
 
                                     <div class="field-column">
-                                        <div class="field-label">Trailer</div>
+                                        <div class="field-label">{{__('Trailer')}}</div>
                                         <div class="field-value country-value">
                                             <v-icon size="24" class="icon-play-circle"
                                                 @click="showTrailerCallback">mdi-play-circle</v-icon>
@@ -78,7 +78,7 @@
                                     </div>
 
                                     <div class="field-column">
-                                        <div class="field-label">Rating (1-10)</div>
+                                        <div class="field-label">{{__('Rating (1-10)')}}</div>
                                         <div class="field-value rating-value">
                                             <v-icon size="small" class="icon-star">mdi-star</v-icon>
                                             {{ movie.rating }}
@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="columns">
                                     <div class="field-column">
-                                        <div class="field-label">Subtitles</div>
+                                        <div class="field-label">{{__('Subtitles')}}</div>
                                         <div class="field-value">
                                             <div v-if="
                                                 movie.movieSubtitles &&
@@ -102,7 +102,7 @@
                                         </div>
                                     </div>
                                     <div class="field-column">
-                                        <div class="field-label">Genres</div>
+                                        <div class="field-label">{{__('Genres')}}</div>
                                         <div class="field-value">
                                             <div v-if="
                                                 movie.movieGenres &&
@@ -125,7 +125,7 @@
             <v-col :cols="12" :md="7">
                 <div class="show-management">
                     <div class="show-list-container">
-                        <data-table-server :showNo="true" :title="__('Shows')" :createButtonText="__('New Show')"
+                        <data-table-server :showNo="true" :title="__('Shows')" :createButtonText="__('Add Show')"
                             :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
                             :itemsPerPage="itemsPerPage" item-value="id" @update:options="loadItems"
                             @view="viewCallback" @edit="editCallback" @delete="deleteCallback" @create="createCallback"
@@ -266,28 +266,28 @@
     // Table headers definition
     const headers = [
         {
-            title: "Show Time",
+            title: __("Show Time"),
             align: "start",
             sortable: true,
             key: "show_time",
             width: "180px",
         },
         {
-            title: "Hall",
+            title: __("Halls"),
             align: "center",
             sortable: false,
             key: "hall",
             width: "120px",
         },
         {
-            title: "Screen",
+            title: __("Screen"),
             align: "center",
             sortable: false,
             key: "screen_type",
             width: "150px",
         },
         {
-            title: "Status",
+            title: __("Status"),
             align: "center",
             sortable: true,
             key: "status",

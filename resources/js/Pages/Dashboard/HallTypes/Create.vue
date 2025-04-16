@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="form-center">
             <div class="form-header">
-                <h2 class="form-title">{{ __('Create Hall Type') }}</h2>
+                <h2 class="form-title">{{ __('Create HallType') }}</h2>
                 <v-btn icon class="close-btn" @click="close">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>

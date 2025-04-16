@@ -14,12 +14,12 @@
             <div class="form-content h-full !font-medium">
                 <div class="details-section">
                     <div class="field-row">
-                        <div class="field-label">Name</div>
+                        <div class="field-label">{{__('Name')}}</div>
                         <div class="field-value">{{ genre.name }}</div>
                     </div>
 
                     <div class="field-row">
-                        <div class="field-label">Genre</div>
+                        <div class="field-label">{{__('Genre')}}</div>
                         <div class="field-value">{{ genre.description }}</div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
             <div class="details-footer">
                 <button class="close-button-large" @click="close">
                     <v-icon class="close-icon" size="small">mdi-close</v-icon>
-                    CLOSE
+                    {{__('CLOSE')}}
                 </button>
             </div>
         </div>

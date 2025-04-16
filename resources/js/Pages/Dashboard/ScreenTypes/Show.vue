@@ -12,17 +12,23 @@
                 <!-- Basic Information -->
                 <div class="details-section">
                     <div class="field-row">
-                        <div class="field-label">Name</div>
+                        <div class="field-label">{{__('Name')}}</div>
                         <div class="field-value">{{ screen_type.name }}</div>
                     </div>
 
                     <div class="field-row">
-                        <div class="field-label">Description</div>
+                        <div class="field-label">{{__('Description')}}</div>
                         <div class="field-value">
                             {{ screen_type.description }}
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="details-footer">
+                <button class="close-button-large" @click="close">
+                    <v-icon class="close-icon" size="small">mdi-close</v-icon>
+                    {{ __('CLOSE') }}
+                </button>
             </div>
         </div>
     </Modal>
