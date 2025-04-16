@@ -1,11 +1,11 @@
 <template>
     <div class="hall-list-container">
         <!-- Main table component -->
-        <data-table-server :showNo="true" :title="__('Halls')" :createButtonText="__('New Hall')" :serverItems="serverItems"
-            :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
-            item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
-            @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
-            emptyStateText="No halls found in the database" :emptyStateAction="true"
+        <data-table-server :showNo="true" :title="__('Halls')" :createButtonText="__('New Hall')"
+            :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
+            :itemsPerPage="itemsPerPage" item-value="id" @update:options="loadItems" @view="viewCallback"
+            @edit="editCallback" @delete="deleteCallback" @create="createCallback" @import="importCallback"
+            @export="exportCallback" emptyStateText="No halls found in the database" :emptyStateAction="true"
             emptyStateActionText="Add First Hall" @empty-action="createCallback" buttonVariant="outlined"
             viewTooltip="View Hall Details" editTooltip="Edit Hall Information" deleteTooltip="Delete this Hall"
             titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="true" @filter-apply="applyFilters"
@@ -171,14 +171,14 @@
     };
 
     /**
-     * Open the view hall slideover
+     * Open the view hall
      *
      * @param item
      *
      * @return void
      */
     const viewCallback = (item) => {
-        visitModal(route('dashboard.halls.show', {
+        router.visit(route('dashboard.halls.show', {
             hall: item.id,
         }));
     };
@@ -208,7 +208,8 @@
             hall: item.id,
         }), {
             config: {
-                slideover: false
+                slideover: false,
+                closeExplicitly: true,
             }
         });
     };
