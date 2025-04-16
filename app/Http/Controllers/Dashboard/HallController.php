@@ -7,12 +7,10 @@ use App\Http\Requests\Halls\StoreRequest;
 use App\Http\Requests\Halls\UpdateRequest;
 use App\Http\Resources\Api\HallTypeResource;
 use App\Http\Resources\HallResource;
-use App\Http\Resources\SeatTypeResource;
+use App\Http\Resources\HallSeatTypeResource;
 use App\Models\Hall;
-use App\Models\HallType;
 use App\Models\HallSeatType;
-use App\Models\Seat;
-use App\Models\SeatType;
+use App\Models\HallType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -75,11 +73,9 @@ class HallController extends Controller
         Gate::authorize('create', Hall::class);
 
         $hallTypes = HallTypeResource::collection(HallType::all())->toArray(request());
-        $seatTypes = SeatTypeResource::collection(SeatType::all())->toArray(request());
 
         return Inertia::modal('Dashboard/Halls/Create', [
-            'hall_types' => $hallTypes,
-            'seat_types' => $seatTypes,
+            'hall_types'    => $hallTypes,
         ])->baseRoute('dashboard.halls.index');
     }
 
@@ -99,34 +95,11 @@ class HallController extends Controller
         DB::beginTransaction();
 
         try {
-            $hall = Hall::create([
-                'name'              => $request->name,
-                'description'       => $request->description,
-                'hall_type_id'      => $request->hall_type_id,
+            Hall::create([
+                'name'              => $data['name'],
+                'description'       => $data['description'],
+                'hall_type_id'      => $data['hall_type_id'],
             ]);
-
-            foreach ($request->hallSeatTypes as $hallSeatTypeData) {
-                $maxCapacity = (int) $hallSeatTypeData['maximum_capacity'];
-
-                HallSeatType::create([
-                    'hall_id'               => $hall->id,
-                    'seat_type_id'          => $hallSeatTypeData['seat_type_id'],
-                    'maximum_capacity'      => $maxCapacity,
-                ]);
-
-                $rows = $hallSeatTypeData['rows'];
-
-                foreach ($rows as $row) {
-                    for ($seatNum = 1; $seatNum <= $maxCapacity; $seatNum++) {
-                        Seat::create([
-                            'hall_id'           => $hall->id,
-                            'seat_type_id'      => $hallSeatTypeData['seat_type_id'],
-                            'row'               => $row,
-                            'number'            => $seatNum,
-                        ]);
-                    }
-                }
-            }
 
             DB::commit();
 
@@ -148,10 +121,19 @@ class HallController extends Controller
     {
         Gate::authorize('view', $hall);
 
-        $hall->load(['hallType', 'seats', 'hallSeatTypes.seatType']);
+        $hall->load(['hallType', 'seats', 'hallSeatTypes']);
+
+        $seatTypes = QueryBuilder::for(HallSeatType::class)
+            ->where('hall_id', $hall->id)
+            ->with(['hall', 'seatType', 'hall.seats'])
+            ->paginate(5)
+            ->appends(request()->query());
+
+        $seatTypes = HallSeatTypeResource::collection($seatTypes)->response()->getData(true);
 
         return Inertia::render('Dashboard/Halls/Show', [
-            'hall' => new HallResource($hall),
+            'hall'          => new HallResource($hall),
+            'seat_types'    => $seatTypes,
         ]);
     }
 
@@ -167,23 +149,10 @@ class HallController extends Controller
         Gate::authorize('update', $hall);
 
         $hallTypes = HallTypeResource::collection(HallType::all())->toArray(request());
-        $seatTypes = SeatTypeResource::collection(SeatType::all())->toArray(request());
-
-        $hall->load(['hallType', 'hallSeatTypes', 'hallSeatTypes.seatType', 'hallSeatTypes.seatType.seats']);
-
-        $hall->hallSeatTypes = $hall->hallSeatTypes->map(function ($hallSeatType) {
-            return [
-                'id'                    => $hallSeatType->id,
-                'seat_type_id'          => $hallSeatType->seat_type_id,
-                'maximum_capacity'      => $hallSeatType->maximum_capacity,
-                'rows'                  => $hallSeatType->seatType->seats->groupBy('row')->keys()->all()
-            ];
-        });
 
         return Inertia::modal('Dashboard/Halls/Edit', [
             'hall'                      => $hall,
             'hall_types'                => $hallTypes,
-            'seat_types'                => $seatTypes,
         ])->baseRoute('dashboard.halls.index');
     }
 
@@ -209,38 +178,6 @@ class HallController extends Controller
                 'description'       => $data['description'],
                 'hall_type_id'      => $data['hall_type_id'],
             ]);
-
-            $hall->load(['hallType', 'hallSeatTypes', 'hallSeatTypes.seatType', 'hallSeatTypes.seatType.seats']);
-
-            // Delete existing hall seat types and their associated seats
-            foreach ($hall->hallSeatTypes as $hallSeatType) {
-                $hallSeatType->seatType->seats()->delete();
-                $hallSeatType->delete();
-            }
-
-            // Create new hall seat types and their associated seats
-            foreach ($data['hallSeatTypes'] as $hallSeatTypeData) {
-                $maxCapacity = (int) $hallSeatTypeData['maximum_capacity'];
-
-                HallSeatType::create([
-                    'hall_id'               => $hall->id,
-                    'seat_type_id'          => $hallSeatTypeData['seat_type_id'],
-                    'maximum_capacity'      => $maxCapacity,
-                ]);
-
-                $rows = $hallSeatTypeData['rows'];
-
-                foreach ($rows as $row) {
-                    for ($seatNum = 1; $seatNum <= $maxCapacity; $seatNum++) {
-                        Seat::create([
-                            'hall_id'           => $hall->id,
-                            'seat_type_id'      => $hallSeatTypeData['seat_type_id'],
-                            'row'               => $row,
-                            'number'            => $seatNum,
-                        ]);
-                    }
-                }
-            }
 
             DB::commit();
 
