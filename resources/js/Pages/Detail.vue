@@ -24,7 +24,8 @@
                                     <TheSelectHalltype />
                                     <div class="d-flex gap-4 overflow-x-auto no-scrollbar mt-[60px] mb-11">
                                         <DateButton v-for="(date, index) in showDates" :key="index" :date="date"
-                                            :isActive="selectedIndex === index" @click="selectedIndex = index" class="!w-[170px]" />
+                                            :isActive="selectedIndex === index" @click="selectedIndex = index"
+                                            class="!w-[170px]" />
                                     </div>
                                     <!-- <TheExpansionPanel :movieId="movie?.id" /> -->
                                     <TheExpansionPanel :movieId="movie?.id" :selectedDate="showDates[selectedIndex]" />
@@ -47,74 +48,76 @@
 </template>
 
 <script setup>
-import { ref, onMounted, shallowRef } from 'vue'
-import { usePage } from '@inertiajs/vue3'
-import axios from 'axios'
+    import { ref, onMounted, shallowRef } from 'vue'
+    import axios from 'axios'
 
-import TheMovieDetailCard from '../Components/TheMovieDetailCard.vue'
-import TheExpansionPanel from '../Components/TheExpansionPanel.vue'
-import TheSelectHalltype from '../Components/TheFilterSelectHalltype.vue'
-import DateButton from '../Components/DateButton.vue'
+    import TheMovieDetailCard from '../Components/TheMovieDetailCard.vue'
+    import TheExpansionPanel from '../Components/TheExpansionPanel.vue'
+    import TheSelectHalltype from '../Components/TheFilterSelectHalltype.vue'
+    import DateButton from '../Components/DateButton.vue';
 
-const page = usePage()
-const movieId = page.props.id
-
-const movie = ref(null)
-const showDates = ref([])
-const selectedIndex = ref(0)
-
-const tab = shallowRef('tab-show')
-const tabs = [
-    { text: 'Showtime', value: 'tab-show' },
-    { text: 'Detail', value: 'tab-detail' }
-]
-
-onMounted(async () => {
-    await fetchMovie()
-    await fetchShowDates()
-})
-
-const fetchMovie = async () => {
-    try {
-        const res = await axios.get(`/api/v1/dashboard/movies/${movieId}`)
-        movie.value = res.data.data
-    } catch (err) {
-        console.error('Failed to fetch movie:', err)
-    }
-}
-
-const fetchShowDates = async () => {
-    try {
-        const res = await axios.get(`/api/v1/dashboard/movies/${movieId}/shows`)
-        if (Array.isArray(res.data)) {
-            showDates.value = res.data.map(item => item.show_time)
+    const props = defineProps({
+        movie: {
+            type: Object,
+            required: true
         }
-        else if (Array.isArray(res.data.dates)) {
-            showDates.value = res.data.dates.map(item => item.show_time)
-        } else {
-            console.warn('Unexpected data format:', res.data)
-        }
+    })
 
-    } catch (err) {
-        console.error('Failed to fetch show dates:', err)
+    const showDates = ref([])
+    const selectedIndex = ref(0)
+
+    const tab = shallowRef('tab-show')
+    const tabs = [
+        { text: 'Showtime', value: 'tab-show' },
+        { text: 'Detail', value: 'tab-detail' }
+    ]
+
+    onMounted(async () => {
+        await fetchMovie()
+        await fetchShowDates()
+    })
+
+    const fetchMovie = async () => {
+        try {
+            const res = await axios.get(`/api/v1/dashboard/movies/${movieId}`)
+            movie.value = res.data.data
+        } catch (err) {
+            console.error('Failed to fetch movie:', err)
+        }
     }
-}
+
+    const fetchShowDates = async () => {
+        try {
+            const res = await axios.get(`/api/v1/dashboard/movies/${movieId}/shows`)
+            if (Array.isArray(res.data)) {
+                showDates.value = res.data.map(item => item.show_time)
+            }
+            else if (Array.isArray(res.data.dates)) {
+                showDates.value = res.data.dates.map(item => item.show_time)
+            } else {
+                console.warn('Unexpected data format:', res.data)
+            }
+
+        } catch (err) {
+            console.error('Failed to fetch show dates:', err)
+        }
+    }
 </script>
 
 <style scoped>
-.showtime {
-    position: relative !important;
-    overflow: hidden;
+    .showtime {
+        position: relative !important;
+        overflow: hidden;
 
-}
+    }
 
-.showtime::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
-}
+    .showtime::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+    }
 </style>
