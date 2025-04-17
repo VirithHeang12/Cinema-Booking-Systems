@@ -13,7 +13,7 @@ class ShowController extends Controller
     {
         $subtitles = $movie->movieSubtitles;
         $subtitleIds = $subtitles->pluck('id');
-        $showTimes = Show::with(['movieSubtitle.language', 'hall', 'screenType', 'showSeats'])
+        $showTimes = Show::with(['movieSubtitle.language', 'hall.hallType', 'screenType', 'showSeats'])
             ->whereIn('movie_subtitle_id', $subtitleIds)
             ->orderBy('show_time')
             ->get();
