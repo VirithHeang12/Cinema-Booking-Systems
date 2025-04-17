@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\User\LandingPageController;
 use App\Http\Middleware\RedirectIfAdmin;
+use App\Models\Movie;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -22,11 +23,11 @@ Route::middleware(['throttle:global'])->group(function () {
                 return Inertia::render('BookingTicket', ['title' => 'Booking Ticket']);
             })->name('bookingTicket');
         });
-        
-        Route::get('/movies/{id}', function ($id) {
+
+        Route::get('/movies/{movie}/details', function (Movie $movie) {
             return Inertia::render('Detail', [
-                'id' => $id,
+                'movie' => $movie,
             ]);
-        })->name('movie-detail');
+        })->name('movie-details');
     });
 });

@@ -1,6 +1,6 @@
 <template>
     <v-col cols="12" sm="6" md="3" v-for="(movie, index) in movies" :key="index">
-        <Link :href="`/movies/${movie.id}`" class="relative">
+        <Link :href="route('movie-details', { movie: movie.id })" class="relative">
         <div class="flex flex-col items-center justify-center">
             <img :src="movie.thumbnail_url" alt=""
                 class="img-fluid object-cover !w-[250px] !h-[370px] rounded-[15px]" />
@@ -29,6 +29,7 @@
 
 <script setup>
     import { defineProps } from 'vue';
+    import { route } from 'ziggy-js';
 
     // Accept movies as a prop
     const props = defineProps({
