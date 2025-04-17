@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="form-container">
             <div class="form-header">
-                <h2 class="form-title">{{ __('Import Countries') }}</h2>
+                <h2 class="form-title">{{ __('Import Country') }}</h2>
                 <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
                     @click="close"></button>
             </div>
@@ -10,10 +10,10 @@
 
             <vee-form :validation-schema="schema" @submit="submitForm">
                 <div class="form-content">
-                    <h3 class="!text-[16px] text-zinc-700 mb-3">Browse Excel file to import</h3>
+                    <h3 class="!text-[16px] text-zinc-700 mb-3">{{__('Browse Excel file to import')}}</h3>
 
                     <v-file-input v-model="form.file" :error-messages="form.errors.file" accept=".xlsx"
-                        label="Please select Excel file" prepend-icon="mdi-file-excel" show-size truncate-length="30"
+                        :label="__('Please select Excel file')" prepend-icon="mdi-file-excel" show-size truncate-length="30"
                         variant="outlined" class="my-5" density="comfortable" persistent-hint
                         hint="Supported format: .xlsx">
                         <template v-slot:selection="{ fileNames }">
@@ -28,7 +28,7 @@
                     <v-btn color="primary" :disabled="!form.file || form.processing" :loading="form.processing"
                         @click="submitForm(close)" type="button" size="large" block height="56" class="!text-lg">
                         <v-icon size="24" class="me-2">mdi-upload</v-icon>
-                        UPLOAD
+                        {{__('UPLOAD')}}
                     </v-btn>
                 </div>
             </vee-form>

@@ -10,8 +10,11 @@ use App\Http\Controllers\Dashboard\HallTypeController;
 use App\Http\Controllers\Dashboard\MovieController;
 use App\Http\Controllers\Dashboard\ScreenTypeController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\HallSeatTypeController;
 use App\Http\Controllers\Dashboard\SeatTypeController;
+use App\Http\Controllers\Dashboard\ShowController;
 use App\Http\Middleware\RedirectIfUser;
+
 
 Route::middleware(['auth', RedirectIfUser::class])->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
@@ -69,6 +72,19 @@ Route::middleware(['auth', RedirectIfUser::class])->prefix('dashboard')->name('d
     Route::resource('movies', MovieController::class);
     Route::resource('halls', HallController::class);
     Route::resource('seat_types', SeatTypeController::class);
+    Route::resource('shows', ShowController::class);
+
+    Route::prefix('movies/{movie}')->name('movies.')->group(function () {
+        Route::get('shows/{show}/delete', [ShowController::class, 'delete'])->name('shows.delete');
+
+        Route::resource('shows', ShowController::class);
+    });
+
+    Route::prefix('halls/{hall}')->name('halls.')->group(function () {
+        Route::get('seat_types/{seat_type}/delete', [HallSeatTypeController::class, 'delete'])->name('seat_types.delete');
+
+        Route::resource('seat_types', HallSeatTypeController::class);
+    });
 });
 
 

@@ -21,7 +21,7 @@ class HallResource extends JsonResource
             'hall_type'             => $this->whenLoaded('hallType', function () {
                 return $this->hallType?->name;
             }),
-            'seats_count'           => $this->seats_count,
+            'seats_count'           => $this->whenCounted('seats'),
         ];
     }
 }

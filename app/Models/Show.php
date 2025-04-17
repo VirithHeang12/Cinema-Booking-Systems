@@ -32,6 +32,16 @@ class Show extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'show_time' => 'datetime',
+        'status'    => 'string',
+    ];
+
+    /**
      * Get the movie subtitle that owns the show.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -71,3 +81,4 @@ class Show extends Model
         return $this->hasMany(ShowSeat::class);
     }
 }
+

@@ -22,11 +22,11 @@
                     <div class="grid text-left">
                         <h3 class="font-semibold !text-zinc-800">{{ __('Delete Country') }}</h3>
                         <p class="text-dm text-neutral-600 font-medium mb-1">
-                            Are you sure you want to delete
+                            {{__('Are you sure you want to delete')}}
                             <span class="!text-zinc-700 font-semibold">{{ country.name || "this country" }}</span>?
                         </p>
                         <p class="text-[12.5px] text-neutral-500 mb-0">
-                            This action cannot be undone.
+                            {{__('This action cannot be undone.')}}
                         </p>
                     </div>
                 </div>

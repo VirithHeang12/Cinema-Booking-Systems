@@ -2,14 +2,14 @@
     <Modal v-slot="{ close }">
         <div class="form-container">
             <div class="form-header !mb-3">
-                <h2 class="form-title">Edit Hall</h2>
+                <h2 class="form-title">{{ __('Edit Hall') }}</h2>
                 <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
                     @click="close"></button>
             </div>
 
             <vee-form class="form-content-container" :validation-schema="schema" @submit.prevent="submitForm"
                 v-slot="{ meta, setErrors }" :initialValues="form">
-                <hall-form v-model:form="form" :seat_types="seat_types" :hall_types="hall_types"></hall-form>
+                <hall-form v-model:form="form" :hall_types="hall_types"></hall-form>
                 <div class="form-actions">
                     <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
                         @click.prevent="submitForm(setErrors, close)" size="large" block>
@@ -34,10 +34,6 @@
             type: Object,
             required: true,
         },
-        seat_types: {
-            type: Array,
-            required: true,
-        },
         hall_types: {
             type: Array,
             required: true,
@@ -54,7 +50,6 @@
         name: null,
         description: null,
         hall_type_id: null,
-        hallSeatTypes: [],
         _method: 'PUT'
     });
 
@@ -67,7 +62,6 @@
         form.name = props.hall.name;
         form.description = props.hall.description;
         form.hall_type_id = props.hall.hall_type_id;
-        form.hallSeatTypes = props.hall.hallSeatTypes;
     });
 
     /**

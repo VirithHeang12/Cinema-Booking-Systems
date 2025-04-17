@@ -14,12 +14,12 @@
       <div class="form-content h-full !font-medium">
         <div class="details-section">
           <div class="field-row">
-            <div class="field-label">Name</div>
+            <div class="field-label">{{__('Name')}}</div>
             <div class="field-value">{{ classification.name }}</div>
           </div>
 
           <div class="field-row">
-            <div class="field-label">Classification</div>
+            <div class="field-label">{{__('Classification')}}</div>
             <div class="field-value">{{ classification.description }}</div>
           </div>
         </div>

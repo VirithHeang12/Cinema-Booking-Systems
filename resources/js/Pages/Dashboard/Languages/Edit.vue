@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="language-form-center">
             <div class="form-header">
-                <h2 class="form-title">Edite Language</h2>
+                <h2 class="form-title">{{__('Edit Language')}}</h2>
                 <v-btn icon class="close-btn" @click="close">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
@@ -10,12 +10,12 @@
 
             <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
                 :initialValues="form">
-                <language-form :form="form" />
+                <language-form :form="form" :label="__('Code')" />
                 <div class="form-actions">
                     <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
                         @click.prevent="submitForm(setErrors, close)" size="large" block>
                         <v-icon class="me-2">mdi-check</v-icon>
-                        update
+                        {{__('update')}}
                     </v-btn>
                 </div>
             </vee-form>

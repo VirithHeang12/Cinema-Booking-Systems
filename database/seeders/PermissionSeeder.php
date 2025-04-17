@@ -53,6 +53,10 @@ class PermissionSeeder extends Seeder
             PermissionEnum::CREATE_HALL,
             PermissionEnum::VIEW_ANY_HALLS,
             PermissionEnum::VIEW_HALL,
+            PermissionEnum::VIEW_SHOW,
+            PermissionEnum::VIEW_ANY_SHOWS,
+            PermissionEnum::VIEW_ANY_HALL_SEAT_TYPES,
+            PermissionEnum::VIEW_HALL_SEAT_TYPE,
         ]);
 
         $user               = User::create([
