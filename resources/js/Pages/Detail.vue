@@ -26,6 +26,9 @@
                                         <DateButton v-for="(date, index) in showDates" :key="index" :date="date"
                                             :isActive="selectedIndex === index" @click="selectedIndex = index" class="!w-[170px]" />
                                     </div>
+                                    <!-- <TheExpansionPanel :movieId="movie?.id" /> -->
+                                    <TheExpansionPanel :movieId="movie?.id" :selectedDate="showDates[selectedIndex]" />
+
                                     <TheExpansionPanel />
                                     <TheExpansionPanel />
                                 </div>
