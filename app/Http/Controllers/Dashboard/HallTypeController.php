@@ -88,11 +88,11 @@ class HallTypeController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.hall_types.index')->with('success', __('HallType created.'));
+            return redirect()->route('dashboard.hall_types.index')->with('success', __('Hall Type created.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.hall_types.index')->with('error', __('HallType not created.'));
+            return redirect()->route('dashboard.hall_types.index')->with('error', __('Hall Type not created.'));
         }
     }
 
@@ -153,11 +153,11 @@ class HallTypeController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.hall_types.index')->with('success', __('HallType updated.'));
+            return redirect()->route('dashboard.hall_types.index')->with('success', __('Hall Type updated.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.hall_types.index')->with('error', __('HallType not updated.'));
+            return redirect()->route('dashboard.hall_types.index')->with('error', __('Hall Type not updated.'));
         }
     }
 
@@ -196,11 +196,11 @@ class HallTypeController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.hall_types.index')->with('success', __('HallType deleted.'));
+            return redirect()->route('dashboard.hall_types.index')->with('success', __('Hall Type deleted.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.hall_types.index')->with('error', __('HallType not deleted.'));
+            return redirect()->route('dashboard.hall_types.index')->with('error', __('Hall Type not deleted.'));
         }
     }
 
@@ -233,7 +233,7 @@ class HallTypeController extends Controller
             Excel::import(new HallTypesImport, $request->file('file'));
             DB::commit();
 
-            return redirect()->route('dashboard.hall_types.index')->with('success', __('HallType imported.'));
+            return redirect()->route('dashboard.hall_types.index')->with('success', __('Hall Type imported.'));
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('dashboard.hall_types.index')->with('error', $e->getMessage());

@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="form-container">
             <div class="form-header">
-                <h2 class="form-title">{{ __('Import HallType') }}</h2>
+                <h2 class="form-title">{{ __('Import Hall Type') }}</h2>
                 <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
                     @click="close"></button>
             </div>
@@ -14,7 +14,7 @@
                     <v-file-input v-model="form.file" :error-messages="form.errors.file" accept=".xlsx"
                         :label="__('Please select Excel file')" prepend-icon="mdi-file-excel" show-size
                         truncate-length="30" variant="outlined" class="my-5" density="comfortable" persistent-hint
-                        hint="Supported format: .xlsx">
+                        :hint="__('Supported format: .xlsx')">
                         <template v-slot:selection="{ fileNames }">
                             <v-chip color="primary" label size="small" class="me-2">
                                 {{ fileNames[0] }}
