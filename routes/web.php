@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\User\LandingPageController;
 use App\Http\Middleware\RedirectIfAdmin;
 use App\Models\Movie;
@@ -20,28 +21,31 @@ Route::middleware(['throttle:global'])->group(function () {
 
             Route::get('/', LandingPageController::class)->name('index');
 
-            Route::get('/booking-ticket', function () {
-                return Inertia::render('BookingTicket', ['title' => 'Booking Ticket']);
-            })->name('bookingTicket');
+            Route::prefix('/shows/{show}')->name('shows.')->group(function () {
+                Route::get('/booking', [BookingController::class, 'show'])->name('booking.show');
+                Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+            });
+
+            Route::get('/movies/{movie}/details', function (Movie $movie) {
+                $movie->load(['movieGenres.genre', 'movieSubtitles.language']);
+
+                $subtitleIds = $movie->movieSubtitles->pluck('id');
+                $shows = Show::with(['movieSubtitle.language', 'hall.hallType', 'screenType', 'showSeats'])
+                    ->whereIn('movie_subtitle_id', $subtitleIds)
+                    ->orderBy('show_time')
+                    ->get();
+
+                $showDates = $shows->pluck('show_time')->map(fn($time) => $time->toDateString())->unique()->values();
+
+
+                return Inertia::render('Detail', [
+                    'movie' => $movie,
+                    'shows' => $shows,
+                    'showDates' => $showDates,
+                ]);
+            })->name('movie-details');
         });
 
-        Route::get('/movies/{movie}/details', function (Movie $movie) {
-            $movie->load(['movieGenres.genre', 'movieSubtitles.language']);
 
-            $subtitleIds = $movie->movieSubtitles->pluck('id');
-            $shows = Show::with(['movieSubtitle.language', 'hall.hallType', 'screenType', 'showSeats'])
-                ->whereIn('movie_subtitle_id', $subtitleIds)
-                ->orderBy('show_time')
-                ->get();
-
-            $showDates = $shows->pluck('show_time')->map(fn($time) => $time->toDateString())->unique()->values();
-
-
-            return Inertia::render('Detail', [
-                'movie' => $movie,
-                'shows' => $shows,
-                'showDates' => $showDates,
-            ]);
-        })->name('movie-details');
     });
 });
