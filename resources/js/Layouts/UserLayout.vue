@@ -32,6 +32,7 @@
         position: relative;
         background-color: #242424;
         min-height: 100vh;
+        z-index: 1;
     }
 
     .user-content::before {
@@ -45,7 +46,7 @@
                 rgba(255, 0, 0, 0.2) 0%,
                 rgba(128, 0, 0, 0.1) 50%,
                 rgba(0, 0, 0, 0) 60%);
-        z-index: 1;
+        z-index: -10;
         filter: blur(150px);
         pointer-events: none;
     }
