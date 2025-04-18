@@ -1,7 +1,8 @@
 <template>
     <v-container class="px-0">
         <v-expansion-panels v-model="panelOpen" class="overflow-hidden rounded-[20px] !border-none">
-            <v-expansion-panel v-for="(show) in filteredShows" :key="show.id" class="overflow-hidden border-none !outline-none !bg-transparent">
+            <v-expansion-panel v-for="(show) in filteredShows" :key="show.id"
+                class="overflow-hidden border-none !outline-none !bg-transparent">
                 <v-expansion-panel-title class="bg-black rounded-[20px] font-bold">
                     <div class="flex items-center justify-between w-full">
                         <div class="text-[20px] font-bold">{{ show.hall?.name ?? 'Unknown Hall' }}</div>
@@ -26,7 +27,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <v-btn class="showtime-btn mt-3 text-[20px]">
+                        <v-btn class="showtime-btn mt-3 text-[20px]" @click="bookCallback(show)">
                             {{ formatTime(show.show_time) }}
                         </v-btn>
                     </div>
@@ -37,41 +38,60 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+    import { ref, computed } from 'vue';
+    import { router } from '@inertiajs/vue3';
+    import { route } from 'ziggy-js';
 
-const props = defineProps({
-  selectedDate: {
-    type: String,
-    required: true,
-  },
-  shows: {
-    type: Array,
-    required: true,
-  },
-})
+    const props = defineProps({
+        selectedDate: {
+            type: String,
+            required: true,
+        },
+        shows: {
+            type: Array,
+            required: true,
+        },
+    })
 
-const panelOpen = ref(0)
+    const panelOpen = ref(0)
 
-const filteredShows = computed(() => {
-  return props.shows.filter((show) => {
-    const showDate = new Date(show.show_time).toISOString().split('T')[0]
-    const selected = new Date(props.selectedDate).toISOString().split('T')[0]
-    return showDate === selected
-  })
-})
+    const filteredShows = computed(() => {
+        return props.shows.filter((show) => {
+            const showDate = new Date(show.show_time).toISOString().split('T')[0]
+            const selected = new Date(props.selectedDate).toISOString().split('T')[0]
+            return showDate === selected
+        })
+    })
 
-const formatTime = (datetime) => {
-  const date = new Date(datetime)
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-}
+    const formatTime = (datetime) => {
+        const date = new Date(datetime)
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }
+
+    /**
+     * Book callback function
+     *
+     * @param {Object} show
+     *
+     * @returns {void}
+     */
+    const bookCallback = (show) => {
+        router.visit(route('shows.booking.show', {
+            show: show.id,
+        }), {
+            method: 'get',
+            preserveState: true,
+            preserveScroll: true,
+        })
+    }
 </script>
 
 <style scoped>
-.showtime-btn {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border-radius: 20px;
-    padding: 10px 16px;
-    font-weight: bold;
-}
+    .showtime-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border-radius: 20px;
+        padding: 10px 16px;
+        font-weight: bold;
+    }
 </style>

@@ -59,4 +59,5 @@ class Seat extends Model
     {
         return $this->belongsTo(SeatType::class);
     }
+
 }

@@ -41,7 +41,9 @@ class HallSeatTypeController extends Controller
     {
         Gate::authorize('create', HallSeatType::class);
 
-        $seatTypes      = SeatType::whereDoesntHave('hallSeatTypes')
+        $seatTypes      = SeatType::whereDoesntHave('hallSeatTypes', function ($query) use ($hall) {
+                $query->where('hall_id', $hall->id);
+            })
             ->whereDoesntHave('seats', function ($query) use ($hall) {
                 $query->where('hall_id', $hall->id);
             })

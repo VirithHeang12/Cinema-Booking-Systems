@@ -10,7 +10,8 @@
             <v-sheet color="transparent" width="100%" rounded="lg">
                 <v-tabs v-model="tab" :items="tabs" align-tabs="center" height="60">
                     <template v-slot:tab="{ item }">
-                        <v-tab :text="item.text" :value="item.value" class="fs-6 font-bold text-white transition-opacity" :class="{
+                        <v-tab :text="item.text" :value="item.value"
+                            class="fs-6 font-bold text-white transition-opacity" :class="{
                                 'opacity-100': tab === item.value,
                                 'opacity-65 hover:opacity-100 focus:opacity-100': tab !== item.value
                             }" />
@@ -20,12 +21,15 @@
                             <v-tabs-window-item :value="item.value">
                                 <div v-if="item.value === 'tab-show'">
                                     <h3 class="text-white fs-1 mt-6 mb-0 pt-10 pb-6 showtime">Showtime</h3>
-                                    <TheSelectHalltype />
+                                    <TheSelectHallType />
                                     <div class="d-flex gap-4 overflow-x-auto no-scrollbar mt-[60px] mb-11">
-                                        <DateButton v-for="(date, index) in showDates" :key="index" :date="date" :isActive="selectedIndex === index" @click="selectedIndex = index" class="!w-[170px]" />
+                                        <DateButton v-for="(date, index) in showDates" :key="index" :date="date"
+                                            :isActive="selectedIndex === index" @click="selectedIndex = index"
+                                            class="!w-[170px]" />
                                     </div>
 
-                                    <TheExpansionPanel v-if="showDates.length > 0" :shows="shows" :selectedDate="showDates[selectedIndex]" />
+                                    <TheExpansionPanel v-if="showDates.length > 0" :shows="shows"
+                                        :selectedDate="showDates[selectedIndex]" />
                                 </div>
 
                                 <div v-else-if="item.value === 'tab-detail'" class="pa-4 text-white">
@@ -46,7 +50,7 @@
 
     import TheMovieDetailCard from '../Components/TheMovieDetailCard.vue'
     import TheExpansionPanel from '../Components/TheExpansionPanel.vue'
-    import TheSelectHalltype from '../Components/TheFilterSelectHalltype.vue'
+    import TheSelectHallType from '../Components/TheFilterSelectHallType.vue'
     import DateButton from '../Components/DateButton.vue';
 
     const props = defineProps({
