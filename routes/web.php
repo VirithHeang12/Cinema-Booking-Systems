@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\User\LandingPageController;
 use App\Http\Middleware\RedirectIfAdmin;
+use App\Models\Movie;
+use App\Models\Show;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -22,11 +24,24 @@ Route::middleware(['throttle:global'])->group(function () {
                 return Inertia::render('BookingTicket', ['title' => 'Booking Ticket']);
             })->name('bookingTicket');
         });
-        
-        Route::get('/movies/{id}', function ($id) {
+
+        Route::get('/movies/{movie}/details', function (Movie $movie) {
+            $movie->load(['movieGenres.genre', 'movieSubtitles.language']);
+
+            $subtitleIds = $movie->movieSubtitles->pluck('id');
+            $shows = Show::with(['movieSubtitle.language', 'hall.hallType', 'screenType', 'showSeats'])
+                ->whereIn('movie_subtitle_id', $subtitleIds)
+                ->orderBy('show_time')
+                ->get();
+
+            $showDates = $shows->pluck('show_time')->map(fn($time) => $time->toDateString())->unique()->values();
+
+
             return Inertia::render('Detail', [
-                'id' => $id,
+                'movie' => $movie,
+                'shows' => $shows,
+                'showDates' => $showDates,
             ]);
-        })->name('movie-detail');
+        })->name('movie-details');
     });
 });

@@ -1,11 +1,11 @@
 <template>
-    <data-table-server :showNo="true" :title="__('Hall Types')" :createButtonText="__('New HallType')"
+    <data-table-server :showNo="true" :title="__('Hall Types')" :createButtonText="__('New Hall Type')"
         :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
         :itemsPerPage="itemsPerPage" item-value="id" @update:options="loadItems" @view="viewCallback"
         @edit="editCallback" @delete="deleteCallback" @create="createCallback" @import="importCallback"
         @export="exportCallback" :emptyStateText="__('No hall type found in the database')" :emptyStateAction="true"
         :emptyStateActionText="__('Add First Hall Type')" @empty-action="createCallback" buttonVariant="outlined"
-        :viewTooltip="('View Hall Type Details')" :editTooltip="__('Edit Hall Type Information')"
+        :viewTooltip="__('View Hall Type Details')" :editTooltip="__('Edit Hall Type Information')"
         :deleteTooltip="__('Delete this Hall Type')" titleClass="text-2xl font-bold text-primary mb-4"
         tableClasses="hall-type-data-table elevation-2 rounded-lg" iconSize="small"
         :deleteConfirmText="__('Are you sure you want to delete this hall type? This action cannot be undone.')"

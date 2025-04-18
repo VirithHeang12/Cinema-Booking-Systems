@@ -85,11 +85,11 @@ class ScreenTypeController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.screen_types.index')->with('success', 'Screen Type created.');
+            return redirect()->route('dashboard.screen_types.index')->with('success', __('Screen Type created.'));
         }catch(\Exception $e){
             DB::rollBack();
 
-            return redirect()->route('dashboard.screen_types.index')->with('error', 'Screen Type not created.');
+            return redirect()->route('dashboard.screen_types.index')->with('error', __('Screen Type not created.'));
         }
     }
 
@@ -144,11 +144,11 @@ class ScreenTypeController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.screen_types.index')->with('success', 'Screen Type updated.');
+            return redirect()->route('dashboard.screen_types.index')->with('success', __('Screen Type updated.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.screen_types.index')->with('error', 'Screen Type not updated.');
+            return redirect()->route('dashboard.screen_types.index')->with('error', __('Screen Type not updated.'));
         }
     }
 
@@ -175,15 +175,15 @@ class ScreenTypeController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.screen_types.index')->with('success', 'Screen Type deleted.');
+            return redirect()->route('dashboard.screen_types.index')->with('success', __('Screen Type deleted.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.screen_type.index')->with('error', 'Screen Type not deleted.');
+            return redirect()->route('dashboard.screen_type.index')->with('error', __('Screen Type not deleted.'));
         }
     }
 
-      /**
+    /**
      * Show Import ScreenTypes form.
      * @return \Inertia\Response
      */
@@ -215,10 +215,10 @@ class ScreenTypeController extends Controller
             Excel::import(new ScreenTypeImport, $request->file('file'));
             DB::commit();
 
-            return redirect()->route('dashboard.screen_types.index')->with('success', 'Genres imported.');
+            return redirect()->route('dashboard.screen_types.index')->with('success', __('Screen Types imported.'));
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('dashboard.screen_types.index')->with('error', $e->getMessage());
+            return redirect()->route('dashboard.screen_types.index')->with('error', __('Screen Type not imported.'));
         }
     }
 

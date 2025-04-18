@@ -26,7 +26,7 @@ class GetLatestDateRangeOf
         )
         ->groupBy(DB::raw('DATE(show_time)'))
         ->orderBy('date', 'asc')
-        ->whereIn('status', [ShowStatus::SCHEDULED, ShowStatus::SHOWING])
+        ->where('status', ShowStatus::SCHEDULED)
         ->limit($days)
         ->get();
 
