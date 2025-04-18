@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="container">
             <div class="form-header">
-                <h2 class="form-title">{{ __('Edit HallType') }}</h2>
+                <h2 class="form-title">{{ __('Edit Hall Type') }}</h2>
                 <v-btn icon class="close-btn" @click="close">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
@@ -40,8 +40,8 @@
     const schema = yup.object().shape({
         name: yup
             .string()
-            .required(__('HallType name is required.'))
-            .max(50, __('HallType name must not exceed 50 characters.')),
+            .required(__('Hall Type name is required.'))
+            .max(50, __('Hall Type name must not exceed 50 characters.')),
         description: yup.string().nullable(),
     });
 

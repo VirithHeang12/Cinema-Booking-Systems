@@ -86,11 +86,11 @@ class ClassificationController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.classifications.index')->with('success', 'Classification created.');
+            return redirect()->route('dashboard.classifications.index')->with('success', __('Classification created.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.classifications.index')->with('error', 'Classification not created.');
+            return redirect()->route('dashboard.classifications.index')->with('error', __('Classification not created.'));
         }
     }
 
@@ -149,11 +149,11 @@ class ClassificationController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.classifications.index')->with('success', 'Classification updated.');
+            return redirect()->route('dashboard.classifications.index')->with('success', __('Classification updated.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.classifications.index')->with('error', 'Classification is not updated.');
+            return redirect()->route('dashboard.classifications.index')->with('error', __('Classification is not updated.'));
         }
     }
 
@@ -231,10 +231,10 @@ class ClassificationController extends Controller
             Excel::import(new ClassificationsImport, $request->file('file'));
             DB::commit();
 
-            return redirect()->route('dashboard.classifications.index')->with('success', 'Classifications imported.');
+            return redirect()->route('dashboard.classifications.index')->with('success', __('Classifications imported.'));
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('dashboard.classifications.index')->with('error', $e->getMessage());
+            return redirect()->route('dashboard.classifications.index')->with('error', __('Classifications not imported.'));
         }
     }
 
