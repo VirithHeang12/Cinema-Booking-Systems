@@ -18,8 +18,6 @@ class ShowController extends Controller
             ->orderBy('show_time')
             ->get();
 
-            dd($showTimes);
-
         return response()->json($showTimes);
     }
 
