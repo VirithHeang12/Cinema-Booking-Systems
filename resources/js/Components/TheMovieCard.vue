@@ -1,10 +1,10 @@
 <template>
     <v-col cols="12" sm="6" md="3" v-for="(movie, index) in movies" :key="index">
-        <Link :href="route('movie-details', { movie: movie.id })" class="relative">
-        <div class="flex flex-col items-center justify-center">
+        <Link :href="route('movie-details', { movie: movie.id })" class="flex justify-center">
+        <div class="relative !max-w-[250px] flex flex-col items-center justify-center">
             <img :src="movie.thumbnail_url" alt=""
                 class="img-fluid object-cover !w-[250px] !h-[370px] rounded-[15px]" />
-            <div class="absolute top-3 right-6">
+            <div class="absolute top-3 right-2">
                 <span
                     class="classification inline-flex items-center me-1 px-3 py-1 text-xs font-medium text-gray-200 ring-1 ring-gray-500/10 ring-inset">
                     {{ movie.classification?.name || 'No Classification' }}

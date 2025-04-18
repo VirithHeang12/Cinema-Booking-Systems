@@ -1,5 +1,5 @@
 <template>
-    <header class="bg-[#242424] bg-blur sticky top-0 px-4 overflow-y-hidden z-50">
+    <header class="bg-[#242424] bg-blur sticky top-0 px-4 overflow-y-hidden !z-50">
         <v-app-bar :elevation="0" color="#242424" flat compact class="app-bar py-3 bg-blur">
             <v-container class="px-8 px-md-0">
                 <v-row class="flex justify-between align-center">

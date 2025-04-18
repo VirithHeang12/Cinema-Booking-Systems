@@ -1,8 +1,8 @@
 <template>
     <v-container class="px-0">
         <v-expansion-panels v-model="panelOpen" class="overflow-hidden rounded-[20px] !border-none">
-            <v-expansion-panel v-for="(show, index) in filteredShows" :key="show.id" class="overflow-hidden border-none !outline-none">
-                <v-expansion-panel-title class="bg-black font-bold rounded-[20px] overflow-hidden">
+            <v-expansion-panel v-for="(show) in filteredShows" :key="show.id" class="overflow-hidden border-none !outline-none !bg-transparent">
+                <v-expansion-panel-title class="bg-black rounded-[20px] font-bold">
                     <div class="flex items-center justify-between w-full">
                         <div class="text-[20px] font-bold">{{ show.hall?.name ?? 'Unknown Hall' }}</div>
                     </div>
@@ -37,60 +37,33 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed} from 'vue'
-import axios from 'axios'
+import { ref, computed } from 'vue'
 
 const props = defineProps({
-    movieId: {
-        type: [Number, String],
-        required: true
-    },
-    selectedDate: {
+  selectedDate: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
+  shows: {
+    type: Array,
+    required: true,
+  },
 })
-const shows = ref([])
+
 const panelOpen = ref(0)
 
-watch(
-    () => props.movieId,
-    async (newVal) => {
-        if (newVal) {
-            await fetchShows()
-        } else {
-            console.warn('movieId is undefined, cannot fetch shows yet.')
-        }
-    },
-    { immediate: true }
-)
-
 const filteredShows = computed(() => {
-  return shows.value.filter(show => {
+  return props.shows.filter((show) => {
     const showDate = new Date(show.show_time).toISOString().split('T')[0]
     const selected = new Date(props.selectedDate).toISOString().split('T')[0]
     return showDate === selected
   })
 })
 
-
-const fetchShows = async () => {
-    try {
-        const response = await axios.get(`/api/v1/dashboard/movies/${props.movieId}/shows`)
-        shows.value = response.data
-    } catch (error) {
-        console.error('Failed to fetch show data:', error)
-    }
-}
-
 const formatTime = (datetime) => {
-    const date = new Date(datetime)
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  const date = new Date(datetime)
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
-
-onMounted(() => {
-    fetchShows()
-})
 </script>
 
 <style scoped>
