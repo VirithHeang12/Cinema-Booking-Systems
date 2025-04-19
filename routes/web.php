@@ -37,7 +37,6 @@ Route::middleware(['throttle:global'])->group(function () {
 
                 $showDates = $shows->pluck('show_time')->map(fn($time) => $time->toDateString())->unique()->values();
 
-
                 return Inertia::render('Detail', [
                     'movie' => $movie,
                     'shows' => $shows,

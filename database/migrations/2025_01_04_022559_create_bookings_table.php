@@ -20,6 +20,7 @@ return new class extends Migration
                 ->comment('Email of the guest');
 
             $table->string('qr_code')
+                ->nullable()
                 ->unique()
                 ->comment('QR code of the booking');
 
