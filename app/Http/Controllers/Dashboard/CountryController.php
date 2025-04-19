@@ -86,11 +86,11 @@ class CountryController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.countries.index')->with('success', 'Country created.');
+            return redirect()->route('dashboard.countries.index')->with('success', __('Country created.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.countries.index')->with('error', 'Country not created.');
+            return redirect()->route('dashboard.countries.index')->with('error', __('Country not created.'));
         }
     }
 
@@ -133,11 +133,11 @@ class CountryController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.countries.index')->with('success', 'Country updated.');
+            return redirect()->route('dashboard.countries.index')->with('success', __('Country updated.'));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dashboard.countries.index')->with('error', 'Country not updated.');
+            return redirect()->route('dashboard.countries.index')->with('error', __('Country not updated.'));
         }
     }
 
@@ -184,10 +184,10 @@ class CountryController extends Controller
         try {
             $country->delete();
             DB::commit();
-            return redirect()->route('dashboard.countries.index')->with('success', 'Country deleted.');
+            return redirect()->route('dashboard.countries.index')->with('success', __('Country deleted.'));
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('dashboard.countries.index')->with('error', 'Country not deleted.');
+            return redirect()->route('dashboard.countries.index')->with('error', __('Country not deleted.'));
         }
     }
 
@@ -220,7 +220,7 @@ class CountryController extends Controller
             Excel::import(new CountriesImport, $request->file('file'));
             DB::commit();
 
-            return redirect()->route('dashboard.countries.index')->with('success', 'Countries imported.');
+            return redirect()->route('dashboard.countries.index')->with('success', __('Countries imported.'));
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('dashboard.countries.index')->with('error', $e->getMessage());

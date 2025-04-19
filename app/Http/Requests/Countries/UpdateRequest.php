@@ -34,10 +34,10 @@ class UpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Name is required',
-            'name.string' => 'Name must be a string',
-            'name.max' => 'Name must not be greater than 50 characters',
-            'name.unique' => 'Name must be unique',
+            'name.required' => __('Name is required'),
+            'name.string' => __('Name must be a string'),
+            'name.max' => __('Name must not be greater than 50 characters'),
+            'name.unique' => __('Name must be unique'),
         ];
     }
 }
