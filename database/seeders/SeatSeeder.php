@@ -15,66 +15,77 @@ class SeatSeeder extends Seeder
         $seats = [
             [
                 'hall_id'       => 1,
-                'seat_type_id'  => 1,
+                'seat_type_id'  => 2,
                 'row'           => 'A',
                 'number'        => 1,
             ],
             [
                 'hall_id'       => 1,
-                'seat_type_id'  => 1,
+                'seat_type_id'  => 2,
                 'row'           => 'A',
                 'number'        => 2,
             ],
             [
                 'hall_id'       => 1,
-                'seat_type_id'  => 1,
+                'seat_type_id'  => 2,
                 'row'           => 'A',
                 'number'        => 3,
             ],
             [
                 'hall_id'       => 1,
-                'seat_type_id'  => 1,
+                'seat_type_id'  => 2,
                 'row'           => 'A',
                 'number'        => 4,
             ],
             [
                 'hall_id'       => 1,
-                'seat_type_id'  => 1,
+                'seat_type_id'  => 2,
                 'row'           => 'A',
                 'number'        => 5,
             ],
             [
                 'hall_id'       => 1,
-                'seat_type_id'  => 1,
+                'seat_type_id'  => 2,
                 'row'           => 'A',
                 'number'        => 6,
             ],
             [
                 'hall_id'       => 1,
-                'seat_type_id'  => 1,
+                'seat_type_id'  => 2,
                 'row'           => 'A',
                 'number'        => 7,
             ],
             [
                 'hall_id'       => 1,
-                'seat_type_id'  => 1,
+                'seat_type_id'  => 2,
                 'row'           => 'A',
                 'number'        => 8,
             ],
             [
                 'hall_id'       => 1,
-                'seat_type_id'  => 1,
+                'seat_type_id'  => 2,
                 'row'           => 'A',
                 'number'        => 9,
             ],
             [
                 'hall_id'       => 1,
-                'seat_type_id'  => 1,
+                'seat_type_id'  => 2,
                 'row'           => 'A',
                 'number'        => 10,
             ],
         ];
 
+        foreach (range('B', 'I') as $row) {
+            for ($number = 1; $number <= 10; $number++) {
+                $seats[] = [
+                    'hall_id'       => 1,
+                    'seat_type_id'  => 1,
+                    'row'           => $row,
+                    'number'        => $number,
+                ];
+            }
+        }
+        
         foreach ($seats as $seat) {
             \App\Models\Seat::create($seat);
         }

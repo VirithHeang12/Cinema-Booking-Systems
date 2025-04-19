@@ -65,7 +65,7 @@
         showDates: {
             type: Array,
             required: true
-        }
+        },
     })
 
     const selectedIndex = ref(0)

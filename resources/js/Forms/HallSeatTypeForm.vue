@@ -1,5 +1,5 @@
 <template>
-    <div class="form-content grid gap-3">
+    <div class="form-content grid gap-3 content-start h-100">
         <vee-field name="seat_type_id" v-slot="{ errors, field: { value, ...field } }">
             <v-autocomplete v-bind="field" :error-messages="errors" v-model="form.seat_type_id" :label="__('Seat Type')"
                 variant="outlined" :items="seat_types" item-title="name" item-value="id" density="comfortable"
