@@ -17,11 +17,10 @@
 </template>
 
 <script setup>
-    import { ref, computed, watch } from 'vue';
+    import { ref, computed } from 'vue';
     import { __ } from 'matice';
     import { route } from 'ziggy-js';
-    import { router, usePage } from '@inertiajs/vue3';
-    import { toast } from 'vue3-toastify';
+    import { router } from '@inertiajs/vue3';
     import { visitModal } from "@inertiaui/modal-vue";
 
     const props = defineProps({
@@ -149,7 +148,8 @@
             country: item.id,
         }), {
             config: {
-                slideover: false
+                slideover: false,
+                closeExplicitly: true,
             }
         });
     };
@@ -176,25 +176,6 @@
     const exportCallback = () => {
         window.location.href = route("dashboard.countries.export");
     };
-
-    /**
-     * Notify the user
-     *
-     * @param {string} message
-     * @param {string} type
-     *
-     * @return void
-     */
-    const notify = (message, type = 'success') => {
-        toast(message, {
-            autoClose: 1500,
-            position: toast.POSITION.BOTTOM_RIGHT,
-            type: type,
-            hideProgressBar: true,
-        });
-    }
-
-    const p = usePage();
 </script>
 
 <style scoped>

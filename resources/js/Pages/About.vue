@@ -12,7 +12,7 @@
         </div>
         <div class="row ">
             <div class="col-12">
-                <v-breadcrumbs :items="items" class="px-0 mt-[15px] mb-0 text-[17px] text-white">
+                <v-breadcrumbs :items="items" class="px-0 mt-[15px] mb-0 text-[17px] text-gray-300">
                     <template v-slot:divider>
                         <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -27,7 +27,7 @@
                     </template>
                 </v-breadcrumbs>
 
-                <p class="text-white fw-semibold text-[32px]">{{__('aboutPage.title')}}</p>
+                <p class="text-gray-300 fw-semibold text-[32px]">{{__('aboutPage.title')}}</p>
                 <p class="text-grey text-justify mt-[20px] text-[17px]">
                     {{ __('aboutPage.firstParagraph') }}
                  </p>

@@ -2,7 +2,7 @@
     <v-container>
         <div class="row">
             <div class="col-12">
-                <v-breadcrumbs :items="items" class="px-0 mb-0 text-[17px] text-white">
+                <v-breadcrumbs :items="items" class="px-0 mb-0 text-[17px] text-gray-300">
                     <template v-slot:divider>
                         <BreadcrumbIcon />
                     </template>
@@ -13,7 +13,7 @@
         <section>
             <v-row class="mb-3">
                 <v-col cols="12" md="6" lg="8">
-                    <h1 class="font-bold text-white">
+                    <h1 class="font-bold text-gray-300">
                         {{ __("terms.title") }}
                     </h1>
                     <p class="m-0 text-grey text-md ">

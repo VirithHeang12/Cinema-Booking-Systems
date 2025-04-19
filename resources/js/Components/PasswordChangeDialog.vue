@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="dialog" max-width="500" class="z-100" persistent>
         <v-card class="pa-6">
-            <v-card-title class="text-h5 font-weight-bold mb-4">Change Password</v-card-title>
+            <v-card-title class="text-h5 font-weight-bold mb-4">{{ __('Change Password') }}</v-card-title>
 
             <vee-form :validation-schema="schema" @submit.prevent="handleSubmit" v-slot="{ setErrors, validate }">
                 <v-card-text>
@@ -33,10 +33,10 @@
                 </v-card-text>
 
                 <v-card-actions class="justify-end">
-                    <v-btn text @click="dialog = false">Cancel</v-btn>
+                    <v-btn text @click="dialog = false">{{ __('Cancel') }}</v-btn>
                     <v-btn color="primary" :loading="form.processing" :disabled="form.processing"
                         @click.prevent="handleSubmit(setErrors, validate)">
-                        Change Password
+                        {{ __('Change Password') }}
                     </v-btn>
                 </v-card-actions>
             </vee-form>
@@ -48,6 +48,7 @@
     import { ref } from 'vue';
     import { useForm } from '@inertiajs/vue3';
     import * as yup from 'yup';
+    import { __ } from 'matice';
 
     const dialog = defineModel('dialog', {
         type: Boolean,

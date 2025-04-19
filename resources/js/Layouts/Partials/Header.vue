@@ -54,7 +54,8 @@
                                 <v-list>
                                     <v-list-item v-for="([key, value], index) in localizations" :key="index">
                                         <v-list-item-title>
-                                            <v-btn @click="switchLocale(key)" :elevation="0" width="100%" class="justify-start">
+                                            <v-btn @click="switchLocale(key)" :elevation="0" width="100%"
+                                                class="justify-start">
                                                 <template #prepend>
                                                     <flag
                                                         :iso="key.toLowerCase() === 'en' ? 'gb' : key.toLowerCase()" />
@@ -85,7 +86,7 @@
                                     <v-list-item v-if="!passwordDialog && isLogin" @click="passwordDialog = true">
                                         <v-list-item-title>
                                             <v-icon start class="mr-2">mdi-lock-reset</v-icon>
-                                            Change Password
+                                            {{ __('Change Password') }}
                                         </v-list-item-title>
                                     </v-list-item>
 
@@ -158,7 +159,7 @@
                             <div class="col-auto ml-5 pt-5">
                                 <v-list-item-title>{{ movie.title }}</v-list-item-title>
                                 <v-list-item-subtitle class="mt-2">{{ formatDate(movie.release_date)
-                                }}</v-list-item-subtitle>
+                                    }}</v-list-item-subtitle>
                             </div>
                         </div>
                         <v-divider class="my-0 col-12"></v-divider>
