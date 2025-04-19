@@ -227,10 +227,10 @@ class LanguageController extends Controller
             Excel::import(new LanguagesImport, $request->file('file'));
             DB::commit();
 
-            return redirect()->route('dashboard.languages.index')->with('success', 'Language imported.');
+            return redirect()->route('dashboard.languages.index')->with('success', __('Language imported.'));
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('dashboard.languages.index')->with('error', $e->getMessage());
+            return redirect()->route('dashboard.languages.index')->with('error', __('Language not imported.'));
         }
     }
     /**
