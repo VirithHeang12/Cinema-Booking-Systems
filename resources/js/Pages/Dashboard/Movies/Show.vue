@@ -4,6 +4,14 @@
             <v-col :cols="12" :md="5">
                 <v-row dense>
                     <v-col :cols="12" :md="12">
+                        <v-row>
+                            <v-col>
+                                <v-btn color="primary" variant="outlined" class="mb-4" prepend-icon="mdi-arrow-left"
+                                    rounded="lg" @click="backCallback">
+                                    {{ __('Back') }}
+                                </v-btn>
+                            </v-col>
+                        </v-row>
                         <h2 class="form-title">{{ movie.title }}</h2>
                     </v-col>
                     <v-col :cols="12" :md="12">
@@ -505,6 +513,18 @@
 
         // Return the embed URL
         return videoId ? `https://www.youtube.com/embed/${videoId}` : "";
+    };
+
+    /**
+     * Go back to the previous page
+     *
+     * @return void
+     */
+    const backCallback = () => {
+        router.visit(route('dashboard.movies.index'), {
+            preserveState: true,
+            method: 'get',
+        });
     };
 </script>
 
