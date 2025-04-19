@@ -22,9 +22,20 @@ Route::middleware(['throttle:global'])->group(function () {
             Route::get('/', LandingPageController::class)->name('index');
 
             Route::prefix('/shows/{show}')->name('shows.')->group(function () {
-                Route::get('/booking', [BookingController::class, 'show'])->name('booking.show');
-                Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+                Route::middleware('auth')->group(function () {
+                    Route::get('/booking', [BookingController::class, 'show'])
+                        ->name('booking.show');
+                    Route::post('/booking', [BookingController::class, 'store'])
+                        ->name('booking.store');
+                    Route::get('/booking/tickets', [BookingController::class, 'tickets'])
+                        ->name('booking.tickets');
+                });
             });
+
+            Route::middleware('auth')->group(function () {
+                Route::get('/booking/tickets', [BookingController::class, 'tickets'])
+                    ->name('booking.tickets');
+                });
 
             Route::get('/movies/{movie}/details', function (Movie $movie) {
                 $movie->load(['movieGenres.genre', 'movieSubtitles.language']);

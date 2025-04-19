@@ -76,4 +76,14 @@ class Booking extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get one of the showSeats for the booking.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function showSeat(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(ShowSeat::class)->latestOfMany();
+    }
 }
