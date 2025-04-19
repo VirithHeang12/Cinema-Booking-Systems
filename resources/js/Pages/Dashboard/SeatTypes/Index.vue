@@ -1,27 +1,27 @@
 <template>
     <div class="seat-type-list-container">
         <!-- Main table component -->
-        <data-table-server :showNo="true" title="Seat Types" createButtonText="New Seat Type" :serverItems="serverItems"
-            :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
-            item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
-            @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
-            emptyStateText="No seat types found in the database" :emptyStateAction="true"
-            emptyStateActionText="Add First Seat Type" @empty-action="createCallback" buttonVariant="outlined"
-            viewTooltip="View Seat Type Details" editTooltip="Edit Seat Type Information"
-            deleteTooltip="Delete this Seat Type" titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="false"
+        <data-table-server :showNo="true" :title="__('Seat Types')" :createButtonText="__('New SeatType')"
+            :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
+            :itemsPerPage="itemsPerPage" item-value="id" @update:options="loadItems" @view="viewCallback"
+            @edit="editCallback" @delete="deleteCallback" @create="createCallback" @import="importCallback"
+            @export="exportCallback" :emptyStateText="__('No seat types found in the database')"
+            :emptyStateAction="true" :emptyStateActionText="__('Add First Seat Type')" @empty-action="createCallback"
+            buttonVariant="outlined" :viewTooltip="__('View Seat Type Details')"
+            :editTooltip="__('Edit Seat Type Information')" :deleteTooltip="__('Delete this Seat Type')"
+            titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="false"
             tableClasses="seat-type-data-table elevation-2 rounded-lg" iconSize="small"
-            deleteConfirmText="Are you sure you want to delete this seat type? This action cannot be undone."
+            :deleteConfirmText="__('Are you sure you want to delete this seat type? This action cannot be undone.')"
             toolbarColor="white" :showSelect="false">
         </data-table-server>
     </div>
 </template>
 
 <script setup>
-    import { ref, computed, watch } from 'vue';
+    import { ref, computed } from 'vue';
     import { __ } from 'matice';
     import { route } from 'ziggy-js';
-    import { router, usePage } from '@inertiajs/vue3';
-    import { toast } from 'vue3-toastify';
+    import { router } from '@inertiajs/vue3';
     import { visitModal } from "@inertiaui/modal-vue";
 
     const props = defineProps({
@@ -52,26 +52,26 @@
     // Table headers definition
     const headers = [
         {
-            title: 'Name',
+            title: __('Name'),
             align: 'start',
             sortable: true,
             key: 'name',
         },
         {
-            title: 'Description',
+            title: __('Description'),
             align: 'start',
             sortable: false,
             key: 'description',
             width: '200px',
         },
         {
-            title: 'Price',
+            title: __('Price'),
             align: 'center',
             sortable: true,
             key: 'price',
         },
         {
-            title: 'Seats',
+            title: __('Seat'),
             align: 'center',
             sortable: true,
             key: 'seats_count',
@@ -167,7 +167,8 @@
             seat_type: item.id,
         }), {
             config: {
-                slideover: false
+                slideover: false,
+                closeExplicitly: true,
             }
         });
     };
@@ -187,50 +188,13 @@
     };
 
     /**
-     * Export movies
+     * Export seat types
      *
      * @return void
      */
     const exportCallback = () => {
         window.location.href = route("dashboard.seat_types.export");
     };
-
-    /**
-     * Notify the user
-     *
-     * @param {string} message
-     * @param {string} type
-     *
-     * @return void
-     */
-    const notify = (message, type = 'success') => {
-        toast(message, {
-            autoClose: 1500,
-            position: toast.POSITION.BOTTOM_RIGHT,
-            type: type,
-            hideProgressBar: true,
-        });
-    }
-
-    const p = usePage();
-
-    /**
-     * Watch for flash messages
-     *
-     * @return void
-     */
-    watch(() => p.props.flash, (flash) => {
-        const success = p.props.flash.success;
-        const error = p.props.flash.error;
-
-        if (success) {
-            notify(success);
-        } else if (error) {
-            notify(error, 'error');
-        }
-    }, {
-        deep: true,
-    });
 </script>
 
 <style scoped>

@@ -1,13 +1,10 @@
 <template>
   <div>
     <Head title="About" />
-    <TheMovieDetailCard />
-    <TheExpansionPanel />
-    <SlideBanner />
   </div>
 
 
-    <!-- <v-container class="my-[30px] font-cus">
+    <v-container class="my-[30px] font-cus">
         <div class="row">
             <div class="col-12">
                 <img src="/public/image/banner_about.jpg" alt="" class="img-fluid w-100 h-[200px] rounded-[25px]" />
@@ -15,7 +12,7 @@
         </div>
         <div class="row ">
             <div class="col-12">
-                <v-breadcrumbs :items="items" class="px-0 mt-[15px] mb-0 text-[17px] text-gray-600">
+                <v-breadcrumbs :items="items" class="px-0 mt-[15px] mb-0 text-[17px] text-gray-300">
                     <template v-slot:divider>
                         <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -30,17 +27,17 @@
                     </template>
                 </v-breadcrumbs>
 
-                <p class="text-gray-600 fw-semibold text-[32px]">{{__('aboutPage.title')}}</p>
-                <p class="text-gray-600 text-justify mt-[20px] text-[17px]">
+                <p class="text-gray-300 fw-semibold text-[32px]">{{__('aboutPage.title')}}</p>
+                <p class="text-grey text-justify mt-[20px] text-[17px]">
                     {{ __('aboutPage.firstParagraph') }}
                  </p>
-                 <p class="text-gray-600 text-justify mt-[20px] text-[17px]">
+                 <p class="text-grey text-justify mt-[20px] text-[17px]">
                     {{ __('aboutPage.secondParagraph') }}
                  </p>
             </div>
 
         </div>
-    </v-container> -->
+    </v-container>
 </template>
 
 <script setup>

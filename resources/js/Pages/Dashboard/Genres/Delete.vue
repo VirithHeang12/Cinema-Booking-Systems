@@ -49,17 +49,17 @@
                     </div>
                     <div class="grid text-left">
                         <h3 class="font-semibold !text-zinc-800">
-                            Delete Genre
+                            {{__('Delete Genre')}}
                         </h3>
                         <p class="text-dm text-neutral-600 font-medium mb-1">
-                            Are you sure you want to delete
+                            {{__('Are you sure you want to delete')}}
                             <span class="!text-zinc-700 font-semibold">{{
                                 genre.name || "this halltype"
                             }}</span
                             >?
                         </p>
                         <p class="text-[12.5px] text-neutral-500 mb-0">
-                            This action cannot be undone.
+                            {{__('This action cannot be undone.')}}
                         </p>
                     </div>
                 </div>
@@ -68,10 +68,10 @@
                     class="w-full flex justify-between items-center gap-4 mt-5"
                 >
                     <button @click="close" class="cancel-button" type="button">
-                        Cancel
+                        {{__('Cancel')}}
                     </button>
                     <button type="submit" @click="close" class="delete-button">
-                        Delete
+                       {{__('Delete')}}
                     </button>
                 </div>
             </div>

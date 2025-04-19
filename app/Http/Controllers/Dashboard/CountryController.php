@@ -58,7 +58,9 @@ class CountryController extends Controller
     public function create(): Modal
     {
         Gate::authorize('create', Country::class);
-        return Inertia::modal('Dashboard/Countries/Create')->baseRoute('dashboard.countries.index');
+
+        return Inertia::modal('Dashboard/Countries/Create')
+            ->baseRoute('dashboard.countries.index');
     }
 
 
@@ -101,7 +103,11 @@ class CountryController extends Controller
     public function edit(Country $country): Modal
     {
         Gate::authorize('update', $country);
-        return Inertia::modal('Dashboard/Countries/Edit', ['country' => $country])->baseRoute('dashboard.countries.index');
+
+        return Inertia::modal('Dashboard/Countries/Edit', [
+            'country'       => $country
+        ])
+        ->baseRoute('dashboard.countries.index');
     }
 
     /**
@@ -115,10 +121,12 @@ class CountryController extends Controller
     public function update(UpdateRequest $request, Country $country): \Illuminate\Http\RedirectResponse
     {
         Gate::authorize('update', $country);
+
         DB::beginTransaction();
 
         try {
             $data = $request->validated();
+
             $country->update([
                 'name' => $data['name']
             ]);

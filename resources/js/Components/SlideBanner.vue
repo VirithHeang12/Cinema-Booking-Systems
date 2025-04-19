@@ -1,6 +1,7 @@
 <template>
     <div class="w-screen relative overflow-hidden flex justify-center align-center" style="height: 650px;">
-        <div class="absolute inset-0 bg-image" :style="{ backgroundImage: `url(${images_url[active]?.image_url})` }">
+        <div class="absolute inset-0 bg-image"
+            :style="{ backgroundImage: imageUrls.length && active >= 0 ? `url(${imageUrls[active]?.image_url})` : 'none' }">
         </div>
         <div class="absolute inset-0 bg-overlay"></div>
         <div class="relative z-10 w-full">
@@ -8,9 +9,9 @@
                 <v-container>
                     <v-carousel height="500" v-model="active" hide-delimiter-background :show-arrows="false" cycle
                         interval="4000">
-                        <v-carousel-item v-for="(image, index) in images_url" :key="index">
-                            <v-img v-if="image && image.image_url" :src="image.image_url" cover
-                                class="rounded-[20px]"></v-img>
+                        <v-carousel-item v-for="(image, index) in imageUrls" :key="index">
+                            <v-img v-if="image && image.image_url" :src="image.image_url" cover class="rounded-[20px]"
+                                height="500"></v-img>
                         </v-carousel-item>
                     </v-carousel>
                 </v-container>
@@ -20,20 +21,20 @@
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
-    import axios from 'axios';
+    import { ref } from 'vue';
 
     const active = ref(0);
-    const images_url = ref([]);
 
-    onMounted(async () => {
-        try {
-            const res = await axios.get('/api/v1/dashboard/banners');
-            images_url.value = res.data.data;
-        }
-        catch (err) {
-            console.error('Failed to fetch images url:', err);
-        }
+    /**
+     * Props for the SlideBanner component.
+     *
+     * @type {Array<{image_url: string}>}
+     */
+    defineProps({
+        imageUrls: {
+            type: Array,
+            default: () => [],
+        },
     });
 </script>
 

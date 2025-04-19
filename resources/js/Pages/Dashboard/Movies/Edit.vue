@@ -2,12 +2,13 @@
     <Modal v-slot="{ close }">
         <div class="form-container">
             <div class="form-header !mb-3">
-                <h2 class="form-title">Edit Movie</h2>
-                <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close" @click="close"></button>
+                <h2 class="form-title">{{ __('Edit Movie') }}</h2>
+                <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
+                    @click="close"></button>
             </div>
 
-            <vee-form class="form-content-container" :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
-                :initialValues="form">
+            <vee-form class="form-content-container" :validation-schema="schema" @submit.prevent="submitForm"
+                v-slot="{ meta, setErrors }" :initialValues="form">
                 <movie-form :form="form" :countries="countries" :genres="genres" :languages="languages"
                     :classifications="classifications"></movie-form>
                 <div class="form-actions">
@@ -60,7 +61,7 @@
             .max(new Date(), __('release date cannot be in the future')),
         duration: yup.number().required(__('duration is required')).min(1, __('duration must be at least 1 minute')).typeError(__('duration must be a number')),
         rating: yup.number().min(1, __('rating must be at least 1')).max(10, __('rating must be at most 10')).typeError(__('rating must be a number')),
-        trailer_url: yup.string().url(__('trailer url must be a valid url')),
+        trailer_url: yup.string().url(__('trailer url must be a valid url')).required(__('trailer url is required')),
         country_id: yup.number().required(__('country is required')),
         classification_id: yup.number().required(__('classification is required')),
         spoken_language_id: yup.number().required(__('spoken language is required')),

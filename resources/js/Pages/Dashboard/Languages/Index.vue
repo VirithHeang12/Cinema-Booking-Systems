@@ -1,54 +1,30 @@
 <template>
     <div class="Language-list-container">
         <!-- Main table component -->
-        <data-table-server
-            :showNo="true"
-            title="Languages"
-            createButtonText="New Language"
-            :serverItems="serverItems"
-            :items-length="totalItems"
-            :headers="headers"
-            :loading="loading"
-            :itemsPerPage="itemsPerPage"
-            item-value="id"
-            @update:options="loadItems"
-            @view="viewCallback"
-            @edit="editCallback"
-            @delete="deleteCallback"
-            @create="createCallback"
-            @import="importCallback"
-            @export="exportCallback"
-            emptyStateText="No Language found in the database"
-            :emptyStateAction="true"
-            emptyStateActionText="Add First Language"
-            @empty-action="createCallback"
-            buttonVariant="outlined"
-            viewTooltip="View Language Details"
-            editTooltip="Edit Language Information"
-            deleteTooltip="Delete this Language"
-            titleClass="text-2xl font-bold text-primary mb-4"
-            @filter-apply="applyFilters"
-            @filter-clear="clearFilters"
-            tableClasses="languge-data-table elevation-2 rounded-lg"
-            iconSize="small"
+        <data-table-server :showNo="true" :title="__('Languages')" :createButtonText="__('New Language')"
+            :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
+            :itemsPerPage="itemsPerPage" item-value="id" @update:options="loadItems" @view="viewCallback"
+            @edit="editCallback" @delete="deleteCallback" @create="createCallback" @import="importCallback"
+            @export="exportCallback" emptyStateText="No Language found in the database" :emptyStateAction="true"
+            emptyStateActionText="Add First Language" @empty-action="createCallback" buttonVariant="outlined"
+            viewTooltip="View Language Details" editTooltip="Edit Language Information"
+            deleteTooltip="Delete this Language" titleClass="text-2xl font-bold text-primary mb-4"
+            @filter-apply="applyFilters" @filter-clear="clearFilters"
+            tableClasses="language-data-table elevation-2 rounded-lg" iconSize="small"
             deleteConfirmText="Are you sure you want to delete this language? This action cannot be undone."
-            toolbarColor="white"
-            :showSelect="false"
-        >
+            toolbarColor="white" :showSelect="false">
         </data-table-server>
     </div>
 </template>
 
 <script setup>
-    import { computed, ref, watch } from "vue";
+    import { computed, ref } from "vue";
     import { visitModal } from "@inertiaui/modal-vue";
-    import { router, usePage } from "@inertiajs/vue3";
+    import { router } from "@inertiajs/vue3";
     import { route } from "ziggy-js";
     import { __ } from 'matice';
-    import { toast } from 'vue3-toastify';
 
     const sortBy = ref([])
-const lastUpdated = ref(new Date().toLocaleString());
     const props = defineProps({
         languages: {
             type: Object,
@@ -74,19 +50,7 @@ const lastUpdated = ref(new Date().toLocaleString());
             title: __('Name'),
             align: "start",
             sortable: true,
-            key: "name",
-        },
-        {
-            title: __('Created At'),
-            align: "start",
-            sortable: true,
-            key: "created_at",
-        },
-        {
-            title: __('Updated At'),
-            align: "start",
-            sortable: true,
-            key: "updated_at",
+            key: "name"
         },
     ];
 
@@ -101,36 +65,35 @@ const lastUpdated = ref(new Date().toLocaleString());
      * @return {void}
      */
 
-function loadItems(options) {
-    loading.value = true;
-    page.value = options.page;
-    sortBy.value = options.sortBy;
+    function loadItems(options) {
+        loading.value = true;
+        page.value = options.page;
+        sortBy.value = options.sortBy;
 
-    let sortKeyWithDirection = options.sortBy.length > 0 ? options.sortBy[0].key : null;
+        let sortKeyWithDirection = options.sortBy.length > 0 ? options.sortBy[0].key : null;
 
-    if (sortKeyWithDirection) {
-        sortKeyWithDirection = options.sortBy[0].order === 'asc' ? sortKeyWithDirection : '-' + sortKeyWithDirection;
-    }
-
-    router.reload({
-        data: {
-            page: options.page,
-            itemsPerPage: options.itemsPerPage,
-            sort: sortKeyWithDirection,
-            'filter[search]': options.search,
-        },
-        preserveState: true,
-        only: ['languages'],
-        onSuccess: () => {
-            loading.value = false;
-            lastUpdated.value = new Date().toLocaleString();
-        },
-        onError: () => {
-            loading.value = false;
-            notify('Failed to load data', 'error');
+        if (sortKeyWithDirection) {
+            sortKeyWithDirection = options.sortBy[0].order === 'asc' ? sortKeyWithDirection : '-' + sortKeyWithDirection;
         }
-    });
-}
+
+        router.reload({
+            data: {
+                page: options.page,
+                itemsPerPage: options.itemsPerPage,
+                sort: sortKeyWithDirection,
+                'filter[search]': options.search,
+            },
+            preserveState: true,
+            only: ['languages'],
+            onSuccess: () => {
+                loading.value = false;
+            },
+            onError: () => {
+                loading.value = false;
+                notify('Failed to load data', 'error');
+            }
+        });
+    }
 
     function applyFilters() {
         loadItems({
@@ -155,11 +118,24 @@ function loadItems(options) {
             sortBy: sortBy.value,
         });
     }
+
+    /**
+     *
+     * Open the create language slideover
+     *
+     * @param item
+     */
     const viewCallback = (item) => {
         visitModal(
             route("dashboard.languages.show", {
                 language: item.id,
-            })
+            }),
+            {
+                config: {
+                    slideover: false,
+                    closeExplicitly: true,
+                },
+            }
         );
     };
 
@@ -175,16 +151,12 @@ function loadItems(options) {
         visitModal(
             route("dashboard.languages.delete", {
                 language: item.id,
-            }),{
-                config: {
-                    slideover: false,
-                    position: 'center',
-                    closeExplicitly: true,
-                    maxWidth: 'xl',
-                    paddingClasses: 'p-4 sm:p-6',
-                    panelClasses: 'bg-white rounded-[12px]',
-                },
-            }
+            }), {
+            config: {
+                slideover: false,
+                closeExplicitly: true,
+            },
+        }
         );
     };
 
@@ -193,14 +165,10 @@ function loadItems(options) {
     };
 
     const importCallback = () => {
-        visitModal(route("dashboard.languages.import.show"),{
+        visitModal(route("dashboard.languages.import.show"), {
             config: {
                 slideover: false,
-                position: 'center',
                 closeExplicitly: true,
-                maxWidth: 'xl',
-                paddingClasses: 'p-4 sm:p-6',
-                panelClasses: 'bg-white rounded-[12px]',
             },
         });
     };
@@ -208,40 +176,4 @@ function loadItems(options) {
     const exportCallback = () => {
         window.location.href = route("dashboard.languages.export");
     };
-
-    /**
-     * Notify the user
-     *
-     * @param {string} message
-     *
-     * @return void
-     */
-    const notify = (message) => {
-        toast(message, {
-            autoClose: 1500,
-            position: toast.POSITION.BOTTOM_RIGHT,
-            type: 'success',
-            hideProgressBar: true,
-        });
-    }
-
-    const page = usePage();
-
-    /**
-     * Watch for flash messages
-     *
-     * @return void
-     */
-    watch(() => page.props.flash, (flash) => {
-        const success = page.props.flash.success;
-        const error = page.props.flash.error;
-
-        if (success) {
-            notify(success);
-        } else if (error) {
-            notify(error);
-        }
-    }, {
-        deep: true,
-    });
 </script>

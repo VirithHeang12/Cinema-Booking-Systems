@@ -3,13 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Country;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\CountriesImport;
-use App\Exports\CountriesExport;
 use App\Exports\SeatTypesExport;
 use App\Http\Requests\SeatTypes\ImportRequest;
 use App\Http\Requests\SeatTypes\StoreRequest;
@@ -18,10 +14,10 @@ use InertiaUI\Modal\Modal;
 use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
-use App\Http\Resources\Api\CountryResource;
 use App\Http\Resources\SeatTypeResource;
 use App\Imports\SeatTypesImport;
 use App\Models\SeatType;
+use Spatie\QueryBuilder\AllowedSort;
 
 class SeatTypeController extends Controller
 {
@@ -43,7 +39,14 @@ class SeatTypeController extends Controller
                         ->orWhere('description', 'like', "%{$value}%");
                 }),
             ])
-            ->allowedSorts('name', 'price')
+            ->allowedSorts([
+                'name',
+                'price',
+                AllowedSort::callback('seats_count', function ($query, $descending) {
+                    $direction = $descending ? 'desc' : 'asc';
+                    $query->withCount('seats')->orderBy('seats_count', $direction);
+                }),
+            ])
             ->with(['seats', 'hallSeatTypes'])
             ->withCount('seats')
             ->paginate($perPage)

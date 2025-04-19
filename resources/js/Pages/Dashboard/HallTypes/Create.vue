@@ -2,29 +2,19 @@
     <Modal v-slot="{ close }">
         <div class="form-center">
             <div class="form-header">
-                <h2 class="form-title">Create HallType</h2>
+                <h2 class="form-title">{{ __('Create Hall Type') }}</h2>
                 <v-btn icon class="close-btn" @click="close">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
             </div>
 
-            <vee-form
-                :validation-schema="schema"
-                @submit.prevent="submitForm"
-                v-slot="{ meta, setErrors }"
-            >
+            <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }">
                 <hall-type-form :form="form" />
                 <div class="form-actions">
-                    <v-btn
-                        color="primary"
-                        :disabled="!meta.valid || form.processing"
-                        :loading="form.processing"
-                        @click.prevent="submitForm(setErrors, close)"
-                        size="large"
-                        block
-                    >
+                    <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
+                        @click.prevent="submitForm(setErrors, close)" size="large" block>
                         <v-icon class="me-2">mdi-check</v-icon>
-                        Submit
+                        {{ __('Submit') }}
                     </v-btn>
                 </div>
             </vee-form>
@@ -41,8 +31,8 @@
     const schema = yup.object().shape({
         name: yup
             .string()
-            .required(__('HallType name is required.'))
-            .max(50, __('HallType name must not exceed 50 characters.')),
+            .required(__('Hall Type name is required.'))
+            .max(50, __('Hall Type name must not exceed 50 characters.')),
         description: yup.string().nullable(),
     });
 
@@ -64,7 +54,6 @@
         form.post(route("dashboard.hall_types.store"), {
             preserveState: true,
             preserveScroll: true,
-            forceFormData: true,
             onSuccess: () => {
                 form.reset();
                 close();

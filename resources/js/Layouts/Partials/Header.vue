@@ -1,5 +1,5 @@
 <template>
-    <header class="bg-[#242424] bg-blur sticky top-0 px-4 overflow-y-hidden z-50">
+    <header class="bg-[#242424] bg-blur sticky top-0 px-4 overflow-y-hidden !z-50">
         <v-app-bar :elevation="0" color="#242424" flat compact class="app-bar py-3 bg-blur">
             <v-container class="px-8 px-md-0">
                 <v-row class="flex justify-between align-center">
@@ -54,7 +54,8 @@
                                 <v-list>
                                     <v-list-item v-for="([key, value], index) in localizations" :key="index">
                                         <v-list-item-title>
-                                            <v-btn @click="switchLocale(key)" :elevation="0" width="100%">
+                                            <v-btn @click="switchLocale(key)" :elevation="0" width="100%"
+                                                class="justify-start">
                                                 <template #prepend>
                                                     <flag
                                                         :iso="key.toLowerCase() === 'en' ? 'gb' : key.toLowerCase()" />
@@ -66,9 +67,37 @@
                                 </v-list>
                             </v-menu>
 
-                            <!-- Account Icon -->
-                            <v-btn icon="mdi-account" color="white"
-                                class="opacity-65 hover:opacity-100 d-none d-md-flex"></v-btn>
+                            <!-- Account Dropdown -->
+                            <v-menu offset-y>
+                                <template v-slot:activator="{ props }">
+                                    <v-btn icon color="white" class="opacity-65 hover:opacity-100" v-bind="props">
+                                        <v-icon>mdi-account</v-icon>
+                                    </v-btn>
+                                </template>
+
+                                <v-list>
+                                    <v-list-item @click="loginCallback" v-if="!isLogin">
+                                        <v-list-item-title>
+                                            <v-icon start class="mr-2">mdi-login</v-icon>
+                                            Login
+                                        </v-list-item-title>
+                                    </v-list-item>
+
+                                    <v-list-item v-if="!passwordDialog && isLogin" @click="passwordDialog = true">
+                                        <v-list-item-title>
+                                            <v-icon start class="mr-2">mdi-lock-reset</v-icon>
+                                            {{ __('Change Password') }}
+                                        </v-list-item-title>
+                                    </v-list-item>
+
+                                    <v-list-item @click="logoutCallback" v-if="isLogin">
+                                        <v-list-item-title>
+                                            <v-icon start class="mr-2">mdi-logout</v-icon>
+                                            {{ __('Logout') }}
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
 
                             <!-- Mobile Search Icon -->
                             <v-btn v-if="!dialog" icon="mdi-magnify" color="white"
@@ -87,6 +116,9 @@
             <NavLinks v-model="selectedTab" justify="between" :showProfile="true" />
         </v-bottom-navigation>
     </header>
+
+    <!-- Password Change Dialog -->
+    <PasswordChangeDialog v-model:dialog="passwordDialog" />
 
     <!-- Search Modal -->
     <v-dialog v-model="dialog" persistent hide-overlay transition="scale-transition" max-width="600" color="#242424"
@@ -127,7 +159,7 @@
                             <div class="col-auto ml-5 pt-5">
                                 <v-list-item-title>{{ movie.title }}</v-list-item-title>
                                 <v-list-item-subtitle class="mt-2">{{ formatDate(movie.release_date)
-                                }}</v-list-item-subtitle>
+                                    }}</v-list-item-subtitle>
                             </div>
                         </div>
                         <v-divider class="my-0 col-12"></v-divider>
@@ -146,11 +178,13 @@
 </template>
 
 <script setup>
+    import PasswordChangeDialog from '@/Components/PasswordChangeDialog.vue';
     import { ref, computed, watch } from 'vue';
     import { router, usePage } from '@inertiajs/vue3';
     import { __, getLocale, setLocale } from 'matice';
     import NavLinks from './NavLink.vue';
     import axios from 'axios';
+    import { route } from 'ziggy-js';
 
     const selectedTab = ref('/'); // Set default tab as home
 
@@ -158,7 +192,12 @@
     const loading = ref(false);
     const filteredMovies = ref([]);
     const searchQuery = ref('')
-    const dialog = ref(false)
+    const dialog = ref(false);
+    const passwordDialog = ref(false);
+
+    const isLogin = computed(() => {
+        return usePage().props.auth.user !== null;
+    });
 
     // Reset search query when dialog is closed
     watch(dialog, (val) => {
@@ -221,8 +260,31 @@
         setLocale(key);
         localizations.value = Object.entries(usePage().props.localizations);
         const [, { path }] = localizations.value.find(([key]) => key === getLocale());
-        router.visit(path, { method: "get" });
+        router.visit(path, {
+            method: "get",
+            onSuccess: () => {
+                window.location.reload();
+            },
+        });
     };
+
+    /**
+     * Login callback
+     *
+     * @returns {void}
+     */
+    const loginCallback = () => {
+        router.get(route('login.create'));
+    }
+
+    /**
+     * Logout callback
+     *
+     * @returns {void}
+     */
+    const logoutCallback = () => {
+        router.post(route('logout'));
+    }
 </script>
 
 <style scoped>
@@ -271,7 +333,7 @@
         overflow-y: auto;
     }
 
-    .search-dialog>>>.v-overlay__content {
+    .search-dialog :deep(.v-overlay__content) {
         top: 10% !important;
     }
 

@@ -2,14 +2,14 @@
     <Modal v-slot="{ close }">
         <div class="form-container">
             <div class="form-header !mb-3">
-                <h2 class="form-title">Create Hall</h2>
+                <h2 class="form-title">{{ __('Create Hall') }}</h2>
                 <button type="button" class="btn btn-sm btn-close shadow-none" aria-label="Close"
                     @click="close"></button>
             </div>
 
             <vee-form class="form-content-container" :validation-schema="schema" @submit.prevent="submitForm"
                 v-slot="{ meta, setErrors }">
-                <hall-form :form="form" :seat_types="seat_types" :hall_types="hall_types"></hall-form>
+                <hall-form :form="form" :hall_types="hall_types"></hall-form>
 
                 <div class="form-actions">
                     <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
@@ -30,10 +30,6 @@
     import HallForm from '../../../Forms/HallForm.vue';
 
     const props = defineProps({
-        seat_types: {
-            type: Array,
-            required: true,
-        },
         hall_types: {
             type: Array,
             required: true,
@@ -50,8 +46,6 @@
         name: null,
         description: null,
         hall_type_id: null,
-        hallSeatTypes: [],
-        seats: [],
     });
 
     /**
@@ -63,13 +57,6 @@
      * @returns void
      */
     const submitForm = (setErrors, close) => {
-        // Validate that at least one seat type is added
-        if (!form.hallSeatTypes || form.hallSeatTypes.length === 0) {
-            // Replace with a better notification system
-            alert(__('Please add at least one seat type'));
-            return;
-        }
-
         form.post(route('dashboard.halls.store'), {
             preserveState: true,
             preserveScroll: true,

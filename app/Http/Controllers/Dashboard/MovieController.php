@@ -20,6 +20,7 @@ use App\Models\Language;
 use App\Models\Movie;
 use App\Models\MovieGenre;
 use App\Models\MovieSubtitle;
+use App\Models\Show;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
@@ -31,6 +32,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class MovieController extends Controller
 {
+
     /**
      * Display a listing of Movies.
      *
@@ -118,7 +120,9 @@ class MovieController extends Controller
             $data = $request->validated();
 
             if ($request->hasFile('thumbnail_file')) {
-                $data['thumbnail_url'] = $request->file('thumbnail_file')->store('movies');
+                $data['thumbnail_url'] = Storage::url($request->file('thumbnail_file')->store('images', [
+                    'disk'  => 'public',
+                ]));
             }
 
             $movie = Movie::create([
@@ -164,7 +168,7 @@ class MovieController extends Controller
      *
      * @return Modal
      */
-    public function show(Movie $movie): Modal
+    public function show(Movie $movie): \Inertia\Response
     {
         Gate::authorize('view', $movie);
 
@@ -189,18 +193,22 @@ class MovieController extends Controller
             ];
         });
 
-        $movie->thumbnail_url = Storage::temporaryUrl(
-            $movie->thumbnail_url,
-            now()->addMinutes(5),
-        );
+        $shows = QueryBuilder::for(Show::class)
+            ->with(['movieSubtitle.movie', 'movieSubtitle.language', 'hall', 'screenType'])
+            ->whereHas('movieSubtitle', function ($query) use ($movie) {
+                $query->where('movie_id', $movie->id);
+            })
+            ->orderBy('show_time')
+            ->paginate(5);
 
-        return Inertia::modal('Dashboard/Movies/Show', [
-            'movie'                 => $movie->load(['movieGenres', 'movieSubtitles']),
+        return Inertia::render('Dashboard/Movies/Show', [
+            'movie'                 => $movie,
             'genres'                => $genres,
             'countries'             => $countries,
             'classifications'       => $classifications,
             'languages'             => $languages,
-        ])->baseRoute('dashboard.movies.index');
+            'shows'                 => $shows,
+        ]);
     }
 
     /**
@@ -235,11 +243,6 @@ class MovieController extends Controller
             ];
         });
 
-        $movie->thumbnail_url = Storage::temporaryUrl(
-            $movie->thumbnail_url,
-            now()->addMinutes(5),
-        );
-
         return Inertia::modal('Dashboard/Movies/Edit', [
             'movie'                 => $movie,
             'genres'                => $genres,
@@ -267,7 +270,9 @@ class MovieController extends Controller
 
         try {
             if ($request->hasFile('thumbnail_file')) {
-                $data['thumbnail_url'] = $request->file('thumbnail_file')->store('movies');
+                $data['thumbnail_url'] = Storage::url($request->file('thumbnail_file')->store('images', [
+                    'disk'  => 'public',
+                ]));
             }
 
             if ($movie->thumbnail_url && $request->hasFile('thumbnail_file')) {

@@ -1,11 +1,11 @@
 <template>
     <div class="hall-list-container">
         <!-- Main table component -->
-        <data-table-server :showNo="true" title="Halls" createButtonText="New Hall" :serverItems="serverItems"
-            :items-length="totalItems" :headers="headers" :loading="loading" :itemsPerPage="itemsPerPage"
-            item-value="id" @update:options="loadItems" @view="viewCallback" @edit="editCallback"
-            @delete="deleteCallback" @create="createCallback" @import="importCallback" @export="exportCallback"
-            emptyStateText="No halls found in the database" :emptyStateAction="true"
+        <data-table-server :showNo="true" :title="__('Halls')" :createButtonText="__('New Hall')"
+            :serverItems="serverItems" :items-length="totalItems" :headers="headers" :loading="loading"
+            :itemsPerPage="itemsPerPage" item-value="id" @update:options="loadItems" @view="viewCallback"
+            @edit="editCallback" @delete="deleteCallback" @create="createCallback" @import="importCallback"
+            @export="exportCallback" emptyStateText="No halls found in the database" :emptyStateAction="true"
             emptyStateActionText="Add First Hall" @empty-action="createCallback" buttonVariant="outlined"
             viewTooltip="View Hall Details" editTooltip="Edit Hall Information" deleteTooltip="Delete this Hall"
             titleClass="text-2xl font-bold text-primary mb-4" :hasFilter="true" @filter-apply="applyFilters"
@@ -25,11 +25,10 @@
 </template>
 
 <script setup>
-    import { ref, computed, watch } from 'vue';
+    import { ref, computed } from 'vue';
     import { __ } from 'matice';
     import { route } from 'ziggy-js';
-    import { router, usePage } from '@inertiajs/vue3';
-    import { toast } from 'vue3-toastify';
+    import { router } from '@inertiajs/vue3';
     import { visitModal } from "@inertiaui/modal-vue";
 
     const props = defineProps({
@@ -69,26 +68,26 @@
     // Table headers definition
     const headers = [
         {
-            title: 'Name',
+            title: __('Name'),
             align: 'start',
             sortable: true,
             key: 'name',
         },
         {
-            title: 'Description',
+            title: __('Description'),
             align: 'center',
             sortable: false,
             key: 'description',
             width: '200px',
         },
         {
-            title: 'Hall Type',
+            title: __('Hall Type'),
             align: 'center',
             sortable: false,
             key: 'hall_type',
         },
         {
-            title: 'Seats',
+            title: __('Seat'),
             align: 'center',
             sortable: true,
             key: 'seats_count',
@@ -171,14 +170,14 @@
     };
 
     /**
-     * Open the view hall slideover
+     * Open the view hall
      *
      * @param item
      *
      * @return void
      */
     const viewCallback = (item) => {
-        visitModal(route('dashboard.halls.show', {
+        router.visit(route('dashboard.halls.show', {
             hall: item.id,
         }));
     };
@@ -208,7 +207,8 @@
             hall: item.id,
         }), {
             config: {
-                slideover: false
+                slideover: false,
+                closeExplicitly: true,
             }
         });
     };
@@ -235,43 +235,6 @@
     const exportCallback = () => {
         window.location.href = route("dashboard.halls.export");
     };
-
-    /**
-     * Notify the user
-     *
-     * @param {string} message
-     * @param {string} type
-     *
-     * @return void
-     */
-    const notify = (message, type = 'success') => {
-        toast(message, {
-            autoClose: 1500,
-            position: toast.POSITION.BOTTOM_RIGHT,
-            type: type,
-            hideProgressBar: true,
-        });
-    }
-
-    const p = usePage();
-
-    /**
-     * Watch for flash messages
-     *
-     * @return void
-     */
-    watch(() => p.props.flash, (flash) => {
-        const success = p.props.flash.success;
-        const error = p.props.flash.error;
-
-        if (success) {
-            notify(success);
-        } else if (error) {
-            notify(error, 'error');
-        }
-    }, {
-        deep: true,
-    });
 </script>
 
 <style scoped>

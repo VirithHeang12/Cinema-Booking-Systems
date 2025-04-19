@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="container">
             <div class="form-header">
-                <h2 class="form-title">Edit Halltype</h2>
+                <h2 class="form-title">{{ __('Edit Hall Type') }}</h2>
                 <v-btn icon class="close-btn" @click="close">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
@@ -10,12 +10,12 @@
 
             <vee-form :validation-schema="schema" @submit.prevent="submitForm" v-slot="{ meta, setErrors }"
                 :initialValues="form">
-                <HallTypeForm :form="form"/>
+                <HallTypeForm :form="form" />
                 <div class="form-actions">
                     <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
                         @click.prevent="submitForm(setErrors, close)" size="large" block>
                         <v-icon class="me-2">mdi-check</v-icon>
-                        Submit
+                        {{ __('Submit') }}
                     </v-btn>
                 </div>
             </vee-form>
@@ -40,8 +40,8 @@
     const schema = yup.object().shape({
         name: yup
             .string()
-            .required(__('HallType name is required.'))
-            .max(50, __('HallType name must not exceed 50 characters.')),
+            .required(__('Hall Type name is required.'))
+            .max(50, __('Hall Type name must not exceed 50 characters.')),
         description: yup.string().nullable(),
     });
 
@@ -52,11 +52,11 @@
     });
 
     /**
-     * Pre-fill the form with existing movie data
+     * Pre-fill the form with existing hall type data
      *
      * @returns void
      */
-     onMounted(() => {
+    onMounted(() => {
         form.name = props.hall_type.name;
         form.description = props.hall_type.description;
     });
@@ -97,6 +97,7 @@
         box-shadow: none !important;
         opacity: 0.7 !important;
     }
+
     .close-btn:hover {
         background-color: #f5f5f5;
         opacity: 1;
