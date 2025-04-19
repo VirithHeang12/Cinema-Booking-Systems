@@ -267,5 +267,22 @@
     "Hall Type not updated.": "Hall Type not updated",
     "Hall Type deleted.": "Hall Type deleted",
     "Hall Type not deleted.": "Hall Type not deleted",
-    "Hall Type imported.": "Hall Type imported"
+    "Hall Type imported.": "Hall Type imported",
+    "this language": "this language",
+    "updated": "updated",
+    "No Language found in the database": "No Language found in the database",
+    "Add First Language": "Add First Language",
+    "View Language Details": "View Language Details",
+    "Edit Language Information": "Edit Language Information",
+    "Delete this Language": "Delete this Language",
+    "Are you sure you want to delete this language? This action cannot be undone.": "Are you sure you want to delete this language? This action cannot be undone.",
+    "Language created.": "Language created.",
+    "Language not created.": "Language not created.",
+    "Language updated.": "Language updated.",
+    "Language not updated.": "Language not updated.",
+    "Language deleted.": "Language deleted.",
+    "Language not deleted.": "Language not deleted.",
+    "Language imported.": "Language imported.",
+    "Language not imported.": "Language not imported.",
+    "update": "update"
 }
