@@ -13,21 +13,27 @@
         seatId: Number,
         seatNumber: Number,
         status: {
-            type: String, // 'available', 'unavailable', 'selected'
+            type: String, // 'available', 'unavailable'
             default: 'available',
+        },
+        seatType: {
+            type: String, // 'Regular', 'VIP'
+            default: 'Regular'
         }
     })
 
     const emit = defineEmits(['select'])
 
     const seatImage = computed(() => {
+        const isRegularSeatType = props.seatType == 'Regular'
+
         switch (props.status) {
             case 'selected':
                 return '/image/seats/selected.png'
             case 'unavailable':
                 return '/image/seats/unavailable.png'
             default:
-                return '/image/seats/available.png'
+                return isRegularSeatType ? '/image/seats/available.png' : '/image/seats/available-gold.png'
         }
     })
 
@@ -63,11 +69,11 @@
         font-family: 'Inter';
         position: absolute;
         top: 50%;
-        transform: translate(0, -75%);
+        transform: translate(0, -78%);
         width: 100%;
         text-align: center;
-        font-size: 12px;
-        color: #4a4a4a;
-        font-weight: 800;
+        font-size: 10px;
+        color: #d8d8d8;
+        font-weight: 600;
     }
 </style>

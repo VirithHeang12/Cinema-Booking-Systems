@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Movie;
 use App\Models\Seat;
+use App\Models\SeatType;
 use App\Models\Show;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -25,30 +26,37 @@ class BookingController extends Controller
             ->where('id', $show->movieSubtitle->movie_id)
             ->first();
 
-        $seatRows = Seat::where('hall_id', $show->hall_id)
-            ->get();
+        $seatRows = Seat::with('seatType')->where('hall_id', $show->hall_id)->get();
+
 
         $seatRows = collect($seatRows)->groupBy('row')->map(function ($row) use ($show) {
+            $seat = $row->first();
+
             return [
-                'label' => $row->first()->row,
+                'label' => $seat->row,
+                'seatType'  =>  [
+                    'name'  => $seat->seatType->name,
+                    'price' => $seat->seatType->price
+                ],
                 'seats' => $row->map(function ($seat) use ($show) {
-                    $seat->load('seatType');
 
                     return [
                         'id'            => $seat->id,
                         'number'        => $seat->number,
-                        'price'         => $seat->seatType->price,
                         'status'        => !$seat->showSeats()->where('show_id', $show->id)->exists() ?
                             'available' : 'unavailable',
                     ];
                 }),
             ];
-        })->values()->toArray();
+        })->sortByDesc('label')->values()->toArray();
+
+        $seatTypes = SeatType::select('name', 'price')->get();
 
         return Inertia::render('BookingTicket', [
             'movie'     => $movie,
             'show'      => $show,
             'seatRows'  => $seatRows,
+            'seatTypes' => $seatTypes,
         ]);
     }
 
@@ -59,8 +67,8 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(\Illuminate\Http\Request $request): \Illuminate\Http\RedirectResponse
-    {
-    }
+    // public function store(\Illuminate\Http\Request $request): \Illuminate\Http\RedirectResponse
+    // {
+    // }
 
 }
