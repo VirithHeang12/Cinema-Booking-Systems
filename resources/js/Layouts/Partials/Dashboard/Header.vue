@@ -43,7 +43,7 @@
                                 <v-list-item v-if="!dialog" @click="dialog = true">
                                     <v-list-item-title>
                                         <v-icon start class="mr-2">mdi-lock-reset</v-icon>
-                                        Change Password
+                                        {{ __('Change Password') }}
                                     </v-list-item-title>
                                 </v-list-item>
 
@@ -64,30 +64,30 @@
 </template>
 
 <script setup>
-import PasswordChangeDialog from '@/Components/PasswordChangeDialog.vue';
-import { ref, computed } from 'vue';
-import { router, usePage } from '@inertiajs/vue3';
-import { __, getLocale, setLocale } from 'matice';
-import { route } from 'ziggy-js';
+    import PasswordChangeDialog from '@/Components/PasswordChangeDialog.vue';
+    import { ref, computed } from 'vue';
+    import { router, usePage } from '@inertiajs/vue3';
+    import { __, getLocale, setLocale } from 'matice';
+    import { route } from 'ziggy-js';
 
-const dialog = ref(false);
+    const dialog = ref(false);
 
-const localizations = ref(Object.entries(usePage().props.localizations));
-const currentLocale = computed(() => localizations.value.find(([key]) => key === getLocale())?.[1]?.code);
+    const localizations = ref(Object.entries(usePage().props.localizations));
+    const currentLocale = computed(() => localizations.value.find(([key]) => key === getLocale())?.[1]?.code);
 
-const switchLocale = (key) => {
-    setLocale(key);
-    localizations.value = Object.entries(usePage().props.localizations);
-    const [, { path }] = localizations.value.find(([key]) => key === getLocale());
-    router.visit(path, {
-        method: "get",
-        onSuccess: () => {
-            window.location.reload();
-        },
-    });
-};
+    const switchLocale = (key) => {
+        setLocale(key);
+        localizations.value = Object.entries(usePage().props.localizations);
+        const [, { path }] = localizations.value.find(([key]) => key === getLocale());
+        router.visit(path, {
+            method: "get",
+            onSuccess: () => {
+                window.location.reload();
+            },
+        });
+    };
 
-const logout = () => {
-    router.post(route('logout'));
-}
+    const logout = () => {
+        router.post(route('logout'));
+    }
 </script>

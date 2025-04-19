@@ -4,6 +4,14 @@
             <v-col :cols="12" :md="5">
                 <v-row dense>
                     <v-col :cols="12" :md="12">
+                        <v-row>
+                            <v-col>
+                                <v-btn color="primary" variant="outlined" class="mb-4" prepend-icon="mdi-arrow-left"
+                                    rounded="lg" @click="backCallback">
+                                    {{ __('Back') }}
+                                </v-btn>
+                            </v-col>
+                        </v-row>
                         <h2 class="form-title">{{ hall.data.name }}</h2>
                     </v-col>
                     <v-col :cols="12" :md="12">
@@ -58,10 +66,9 @@
 
 <script setup>
     import { __ } from "matice";
-    import { ref, computed, watch } from "vue";
+    import { ref, computed } from "vue";
     import { route } from "ziggy-js";
-    import { router, usePage } from "@inertiajs/vue3";
-    import { toast } from "vue3-toastify";
+    import { router } from "@inertiajs/vue3";
     import { visitModal } from "@inertiaui/modal-vue";
 
     const props = defineProps({
@@ -201,47 +208,17 @@
         });
     };
 
-
     /**
-     * Notify the user
-     *
-     * @param {string} message
-     * @param {string} type
+     * Go back to the previous page
      *
      * @return void
      */
-    const notify = (message, type = "success") => {
-        toast(message, {
-            autoClose: 1500,
-            position: toast.POSITION.BOTTOM_RIGHT,
-            type: type,
-            hideProgressBar: true,
+    const backCallback = () => {
+        router.visit(route('dashboard.halls.index'), {
+            preserveState: true,
+            method: 'get',
         });
     };
-
-    const p = usePage();
-
-    /**
-     * Watch for flash messages
-     *
-     * @return void
-     */
-    watch(
-        () => p.props.flash,
-        (flash) => {
-            const success = p.props.flash.success;
-            const error = p.props.flash.error;
-
-            if (success) {
-                notify(success);
-            } else if (error) {
-                notify(error, "error");
-            }
-        },
-        {
-            deep: true,
-        },
-    );
 </script>
 
 <style scoped>

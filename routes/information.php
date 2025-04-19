@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Resources\Api\BannerResource;
+use App\Models\Banner;
 
 Route::get('/about', function () {
     return Inertia::render('About', ['title' => 'About']);
@@ -12,7 +14,8 @@ Route::get('/contact', function () {
 })->name('contact');
 
 Route::get('/promotions', function () {
-    return Inertia::render('Promotion', ['title' => 'Promotion']);
+    $banners = BannerResource::collection(Banner::latest()->take(10)->get())->toArray(request());
+    return Inertia::render('Promotion', ['title' => 'Promotion', 'banners' => $banners, ]);
 })->name('promotions');
 
 Route::get('/privacy', function () {

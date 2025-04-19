@@ -16,16 +16,58 @@
 </template>
 
 <script setup>
-    import { Head } from '@inertiajs/vue3';
+    import { Head, usePage } from '@inertiajs/vue3';
     import Footer from './Partials/Dashboard/Footer.vue';
     import Header from './Partials/Dashboard/Header.vue';
     import Menu from './Partials/Dashboard/Menu.vue';
+    import { watch } from 'vue';
+    import { toast } from 'vue3-toastify';
 
     defineProps({
         title: {
             type: String,
             default: 'Eternal',
         },
+    });
+
+    /**
+     * Notify the user
+     *
+     * @param {string} message
+     * @param {string} type
+     *
+     * @return void
+     */
+    const notify = (message, type = 'success') => {
+        toast(message, {
+            autoClose: 1500,
+            position: toast.POSITION.BOTTOM_RIGHT,
+            type: type,
+            hideProgressBar: true,
+        });
+    }
+
+    const page = usePage();
+
+    /**
+     * Watch for flash messages
+     *
+     * @return void
+     */
+    watch(() => page.props.flash, (flash) => {
+        const success = page.props.flash.success;
+        const error = page.props.flash.error;
+
+        if (success) {
+            notify(success);
+            page.props.flash.success = null;
+        } else if (error) {
+            notify(error, 'error');
+            page.props.flash.error = null;
+        }
+    }, {
+        deep: true,
+        immediate: true,
     });
 </script>
 

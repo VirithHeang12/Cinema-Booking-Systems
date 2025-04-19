@@ -44,12 +44,11 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { visitModal } from "@inertiaui/modal-vue";
-import { router, usePage } from "@inertiajs/vue3";
+import { router } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
 import { __ } from "matice";
-import { toast } from "vue3-toastify";
 
 const sortBy = ref([]);
 const props = defineProps({
@@ -161,6 +160,111 @@ const viewCallback = (item) => {
         {
             config: {
                 slideover: false,
+                closeExplicitly: false
+        },
+    ];
+
+    /**
+     * Load items from the server
+     *
+     * @param {Object} options
+     * @param {Number} options.page
+     * @param {Number} options.itemsPerPage
+     * @param {Array} options.sortBy
+     *
+     * @return {void}
+     */
+
+    function loadItems(options) {
+        loading.value = true;
+        page.value = options.page;
+        sortBy.value = options.sortBy;
+
+        let sortKeyWithDirection = options.sortBy.length > 0 ? options.sortBy[0].key : null;
+
+        if (sortKeyWithDirection) {
+            sortKeyWithDirection = options.sortBy[0].order === 'asc' ? sortKeyWithDirection : '-' + sortKeyWithDirection;
+        }
+
+        router.reload({
+            data: {
+                page: options.page,
+                itemsPerPage: options.itemsPerPage,
+                sort: sortKeyWithDirection,
+                'filter[search]': options.search,
+            },
+            preserveState: true,
+            only: ['languages'],
+            onSuccess: () => {
+                loading.value = false;
+            },
+            onError: () => {
+                loading.value = false;
+                notify('Failed to load data', 'error');
+            }
+        });
+    }
+
+    function applyFilters() {
+        loadItems({
+            page: 1,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
+        });
+    }
+
+    /**
+     * Clear all filters
+     *
+     * @return void
+     */
+    function clearFilters() {
+        filterCountry.value = null;
+        filterClassification.value = null;
+        filterYear.value = null;
+        loadItems({
+            page: 1,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
+        });
+    }
+
+    /**
+     *
+     * Open the create language slideover
+     *
+     * @param item
+     */
+    const viewCallback = (item) => {
+        visitModal(
+            route("dashboard.languages.show", {
+                language: item.id,
+            }),
+            {
+                config: {
+                    slideover: false,
+                    closeExplicitly: true,
+                },
+            }
+        );
+    };
+
+    const editCallback = (item) => {
+        visitModal(
+            route("dashboard.languages.edit", {
+                language: item.id,
+            })
+        );
+    };
+
+    const deleteCallback = (item) => {
+        visitModal(
+            route("dashboard.languages.delete", {
+                language: item.id,
+            }), {
+            config: {
+                slideover: false,
+                closeExplicitly: true,
             },
         },
     );
@@ -182,11 +286,7 @@ const deleteCallback = (item) => {
         {
             config: {
                 slideover: false,
-                position: "center",
                 closeExplicitly: true,
-                maxWidth: "xl",
-                paddingClasses: "p-4 sm:p-6",
-                panelClasses: "bg-white rounded-[12px]",
             },
         },
     );
@@ -213,43 +313,12 @@ const exportCallback = () => {
     window.location.href = route("dashboard.languages.export");
 };
 
-/**
- * Notify the user
- *
- * @param {string} message
- *
- * @return void
- */
-const notify = (message) => {
-    toast(message, {
-        autoClose: 1500,
-        position: toast.POSITION.BOTTOM_RIGHT,
-        type: "success",
-        hideProgressBar: true,
-    });
-};
+                closeExplicitly: true,
+            },
+        });
+    };
 
-const p = usePage();
-
-/**
- * Watch for flash messages
- *
- * @return void
- */
-watch(
-    () => p.props.flash,
-    (flash) => {
-        const success = p.props.flash.success;
-        const error = p.props.flash.error;
-
-        if (success) {
-            notify(success);
-        } else if (error) {
-            notify(error);
-        }
-    },
-    {
-        deep: true,
-    },
-);
+    const exportCallback = () => {
+        window.location.href = route("dashboard.languages.export");
+    };
 </script>
