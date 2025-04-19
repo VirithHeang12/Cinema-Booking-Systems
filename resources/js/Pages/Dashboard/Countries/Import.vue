@@ -15,7 +15,7 @@
                     <v-file-input v-model="form.file" :error-messages="form.errors.file" accept=".xlsx"
                         :label="__('Please select Excel file')" prepend-icon="mdi-file-excel" show-size truncate-length="30"
                         variant="outlined" class="my-5" density="comfortable" persistent-hint
-                        hint="Supported format: .xlsx">
+                        :hint="__('Supported format: .xlsx')">
                         <template v-slot:selection="{ fileNames }">
                             <v-chip color="primary" label size="small" class="me-2">
                                 {{ fileNames[0] }}

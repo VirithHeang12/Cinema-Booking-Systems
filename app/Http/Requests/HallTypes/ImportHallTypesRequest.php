@@ -37,7 +37,7 @@ class ImportHallTypesRequest extends FormRequest
             'file.required' => __('The file is required.'),
             'file.file'     => __('The file must be a file.'),
             'file.mimes'    => __('The file must be a file of type: xlsx, xls, csv, txt.'),
-            'file.max'      => __('The file may not be greater than 2MB.'),
+            'file.max'      => __('The file may not be greater than 10MB.'),
         ];
     }
 }

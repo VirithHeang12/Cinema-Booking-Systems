@@ -11,7 +11,7 @@
                 <!-- Basic Information -->
                 <div class="details-section">
                     <div class="field-row">
-                        <div class="field-label">Name</div>
+                        <div class="field-label">{{ __('Name') }}</div>
                         <div class="field-value">{{ country.name }}</div>
                     </div>
                 </div>
