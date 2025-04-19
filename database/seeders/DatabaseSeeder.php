@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             PaymentMethodSeeder::class,
             SeatTypeSeeder::class,
             ScreenTypeSeeder::class,
-            BookingSeeder::class,
+            // BookingSeeder::class,
             HallSeeder::class,
             HallSeatTypeSeeder::class,
             MovieSeeder::class,

@@ -238,7 +238,7 @@
         searchQuery.value = "";
         // Redirect to movie detail page (you can modify the route as needed)
         // router.push({ name: 'movie-detail', params: { id: movie.id } });
-        router.visit(route('movie-detail', { id: movie.id }));
+        router.visit(route('movie-details', { movie: movie.id }));
     };
 
     // Format release date
