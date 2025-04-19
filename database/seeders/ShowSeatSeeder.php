@@ -96,8 +96,8 @@ class ShowSeatSeeder extends Seeder
         //     ];
         // }
 
-        foreach ($showSeats as $showSeat) {
-            \App\Models\ShowSeat::create($showSeat);
-        }
+        // foreach ($showSeats as $showSeat) {
+        //     \App\Models\ShowSeat::create($showSeat);
+        // }
     }
 }

@@ -77,15 +77,17 @@ class SeatSeeder extends Seeder
 
         foreach (range('B', 'I') as $row) {
             for ($number = 1; $number <= 10; $number++) {
-                $seats[] = [
-                    'hall_id'       => 1,
-                    'seat_type_id'  => 1,
-                    'row'           => $row,
-                    'number'        => $number,
-                ];
+                for ($hall = 1; $hall <= 3; $hall++) {
+                    $seats[] = [
+                        'hall_id'       => $hall,
+                        'seat_type_id'  => 1,
+                        'row'           => $row,
+                        'number'        => $number,
+                    ];
+                }
             }
         }
-        
+
         foreach ($seats as $seat) {
             \App\Models\Seat::create($seat);
         }

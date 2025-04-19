@@ -17,7 +17,8 @@
                             <line x1="8" y1="2" x2="8" y2="6"></line>
                             <line x1="3" y1="10" x2="21" y2="10"></line>
                         </svg>
-                        <span class="text-sm font-medium text-blue-600">{{ __('April 14, 2025') }}</span>
+                        <span class="text-sm font-medium text-blue-600">{{ new Date().toLocaleDateString('en-US',
+                            { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
                     </div>
                 </div>
             </div>

@@ -15,7 +15,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Enums\ShowSeatStatus;
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class BookingController extends Controller
 {
@@ -65,11 +67,11 @@ class BookingController extends Controller
         $paymentMethods = PaymentMethod::where('is_active', true)->get(['id', 'name']);
 
         return Inertia::render('BookingTicket', [
-            'movie'     => $movie,
-            'show'      => $show,
-            'seatRows'  => $seatRows,
-            'seatTypes' => $seatTypes,
-            'paymentMethods' => $paymentMethods,
+            'movie'             => $movie,
+            'show'              => $show,
+            'seatRows'          => $seatRows,
+            'seatTypes'         => $seatTypes,
+            'paymentMethods'    => $paymentMethods,
         ]);
     }
 
@@ -88,12 +90,20 @@ class BookingController extends Controller
             'total_amount' => 'required|numeric',
         ]);
 
-        DB::transaction(function () use ($data) {
+        $response = Http::get('https://api.qrserver.com/v1/create-qr-code/?data=HelloWorld!&size=100x100');
+
+        $qrCodePath = 'qr_codes/' . Str::random(10) . '.png';
+
+        Storage::disk('public')->put($qrCodePath , $response->body());
+
+        $qrCodeUrl = Storage::url($qrCodePath);
+
+        DB::transaction(function () use ($data, $qrCodeUrl) {
             $booking = Booking::create([
                 'user_id'           => Auth::check() ? Auth::id() : null,
                 'guest_email'       => $data['guest_email'],
                 'payment_method_id' => $data['payment_method_id'],
-                'qr_code'           => null,
+                'qr_code'           => $qrCodeUrl,
                 'total_amount'      => $data['total_amount'],
                 'booking_date'      => now(),
                 'status'            => 'Confirmed',
@@ -115,6 +125,51 @@ class BookingController extends Controller
 
         });
 
-        return back()->with('success', 'Dummy booking completed successfully!');
+        return redirect()->route('booking.tickets')->with('success', 'Dummy booking completed successfully!');
+    }
+
+    /**
+     * Show the tickets for a booking.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Inertia\Response
+     */
+    public function tickets(Request $request): \Inertia\Response
+    {
+        $bookings = QueryBuilder::for(Booking::class)
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        $bookings = $bookings->map(function ($booking) {
+            $booking->load(['showSeats.seat', 'showSeats.show.hall.hallType', 'showSeats.show.movieSubtitle.movie', 'showSeat', 'showSeat.show.movieSubtitle.movie']);
+
+            return [
+                'movie'                 => [
+                    'title'             => $booking->showSeat->show->movieSubtitle->movie->title,
+                    'thumbnail_url'     => $booking->showSeat->show->movieSubtitle->movie->thumbnail_url,
+                ],
+                'hall'                  => [
+                    'name'              => $booking->showSeat->show->hall->name,
+                    'type'              => $booking->showSeat->show->hall->hallType->name,
+                ],
+                'show'                  => [
+                    'date'              => $booking->showSeat->show->show_time->format('Y-m-d'),
+                    'time'              => $booking->showSeat->show->show_time->format('H:i'),
+                ],
+                'qr_code'               => $booking->qr_code,
+                'total_amount'          => $booking->total_amount,
+                'seats'                 => $booking->showSeats->map(function ($showSeat) {
+                    return [
+                        'label'         => $showSeat->seat->row . $showSeat->seat->number,
+                    ];
+                }),
+            ];
+        });
+
+        return Inertia::render('ShowTickets', [
+            'bookings'  => $bookings,
+        ]);
     }
 }

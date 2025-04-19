@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-    import { Head, usePage } from '@inertiajs/vue3';
+    import { Head, router, usePage } from '@inertiajs/vue3';
     import Header from './Partials/Header.vue';
     import Footer from './Partials/Footer.vue';
     import { watch } from 'vue';
