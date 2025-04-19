@@ -44,9 +44,6 @@ class HallSeatTypeController extends Controller
         $seatTypes      = SeatType::whereDoesntHave('hallSeatTypes', function ($query) use ($hall) {
                 $query->where('hall_id', $hall->id);
             })
-            ->whereDoesntHave('seats', function ($query) use ($hall) {
-                $query->where('hall_id', $hall->id);
-            })
             ->get();
         $seatTypes      = SeatTypeResource::collection($seatTypes)->toArray(request());
         $takenRows      = $hall->seats()->pluck('row')->unique();
