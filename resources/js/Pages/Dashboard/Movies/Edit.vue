@@ -61,7 +61,7 @@
             .max(new Date(), __('release date cannot be in the future')),
         duration: yup.number().required(__('duration is required')).min(1, __('duration must be at least 1 minute')).typeError(__('duration must be a number')),
         rating: yup.number().min(1, __('rating must be at least 1')).max(10, __('rating must be at most 10')).typeError(__('rating must be a number')),
-        trailer_url: yup.string().url(__('trailer url must be a valid url')),
+        trailer_url: yup.string().url(__('trailer url must be a valid url')).required(__('trailer url is required')),
         country_id: yup.number().required(__('country is required')),
         classification_id: yup.number().required(__('classification is required')),
         spoken_language_id: yup.number().required(__('spoken language is required')),
