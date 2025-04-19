@@ -38,7 +38,7 @@ Route::middleware(['throttle:global'])->group(function () {
                 });
 
             Route::get('/movies/{movie}/details', function (Movie $movie) {
-                $movie->load(['movieGenres.genre', 'movieSubtitles.language']);
+                $movie->load(['movieGenres.genre', 'movieSubtitles.language', 'classification']);
 
                 $subtitleIds = $movie->movieSubtitles->pluck('id');
                 $shows = Show::with(['movieSubtitle.language', 'hall.hallType', 'screenType', 'showSeats'])
