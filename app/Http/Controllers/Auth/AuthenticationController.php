@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
@@ -9,9 +10,7 @@ use App\Http\Requests\Auth\UpdatePasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\RedirectResponse;
@@ -49,6 +48,8 @@ class AuthenticationController extends Controller
                 'password'          => Hash::make($data['password']),
                 'phone_number'      => $data['phone_number'],
             ]);
+
+            $user->assignRole(RoleEnum::USER);
 
             Auth::login($user);
 
@@ -91,8 +92,8 @@ class AuthenticationController extends Controller
             // Determine login method (email or phone)
             if (!empty($data['phone_number'])) {
                 $credentials = [
-                    'phone_number' => $data['phone_number'],
-                    'password' => $data['password'],
+                    'phone_number'  => $data['phone_number'],
+                    'password'      => $data['password'],
                 ];
             } else {
                 $credentials = [
@@ -104,7 +105,7 @@ class AuthenticationController extends Controller
             // Attempt to authenticate
             if (Auth::attempt($credentials, $request->boolean('remember', false))) {
                 $request->session()->regenerate();
-                return redirect()->intended('/')->with('success', 'Login successful');
+                return redirect()->intended()->with('success', 'Login successful');
             }
 
             return back()->withErrors([
@@ -126,7 +127,7 @@ class AuthenticationController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/')->with('success', 'Logout successful');
     }
 
     /**
@@ -147,6 +148,6 @@ class AuthenticationController extends Controller
         ]);
 
         return back()->with('success', 'Password updated successfully.');
-    } 
+    }
 
 }

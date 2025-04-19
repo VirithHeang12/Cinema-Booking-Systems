@@ -18,12 +18,11 @@
 </template>
 
 <script setup>
-    import { computed, ref, watch } from "vue";
+    import { computed, ref } from "vue";
     import { visitModal } from "@inertiaui/modal-vue";
-    import { router, usePage } from "@inertiajs/vue3";
+    import { router } from "@inertiajs/vue3";
     import { route } from "ziggy-js";
     import { __ } from 'matice';
-    import { toast } from 'vue3-toastify';
 
     const sortBy = ref([])
     const props = defineProps({
@@ -119,6 +118,13 @@
             sortBy: sortBy.value,
         });
     }
+
+    /**
+     *
+     * Open the create language slideover
+     *
+     * @param item
+     */
     const viewCallback = (item) => {
         visitModal(
             route("dashboard.languages.show", {
@@ -127,6 +133,7 @@
             {
                 config: {
                     slideover: false,
+                    closeExplicitly: true,
                 },
             }
         );
@@ -147,11 +154,7 @@
             }), {
             config: {
                 slideover: false,
-                position: 'center',
                 closeExplicitly: true,
-                maxWidth: 'xl',
-                paddingClasses: 'p-4 sm:p-6',
-                panelClasses: 'bg-white rounded-[12px]',
             },
         }
         );
@@ -165,11 +168,7 @@
         visitModal(route("dashboard.languages.import.show"), {
             config: {
                 slideover: false,
-                position: 'center',
                 closeExplicitly: true,
-                maxWidth: 'xl',
-                paddingClasses: 'p-4 sm:p-6',
-                panelClasses: 'bg-white rounded-[12px]',
             },
         });
     };
@@ -177,40 +176,4 @@
     const exportCallback = () => {
         window.location.href = route("dashboard.languages.export");
     };
-
-    /**
-     * Notify the user
-     *
-     * @param {string} message
-     *
-     * @return void
-     */
-    const notify = (message) => {
-        toast(message, {
-            autoClose: 1500,
-            position: toast.POSITION.BOTTOM_RIGHT,
-            type: 'success',
-            hideProgressBar: true,
-        });
-    }
-
-    const page = usePage();
-
-    /**
-     * Watch for flash messages
-     *
-     * @return void
-     */
-    watch(() => page.props.flash, (flash) => {
-        const success = page.props.flash.success;
-        const error = page.props.flash.error;
-
-        if (success) {
-            notify(success);
-        } else if (error) {
-            notify(error);
-        }
-    }, {
-        deep: true,
-    });
 </script>

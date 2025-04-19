@@ -103,7 +103,7 @@
                         <v-window-item value="signup">
                             <!-- Sign Up form implementation -->
                             <vee-form :validation-schema="signupSchema" @submit.prevent="submitSignupForm"
-                                v-slot="{ meta, setErrors, validate }" :validateOnBlur="true" :validateOnChange="false"
+                                v-slot="{ setErrors, validate, meta }" :validateOnBlur="true" :validateOnChange="false"
                                 :validateOnInput="false" class="mt-[5px]">
 
                                 <!-- Name Field -->
@@ -111,7 +111,7 @@
                                     <v-text-field v-bind="field" :error-messages="errors" v-model="signupForm.name"
                                         label="Full Name" variant="outlined" prepend-inner-icon="mdi-account"
                                         density="comfortable" bg-color="surface" class="mb-4 login-input"
-                                        hide-details="auto"></v-text-field>
+                                        placeholder="John Doe" hide-details="auto"></v-text-field>
                                 </vee-field>
 
                                 <!-- Email Field -->
@@ -119,7 +119,7 @@
                                     <v-text-field v-bind="field" :error-messages="errors" v-model="signupForm.email"
                                         label="Email" variant="outlined" prepend-inner-icon="mdi-email"
                                         density="comfortable" bg-color="surface" class="mb-4 login-input"
-                                        hide-details="auto"></v-text-field>
+                                        placeholder="johndoe@gmail.com" hide-details="auto"></v-text-field>
                                 </vee-field>
 
                                 <!-- Phone Field -->
@@ -127,7 +127,8 @@
                                     <v-text-field v-bind="field" :error-messages="errors"
                                         v-model="signupForm.phone_number" label="Phone Number" variant="outlined"
                                         prepend-inner-icon="mdi-phone" density="comfortable" bg-color="surface"
-                                        class="mb-4 login-input" hide-details="auto"></v-text-field>
+                                        placeholder="+85596550123" class="mb-4 login-input"
+                                        hide-details="auto"></v-text-field>
                                 </vee-field>
 
                                 <!-- Password Fields Row -->
@@ -161,20 +162,9 @@
                                 </v-row>
                                 <div class="mb-6"></div>
 
-                                <!-- Terms and Conditions Checkbox -->
-                                <vee-field name="terms" v-slot="{ field, errors }">
-                                    <v-checkbox :value="field.value" @input="field.handleChange"
-                                        :error-messages="errors" hide-details="auto" class="mb-6">
-                                        <template v-slot:label>
-                                            <span class="text-caption">I agree to the Terms of Service and Privacy
-                                                Policy</span>
-                                        </template>
-                                    </v-checkbox>
-                                </vee-field>
-
                                 <!-- Submit Button -->
                                 <v-btn color="primary" block rounded="lg" size="large" height="48" elevation="0"
-                                    :loading="signupForm.processing" :disabled="signupForm.processing"
+                                    :disabled="!meta.valid || signupForm.processing" :loading="signupForm.processing"
                                     @click.prevent="submitSignupForm(setErrors, validate)" class="login-btn mb-8">
                                     Create Account
                                 </v-btn>
@@ -197,256 +187,250 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
-import { useForm, router } from '@inertiajs/vue3';
-import * as yup from 'yup';
-import { route } from 'ziggy-js';
+    import { ref, watch } from 'vue';
+    import { useForm } from '@inertiajs/vue3';
+    import * as yup from 'yup';
+    import { route } from 'ziggy-js';
 
-const activeTab = ref('login');
-const loginMethod = ref('email');
-const showPassword = ref(false);
-const showSignupPassword = ref(false);
-const showConfirmPassword = ref(false);
-const rememberMe = ref(false);
+    const activeTab = ref('login');
+    const loginMethod = ref('email');
+    const showPassword = ref(false);
+    const showSignupPassword = ref(false);
+    const showConfirmPassword = ref(false);
+    const rememberMe = ref(false);
 
-// Login schema (original)
-const schema = yup.object().shape({
-    email: yup
-        .string()
-        .test(
-            'conditional-required',
-            'Email is required',
-            (value, context) => {
-                return !(loginMethod.value === 'email') || (value && value.length > 0);
-            }
-        )
-        .email('Must be a valid email'),
-    phone_number: yup
-        .string()
-        .test(
-            'conditional-required',
-            'Phone number is required',
-            (value, context) => {
-                return !(loginMethod.value === 'phone') || (value && value.length > 0);
-            }
-        )
-        .matches(/^\+[1-9]\d{1,14}$/, 'Phone number must follow E.164 format (e.g., +85596550123)'),
-    password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
-});
+    // Login schema (original)
+    const schema = yup.object().shape({
+        email: yup
+            .string()
+            .test(
+                'conditional-required',
+                'Email is required',
+                (value, context) => {
+                    return !(loginMethod.value === 'email') || (value && value.length > 0);
+                }
+            )
+            .email('Must be a valid email'),
+        phone_number: yup
+            .string()
+            .test(
+                'conditional-required',
+                'Phone number is required',
+                (value, context) => {
+                    return !(loginMethod.value === 'phone') || (value && value.length > 0);
+                }
+            )
+            .matches(/^\+[1-9]\d{1,14}$/, 'Phone number must follow E.164 format (e.g., +85596550123)'),
+        password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+    });
 
-// Sign up schema
-const signupSchema = yup.object().shape({
-    name: yup.string().required('Full name is required'),
-    signupEmail: yup
-        .string()
-        .required('Email is required')
-        .email('Must be a valid email'),
-    phone_number: yup
-        .string()
-        .required('Phone number is required')
-        .matches(/^\+[1-9]\d{1,14}$/, 'Phone number must follow E.164 format (e.g., +85596550123)'),
-    signupPassword: yup
-        .string()
-        .min(8, 'Password must be at least 8 characters')
-        .required('Password is required'),
-    password_confirmation: yup
-        .string()
-        .oneOf([yup.ref('signupPassword')], 'Passwords must match')
-        .required('Password confirmation is required'),
-    terms: yup
-        .boolean()
-        .oneOf([true], 'You must accept the terms and conditions')
-        .required('You must accept the terms and conditions'),
-});
+    // Sign up schema
+    const signupSchema = yup.object().shape({
+        name: yup.string().required('Full name is required'),
+        signupEmail: yup
+            .string()
+            .required('Email is required')
+            .email('Must be a valid email'),
+        phone_number: yup
+            .string()
+            .required('Phone number is required')
+            .matches(/^\+[1-9]\d{1,14}$/, 'Phone number must follow E.164 format (e.g., +85596550123)'),
+        signupPassword: yup
+            .string()
+            .min(8, 'Password must be at least 8 characters')
+            .required('Password is required'),
+        password_confirmation: yup
+            .string()
+            .oneOf([yup.ref('signupPassword')], 'Passwords must match')
+            .required('Password confirmation is required'),
+    });
 
-// Original login form
-const form = useForm({
-    email: '',
-    phone_number: '',
-    password: '',
-    remember: false,
-});
+    // Original login form
+    const form = useForm({
+        email: '',
+        phone_number: '',
+        password: '',
+        remember: false,
+    });
 
-// New signup form
-const signupForm = useForm({
-    name: '',
-    email: '',
-    phone_number: '',
-    password: '',
-    password_confirmation: '',
-    terms: false,
-    processing: false,
-});
+    // New signup form
+    const signupForm = useForm({
+        name: '',
+        email: '',
+        phone_number: '',
+        password: '',
+        password_confirmation: '',
+    });
 
-// Login form submission (original)
-const submitForm = async (setErrors, validate) => {
-    // Validate all fields manually before submission
-    const isValid = await validate();
+    // Login form submission (original)
+    const submitForm = async (setErrors, validate) => {
+        // Validate all fields manually before submission
+        const isValid = await validate();
 
-    if (isValid) {
-        form.remember = rememberMe.value;
-        form.post(route('login.store'), {
-            onError: (errors) => {
-                console.error(errors);
-                setErrors(errors);
-            },
-        });
-    }
-};
-
-// Signup form submission
-const submitSignupForm = async (setErrors, validate) => {
-    // Validate all fields manually before submission
-    const isValid = await validate();
-
-    if (isValid) {
-        signupForm.processing = true;
-
-        // Both email and phone are required
-
-        signupForm.post(route('register'), {
-            onSuccess: () => {
-                // Handle successful registration
-                signupForm.processing = false;
-            },
-            onError: (errors) => {
-                setErrors(errors);
-                signupForm.processing = false;
-            },
-        });
-    }
-};
-
-// Watch for changes in login method (original)
-watch(
-    () => loginMethod.value,
-    () => {
-        // Clear the field values when switching login method
-        if (loginMethod.value === 'email') {
-            form.phone_number = '';
-        } else {
-            form.email = '';
+        if (isValid) {
+            form.remember = rememberMe.value;
+            form.post(route('login.store'), {
+                onError: (errors) => {
+                    console.error(errors);
+                    setErrors(errors);
+                },
+            });
         }
-    }
-);
+    };
 
-// No longer needed as we require both email and phone
+    // Signup form submission
+    const submitSignupForm = async (setErrors, validate) => {
+        // Validate all fields manually before submission
+        const isValid = await validate();
+
+        if (isValid) {
+            signupForm.processing = true;
+
+            // Both email and phone are required
+
+            signupForm.post(route('register.store'), {
+                onSuccess: () => {
+                    // Handle successful registration
+                    signupForm.processing = false;
+                },
+                onError: (errors) => {
+                    setErrors(errors);
+                    signupForm.processing = false;
+                },
+            });
+        }
+    };
+
+    // Watch for changes in login method (original)
+    watch(
+        () => loginMethod.value,
+        () => {
+            // Clear the field values when switching login method
+            if (loginMethod.value === 'email') {
+                form.phone_number = '';
+            } else {
+                form.email = '';
+            }
+        }
+    );
+
+    // No longer needed as we require both email and phone
 </script>
 
 <style scoped>
-.fill-height {
-    min-height: 100vh;
-}
-
-.login-form-col {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f8f9fa;
-}
-
-.login-card {
-    max-width: 480px;
-    width: 100%;
-    margin: 0 auto;
-    background-color: transparent !important;
-}
-
-.login-bg-image {
-    position: relative;
-}
-
-.gradient-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.4) 100%);
-    z-index: 1;
-}
-
-.neon-design {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.neon-svg {
-    width: 80%;
-    height: 80%;
-}
-
-.neon-path {
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    filter: drop-shadow(0 0 8px currentColor);
-}
-
-.green-neon {
-    animation: neon-glow 3s infinite alternate;
-}
-
-.cyan-neon {
-    animation: neon-glow 3s infinite alternate-reverse;
-}
-
-@keyframes neon-glow {
-    from {
-        filter: drop-shadow(0 0 2px currentColor) drop-shadow(0 0 4px currentColor);
-        opacity: 0.8;
+    .fill-height {
+        min-height: 100vh;
     }
 
-    to {
-        filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 12px currentColor);
-        opacity: 1;
+    .login-form-col {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
     }
-}
 
-.toggle-container {
-    display: flex;
-    justify-content: center;
-}
-
-.toggle-buttons {
-    width: 100%;
-}
-
-.toggle-btn {
-    flex: 1;
-}
-
-.login-input :deep(.v-field__outline) {
-    border-radius: 12px;
-}
-
-.login-btn {
-    border-radius: 12px;
-    font-weight: 600;
-}
-
-.tabs-container :deep(.v-tab--selected) {
-    color: #000;
-    font-weight: 600;
-}
-
-.tabs-container :deep(.v-tab:not(.v-tab--selected)) {
-    opacity: 0.6;
-}
-
-.toggle-btn:not(:last-child) {
-    margin-right: 15px;
-}
-
-@media (max-width: 600px) {
     .login-card {
-        padding: 24px !important;
+        max-width: 480px;
+        width: 100%;
+        margin: 0 auto;
+        background-color: transparent !important;
     }
-}
+
+    .login-bg-image {
+        position: relative;
+    }
+
+    .gradient-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.4) 100%);
+        z-index: 1;
+    }
+
+    .neon-design {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .neon-svg {
+        width: 80%;
+        height: 80%;
+    }
+
+    .neon-path {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        filter: drop-shadow(0 0 8px currentColor);
+    }
+
+    .green-neon {
+        animation: neon-glow 3s infinite alternate;
+    }
+
+    .cyan-neon {
+        animation: neon-glow 3s infinite alternate-reverse;
+    }
+
+    @keyframes neon-glow {
+        from {
+            filter: drop-shadow(0 0 2px currentColor) drop-shadow(0 0 4px currentColor);
+            opacity: 0.8;
+        }
+
+        to {
+            filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 12px currentColor);
+            opacity: 1;
+        }
+    }
+
+    .toggle-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .toggle-buttons {
+        width: 100%;
+    }
+
+    .toggle-btn {
+        flex: 1;
+    }
+
+    .login-input :deep(.v-field__outline) {
+        border-radius: 12px;
+    }
+
+    .login-btn {
+        border-radius: 12px;
+        font-weight: 600;
+    }
+
+    .tabs-container :deep(.v-tab--selected) {
+        color: #000;
+        font-weight: 600;
+    }
+
+    .tabs-container :deep(.v-tab:not(.v-tab--selected)) {
+        opacity: 0.6;
+    }
+
+    .toggle-btn:not(:last-child) {
+        margin-right: 15px;
+    }
+
+    @media (max-width: 600px) {
+        .login-card {
+            padding: 24px !important;
+        }
+    }
 </style>
