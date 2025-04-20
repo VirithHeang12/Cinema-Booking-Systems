@@ -14,7 +14,6 @@
                         <!-- Mobile Buttons -->
                         <div class="d-flex gap-0 align-center d-sm-none">
                             <v-btn icon="mdi-ticket" color="white" class="opacity-65 hover:opacity-100" />
-                            <v-btn icon="mdi-bell" color="white" class="opacity-65 hover:opacity-100"></v-btn>
                         </div>
                     </v-col>
 
@@ -39,7 +38,6 @@
                                 </v-btn>
                                 <v-btn @click="showTicketsCallback" icon="mdi-ticket" color="white"
                                     class="opacity-65 hover:opacity-100 d-sm-none"></v-btn>
-                                <v-btn icon="mdi-bell" color="white" class="opacity-65 hover:opacity-100"></v-btn>
                             </div>
 
                             <!-- Language Switcher -->
@@ -160,7 +158,7 @@
                             <div class="col-auto ml-5 pt-5">
                                 <v-list-item-title>{{ movie.title }}</v-list-item-title>
                                 <v-list-item-subtitle class="mt-2">{{ formatDate(movie.release_date)
-                                }}</v-list-item-subtitle>
+                                    }}</v-list-item-subtitle>
                             </div>
                         </div>
                         <v-divider class="my-0 col-12"></v-divider>

@@ -6,7 +6,8 @@
             <v-container class="my-[30px] font-cus" v-if="movie">
                 <div class="row justify-content-center">
                     <div class="col-12">
-                        <div class="card !rounded-[25px] min-h-[480px] md:!h-[480px] relative overflow-hidden !border-0">
+                        <div
+                            class="card !rounded-[25px] min-h-[480px] md:!h-[480px] relative overflow-hidden !border-0">
                             <div class="gradient-bg"></div>
                             <div class="row g-0">
                                 <div class="col-12 col-md-6 p-5 rounded-tl-[25px] rounded-bl-[25px] min-h-[480px] md:!h-[480px] !text-white"
@@ -121,110 +122,109 @@
     </v-dialog>
 </template>
 <script setup>
-import { ref } from 'vue';
+    import { ref } from 'vue';
 
-const dialog = ref(false)
+    const dialog = ref(false)
 
-const props = defineProps({
-    movie: {
-        type: Object,
-        required: true
-    }
-})
-console.log(props.movie)
-// Format release date
-const formatDate = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
+    const props = defineProps({
+        movie: {
+            type: Object,
+            required: true
+        }
+    })
+    // Format release date
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
 
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = date.toLocaleString('en-US', { month: 'short' });
-    const year = date.getFullYear();
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = date.toLocaleString('en-US', { month: 'short' });
+        const year = date.getFullYear();
 
-    return `${day} ${month} ${year}`;
-};
+        return `${day} ${month} ${year}`;
+    };
 
-/**
- * Convert a YouTube URL to an embed URL
- *
- * @param {string} url - The YouTube URL (can be various formats)
- * @return {string} - The embed URL
- */
-const getYoutubeEmbedUrl = (url) => {
-    if (!url) return '';
+    /**
+     * Convert a YouTube URL to an embed URL
+     *
+     * @param {string} url - The YouTube URL (can be various formats)
+     * @return {string} - The embed URL
+     */
+    const getYoutubeEmbedUrl = (url) => {
+        if (!url) return '';
 
-    // Extract video ID from different YouTube URL formats
-    let videoId = '';
+        // Extract video ID from different YouTube URL formats
+        let videoId = '';
 
-    // youtube.com/watch?v=VIDEO_ID format
-    if (url.includes('youtube.com/watch')) {
-        const urlParams = new URLSearchParams(new URL(url).search);
-        videoId = urlParams.get('v');
-    }
-    // youtu.be/VIDEO_ID format
-    else if (url.includes('youtu.be')) {
-        videoId = url.split('youtu.be/')[1];
-    }
-    // youtube.com/embed/VIDEO_ID format
-    else if (url.includes('/embed/')) {
-        videoId = url.split('/embed/')[1];
-    }
+        // youtube.com/watch?v=VIDEO_ID format
+        if (url.includes('youtube.com/watch')) {
+            const urlParams = new URLSearchParams(new URL(url).search);
+            videoId = urlParams.get('v');
+        }
+        // youtu.be/VIDEO_ID format
+        else if (url.includes('youtu.be')) {
+            videoId = url.split('youtu.be/')[1];
+        }
+        // youtube.com/embed/VIDEO_ID format
+        else if (url.includes('/embed/')) {
+            videoId = url.split('/embed/')[1];
+        }
 
-    // Remove any additional parameters
-    if (videoId && videoId.includes('&')) {
-        videoId = videoId.split('&')[0];
-    }
+        // Remove any additional parameters
+        if (videoId && videoId.includes('&')) {
+            videoId = videoId.split('&')[0];
+        }
 
-    if (videoId && videoId.includes('?')) {
-        videoId = videoId.split('?')[0];
-    }
+        if (videoId && videoId.includes('?')) {
+            videoId = videoId.split('?')[0];
+        }
 
-    // Return the embed URL
-    return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
-};
+        // Return the embed URL
+        return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
+    };
 </script>
 <style scoped>
-.gradient-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 63%;
-    height: 100%;
-    background: linear-gradient(to right, #000000 80%, rgba(102, 102, 102, 0));
-    z-index: 1;
-}
-
-.bg-image {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    transform: scale(1.1);
-    filter: blur(15px);
-    z-index: 0;
-    height: 100%;
-    width: 100%;
-}
-
-.bg-overlay {
-    background-color: rgba(0, 0, 0, 0.4);
-    z-index: 1;
-    height: 100%;
-    width: 100%;
-}
-
-@media (max-width: 768px) {
     .gradient-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 63%;
+        height: 100%;
+        background: linear-gradient(to right, #000000 80%, rgba(102, 102, 102, 0));
+        z-index: 1;
+    }
+
+    .bg-image {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        transform: scale(1.1);
+        filter: blur(15px);
+        z-index: 0;
+        height: 100%;
         width: 100%;
-        height: 70%;
-        background: linear-gradient(to bottom, #000000 80%, rgba(102, 102, 102, 0));
     }
-}
 
-@media (min-width: 768px) and (max-width: 1200px) {
-
-    .card,
-    .img-cus {
-        min-height: 550px;
+    .bg-overlay {
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+        height: 100%;
+        width: 100%;
     }
-}
+
+    @media (max-width: 768px) {
+        .gradient-bg {
+            width: 100%;
+            height: 70%;
+            background: linear-gradient(to bottom, #000000 80%, rgba(102, 102, 102, 0));
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 1200px) {
+
+        .card,
+        .img-cus {
+            min-height: 550px;
+        }
+    }
 </style>

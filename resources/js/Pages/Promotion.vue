@@ -29,39 +29,37 @@
 </template>
 
 <script setup>
-import { __ } from "matice";
-import BreadcrumbIcon from "../Components/icons/BreadcrumbIcon.vue";
-import ThePromotionCard from "../Components/ThePromotionCard.vue";
+    import { __ } from "matice";
+    import BreadcrumbIcon from "../Components/icons/BreadcrumbIcon.vue";
+    import ThePromotionCard from "../Components/ThePromotionCard.vue";
 
 
 
-const props = defineProps({
-    banners: {
-        type: Array,
-        default: () => [],
-    },
-});
+    const props = defineProps({
+        banners: {
+            type: Array,
+            default: () => [],
+        },
+    });
 
-const items = [
-    {
-        title: __("home"),
-        disabled: false,
-        href: route("index"),
-    },
-    {
-        title: __("promotions.title"),
-        disabled: true,
-        href: route("promotions"),
-    },
-];
+    const items = [
+        {
+            title: __("home"),
+            disabled: false,
+            href: route("index"),
+        },
+        {
+            title: __("promotions.title"),
+            disabled: true,
+            href: route("promotions"),
+        },
+    ];
 
-
-console.log(props.banners);
 
 </script>
 
 <style>
-.v-breadcrumbs-divider {
-    padding: 0 !important;
-}
+    .v-breadcrumbs-divider {
+        padding: 0 !important;
+    }
 </style>

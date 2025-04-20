@@ -21,7 +21,7 @@
                             <v-tabs-window-item :value="item.value">
                                 <div v-if="item.value === 'tab-show'">
                                     <h3 class="text-white fs-1 mt-6 mb-0 pt-10 pb-6 showtime">Showtime</h3>
-                                    <TheSelectHallType />
+                                    <TheSelectHallType @update:hallType="onHallTypeChanged" />
                                     <div class="d-flex gap-4 overflow-x-auto no-scrollbar mt-[60px] mb-11">
                                         <DateButton v-for="(date, index) in showDates" :key="index" :date="date"
                                             :isActive="selectedIndex === index" @click="selectedIndex = index"
@@ -47,6 +47,7 @@
 
 <script setup>
     import { ref, shallowRef } from 'vue'
+    import { router } from '@inertiajs/vue3'
 
     import TheMovieDetailCard from '../Components/TheMovieDetailCard.vue'
     import TheExpansionPanel from '../Components/TheExpansionPanel.vue'
@@ -75,6 +76,16 @@
         { text: 'Showtime', value: 'tab-show' },
         { text: 'Detail', value: 'tab-detail' }
     ]
+
+    const onHallTypeChanged = (hallType) => {
+        router.reload({
+            data: {
+                'filter[hall_id]': hallType.id ?? '',
+            },
+            preserveState: true,
+            only: ['shows'],
+        });
+    }
 </script>
 
 <style scoped>

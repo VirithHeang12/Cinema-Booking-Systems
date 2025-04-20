@@ -8,8 +8,7 @@ use App\Models\Show;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-
-
+use Spatie\QueryBuilder\QueryBuilder;
 
 Route::middleware(['throttle:global'])->group(function () {
     Route::prefix(LaravelLocalization::setLocale())->middleware([ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ])->group(function() {
@@ -41,7 +40,12 @@ Route::middleware(['throttle:global'])->group(function () {
                 $movie->load(['movieGenres.genre', 'movieSubtitles.language', 'classification']);
 
                 $subtitleIds = $movie->movieSubtitles->pluck('id');
-                $shows = Show::with(['movieSubtitle.language', 'hall.hallType', 'screenType', 'showSeats'])
+
+                $shows = QueryBuilder::for(Show::class)
+                    ->allowedFilters([
+                        'hall_id',
+                    ])
+                    ->with(['movieSubtitle.language', 'hall.hallType', 'screenType', 'showSeats'])
                     ->whereIn('movie_subtitle_id', $subtitleIds)
                     ->orderBy('show_time')
                     ->get();
