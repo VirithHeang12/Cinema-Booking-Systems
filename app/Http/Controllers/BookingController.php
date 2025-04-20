@@ -125,7 +125,7 @@ class BookingController extends Controller
 
         });
 
-        return redirect()->route('booking.tickets')->with('success', 'Dummy booking completed successfully!');
+        return redirect()->route('booking.tickets')->with('success', 'Booking completed successfully!');
     }
 
     /**
