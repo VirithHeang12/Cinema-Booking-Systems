@@ -20,7 +20,6 @@ class HallTypeController extends Controller
     public function index(): \Illuminate\Http\JsonResponse
     {
         $hall_types = QueryBuilder::for(HallType::class)
-
             ->allowedFilters([
                 'name',
                 'description'

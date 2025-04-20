@@ -9,7 +9,8 @@
         </template>
 
         <v-list class="bg-black text-white my-2 z-10" max-height="240">
-            <v-list-item v-for="(hall_type, index) in hall_types" :key="index" @click="selectHalltype(hall_type)">
+            <v-list-item v-for="(hall_type, index) in computedHallTypes" :key="index"
+                @click="selectHalltype(hall_type)">
                 <template #prepend>
                     <v-icon color="red">mdi-theater</v-icon>
                 </template>
@@ -21,12 +22,14 @@
     </v-menu>
 </template>
 <script setup>
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, watch, computed } from 'vue'
     import axios from 'axios'
 
     const menu = ref(false)
-    const selectedHalltype = ref({ name: 'All Halltypes' })
-    const hall_types = ref([])
+    const selectedHalltype = ref({ name: 'All Halltypes' });
+    const hall_types = ref([]);
+
+    const emit = defineEmits(['update:hallType'])
     onMounted(async () => {
         try {
             const res = await axios.get('/api/v1/dashboard/hall_types')
@@ -35,6 +38,11 @@
             console.error('Failed to load hall types', e)
         }
     })
+
+    const computedHallTypes = computed(() => {
+        return [{ name: 'All Hall Types' }, ...hall_types.value]
+    })
+
     function selectHalltype(hall_type) {
         selectedHalltype.value = hall_type
         menu.value = false
@@ -42,4 +50,13 @@
     function isSelected(hall_type) {
         return selectedHalltype.value?.name === hall_type.name
     }
+
+
+    /**
+     * Watch for changes in selectedHalltype and emit the update event
+     *
+     */
+    watch(selectedHalltype, (newValue) => {
+        emit('update:hallType', newValue)
+    })
 </script>
