@@ -50,7 +50,7 @@
 
     import TheMovieDetailCard from '../Components/TheMovieDetailCard.vue'
     import TheExpansionPanel from '../Components/TheExpansionPanel.vue'
-    import TheSelectHallType from '../Components/TheFilterSelectHallType.vue'
+    import TheSelectHallType from '@/Components/TheFilterSelectHallType.vue'
     import DateButton from '../Components/DateButton.vue';
 
     const props = defineProps({
