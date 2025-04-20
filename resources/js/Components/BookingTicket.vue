@@ -20,7 +20,7 @@
                     </div>
 
                     <div class="flex justify-between items-start gap-4">
-                        <span class="font-medium text-gray-300 w-20">Format</span>
+                        <span class="font-medium text-gray-300 w-20">Hall Type</span>
                         <span class="vertical-colon">:</span>
                         <span class="text-md flex-1 text-right">{{ booking.hall.type }}</span>
                     </div>
@@ -40,7 +40,7 @@
                     <div class="flex justify-between items-start gap-4">
                         <span class="font-medium text-gray-300 w-20">Time</span>
                         <span class="vertical-colon">:</span>
-                        <span class="text-md flex-1 text-right">{{ booking.show.time }}</span>
+                        <span class="text-md flex-1 text-right">{{ formatTime(booking.show.time) }}</span>
                     </div>
                 </div>
 
@@ -78,7 +78,17 @@ const props = defineProps({
     }
 })
 
-console.log(props.booking)
+const formatTime = (timeString) => {
+    const today = new Date();
+    const [hours, minutes] = timeString.split(':');
+    today.setHours(+hours, +minutes, 0, 0);
+    return today.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
+};
+
 </script>
 
 <style scoped>
