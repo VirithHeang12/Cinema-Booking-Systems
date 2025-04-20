@@ -2,7 +2,7 @@
     <Modal v-slot="{ close }">
         <div class="language-form-center">
             <div class="form-header">
-                <h2 class="form-title">{{__('Edit Language')}}</h2>
+                <h2 class="form-title">{{ __('Edit Language') }}</h2>
                 <v-btn icon class="close-btn" @click="close">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
@@ -15,7 +15,7 @@
                     <v-btn color="primary" :disabled="!meta.valid || form.processing" :loading="form.processing"
                         @click.prevent="submitForm(setErrors, close)" size="large" block>
                         <v-icon class="me-2">mdi-check</v-icon>
-                        {{__('update')}}
+                        {{ __('update') }}
                     </v-btn>
                 </div>
             </vee-form>
@@ -28,7 +28,7 @@
     import { __ } from "matice";
     import * as yup from "yup";
     import { onMounted } from "vue";
-    import LanguageForm from "../../../Forms/LanguageForm.vue";
+    import LanguageForm from "../../../Forms/languageForm.vue";
 
     const schema = yup.object().shape({
         name: yup.string().required(__("Language name is required")),
