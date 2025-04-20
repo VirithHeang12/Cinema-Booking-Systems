@@ -247,7 +247,6 @@
     "Hall Type deleted.": "Tipo de sala eliminada",
     "Hall Type not deleted.": "Tipo de sala no eliminada",
     "Hall Type imported.": "Tipo de sala importada",
-    "Change Password": "Cambiar Contraseña",
     "The file is required.": "El archivo es obligatorio.",
     "The file must be a file.": "El archivo debe ser un archivo.",
     "The file must be a file of type: xlsx, xls, csv, txt.": "El archivo debe ser un archivo de tipo: xlsx, xls, csv, txt.",
@@ -288,5 +287,7 @@
     "Language imported.": "Idioma importado.",
     "Language not imported.": "Idioma no importado.",
     "update": "actualizar",
-    "Change Password": "Cambiar Contraseña"
+    "Change Password": "Cambiar Contraseña",
+    "Maximum seats per row is required": "Se requiere un máximo de asientos por fila",
+    "Maximum Seats Per Row": "Máximo de asientos por fila"
 }

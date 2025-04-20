@@ -31,9 +31,6 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->comment('Foreign key to the seat type');
 
-            $table->integer('maximum_capacity')
-                ->comment('Maximum capacity of the hall seat type');
-
             $table->softDeletes();
             $table->timestamps();
         });

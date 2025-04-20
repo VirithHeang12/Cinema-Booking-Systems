@@ -27,6 +27,7 @@ class Hall extends Model
         'hall_type_id',
         'name',
         'description',
+        'maximum_seats_per_row',
     ];
 
     /**

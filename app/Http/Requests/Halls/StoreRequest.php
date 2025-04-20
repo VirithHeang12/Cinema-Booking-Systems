@@ -25,6 +25,7 @@ class StoreRequest extends FormRequest
             'name'                              => 'required|string|max:255',
             'description'                       => 'nullable|string',
             'hall_type_id'                      => 'required|exists:hall_types,id',
+            'maximum_seats_per_row'             => 'required|integer|min:1',
         ];
     }
 
@@ -44,6 +45,9 @@ class StoreRequest extends FormRequest
             'hall_type_id.required'                     => 'The hall type ID is required.',
             'hall_type_id.exists'                       => 'The selected hall type ID is invalid.',
             'hall_type_id.integer'                      => 'The hall type ID must be an integer.',
+            'maximum_seats_per_row.required'            => 'The maximum seats per row is required.',
+            'maximum_seats_per_row.integer'             => 'The maximum seats per row must be an integer.',
+            'maximum_seats_per_row.min'                 => 'The maximum seats per row must be at least 1.',
         ];
     }
 }

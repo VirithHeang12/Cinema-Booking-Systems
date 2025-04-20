@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Movie;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,7 +12,7 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      */
     public function run(): void
-    {;
+    {
         $this->call([
             PermissionSeeder::class,
             BannerSeeder::class,
@@ -25,7 +24,6 @@ class DatabaseSeeder extends Seeder
             PaymentMethodSeeder::class,
             SeatTypeSeeder::class,
             ScreenTypeSeeder::class,
-            // BookingSeeder::class,
             HallSeeder::class,
             HallSeatTypeSeeder::class,
             MovieSeeder::class,
@@ -33,7 +31,6 @@ class DatabaseSeeder extends Seeder
             MovieSubtitleSeeder::class,
             SeatSeeder::class,
             ShowSeeder::class,
-            ShowSeatSeeder::class,
         ]);
     }
 }

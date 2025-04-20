@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Hall;
+use App\Models\SeatType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,56 +14,16 @@ class HallSeatTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        $hallSeatTypes = [
-            [
-                'hall_id'               => 1,
-                'seat_type_id'          => 1,
-                'maximum_capacity'      => 100,
-            ],
-            [
-                'hall_id'               => 1,
-                'seat_type_id'          => 2,
-                'maximum_capacity'      => 50,
-            ],
-            [
-                'hall_id'               => 1,
-                'seat_type_id'          => 3,
-                'maximum_capacity'      => 25,
-            ],
-            [
-                'hall_id'               => 2,
-                'seat_type_id'          => 1,
-                'maximum_capacity'      => 100,
-            ],
-            [
-                'hall_id'               => 2,
-                'seat_type_id'          => 2,
-                'maximum_capacity'      => 50,
-            ],
-            [
-                'hall_id'               => 2,
-                'seat_type_id'          => 3,
-                'maximum_capacity'      => 25,
-            ],
-            [
-                'hall_id'               => 3,
-                'seat_type_id'          => 1,
-                'maximum_capacity'      => 100,
-            ],
-            [
-                'hall_id'               => 3,
-                'seat_type_id'          => 2,
-                'maximum_capacity'      => 50,
-            ],
-            [
-                'hall_id'               => 3,
-                'seat_type_id'          => 3,
-                'maximum_capacity'      => 25,
-            ],
-        ];
+        $halls = Hall::all();
+        $seatTypes = SeatType::all();
 
-        foreach ($hallSeatTypes as $hallSeatType) {
-            \App\Models\HallSeatType::create($hallSeatType);
+        foreach ($halls as $hall) {
+            foreach ($seatTypes as $seatType) {
+                \App\Models\HallSeatType::create([
+                    'hall_id'      => $hall->id,
+                    'seat_type_id' => $seatType->id,
+                ]);
+            }
         }
     }
 }

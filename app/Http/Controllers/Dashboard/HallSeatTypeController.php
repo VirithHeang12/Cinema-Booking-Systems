@@ -2,23 +2,14 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Enums\ShowStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HallSeatTypes\StoreRequest;
 use App\Http\Requests\HallSeatTypes\UpdateRequest;
-use App\Http\Resources\Api\LanguageResource;
-use App\Http\Resources\Api\ScreenTypeResource;
-use App\Http\Resources\HallResource;
 use App\Http\Resources\SeatTypeResource;
 use App\Models\Hall;
 use App\Models\HallSeatType;
-use App\Models\Movie;
-use App\Models\MovieSubtitle;
-use App\Models\ScreenType;
 use App\Models\Seat;
 use App\Models\SeatType;
-use App\Models\Show;
-use Carbon\Carbon;
 use Inertia\Inertia;
 use InertiaUI\Modal\Modal;
 use Illuminate\Support\Facades\Gate;
@@ -45,6 +36,7 @@ class HallSeatTypeController extends Controller
                 $query->where('hall_id', $hall->id);
             })
             ->get();
+
         $seatTypes      = SeatTypeResource::collection($seatTypes)->toArray(request());
         $takenRows      = $hall->seats()->pluck('row')->unique();
         $availableRows  = collect(self::ROWS)->diff($takenRows);
@@ -85,11 +77,10 @@ class HallSeatTypeController extends Controller
             HallSeatType::create([
                 'hall_id'           => $hall->id,
                 'seat_type_id'      => $data['seat_type_id'],
-                'maximum_capacity'  => $data['maximum_capacity'],
             ]);
 
             foreach ($data['rows'] as $row) {
-                for ($seatNum = 1; $seatNum <= $data['maximum_capacity']; $seatNum++) {
+                for ($seatNum = 1; $seatNum <= $hall->maximum_seats_per_row; $seatNum++) {
                     Seat::create([
                         'hall_id'           => $hall->id,
                         'seat_type_id'      => $data['seat_type_id'],
@@ -179,7 +170,7 @@ class HallSeatTypeController extends Controller
             $data = $request->validated();
 
             $seatType->update([
-                'maximum_capacity'  => $data['maximum_capacity'],
+                'seat_type_id'      => $data['seat_type_id'],
             ]);
 
             // Delete existing seats
@@ -189,7 +180,7 @@ class HallSeatTypeController extends Controller
 
             // Create new seats
             foreach ($data['rows'] as $row) {
-                for ($seatNum = 1; $seatNum <= $data['maximum_capacity']; $seatNum++) {
+                for ($seatNum = 1; $seatNum <= $hall->maximum_seats_per_row; $seatNum++) {
                     Seat::create([
                         'hall_id'           => $hall->id,
                         'seat_type_id'      => $seatType->seat_type_id,

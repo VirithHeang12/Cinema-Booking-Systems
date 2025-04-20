@@ -24,6 +24,12 @@
                     bg-color="surface" hide-details="auto"></v-autocomplete>
             </div>
         </vee-field>
+
+        <vee-field name="maximum_seats_per_row" v-slot="{ field, errors }">
+            <v-text-field type="number" v-bind="field" :error-messages="errors" v-model="form.maximum_seats_per_row"
+                :label="__('Maximum Seats Per Row')" variant="outlined" prepend-inner-icon="mdi-counter"
+                density="comfortable"></v-text-field>
+        </vee-field>
     </div>
 </template>
 

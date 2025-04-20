@@ -11,29 +11,34 @@ class HallSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     * Creates one hall for each hall type, with sequential naming (Hall A, Hall B, etc.)
+     * Ensures no duplicate hall names by appending numbers when necessary
      */
     public function run(): void
     {
-        $halls = [
-            [
-                'name'          => 'Hall A',
-                'description'   => 'Hall A Description',
-                'hall_type_id'  => 1,
-            ],
-            [
-                'name'          => 'Hall B',
-                'description'   => 'Hall B Description',
-                'hall_type_id'  => 2,
-            ],
-            [
-                'name'          => 'Hall C',
-                'description'   => 'Hall C Description',
-                'hall_type_id'  => 3,
-            ],
-        ];
+        $hallTypes = HallType::all();
 
-        foreach ($halls as $hall) {
-            \App\Models\Hall::create($hall);
+        // Define letters for sequential hall naming
+        $letters = range('A', 'Z');
+        $letterCounts = array_fill_keys($letters, 0);
+
+        foreach ($hallTypes as $index => $hallType) {
+            $letterIndex = $index % count($letters);
+            $letter = $letters[$letterIndex];
+
+            $letterCounts[$letter]++;
+
+            $hallName = "Hall {$letter}";
+            if ($letterCounts[$letter] > 1) {
+                $hallName = "Hall {$letter}{$letterCounts[$letter]}";
+            }
+
+            Hall::create([
+                'name'                  => $hallName,
+                'description'           => "{$hallName} Description",
+                'hall_type_id'          => $hallType->id,
+                'maximum_seats_per_row' => 10,
+            ]);
         }
     }
 }
