@@ -7,7 +7,7 @@
                 <img :src="booking.movie.thumbnail_url" :alt="booking.movie.title"
                     class="h-[180px] w-full object-cover rounded-[12px]" />
                 <img :src="booking.qr_code" :alt="booking.movie.title"
-                    class="h-[180px] w-full object-cover rounded-[12px]" />
+                    class="h-[180px] bg-white p-2 w-full object-cover rounded-[12px]" />
             </div>
 
             <!-- RIGHT: Details -->
@@ -71,51 +71,51 @@
 
 
 <script setup>
-const props = defineProps({
-    booking: {
-        type: Object,
-        required: true,
-    }
-})
+    const props = defineProps({
+        booking: {
+            type: Object,
+            required: true,
+        }
+    })
 
-const formatTime = (timeString) => {
-    const today = new Date();
-    const [hours, minutes] = timeString.split(':');
-    today.setHours(+hours, +minutes, 0, 0);
-    return today.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-    });
-};
+    const formatTime = (timeString) => {
+        const today = new Date();
+        const [hours, minutes] = timeString.split(':');
+        today.setHours(+hours, +minutes, 0, 0);
+        return today.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+    };
 
 </script>
 
 <style scoped>
-.card {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(223, 223, 223, 0.2);
-}
+    .card {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(223, 223, 223, 0.2);
+    }
 
-.movie-details-container::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(to right,
-            rgba(255, 255, 255, 0),
-            rgba(255, 255, 255, 0.4),
-            rgba(255, 255, 255, 0));
-}
+    .movie-details-container::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(to right,
+                rgba(255, 255, 255, 0),
+                rgba(255, 255, 255, 0.4),
+                rgba(255, 255, 255, 0));
+    }
 
-.movie-details-container::after {
-    bottom: 0;
-    top: auto;
-}
+    .movie-details-container::after {
+        bottom: 0;
+        top: auto;
+    }
 </style>
