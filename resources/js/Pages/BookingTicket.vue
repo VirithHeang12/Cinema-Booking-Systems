@@ -14,6 +14,7 @@
                 <v-col cols="12" md="8">
                     <div class="card" v-if="!showPaymentSection">
                         <div class="card-body">
+                            <div class="w-full my-5 text-center !text-xl fw-medium text-zinc-100"><img src="/public/image/screen.svg" alt="" class="mx-auto w-[90%] object-cover">SCREEN</div>
                             <div v-for="row in seats" :key="row.label" class="seat-row">
                                 <span class="row-label">{{ row.label }}</span>
 
