@@ -18,14 +18,6 @@
                 <div v-if="errors.length" class="multiselect-error">{{ errors[0] }}</div>
             </vee-field>
         </div>
-
-        <vee-field name="maximum_capacity" v-slot="{ field, errors }">
-            <v-text-field type="number" v-bind="field" :error-messages="errors" v-model="form.maximum_capacity"
-                :label="__('Maximum Capacity')" variant="outlined" prepend-inner-icon="mdi-counter"
-                density="comfortable"></v-text-field>
-        </vee-field>
-
-
     </div>
 </template>
 

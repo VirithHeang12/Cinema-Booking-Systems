@@ -40,12 +40,14 @@
         name: yup.string().required(__('Name is required')),
         description: yup.string().nullable(),
         hall_type_id: yup.number().required(__('Hall type is required')),
+        maximum_seats_per_row: yup.number().required(__('Maximum seats per row is required')),
     });
 
     const form = useForm({
         name: null,
         description: null,
         hall_type_id: null,
+        maximum_seats_per_row: null,
     });
 
     /**

@@ -27,11 +27,6 @@ class StoreRequest extends FormRequest
                 'integer',
                 'exists:seat_types,id',
             ],
-            'maximum_capacity' => [
-                'required',
-                'integer',
-                'min:1',
-            ],
             'rows'           => [
                 'required',
                 'array',
@@ -50,9 +45,6 @@ class StoreRequest extends FormRequest
             'seat_type_id.required'     => 'The seat type field is required.',
             'seat_type_id.integer'      => 'The seat type field must be an integer.',
             'seat_type_id.exists'       => 'The selected seat type is invalid.',
-            'maximum_capacity.required' => 'The maximum capacity field is required.',
-            'maximum_capacity.integer'  => 'The maximum capacity field must be an integer.',
-            'maximum_capacity.min'      => 'The maximum capacity must be at least :min.',
             'rows.required'             => 'The rows field is required.',
             'rows.array'                => 'The rows field must be an array.',
         ];

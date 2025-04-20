@@ -30,6 +30,13 @@
                                             {{ hall.data.hall_type }}
                                         </div>
                                     </div>
+                                    <div class="field-column">
+                                        <div class="field-label">{{ __('Maximum Seats Per Row') }}</div>
+                                        <div class="field-value duration-value">
+                                            <v-icon size="small">mdi-seat</v-icon>
+                                            {{ hall.data.maximum_seats_per_row }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -108,13 +115,6 @@
             sortable: false,
             key: "seat_type",
             width: "250px",
-        },
-        {
-            title: __("Maximum Capacity"),
-            align: "center",
-            sortable: false,
-            key: "maximum_capacity",
-            width: "100px",
         },
         {
             title: __("Rows"),

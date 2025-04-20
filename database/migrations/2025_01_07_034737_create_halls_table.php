@@ -32,6 +32,10 @@ return new class extends Migration
                 ->nullable()
                 ->comment('Description of the hall');
 
+            $table->integer('maximum_seats_per_row')
+                ->nullable(false)
+                ->comment('Maximum number of seats per row in the hall');
+
             $table->softDeletes();
             $table->timestamps();
         });

@@ -269,7 +269,6 @@
     "Hall Type deleted.": "ប្រភេទរោងភាពយន្ដត្រូវបានលុប",
     "Hall Type not deleted.": "ប្រភេទរោងភាពយន្ដមិនត្រូវបានលុប",
     "Hall Type imported.": "ប្រភេទរោងភាពយន្ដត្រូវបានបញ្ចូល",
-    "Change Password": "ផ្លាស់ប្តូរពាក្យសម្ងាត់",
     "The file is required.": "ឯកសារត្រូវបានទាមទារ",
     "The file must be a file.": "ឯកសារត្រូវតែជាឯកសារ",
     "The file must be a file of type: xlsx, xls, csv, txt.": "ឯកសារត្រូវតែជាឯកសារប្រភេទ៖ xlsx, xls, csv, txt",
@@ -310,5 +309,7 @@
     "Language imported.": "ភាសាត្រូវបានបញ្ចូល",
     "Language not imported.": "ភាសាមិនត្រូវបានបញ្ចូល",
     "update": "កែប្រែ",
-    "Change Password": "ផ្លាស់ប្តូរពាក្យសម្ងាត់"
+    "Change Password": "ផ្លាស់ប្តូរពាក្យសម្ងាត់",
+    "Maximum seats per row is required.": "កៅអីអតិបរមាតាមជួរដេកត្រូវបានទាមទារ។",
+    "Maximum Seats Per Row": "កៅអីអតិបរមាតាមជួរដេក"
 }

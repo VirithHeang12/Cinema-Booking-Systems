@@ -31,34 +31,6 @@ class PermissionSeeder extends Seeder
 
         $role = Role::findByName(RoleEnum::USER->value);
 
-        $role->givePermissionTo([
-            PermissionEnum::CREATE_LANGUAGE,
-            PermissionEnum::VIEW_ANY_LANGUAGES,
-            PermissionEnum::VIEW_LANGUAGE,
-            PermissionEnum::CREATE_CLASSIFICATION,
-            PermissionEnum::VIEW_ANY_CLASSIFICATIONS,
-            PermissionEnum::VIEW_CLASSIFICATION,
-            PermissionEnum::CREATE_COUNTRY,
-            PermissionEnum::VIEW_ANY_COUNTRIES,
-            PermissionEnum::VIEW_COUNTRY,
-            PermissionEnum::CREATE_HALL_TYPE,
-            PermissionEnum::VIEW_ANY_HALL_TYPES,
-            PermissionEnum::VIEW_HALL_TYPE,
-            PermissionEnum::CREATE_GENRE,
-            PermissionEnum::VIEW_ANY_GENRES,
-            PermissionEnum::VIEW_GENRE,
-            PermissionEnum::CREATE_MOVIE,
-            PermissionEnum::VIEW_ANY_MOVIES,
-            PermissionEnum::VIEW_MOVIE,
-            PermissionEnum::CREATE_HALL,
-            PermissionEnum::VIEW_ANY_HALLS,
-            PermissionEnum::VIEW_HALL,
-            PermissionEnum::VIEW_SHOW,
-            PermissionEnum::VIEW_ANY_SHOWS,
-            PermissionEnum::VIEW_ANY_HALL_SEAT_TYPES,
-            PermissionEnum::VIEW_HALL_SEAT_TYPE,
-        ]);
-
         $user               = User::create([
             'name'          => 'User',
             'email'         => 'user@gmail.com',

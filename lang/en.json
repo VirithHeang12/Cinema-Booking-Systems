@@ -268,7 +268,6 @@
     "Hall Type deleted.": "Hall Type deleted",
     "Hall Type not deleted.": "Hall Type not deleted",
     "Hall Type imported.": "Hall Type imported",
-    "Change Password": "Change Password",
     "The file is required.": "The file is required.",
     "The file must be a file.": "The file must be a file.",
     "The file must be a file of type: xlsx, xls, csv, txt.": "The file must be a file of type: xlsx, xls, csv, txt.",
@@ -309,5 +308,7 @@
     "Language imported.": "Language imported.",
     "Language not imported.": "Language not imported.",
     "update": "update",
-    "Change Password": "Change Password"
+    "Change Password": "Change Password",
+    "Maximum seats per row is required": "Maximum seats per row is required",
+    "Maximum Seats Per Row": "Maximum Seats Per Row"
 }

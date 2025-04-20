@@ -50,6 +50,7 @@ class HallController extends Controller
                     $query->withCount('seats')->orderBy('seats_count', $direction);
                 }),
                 AllowedSort::field('name'),
+                AllowedSort::field('maximum_seats_per_row'),
             )
             ->with(['hallType', 'seats', 'hallSeatTypes'])
             ->withCount('seats')
@@ -96,9 +97,10 @@ class HallController extends Controller
 
         try {
             Hall::create([
-                'name'              => $data['name'],
-                'description'       => $data['description'],
-                'hall_type_id'      => $data['hall_type_id'],
+                'name'                  => $data['name'],
+                'description'           => $data['description'],
+                'hall_type_id'          => $data['hall_type_id'],
+                'maximum_seats_per_row' => $data['maximum_seats_per_row'],
             ]);
 
             DB::commit();
@@ -174,9 +176,10 @@ class HallController extends Controller
 
         try {
             $hall->update([
-                'name'              => $data['name'],
-                'description'       => $data['description'],
-                'hall_type_id'      => $data['hall_type_id'],
+                'name'                  => $data['name'],
+                'description'           => $data['description'],
+                'hall_type_id'          => $data['hall_type_id'],
+                'maximum_seats_per_row' => $data['maximum_seats_per_row'],
             ]);
 
             DB::commit();

@@ -87,6 +87,12 @@
             key: 'hall_type',
         },
         {
+            title: __('Maximum Seats Per Row'),
+            align: 'center',
+            sortable: true,
+            key: 'maximum_seats_per_row',
+        },
+        {
             title: __('Seat'),
             align: 'center',
             sortable: true,

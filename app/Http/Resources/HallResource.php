@@ -22,6 +22,7 @@ class HallResource extends JsonResource
                 return $this->hallType?->name;
             }),
             'seats_count'           => $this->whenCounted('seats'),
+            'maximum_seats_per_row' => $this->maximum_seats_per_row,
         ];
     }
 }

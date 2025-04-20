@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Hall;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -75,9 +76,11 @@ class SeatSeeder extends Seeder
             ],
         ];
 
+        $hallsCount = Hall::count();
+
         foreach (range('B', 'I') as $row) {
             for ($number = 1; $number <= 10; $number++) {
-                for ($hall = 1; $hall <= 3; $hall++) {
+                for ($hall = 1; $hall <= $hallsCount; $hall++) {
                     $seats[] = [
                         'hall_id'       => $hall,
                         'seat_type_id'  => 1,

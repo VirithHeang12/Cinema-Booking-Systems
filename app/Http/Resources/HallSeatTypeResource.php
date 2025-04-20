@@ -17,7 +17,6 @@ class HallSeatTypeResource extends JsonResource
         return [
             'id'                => $this->id,
             'seat_type'         => $this->seatType?->name,
-            'maximum_capacity'  => $this->maximum_capacity,
             'rows'              => collect($this->hall->seats)
                 ->where('seat_type_id', $this->seat_type_id)
                 ->pluck('row')

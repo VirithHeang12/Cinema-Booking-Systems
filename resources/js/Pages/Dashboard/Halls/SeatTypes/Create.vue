@@ -47,12 +47,10 @@
 
     const schema = yup.object().shape({
         seat_type_id: yup.number().required(__('Seat type is required')),
-        maximum_capacity: yup.number().required(__('Maximum capacity is required')),
     });
 
     const form = useForm({
         seat_type_id: null,
-        maximum_capacity: null,
         rows: null,
     });
 
