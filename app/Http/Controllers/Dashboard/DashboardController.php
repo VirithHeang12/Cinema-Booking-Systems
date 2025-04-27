@@ -8,11 +8,9 @@ use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\ShowSeat;
 use App\Models\Booking;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 class DashboardController extends Controller
 {
@@ -151,7 +149,7 @@ class DashboardController extends Controller
         foreach ($totalTicketsByGenre as $genre) {
             $percentagesPerGenre[] = [
                 'genre'             => $genre['genre'],
-                'percentage'        => ($genre['sales'] / $showSeatCount) * 100
+                'percentage'        => ($genre['sales'] / ($showSeatCount || 1)) * 100
             ];
         }
 
