@@ -77,9 +77,6 @@
                                             </template>
                                         </v-checkbox>
                                     </div>
-                                    <div>
-                                        <a href="#" class="text-decoration-none text-primary">Forgot password?</a>
-                                    </div>
                                 </div>
 
                                 <!-- Submit Button -->
